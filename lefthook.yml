@@ -1,0 +1,31 @@
+pre-commit:
+  parallel: true
+  commands:
+    biome-fix:
+      glob: "*.{js,ts,cjs,mjs,jsx,tsx,json,jsonc}"
+      run: npx @biomejs/biome check --write \
+        --linter-enabled=false \
+        --assist-enabled=true \
+        --organize-imports-enabled=true \
+        --enforce-assist=false \
+        --no-errors-on-unmatched \
+        --files-ignore-unknown=true \
+        --colors=off {staged_files}
+      stage_fixed: true
+
+pre-push:
+  parallel: false
+  commands:
+    biome-check:
+      glob: "*.{js,ts,cjs,mjs,jsx,tsx,json,jsonc}"
+      run: npx @biomejs/biome check --write \
+        --no-errors-on-unmatched \
+        --files-ignore-unknown=true \
+        --colors=off {push_files}
+    type-check:
+      run: pnpm type-check
+
+commit-msg:
+  commands:
+    commitlint:
+      run: pnpm commitlint --edit {1}
