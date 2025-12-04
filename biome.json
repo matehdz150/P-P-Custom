@@ -1,15 +1,29 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.7.0/schema.json",
-  "formatter": {
-    "enabled": true
-  },
-  "linter": {
-    "enabled": true
-  },
-  "organizeImports": {
-    "enabled": true
-  },
-  "files": {
-    "ignore": ["node_modules", "dist", ".next"]
-  }
+	"$schema": "https://biomejs.dev/schemas/2.3.8/schema.json",
+	"formatter": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true
+	},
+	"assist": {
+		"enabled": true
+	},
+	"files": {
+		"ignoreUnknown": false,
+		"includes": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json"],
+		"maxSize": 1048576
+	},
+	"overrides": [
+		{
+			"includes": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noUndeclaredVariables": "off"
+					}
+				}
+			}
+		}
+	]
 }
