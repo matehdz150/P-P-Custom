@@ -1,0 +1,22 @@
+{
+  "name": "P-P-Custom",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "echo no lint yet",
+    "format": "echo no format yet",
+    "test": "echo no tests yet",
+    "build": "echo no build yet"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.19.0",
+  "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "husky": "^8.0.0"
+  }
+}
