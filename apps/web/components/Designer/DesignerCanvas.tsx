@@ -1,154 +1,87 @@
-"use client";
-
-import {
-	Canvas,
-	Image as FabricImage,
-	type FabricObject,
-	type Group,
-	Rect,
-} from "fabric";
 import { useEffect, useRef, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
-import { convertCurvedToEditable } from "@/lib/fabric/editableCurvedText";
+import { CanvasEngine } from "@/lib/fabric/core/canvasEngine";
+import { loadProductDefinition } from "@/lib/fabric/core/productEngine";
 import DesignerSidebar from "./DesignerSidebar";
 import DesignerBottomBar from "./design/DesignerBottomBar";
 import DesignerPropertiesPanel from "./design/DesignerpropertiesPanel";
 import DesignerSideSwitcher from "./design/DesignerSideSwitcher";
-import { useCanvasPan } from "./hooks/useCanvasPan";
-import { useCanvasZoom } from "./hooks/useCanvasZoom";
 
 export default function DesignerCanvas() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const engineRef = useRef<CanvasEngine | null>(null);
 
-	// ⬅️ Traemos canvas + setters desde el contexto
-	const { canvas, setCanvas, setActiveObject } = useDesigner();
+	const { setCanvas, setActiveObject } = useDesigner();
 
 	const [side, setSide] = useState<"front" | "back">("front");
+	const [zoom, setZoom] = useState(1);
 	const [isPanning, setIsPanning] = useState(false);
 
-	const { zoom, zoomIn, zoomOut } = useCanvasZoom(canvas);
-	useCanvasPan({ fabricCanvas: canvas, isPanning });
-
-	// -----------------------------------------------------------
-	// INIT CANVAS
-	// -----------------------------------------------------------
 	useEffect(() => {
 		if (!canvasRef.current) return;
-		if (canvas) return; // ya inicializado
 
-		const c = new Canvas(canvasRef.current, {
-			width: 1200,
-			height: 750,
-			selection: true,
+		// Create engine
+		const engine = new CanvasEngine(canvasRef.current);
+		engineRef.current = engine;
+
+		// The REAL fabric canvas is inside engine.core.canvas
+		setCanvas(engine.core.canvas);
+
+		// Sync React when zoom changes
+		engine.zoom.setZoomCallback((z) => setZoom(z));
+
+		// Load product
+		loadProductDefinition("tshirt").then((product) => {
+			engine.loadProduct(product, "front");
 		});
 
-		c.backgroundColor = "#f2f3ea";
-
-		const editableArea = new Rect({
-			left: 460,
-			top: 235,
-			width: 270,
-			height: 350,
-			fill: "rgba(0,0,0,0.05)",
-			selectable: false,
-			evented: false,
+		// Fabric event listeners
+		engine.core.canvas.on("selection:created", () => {
+			setActiveObject(engine.core.canvas.getActiveObject() ?? null);
 		});
 
-		c.add(editableArea);
+		engine.core.canvas.on("selection:updated", () => {
+			setActiveObject(engine.core.canvas.getActiveObject() ?? null);
+		});
 
-		// Guardamos referencia a la zona editable en el canvas
-		(c as Canvas & { editableArea?: Rect }).editableArea = editableArea;
-
-		// Guardamos canvas en el contexto
-		setCanvas(c);
-
-		// Listeners para actualizar selectedObject
-		const updateActive = () => {
-			setActiveObject(c.getActiveObject() ?? null);
-		};
-
-		c.on("selection:created", updateActive);
-
-		c.on("selection:updated", updateActive);
-
-		c.on("selection:cleared", () => {
+		engine.core.canvas.on("selection:cleared", () => {
 			setActiveObject(null);
 		});
+	}, [setActiveObject, setCanvas]);
 
-		return () => {
-			c.off("selection:created", updateActive);
-			c.off("selection:updated", updateActive);
-			c.dispose();
-		};
-	}, [canvas, setActiveObject, setCanvas]);
-
-	// -----------------------------------------------------------
-	// LOAD MOCKUP
-	// -----------------------------------------------------------
+	// CAMBIO DE LADO
 	useEffect(() => {
-		if (!canvas) return;
+		const engine = engineRef.current;
+		if (!engine) return;
+		if (!engine.currentProduct) return;
 
-		const url =
-			side === "front" ? "/mockups/tshirtfront.png" : "/mockups/tshirtback.png";
+		engine.switchSide(side);
+	}, [side]);
 
-		FabricImage.fromURL(url).then((img) => {
-			img.scaleToWidth(700);
-			img.originX = "center";
-			img.originY = "center";
-			img.left = canvas.getWidth() / 2;
-			img.top = canvas.getHeight() / 2;
-			img.selectable = false;
-
-			canvas.backgroundImage = img;
-			canvas.requestRenderAll();
-		});
-	}, [side, canvas]);
-
-	// -----------------------------------------------------------
-	// DOUBLE CLICK → CURVED → EDITABLE
-	// -----------------------------------------------------------
-	useEffect(() => {
-		if (!canvas) return;
-
-		const dblHandler = (e: { target?: FabricObject }) => {
-			const obj = e.target;
-			if (!obj) return;
-
-			if (
-				(obj as FabricObject & { designType?: string }).designType ===
-				"curved-text"
-			) {
-				convertCurvedToEditable(canvas, obj as Group);
-			}
-		};
-
-		canvas.on("mouse:dblclick", dblHandler);
-
-		return () => {
-			canvas.off("mouse:dblclick", dblHandler);
-		};
-	}, [canvas]);
-
-	// -----------------------------------------------------------
-	// RENDER
-	// -----------------------------------------------------------
 	return (
-		<div className="w-full h-screen flex overflow-hidden">
+		<div className="flex w-full h-screen">
 			<DesignerSidebar />
+			<div className="relative flex-1">
+				<canvas ref={canvasRef} />
 
-			<div className="flex-1 flex justify-center items-center bg-white relative">
-				<canvas ref={canvasRef} className="border shadow-md" />
-
-				<DesignerSideSwitcher side={side} onChange={setSide} />
 				<DesignerBottomBar
 					zoom={zoom}
-					zoomIn={zoomIn}
-					zoomOut={zoomOut}
+					zoomIn={() => engineRef.current?.zoom.zoomIn()}
+					zoomOut={() => engineRef.current?.zoom.zoomOut()}
 					isPanning={isPanning}
-					togglePan={() => setIsPanning(!isPanning)}
-				/>
-			</div>
+					togglePan={() => {
+						const eng = engineRef.current;
+						if (!eng) return;
 
+						if (!isPanning) eng.pan.enablePan();
+						else eng.pan.disablePan();
+
+						setIsPanning(!isPanning);
+					}}
+				/>
+
+				<DesignerSideSwitcher side={side} onChange={setSide} />
+			</div>
 			<DesignerPropertiesPanel />
 		</div>
 	);

@@ -1,0 +1,26 @@
+{
+	"id": "tshirt",
+	"name": "Basic T-Shirt",
+	"mockups": {
+		"front": "/mockups/tshirtfront.png",
+		"back": "/mockups/tshirtback.png"
+	},
+	"editableAreas": {
+		"front": [
+			{
+				"left": 460,
+				"top": 235,
+				"width": 270,
+				"height": 350
+			}
+		],
+		"back": [
+			{
+				"left": 460,
+				"top": 235,
+				"width": 270,
+				"height": 350
+			}
+		]
+	}
+}
