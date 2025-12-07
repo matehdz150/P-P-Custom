@@ -61,8 +61,7 @@ export class DesignStateManager {
 
 		// 3) enliven
 		const restoredObjects = await new Promise<FabricObject[]>((resolve) => {
-			FabricUtil.enlivenObjects(cleaned, (enlivened) => resolve(enlivened));
-			console.log("RESTORED:", restoredObjects);
+			FabricUtil.enlivenObjects(cleaned, resolve as never);
 		});
 
 		const editableArea = getEditableArea(canvas);
