@@ -4,8 +4,17 @@
 		"module": "ESNext",
 		"strict": true,
 		"noEmit": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"moduleResolution": "bundler",
+		"jsx": "react-jsx",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["apps/web/*"],
+			"@db/*": ["packages/db/*"],
+			"@ui/*": ["packages/ui/*"],
+			"@config/*": ["packages/config/*"]
+		}
 	},
-	"include": ["**/*.ts", "**/*.tsx"],
-	"exclude": ["node_modules"]
+	"include": ["apps/web/**/*", "packages/**/*"],
+	"exclude": ["node_modules", "**/.next", "apps/web/.next", "apps/api"]
 }

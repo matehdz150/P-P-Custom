@@ -1,6 +1,12 @@
 "use client";
 
-import { Canvas, Image as FabricImage, type FabricObject, Rect } from "fabric";
+import {
+	Canvas,
+	Image as FabricImage,
+	type FabricObject,
+	type Group,
+	Rect,
+} from "fabric";
 import { useEffect, useRef, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import { convertCurvedToEditable } from "@/lib/fabric/editableCurvedText";
@@ -57,19 +63,23 @@ export default function DesignerCanvas() {
 		setCanvas(c);
 
 		// Listeners para actualizar selectedObject
-		c.on("selection:created", () => {
-			setActiveObject(c.getActiveObject());
-		});
+		const updateActive = () => {
+			setActiveObject(c.getActiveObject() ?? null);
+		};
 
-		c.on("selection:updated", () => {
-			setActiveObject(c.getActiveObject());
-		});
+		c.on("selection:created", updateActive);
+
+		c.on("selection:updated", updateActive);
 
 		c.on("selection:cleared", () => {
 			setActiveObject(null);
 		});
 
-		return () => c.dispose();
+		return () => {
+			c.off("selection:created", updateActive);
+			c.off("selection:updated", updateActive);
+			c.dispose();
+		};
 	}, [canvas, setActiveObject, setCanvas]);
 
 	// -----------------------------------------------------------
@@ -100,20 +110,22 @@ export default function DesignerCanvas() {
 	useEffect(() => {
 		if (!canvas) return;
 
-		const dbl = canvas.on("mouse:dblclick", (e) => {
-			const obj = e.target as FabricObject | undefined;
+		const dblHandler = (e: { target?: FabricObject }) => {
+			const obj = e.target;
 			if (!obj) return;
 
 			if (
 				(obj as FabricObject & { designType?: string }).designType ===
 				"curved-text"
 			) {
-				convertCurvedToEditable(canvas, obj);
+				convertCurvedToEditable(canvas, obj as Group);
 			}
-		});
+		};
+
+		canvas.on("mouse:dblclick", dblHandler);
 
 		return () => {
-			canvas.off("mouse:dblclick", dbl);
+			canvas.off("mouse:dblclick", dblHandler);
 		};
 	}, [canvas]);
 

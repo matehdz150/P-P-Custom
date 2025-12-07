@@ -11,6 +11,12 @@ type CurveConfig = {
 	fontSize?: number;
 	fontFamily?: string;
 	totalAngle?: number;
+	scaleX?: number;
+	scaleY?: number;
+	curved?: number;
+	curvedAbs?: number;
+	baseTotalAngle?: number;
+	baseDirection?: "arc-up" | "arc-down";
 
 	// 👇 añadimos estos campos para plantillas
 	centerX?: number;
@@ -18,14 +24,20 @@ type CurveConfig = {
 	bakedFontSize?: number;
 };
 
+type CurvedMeta = {
+	designType?: "curved-text";
+	__curveConfig?: CurveConfig & Record<string, unknown>;
+	_objects?: Text[];
+};
+
 /**
  * Convertir texto curvo → editable
  */
 export function convertCurvedToEditable(canvas: Canvas, group: Group) {
-	const cfg = (group as any).__curveConfig as CurveConfig | undefined;
+	const cfg = (group as Group & CurvedMeta).__curveConfig;
 	if (!cfg) return;
 
-	const letters = (group as any)._objects as Text[];
+	const letters = ((group as Group & CurvedMeta)._objects ?? []) as Text[];
 	const first = letters?.[0];
 
 	// escala del grupo (por si lo hiciste más chico/grande en el canvas)
@@ -56,7 +68,7 @@ export function convertCurvedToEditable(canvas: Canvas, group: Group) {
 	editable.clipPath = group.clipPath;
 
 	// 💾 guardamos TODO lo necesario para reconstruir la plantilla igualita
-	(editable as any).__curveConfig = {
+	(editable as IText & CurvedMeta).__curveConfig = {
 		...cfg,
 		radius: effectiveRadius, // ya incluye la escala
 		totalAngle,
@@ -87,7 +99,7 @@ export function convertCurvedToEditable(canvas: Canvas, group: Group) {
  * Convertir texto editable → curvo otra vez
  */
 export function convertEditableToCurved(canvas: Canvas, textbox: IText) {
-	const cfg = (textbox as any).__curveConfig as CurveConfig | undefined;
+	const cfg = (textbox as IText & CurvedMeta).__curveConfig;
 	if (!cfg) return;
 
 	const textStr = textbox.text ?? "";
@@ -100,8 +112,8 @@ export function convertEditableToCurved(canvas: Canvas, textbox: IText) {
 
 	const spacing = len > 0 ? totalAngle / len : 0;
 
-	const centerX = cfg.centerX ?? textbox.left!;
-	const centerY = cfg.centerY ?? textbox.top!;
+	const centerX = cfg.centerX ?? textbox.left ?? 0;
+	const centerY = cfg.centerY ?? textbox.top ?? 0;
 
 	const curved = createCurvedTextGroup(
 		{
@@ -122,8 +134,9 @@ export function convertEditableToCurved(canvas: Canvas, textbox: IText) {
 	curved.scaleX = 1;
 	curved.scaleY = 1;
 
-	(curved as any).designType = "curved-text";
-	(curved as any).__curveConfig = {
+	const curvedMeta = curved as Group & CurvedMeta;
+	curvedMeta.designType = "curved-text";
+	curvedMeta.__curveConfig = {
 		...cfg,
 		text: textStr,
 		spacing,
@@ -140,7 +153,20 @@ export function convertEditableToCurved(canvas: Canvas, textbox: IText) {
 	canvas.requestRenderAll();
 }
 
-export function convertPlainToCurved(canvas: Canvas, textbox: IText, curveCfg) {
+type PlainCurveCfg = {
+	radius: number;
+	spacing: number;
+	direction: "arc-up" | "arc-down";
+	curved?: number;
+};
+
+export function convertPlainToCurved(
+	canvas: Canvas,
+	textbox: IText,
+	curveCfg: PlainCurveCfg,
+) {
+	if (textbox.left == null || textbox.top == null) return;
+
 	const { radius, spacing, direction } = curveCfg;
 
 	const group = createCurvedTextGroup(
@@ -152,13 +178,14 @@ export function convertPlainToCurved(canvas: Canvas, textbox: IText, curveCfg) {
 			fontSize: textbox.fontSize,
 			fontFamily: textbox.fontFamily ?? "Inter",
 		},
-		textbox.left!,
-		textbox.top!,
+		textbox.left,
+		textbox.top,
 	);
 
 	group.clipPath = textbox.clipPath;
-	(group as any).designType = "curved-text";
-	(group as any).__curveConfig = {
+	const groupMeta = group as Group & CurvedMeta;
+	groupMeta.designType = "curved-text";
+	groupMeta.__curveConfig = {
 		text: textbox.text ?? "",
 		radius,
 		spacing,
@@ -176,18 +203,19 @@ export function convertPlainToCurved(canvas: Canvas, textbox: IText, curveCfg) {
 }
 
 export function convertCurvedToPlain(canvas: Canvas, curvedGroup: Group) {
-	const cfg = (curvedGroup as any).__curveConfig;
+	const cfg = (curvedGroup as Group & CurvedMeta).__curveConfig;
 	if (!cfg) return;
 
 	// Detectar tamaño real (considerando escala)
-	const letters = curvedGroup._objects as Text[];
+	const letters = ((curvedGroup as Group & CurvedMeta)._objects ??
+		[]) as Text[];
 	const first = letters[0];
 
 	const effectiveFontSize =
 		(first.fontSize ?? cfg.fontSize ?? 40) * (first.scaleX ?? 1);
 
-	const centerX = curvedGroup.left!;
-	const centerY = curvedGroup.top!;
+	const centerX = curvedGroup.left ?? 0;
+	const centerY = curvedGroup.top ?? 0;
 	const scaleX = curvedGroup.scaleX ?? 1;
 	const scaleY = curvedGroup.scaleY ?? 1;
 
@@ -209,7 +237,7 @@ export function convertCurvedToPlain(canvas: Canvas, curvedGroup: Group) {
 	plain.clipPath = curvedGroup.clipPath;
 
 	// Guardar la configuración por si vuelve a curvo después
-	(plain as any).__curveConfig = {
+	(plain as IText & CurvedMeta).__curveConfig = {
 		...cfg,
 		text: cfg.text,
 		//⚠️ IMPORTANTE: guardar totalAngle original para que pueda regresar igual
@@ -237,7 +265,7 @@ export function updateCurvedAmount(
 	curvedGroup: Group,
 	curvedValue: number,
 ) {
-	const cfg: any = (curvedGroup as any).__curveConfig;
+	const cfg = (curvedGroup as Group & CurvedMeta).__curveConfig;
 	if (!cfg) return;
 
 	const text: string = cfg.text;
@@ -271,13 +299,13 @@ export function updateCurvedAmount(
 		curvedRaw >= 0 ? baseDir : baseDir === "arc-up" ? "arc-down" : "arc-up";
 
 	// USAR SIEMPRE EL CENTRO ORIGINAL
-	const centerX = cfg.centerX;
-	const centerY = cfg.centerY;
+	const centerX = cfg.centerX ?? 0;
+	const centerY = cfg.centerY ?? 0;
 
 	const newGroup = createCurvedTextGroup(
 		{
 			text,
-			radius: cfg.radius,
+			radius: cfg.radius ?? 150,
 			spacing,
 			direction,
 			fontSize: cfg.fontSize,
@@ -291,8 +319,9 @@ export function updateCurvedAmount(
 	newGroup.scaleX = curvedGroup.scaleX;
 	newGroup.scaleY = curvedGroup.scaleY;
 
-	(newGroup as any).designType = "curved-text";
-	(newGroup as any).__curveConfig = {
+	const newMeta = newGroup as Group & CurvedMeta;
+	newMeta.designType = "curved-text";
+	newMeta.__curveConfig = {
 		...cfg,
 		curved: curvedRaw,
 		curvedAbs,

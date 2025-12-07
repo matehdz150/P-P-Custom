@@ -2,6 +2,7 @@
 import { Group, Text } from "fabric";
 
 export type CurvedTextConfig = {
+	id?: string;
 	text: string;
 	radius: number; // radio del arco
 	spacing: number; // grados entre letras
@@ -68,8 +69,13 @@ export function createCurvedTextGroup(
 		originY: "center",
 	});
 
-	(group as any).designType = "curved-text";
-	(group as any).__curveConfig = cfg;
+	const curvedGroup = group as Group & {
+		designType?: "curved-text";
+		__curveConfig?: CurvedTextConfig;
+	};
+
+	curvedGroup.designType = "curved-text";
+	curvedGroup.__curveConfig = cfg;
 
 	return group;
 }

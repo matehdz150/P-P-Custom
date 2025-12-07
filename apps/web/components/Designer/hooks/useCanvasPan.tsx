@@ -56,14 +56,14 @@ export function useCanvasPan({ fabricCanvas, isPanning }: Props) {
 			fabricCanvas.setCursor("grab");
 		};
 
-		fabricCanvas.on("mouse:down", handleMouseDown);
-		fabricCanvas.on("mouse:move", handleMouseMove);
-		fabricCanvas.on("mouse:up", handleMouseUp);
+		fabricCanvas.on("mouse:down", handleMouseDown as any);
+		fabricCanvas.on("mouse:move", handleMouseMove as any);
+		fabricCanvas.on("mouse:up", handleMouseUp as any);
 
 		return () => {
-			fabricCanvas.off("mouse:down", handleMouseDown);
-			fabricCanvas.off("mouse:move", handleMouseMove);
-			fabricCanvas.off("mouse:up", handleMouseUp);
+			fabricCanvas.off("mouse:down", handleMouseDown as any);
+			fabricCanvas.off("mouse:move", handleMouseMove as any);
+			fabricCanvas.off("mouse:up", handleMouseUp as any);
 		};
 	}, [fabricCanvas, isPanning]);
 }

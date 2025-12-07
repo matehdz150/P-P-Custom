@@ -59,6 +59,7 @@ export default function DesignerPropertiesPanel() {
 			convertPlainToCurved(canvas, current as IText, {
 				radius: 150,
 				spacing: 12,
+				direction: "arc-up",
 				curved: value,
 			});
 			return;
