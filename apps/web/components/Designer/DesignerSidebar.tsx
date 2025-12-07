@@ -3,19 +3,15 @@
 import { type Canvas, Image as FabricImage, IText, Rect } from "fabric";
 import type React from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
-import { AVAILABLE_FONTS } from "@/lib/fabric/fonts";
-import { insertDesignTemplate } from "@/lib/fabric/insertDesignTemplate";
-import { DESIGN_TEMPLATES } from "@/lib/fabric/templatesList";
-
-type CanvasWithArea = Canvas & { editableArea?: Rect };
-type FabricObjectWithCurve = {
-	__curveConfig?: { fontFamily?: string };
-};
+import { getEditableArea } from "@/lib/fabric/product/productRenderer";
 
 export default function DesignerSidebar() {
 	const { canvas } = useDesigner();
 
-	const getArea = () => (canvas as CanvasWithArea | null)?.editableArea;
+	const getArea = () => {
+		if (!canvas) return undefined;
+		return getEditableArea(canvas as Canvas) ?? undefined;
+	};
 
 	// ---------------------------------------------------
 	// 📝 Añadir texto normal
@@ -30,14 +26,13 @@ export default function DesignerSidebar() {
 			top: area.top + area.height / 2,
 			originX: "center",
 			originY: "center",
-			width: area.width - 20,
 			fontSize: 28,
 			fill: "#000",
 			editable: true,
 			fontFamily: "Inter",
 		});
 
-		// Clip
+		// Clip al área editable
 		text.clipPath = new Rect({
 			left: area.left,
 			top: area.top,
@@ -64,7 +59,9 @@ export default function DesignerSidebar() {
 		if (!area) return;
 
 		FabricImage.fromURL(url).then((img) => {
+			// Escalar para que quepa más o menos dentro del área editable
 			img.scaleToWidth(area.width * 0.9);
+
 			img.set({
 				left: area.left + area.width / 2,
 				top: area.top + area.height / 2,
@@ -72,6 +69,7 @@ export default function DesignerSidebar() {
 				originY: "center",
 			});
 
+			// Clip al área editable
 			img.clipPath = new Rect({
 				left: area.left,
 				top: area.top,
@@ -84,40 +82,6 @@ export default function DesignerSidebar() {
 			canvas.setActiveObject(img);
 			canvas.requestRenderAll();
 		});
-	};
-
-	// ---------------------------------------------------
-	// 🌙 Insertar plantilla curva
-	// ---------------------------------------------------
-	const addCurvedTemplate = async () => {
-		if (!canvas) return;
-		// ejemplo por default
-		await insertDesignTemplate(canvas, "circle-full");
-	};
-
-	// ---------------------------------------------------
-	// 🔤 Cambiar fuente
-	// ---------------------------------------------------
-	const changeFont = (fontName: string) => {
-		if (!canvas) return;
-
-		const active = canvas.getActiveObject();
-		if (!active) return;
-
-		// Si es texto editable o curvo → tiene fontFamily
-		if ("fontFamily" in active) {
-			active.set("fontFamily", fontName);
-
-			// Si es texto curvo, actualizar su metadata
-			const curveConfig = (active as typeof active & FabricObjectWithCurve)
-				.__curveConfig;
-			if (curveConfig) {
-				curveConfig.fontFamily = fontName;
-			}
-
-			active.setCoords();
-			canvas.requestRenderAll();
-		}
 	};
 
 	// ---------------------------------------------------
@@ -144,50 +108,6 @@ export default function DesignerSidebar() {
 					onChange={addImage}
 				/>
 			</label>
-
-			{/* Botón curva */}
-			<button
-				type="button"
-				onClick={addCurvedTemplate}
-				className="bg-black text-white px-3 py-2 rounded hover:bg-gray-900"
-			>
-				Texto curvo (plantilla)
-			</button>
-
-			{/* Plantillas */}
-			<p className="font-medium text-xs uppercase text-gray-600 mt-2">
-				Plantillas
-			</p>
-
-			<div className="grid grid-cols-2 gap-2">
-				{DESIGN_TEMPLATES.map((tpl) => (
-					<button
-						type="button"
-						key={tpl.id}
-						onClick={() => canvas && insertDesignTemplate(canvas, tpl.id)}
-						className="bg-white border rounded p-2 text-xs hover:bg-gray-100"
-					>
-						{tpl.label}
-					</button>
-				))}
-			</div>
-
-			{/* Fuentes */}
-			<p className="text-xs font-medium mt-3">Fuentes</p>
-
-			<div className="flex flex-col gap-2">
-				{AVAILABLE_FONTS.map((f) => (
-					<button
-						type="button"
-						key={f.name}
-						onClick={() => changeFont(f.name)}
-						className="px-2 py-1 border rounded hover:bg-gray-100 text-left"
-						style={{ fontFamily: f.name }}
-					>
-						{f.name}
-					</button>
-				))}
-			</div>
 		</div>
 	);
 }
