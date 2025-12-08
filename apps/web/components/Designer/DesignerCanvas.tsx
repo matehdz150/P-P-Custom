@@ -12,7 +12,6 @@ import type {
 } from "@/lib/products/types";
 import DesignerSidebar from "./DesignerSidebar";
 import DesignerBottomBar from "./design/DesignerBottomBar";
-import DesignerPropertiesPanel from "./design/DesignerpropertiesPanel";
 import DesignerSideSwitcher from "./design/DesignerSideSwitcher";
 import { useCanvasPan } from "./hooks/useCanvasPan";
 import { useCanvasZoom } from "./hooks/useCanvasZoom";
@@ -82,6 +81,7 @@ function DesignerCanvasSide({
 		// áreas editables definidas en JSON
 		const shapes = product.editableAreas[side] ?? [];
 		const areaRects: Rect[] = [];
+		type CanvasWithEditableAreas = Canvas & { editableAreas?: Rect[] };
 
 		shapes.forEach((shape) => {
 			const areaObj = createAreaFromShape(shape);
@@ -93,7 +93,7 @@ function DesignerCanvasSide({
 		setEditableAreas(side, areaRects);
 
 		// también guardamos todas en el canvas mismo para usarlas después
-		(c as any).editableAreas = areaRects;
+		(c as CanvasWithEditableAreas).editableAreas = areaRects;
 
 		// registrar canvas en contexto
 		registerCanvas(side, c);

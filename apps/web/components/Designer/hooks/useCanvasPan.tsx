@@ -1,4 +1,4 @@
-import type { Canvas } from "fabric";
+import type { Canvas, TPointerEvent, TPointerEventInfo } from "fabric";
 import { useEffect, useRef } from "react";
 
 export function useCanvasPan({
@@ -14,22 +14,28 @@ export function useCanvasPan({
 	useEffect(() => {
 		if (!fabricCanvas) return;
 
-		const onMouseDown = (opt: any) => {
+		const onMouseDown = (
+			opt: TPointerEventInfo<TPointerEvent> & { alreadySelected: boolean },
+		) => {
 			if (!isPanning) return;
 
 			isDragging.current = true;
 
 			const evt = opt.e;
+			if (!("clientX" in evt) || !("clientY" in evt)) return;
+
 			lastPos.current = { x: evt.clientX, y: evt.clientY };
 
 			fabricCanvas.setCursor("grabbing");
 		};
 
-		const onMouseMove = (opt: any) => {
+		const onMouseMove = (opt: TPointerEventInfo<TPointerEvent>) => {
 			if (!isDragging.current || !isPanning) return;
 
 			const evt = opt.e;
-			const vpt = fabricCanvas.viewportTransform!;
+			if (!("clientX" in evt) || !("clientY" in evt)) return;
+			const vpt = fabricCanvas.viewportTransform;
+			if (!vpt) return;
 
 			const dx = evt.clientX - lastPos.current.x;
 			const dy = evt.clientY - lastPos.current.y;

@@ -3,6 +3,7 @@
 import { FabricImage, type FabricObject, Rect, Textbox } from "fabric";
 import type React from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
+import { AVAILABLE_FONTS } from "@/lib/fabric/fontList";
 
 const ORANGE = "#fe6241";
 
@@ -15,22 +16,9 @@ function applySelectionStyle(obj: FabricObject) {
 		borderColor: ORANGE,
 		cornerSize: 8,
 		borderScaleFactor: 1.1,
-		cornerStyle: "square",
-	} as any);
+		cornerStyle: "rect",
+	});
 }
-
-const FONT_OPTIONS = [
-	"Anton",
-	"Bebas_Neue",
-	"Cormorant_Garamond",
-	"Great_Vibes",
-	"Inter",
-	"Montserrat",
-	"Pacifico",
-	"Playfair_Display",
-	"Poppins",
-	"Sora",
-];
 
 export default function DesignerSidebar() {
 	const { getCanvas, getEditableAreas, activeSide, setActiveObject } =
@@ -160,15 +148,15 @@ export default function DesignerSidebar() {
 				</p>
 
 				<div className="flex flex-col gap-1 max-h-[280px] overflow-y-auto pr-1">
-					{FONT_OPTIONS.map((font) => (
+					{AVAILABLE_FONTS.map((font) => (
 						<button
-							key={font}
+							key={font.family}
 							type="button"
-							onClick={() => addTextWithFont(font)} // ⭐ CREA TEXTO CON ESA FUENTE
+							onClick={() => addTextWithFont(font.family)} // ⭐ CREA TEXTO CON ESA FUENTE
 							className="w-full text-left px-2 py-1 rounded hover:bg-gray-200 text-[13px]"
-							style={{ fontFamily: font.replace("_", " ") }}
+							style={{ fontFamily: font.family }}
 						>
-							{font.replace("_", " ")}
+							{font.label}
 						</button>
 					))}
 				</div>
