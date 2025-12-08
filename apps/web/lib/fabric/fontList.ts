@@ -1,12 +1,17 @@
-export const AVAILABLE_FONTS = [
-	{ label: "Inter", family: "Inter" },
-	{ label: "Poppins", family: "Poppins" },
-	{ label: "Montserrat", family: "Montserrat" },
-	{ label: "Bebas Neue", family: "Bebas Neue" },
-	{ label: "Anton", family: "Anton" },
-	{ label: "Sora", family: "Sora" },
-	{ label: "Playfair Display", family: "Playfair Display" },
-	{ label: "Cormorant Garamond", family: "Cormorant Garamond" },
-	{ label: "Pacifico", family: "Pacifico" },
-	{ label: "Great Vibes", family: "Great Vibes" },
-] as const;
+export type AvailableFont = {
+	family: string;
+	label: string;
+};
+
+export const AVAILABLE_FONTS: AvailableFont[] = [
+	{ family: "Anton", label: "Anton" },
+	{ family: "Bebas Neue", label: "Bebas Neue" },
+	{ family: "Cormorant Garamond", label: "Cormorant Garamond" },
+	{ family: "Great Vibes", label: "Great Vibes" },
+	{ family: "Inter", label: "Inter" },
+	{ family: "Montserrat", label: "Montserrat" },
+	{ family: "Pacifico", label: "Pacifico" },
+	{ family: "Playfair Display", label: "Playfair Display" },
+	{ family: "Poppins", label: "Poppins" },
+	{ family: "Sora", label: "Sora" },
+];

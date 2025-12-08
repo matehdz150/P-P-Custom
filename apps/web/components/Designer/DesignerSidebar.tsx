@@ -1,106 +1,138 @@
 "use client";
 
-import { type Canvas, Image as FabricImage, IText, Rect } from "fabric";
+import { FabricImage, type FabricObject, Rect, Textbox } from "fabric";
 import type React from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
-import { getEditableArea } from "@/lib/fabric/product/productRenderer";
+import { AVAILABLE_FONTS } from "@/lib/fabric/fontList";
+
+const ORANGE = "#fe6241";
+
+// 🔸 Aplica estilo de selección naranja a cualquier objeto
+function applySelectionStyle(obj: FabricObject) {
+	obj.set({
+		transparentCorners: false,
+		cornerColor: "#ffffff",
+		cornerStrokeColor: ORANGE,
+		borderColor: ORANGE,
+		cornerSize: 8,
+		borderScaleFactor: 1.1,
+		cornerStyle: "rect",
+	});
+}
 
 export default function DesignerSidebar() {
-	const { canvas } = useDesigner();
+	const { getCanvas, getEditableAreas, activeSide, setActiveObject } =
+		useDesigner();
 
-	const getArea = () => {
-		if (!canvas) return undefined;
-		return getEditableArea(canvas as Canvas) ?? undefined;
-	};
-
-	// ---------------------------------------------------
-	// 📝 Añadir texto normal
-	// ---------------------------------------------------
-	const addText = () => {
+	// ------------------------------------------------------
+	// FUNCIÓN PRINCIPAL: Agregar texto con la fuente elegida
+	// ------------------------------------------------------
+	const addTextWithFont = (fontFamily: string) => {
+		const canvas = getCanvas();
 		if (!canvas) return;
-		const area = getArea();
-		if (!area) return;
 
-		const text = new IText("Texto aquí", {
-			left: area.left + area.width / 2,
-			top: area.top + area.height / 2,
+		const areas = getEditableAreas();
+		const area = areas[0] ?? null;
+
+		const left = area ? area.left + area.width / 2 : canvas.getWidth() / 2;
+		const top = area ? area.top + area.height / 2 : canvas.getHeight() / 2;
+
+		const text = new Textbox("Nuevo texto", {
+			left,
+			top,
 			originX: "center",
 			originY: "center",
-			fontSize: 28,
+			fontSize: 32,
+			fontFamily,
 			fill: "#000",
 			editable: true,
-			fontFamily: "Inter",
+			width: area ? area.width - 20 : 300,
 		});
 
-		// Clip al área editable
-		text.clipPath = new Rect({
-			left: area.left,
-			top: area.top,
-			width: area.width,
-			height: area.height,
-			absolutePositioned: true,
-		});
+		applySelectionStyle(text as unknown as FabricObject);
 
-		canvas.add(text);
-		canvas.setActiveObject(text);
-		canvas.requestRenderAll();
-	};
-
-	// ---------------------------------------------------
-	// 🖼 Añadir Imagen
-	// ---------------------------------------------------
-	const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (!canvas || !e.target.files?.length) return;
-
-		const file = e.target.files[0];
-		const url = URL.createObjectURL(file);
-
-		const area = getArea();
-		if (!area) return;
-
-		FabricImage.fromURL(url).then((img) => {
-			// Escalar para que quepa más o menos dentro del área editable
-			img.scaleToWidth(area.width * 0.9);
-
-			img.set({
-				left: area.left + area.width / 2,
-				top: area.top + area.height / 2,
-				originX: "center",
-				originY: "center",
-			});
-
-			// Clip al área editable
-			img.clipPath = new Rect({
+		if (area) {
+			text.clipPath = new Rect({
 				left: area.left,
 				top: area.top,
 				width: area.width,
 				height: area.height,
 				absolutePositioned: true,
 			});
+		}
 
-			canvas.add(img);
-			canvas.setActiveObject(img);
-			canvas.requestRenderAll();
-		});
+		canvas.add(text);
+		canvas.setActiveObject(text);
+		canvas.requestRenderAll();
+		setActiveObject(text);
 	};
 
-	// ---------------------------------------------------
-	// RENDER UI
-	// ---------------------------------------------------
-	return (
-		<div className="w-[240px] bg-gray-100 p-4 flex flex-col gap-4 border-r text-sm overflow-y-auto">
-			{/* Botón texto */}
-			<button
-				type="button"
-				onClick={addText}
-				className="bg-black text-white px-3 py-2 rounded hover:bg-gray-900"
-			>
-				Añadir texto
-			</button>
+	// ---------------------------------------
+	// AGREGAR IMAGEN (igual que antes)
+	// ---------------------------------------
+	const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (!file) return;
 
-			{/* Botón imagen */}
-			<label className="bg-black text-white px-3 py-2 rounded hover:bg-gray-900 cursor-pointer text-center">
-				Insertar imagen
+		const canvas = getCanvas();
+		if (!canvas) return;
+
+		const reader = new FileReader();
+		const areas = getEditableAreas();
+		const area = areas[0] ?? null;
+
+		reader.onload = () => {
+			const url = reader.result as string;
+			const htmlImg = new Image();
+			htmlImg.src = url;
+
+			htmlImg.onload = () => {
+				const img = new FabricImage(htmlImg, {
+					originX: "center",
+					originY: "center",
+				});
+
+				applySelectionStyle(img as unknown as FabricObject);
+
+				if (area) {
+					img.scaleToWidth(area.width * 0.8);
+					img.left = area.left + area.width / 2;
+					img.top = area.top + area.height / 2;
+				} else {
+					img.scaleToWidth(300);
+					img.left = canvas.getWidth() / 2;
+					img.top = canvas.getHeight() / 2;
+				}
+
+				if (area) {
+					img.clipPath = new Rect({
+						left: area.left,
+						top: area.top,
+						width: area.width,
+						height: area.height,
+						absolutePositioned: true,
+					});
+				}
+
+				canvas.add(img);
+				canvas.setActiveObject(img);
+				canvas.requestRenderAll();
+				setActiveObject(img);
+			};
+		};
+
+		reader.readAsDataURL(file);
+	};
+
+	return (
+		<div className="w-[260px] bg-gray-100 p-4 border-r flex flex-col gap-4 text-sm">
+			<p className="uppercase text-[10px] text-gray-500 tracking-wide">
+				Herramientas ({activeSide})
+			</p>
+
+			{/* Imagen */}
+			<label className="bg-black text-white py-2 rounded hover:bg-gray-900 text-center cursor-pointer text-sm">
+				Agregar imagen
 				<input
 					type="file"
 					accept="image/*"
@@ -108,6 +140,27 @@ export default function DesignerSidebar() {
 					onChange={addImage}
 				/>
 			</label>
+
+			{/* Fuentes */}
+			<div>
+				<p className="uppercase text-[10px] text-gray-500 tracking-wide mb-1">
+					Agregar texto con fuente:
+				</p>
+
+				<div className="flex flex-col gap-1 max-h-[280px] overflow-y-auto pr-1">
+					{AVAILABLE_FONTS.map((font) => (
+						<button
+							key={font.family}
+							type="button"
+							onClick={() => addTextWithFont(font.family)} // ⭐ CREA TEXTO CON ESA FUENTE
+							className="w-full text-left px-2 py-1 rounded hover:bg-gray-200 text-[13px]"
+							style={{ fontFamily: font.family }}
+						>
+							{font.label}
+						</button>
+					))}
+				</div>
+			</div>
 		</div>
 	);
 }
