@@ -9,17 +9,29 @@ export type EditableRectShape = {
 	height: number;
 };
 
-// si luego agregamos circle/path los metemos aquí
-export type EditableShape = EditableRectShape;
+export type EditableCircleShape = {
+	id: string;
+	type: "circle";
+	cx: number;
+	cy: number;
+	radius: number;
+};
 
-export type ProductSide = "front" | "back";
+export type EditableShape = EditableRectShape | EditableCircleShape;
 
-export interface ProductTemplate {
+// 👇 cualquier string es un lado válido
+export type ProductSide = string;
+
+// Plantilla de producto genérica
+export interface ProductTemplate<S extends ProductSide = ProductSide> {
 	id: string;
 	name: string;
-	sides: ProductSide[];
 
-	mockups: Record<ProductSide, string>;
+	// aquí van tus labels: "delantera", "trasera", "manga derecha"
+	sides: S[];
+	sideLabels?: Record<S, string>;
 
-	editableAreas: Record<ProductSide, EditableShape[]>;
+	mockups: Record<S, string>;
+
+	editableAreas: Record<S, EditableShape[]>;
 }

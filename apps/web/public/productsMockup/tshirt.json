@@ -1,7 +1,13 @@
 {
 	"id": "tshirt",
 	"name": "Basic T-Shirt",
+
 	"sides": ["front", "back"],
+
+	"sideLabels": {
+		"front": "Delante",
+		"back": "Detrás"
+	},
 
 	"mockups": {
 		"front": "/mockups/tshirtfront.png",
@@ -13,19 +19,18 @@
 			{
 				"id": "front-main",
 				"type": "rect",
-				"left": 460,
-				"top": 235,
+				"left": 582,
+				"top": 275,
 				"width": 270,
 				"height": 350
 			}
 		],
-
 		"back": [
 			{
 				"id": "back-main",
 				"type": "rect",
-				"left": 460,
-				"top": 235,
+				"left": 582,
+				"top": 275,
 				"width": 270,
 				"height": 350
 			}

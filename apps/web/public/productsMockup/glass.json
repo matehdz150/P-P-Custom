@@ -1,0 +1,27 @@
+{
+	"id": "glass",
+	"name": "Basic glass",
+
+	"sides": ["front"],
+
+	"sideLabels": {
+		"front": "Delante"
+	},
+
+	"mockups": {
+		"front": "/mockups/glass.png"
+	},
+
+	"editableAreas": {
+		"front": [
+			{
+				"id": "front-main",
+				"type": "rect",
+				"left": 640,
+				"top": 385,
+				"width": 165,
+				"height": 192
+			}
+		]
+	}
+}

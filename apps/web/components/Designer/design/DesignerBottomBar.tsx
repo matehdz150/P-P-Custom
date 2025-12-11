@@ -24,7 +24,7 @@ export default function DesignerBottomBar({
       bg-white border-t shadow-lg 
       py-3 px-4 
       flex items-center justify-between
-      z-50
+      z-70
     "
 		>
 			{/* CONTROLES DE ZOOM (compactos como Printify) */}
