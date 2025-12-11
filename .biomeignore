@@ -1,8 +1,7 @@
-.next
-**/.next/**
-**/.next
-dist
-**/dist/**
 node_modules
-**/node_modules/**
-apps/web/.next
+.next
+.turbo
+dist
+build
+coverage
+*.log

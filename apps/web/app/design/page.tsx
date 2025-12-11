@@ -12,8 +12,9 @@ import {
 	Poppins,
 	Sora,
 } from "next/font/google";
+import { DesignerProvider } from "@/Contexts/DesignerContext";
+import { HistoryProvider } from "@/Contexts/HistoryContext";
 import ProductDesigner from "@/components/Designer/ProductDesigner";
-import { DesignerProvider } from "../../Contexts/DesignerContext";
 
 // --- Instagram-level typefaces ---
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -56,7 +57,7 @@ const greatvibes = Great_Vibes({
 	weight: "400",
 });
 
-export default function Page() {
+export default function Page({ params }: { params: { productId: string } }) {
 	return (
 		<div
 			className={`
@@ -67,7 +68,9 @@ export default function Page() {
       `}
 		>
 			<DesignerProvider>
-				<ProductDesigner />
+				<HistoryProvider>
+					<ProductDesigner productId={params.productId} />
+				</HistoryProvider>
 			</DesignerProvider>
 		</div>
 	);
