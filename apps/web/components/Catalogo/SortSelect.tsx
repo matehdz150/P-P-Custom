@@ -15,13 +15,24 @@ const sora = Sora({
 	display: "swap",
 });
 
-export default function SortSelect() {
+export default function SortSelect({ mobile = false }: { mobile?: boolean }) {
 	return (
-		<div className={`${sora.className} flex items-center gap-3 mt-4`}>
-			<span className="text-sm text-[#2A2A26] font-light">Ordenar por:</span>
+		<div
+			className={`${sora.className} flex items-center gap-2 ${
+				mobile ? "mt-1" : "mt-4"
+			}`}
+		>
+			<span className="text-sm text-[#2A2A26] font-light hidden md:block">
+				Ordenar por:
+			</span>
 
 			<Select defaultValue="relevancia">
-				<SelectTrigger className="w-[180px] py-6 border bg-white text-sm rounded-[0.2rem] ">
+				<SelectTrigger
+					className={`
+            border bg-white text-sm rounded-[0.2rem]
+            ${mobile ? "w-[140px] py-4" : "w-[180px] py-6"}
+          `}
+				>
 					<SelectValue placeholder="Selecciona opción" />
 				</SelectTrigger>
 

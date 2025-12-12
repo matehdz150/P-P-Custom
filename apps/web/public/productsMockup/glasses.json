@@ -1,0 +1,35 @@
+{
+	"id": "glasses",
+	"name": "Basic glass",
+
+	"sides": ["front"],
+
+	"sideLabels": {
+		"front": "Delante"
+	},
+
+	"mockups": {
+		"front": "/mockups/glasses.png"
+	},
+
+	"editableAreas": {
+		"front": [
+			{
+				"id": "front-main",
+				"type": "rect",
+				"left": 525,
+				"top": 352,
+				"width": 120,
+				"height": 117
+			},
+			{
+				"id": "front-main2",
+				"type": "rect",
+				"left": 800,
+				"top": 352,
+				"width": 120,
+				"height": 117
+			}
+		]
+	}
+}

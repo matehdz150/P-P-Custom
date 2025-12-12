@@ -1,0 +1,27 @@
+{
+	"id": "thermo",
+	"name": "Basic thermo",
+
+	"sides": ["front"],
+
+	"sideLabels": {
+		"front": "Delante"
+	},
+
+	"mockups": {
+		"front": "/mockups/thermo.png"
+	},
+
+	"editableAreas": {
+		"front": [
+			{
+				"id": "front-main",
+				"type": "rect",
+				"left": 620,
+				"top": 310,
+				"width": 200,
+				"height": 230
+			}
+		]
+	}
+}

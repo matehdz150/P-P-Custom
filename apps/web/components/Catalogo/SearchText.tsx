@@ -9,12 +9,23 @@ const sora = Sora({
 	display: "swap",
 });
 
-export default function SearchText() {
+export default function SearchText({ mobile = false }: { mobile?: boolean }) {
 	const { query } = useSearch();
 
 	return (
-		<div className={`${sora.className} mt-6`}>
-			<h2 className="text-xl font-semibold text-[#2A2A26]">
+		<div
+			className={`
+        ${sora.className} 
+        ${mobile ? "mt-2" : "mt-6"}
+      `}
+		>
+			{/* TÍTULO */}
+			<h2
+				className={`
+          font-semibold text-[#2A2A26]
+          ${mobile ? "text-xl leading-tight" : "text-xl"}
+        `}
+			>
 				{query.length === 0 ? (
 					<>Encuentra lo que necesitas</>
 				) : (
@@ -24,13 +35,23 @@ export default function SearchText() {
 				)}
 			</h2>
 
-			{/* Subtítulo opcional */}
+			{/* SUBTÍTULO */}
 			{query.length === 0 ? (
-				<p className="text-sm text-[#555] mt-1">
+				<p
+					className={`
+            text-[#555]
+            ${mobile ? "text-xs mt-1" : "text-sm mt-1"}
+          `}
+				>
 					Explora una amplia variedad de productos personalizados.
 				</p>
 			) : (
-				<p className="text-sm text-[#555] mt-1">
+				<p
+					className={`
+            text-[#555]
+            ${mobile ? "text-xs mt-1" : "text-sm mt-1"}
+          `}
+				>
 					Productos, categorías y recomendaciones según tu búsqueda.
 				</p>
 			)}

@@ -1,30 +1,130 @@
-// apps/web/Contexts/DesignerContext.tsx
 "use client";
 
-import type { Canvas, Object as FabricObject } from "fabric";
-import { createContext, useContext, useState } from "react";
+import type { Canvas, FabricObject } from "fabric";
+import {
+	createContext,
+	type ReactNode,
+	useCallback,
+	useContext,
+	useState,
+} from "react";
+
+interface SideState {
+	canvas: Canvas | null;
+	editableAreas: FabricObject[];
+}
 
 interface DesignerContextType {
-	canvas: Canvas | null;
-	setCanvas: (c: Canvas | null) => void;
+	activeSide: string;
+	setActiveSide: (side: string) => void;
+
+	sides: Record<string, SideState>;
+	initSides: (sides: string[]) => void;
+
+	registerCanvas: (side: string, canvas: Canvas) => void;
+	setEditableAreas: (side: string, areas: FabricObject[]) => void;
+
+	getCanvas: () => Canvas | null;
+	getEditableAreas: () => FabricObject[];
+
 	activeObject: FabricObject | null;
 	setActiveObject: (obj: FabricObject | null) => void;
 }
 
-const DesignerContext = createContext<DesignerContextType>({
-	canvas: null,
-	setCanvas: () => {},
-	activeObject: null,
-	setActiveObject: () => {},
-});
+const DesignerContext = createContext<DesignerContextType>(
+	{} as DesignerContextType,
+);
 
-export function DesignerProvider({ children }: { children: React.ReactNode }) {
-	const [canvas, setCanvas] = useState<Canvas | null>(null);
+export function DesignerProvider({ children }: { children: ReactNode }) {
+	const [activeSide, _setActiveSide] = useState<string>("front");
+
+	const [sides, setSides] = useState<Record<string, SideState>>({});
+
+	// Inicializar los lados
+	const initSides = useCallback((sidesList: string[]) => {
+		const obj: Record<string, SideState> = {};
+
+		sidesList.forEach((side) => {
+			obj[side] = { canvas: null, editableAreas: [] };
+		});
+
+		setSides(obj);
+		_setActiveSide(sidesList[0]);
+	}, []);
+
+	// Registrar canvas
+	const registerCanvas = useCallback((side: string, canvas: Canvas) => {
+		setSides((prev) => {
+			if (prev[side]?.canvas === canvas) return prev;
+			return { ...prev, [side]: { ...prev[side], canvas } };
+		});
+	}, []);
+
+	// Guardar editable areas
+	const setEditableAreas = useCallback(
+		(side: string, areas: FabricObject[]) => {
+			setSides((prev) => ({
+				...prev,
+				[side]: { ...prev[side], editableAreas: areas },
+			}));
+		},
+		[],
+	);
+
 	const [activeObject, setActiveObject] = useState<FabricObject | null>(null);
+
+	// --------------------------------------------------
+	// ⚡ SET ACTIVE SIDE — des-selecciona al cambiar side
+	// --------------------------------------------------
+
+	const setActiveSide = useCallback(
+		(newSide: string) => {
+			const currentCanvas = sides[activeSide]?.canvas;
+
+			if (currentCanvas) {
+				// 1. Quitar selección actual
+				currentCanvas.discardActiveObject();
+
+				// 2. Resetear PAN pero conservar el zoom
+				const vt = currentCanvas.viewportTransform;
+				if (vt) {
+					const next: number[] = [...vt]; // copiar
+					next[4] = 0; // tx
+					next[5] = 0; // ty
+					currentCanvas.setViewportTransform(next);
+				}
+
+				// 3. Re-render
+				currentCanvas.requestRenderAll();
+			}
+
+			// 4. Limpiar selección global
+			setActiveObject(null);
+
+			// 5. Cambiar de lado
+			_setActiveSide(newSide);
+		},
+		[activeSide, sides],
+	);
+
+	// Helpers
+	const getCanvas = () => sides[activeSide]?.canvas ?? null;
+	const getEditableAreas = () => sides[activeSide]?.editableAreas ?? [];
 
 	return (
 		<DesignerContext.Provider
-			value={{ canvas, setCanvas, activeObject, setActiveObject }}
+			value={{
+				activeSide,
+				setActiveSide,
+				sides,
+				initSides,
+				registerCanvas,
+				setEditableAreas,
+				getCanvas,
+				getEditableAreas,
+				activeObject,
+				setActiveObject,
+			}}
 		>
 			{children}
 		</DesignerContext.Provider>

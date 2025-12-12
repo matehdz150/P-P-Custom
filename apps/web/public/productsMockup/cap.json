@@ -1,0 +1,27 @@
+{
+	"id": "cap",
+	"name": "Basic Cap",
+
+	"sides": ["front"],
+
+	"sideLabels": {
+		"front": "Delante"
+	},
+
+	"mockups": {
+		"front": "/mockups/cap.png"
+	},
+
+	"editableAreas": {
+		"front": [
+			{
+				"id": "front-main",
+				"type": "rect",
+				"left": 620,
+				"top": 265,
+				"width": 205,
+				"height": 210
+			}
+		]
+	}
+}

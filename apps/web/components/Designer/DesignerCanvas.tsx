@@ -1,145 +1,109 @@
 "use client";
 
-import {
-	Canvas,
-	Image as FabricImage,
-	type FabricObject,
-	type Group,
-	Rect,
-} from "fabric";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import "@/lib/fabricOverrides";
 import { useDesigner } from "@/Contexts/DesignerContext";
-import { convertCurvedToEditable } from "@/lib/fabric/editableCurvedText";
-import DesignerSidebar from "./DesignerSidebar";
+import { loadProductTemplate } from "@/lib/products/loadProductsTemplate";
+import type { ProductTemplate } from "@/lib/products/types";
+import DesignerCanvasSide from "./DesignerCanvasSide";
+import DesignerSidebar from "./DesignerSidebar/DesignerSidebar";
 import DesignerBottomBar from "./design/DesignerBottomBar";
-import DesignerPropertiesPanel from "./design/DesignerpropertiesPanel";
 import DesignerSideSwitcher from "./design/DesignerSideSwitcher";
+import PreviewEditButtons from "./design/PreviewEditButtons";
+import RightLayersPanel from "./design/RightLayersPanel/RightLayersPanel";
+import ImageToolbar from "./design/toolbar/ImageToolbar";
+import TextToolbar from "./design/toolbar/TextToolbar";
+import UndoRedoButtons from "./design/UndoRedoButtons";
 import { useCanvasPan } from "./hooks/useCanvasPan";
 import { useCanvasZoom } from "./hooks/useCanvasZoom";
 
-export default function DesignerCanvas() {
-	const canvasRef = useRef<HTMLCanvasElement>(null);
-
-	// ⬅️ Traemos canvas + setters desde el contexto
-	const { canvas, setCanvas, setActiveObject } = useDesigner();
-
-	const [side, setSide] = useState<"front" | "back">("front");
+// -----------------------------
+// Shell completo
+// -----------------------------
+export default function DesignerCanvas({ productId }: { productId: string }) {
+	const { getCanvas, activeSide, setActiveSide } = useDesigner();
 	const [isPanning, setIsPanning] = useState(false);
+	const [product, setProduct] = useState<ProductTemplate | null>(null);
+	const [error, setError] = useState<string | null>(null);
 
+	useEffect(() => {
+		if (!productId) return;
+
+		loadProductTemplate(productId)
+			.then(setProduct)
+			.catch((err) => {
+				console.error(err);
+				setError("No se pudo cargar la plantilla de producto.");
+			});
+	}, [productId]);
+
+	// 🔥 DELETE KEY HANDLER — eliminas objetos seleccionados (multi)
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key !== "Delete" && e.key !== "Backspace") return;
+
+			const canvas = getCanvas();
+			if (!canvas) return;
+
+			const activeObjects = canvas.getActiveObjects();
+			if (!activeObjects || activeObjects.length === 0) return;
+
+			// 🛑 EVITAR BORRAR OBJETOS SI SE ESTÁ EDITANDO TEXTO
+			const isEditingText = activeObjects.some(
+				(obj) =>
+					obj.type === "textbox" &&
+					"isEditing" in obj &&
+					obj.isEditing === true,
+			);
+
+			if (isEditingText) {
+				return; // ⚡ deja que el textbox maneje el Backspace
+			}
+
+			// 🗑 borrar objetos normalmente
+			canvas.discardActiveObject();
+			activeObjects.forEach((obj) => {
+				canvas.remove(obj);
+			});
+			canvas.requestRenderAll();
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, [getCanvas]);
+
+	const canvas = getCanvas();
 	const { zoom, zoomIn, zoomOut } = useCanvasZoom(canvas);
 	useCanvasPan({ fabricCanvas: canvas, isPanning });
 
-	// -----------------------------------------------------------
-	// INIT CANVAS
-	// -----------------------------------------------------------
-	useEffect(() => {
-		if (!canvasRef.current) return;
-		if (canvas) return; // ya inicializado
+	if (error) {
+		return <div className="p-4 text-red-600">{error}</div>;
+	}
 
-		const c = new Canvas(canvasRef.current, {
-			width: 1200,
-			height: 750,
-			selection: true,
-		});
+	if (!product) {
+		return <div className="p-4">Cargando producto...</div>;
+	}
 
-		c.backgroundColor = "#f2f3ea";
-
-		const editableArea = new Rect({
-			left: 460,
-			top: 235,
-			width: 270,
-			height: 350,
-			fill: "rgba(0,0,0,0.05)",
-			selectable: false,
-			evented: false,
-		});
-
-		c.add(editableArea);
-
-		// Guardamos referencia a la zona editable en el canvas
-		(c as Canvas & { editableArea?: Rect }).editableArea = editableArea;
-
-		// Guardamos canvas en el contexto
-		setCanvas(c);
-
-		// Listeners para actualizar selectedObject
-		const updateActive = () => {
-			setActiveObject(c.getActiveObject() ?? null);
-		};
-
-		c.on("selection:created", updateActive);
-
-		c.on("selection:updated", updateActive);
-
-		c.on("selection:cleared", () => {
-			setActiveObject(null);
-		});
-
-		return () => {
-			c.off("selection:created", updateActive);
-			c.off("selection:updated", updateActive);
-			c.dispose();
-		};
-	}, [canvas, setActiveObject, setCanvas]);
-
-	// -----------------------------------------------------------
-	// LOAD MOCKUP
-	// -----------------------------------------------------------
-	useEffect(() => {
-		if (!canvas) return;
-
-		const url =
-			side === "front" ? "/mockups/tshirtfront.png" : "/mockups/tshirtback.png";
-
-		FabricImage.fromURL(url).then((img) => {
-			img.scaleToWidth(700);
-			img.originX = "center";
-			img.originY = "center";
-			img.left = canvas.getWidth() / 2;
-			img.top = canvas.getHeight() / 2;
-			img.selectable = false;
-
-			canvas.backgroundImage = img;
-			canvas.requestRenderAll();
-		});
-	}, [side, canvas]);
-
-	// -----------------------------------------------------------
-	// DOUBLE CLICK → CURVED → EDITABLE
-	// -----------------------------------------------------------
-	useEffect(() => {
-		if (!canvas) return;
-
-		const dblHandler = (e: { target?: FabricObject }) => {
-			const obj = e.target;
-			if (!obj) return;
-
-			if (
-				(obj as FabricObject & { designType?: string }).designType ===
-				"curved-text"
-			) {
-				convertCurvedToEditable(canvas, obj as Group);
-			}
-		};
-
-		canvas.on("mouse:dblclick", dblHandler);
-
-		return () => {
-			canvas.off("mouse:dblclick", dblHandler);
-		};
-	}, [canvas]);
-
-	// -----------------------------------------------------------
-	// RENDER
-	// -----------------------------------------------------------
 	return (
-		<div className="w-full h-screen flex overflow-hidden">
+		<div className="w-full h-screen flex overflow-hidden ">
 			<DesignerSidebar />
 
-			<div className="flex-1 flex justify-center items-center bg-white relative">
-				<canvas ref={canvasRef} className="border shadow-md" />
+			<div className="flex-1 h-full w-full relative overflow-hidde">
+				{product.sides.map((side) => (
+					<DesignerCanvasSide key={side} side={side} product={product} />
+				))}
 
-				<DesignerSideSwitcher side={side} onChange={setSide} />
+				<UndoRedoButtons />
+				<PreviewEditButtons />
+				<RightLayersPanel />
+
+				<DesignerSideSwitcher
+					currentSide={activeSide}
+					sides={product.sides}
+					product={product}
+					onChange={setActiveSide}
+				/>
+
 				<DesignerBottomBar
 					zoom={zoom}
 					zoomIn={zoomIn}
@@ -147,9 +111,9 @@ export default function DesignerCanvas() {
 					isPanning={isPanning}
 					togglePan={() => setIsPanning(!isPanning)}
 				/>
+				<TextToolbar />
+				<ImageToolbar />
 			</div>
-
-			<DesignerPropertiesPanel />
 		</div>
 	);
 }

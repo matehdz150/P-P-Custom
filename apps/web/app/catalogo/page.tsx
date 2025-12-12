@@ -108,7 +108,7 @@ export default function Page() {
 					<PackagesSection
 						title="Paquetes para eventos"
 						description="Combos pensados para graduaciones, bodas y eventos especiales."
-						href="/paquetes/eventos"
+						href="/catalogo/eventos"
 						packages={packagesEventos}
 					/>
 
