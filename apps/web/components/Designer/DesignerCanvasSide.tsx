@@ -6,6 +6,8 @@ import {
 	Image as FabricImage,
 	type FabricObject,
 	Rect,
+	type TPointerEvent,
+	type TPointerEventInfo,
 } from "fabric";
 import { useEffect, useRef } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
@@ -78,7 +80,97 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 		c.selectionBorderColor = "#fe6241";
 		c.selectionLineWidth = 2;
 
-		// mockup desde plantilla
+		// -----------------------------------------
+		// 🔥 ZOOM CON RUEDA DEL MOUSE
+		// -----------------------------------------
+
+		const handleWheel = (opt: TPointerEventInfo<WheelEvent>) => {
+			const delta = opt.e.deltaY;
+			let zoom = c.getZoom();
+
+			zoom *= delta > 0 ? 0.9 : 1.1;
+			zoom = Math.max(0.3, Math.min(zoom, 3));
+
+			const pointer = c.getPointer(opt.e);
+			c.zoomToPoint(pointer, zoom);
+
+			opt.e.preventDefault();
+			opt.e.stopPropagation();
+		};
+
+		c.on("mouse:wheel", handleWheel);
+
+		// ---------------------------------------------
+		// 🔥 PINCH-ZOOM para mobile (Fabric 6)
+		// ---------------------------------------------
+		let lastDist = 0;
+
+		const getDistance = (a: Touch, b: Touch) =>
+			Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY);
+
+		const handleTouchMove = (opt: TPointerEventInfo<TouchEvent>) => {
+			const ev = opt.e;
+
+			if (ev.touches.length < 2) return;
+
+			const [t1, t2] = ev.touches;
+
+			const dist = getDistance(t1, t2);
+
+			if (lastDist === 0) {
+				lastDist = dist;
+				return;
+			}
+
+			const delta = dist - lastDist;
+			lastDist = dist;
+
+			let zoom = c.getZoom() + delta / 300;
+			zoom = Math.max(0.3, Math.min(zoom, 3));
+
+			// 👉 Aquí declaramos mid correctamente (el error que tenías)
+			const mid = {
+				clientX: (t1.clientX + t2.clientX) / 2,
+				clientY: (t1.clientY + t2.clientY) / 2,
+			};
+
+			// 👉 Fabric necesita un "evento" compatible
+			const fabricEvent: {
+				clientX: number;
+				clientY: number;
+				isTouch?: boolean;
+				target?: EventTarget | null;
+			} = {
+				clientX: mid.clientX,
+				clientY: mid.clientY,
+				isTouch: true,
+			};
+
+			const pe = new PointerEvent("pointermove", {
+				clientX: mid.clientX,
+				clientY: mid.clientY,
+				pointerType: "touch",
+			});
+
+			// 👉 Fabric sí acepta un PointerEvent nativo
+			const pointer = c.getPointer(pe as unknown as TPointerEvent);
+			c.zoomToPoint(pointer, zoom);
+			c.zoomToPoint(pointer, zoom);
+
+			ev.preventDefault();
+			ev.stopPropagation();
+		};
+
+		const resetPinch = () => {
+			lastDist = 0;
+		};
+
+		c.on("mouse:move", handleTouchMove);
+		c.on("mouse:up", resetPinch);
+
+		// -----------------------------------------
+		// 🔥 MOCKUP IMAGE
+		// -----------------------------------------
 		const mockupUrl = product.mockups[side];
 
 		if (mockupUrl) {
@@ -95,7 +187,9 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 			});
 		}
 
-		// ÁREAS EDITABLES
+		// -----------------------------------------
+		// Editable areas
+		// -----------------------------------------
 		const shapes = product.editableAreas[side] ?? [];
 		const areaRects: FabricObject[] = [];
 
@@ -108,7 +202,9 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 		setEditableAreas(side, areaRects);
 		registerCanvas(side, c);
 
-		// listeners de selección
+		// -----------------------------------------
+		// Selection listeners
+		// -----------------------------------------
 		const onSel = () => setActiveObject(c.getActiveObject() ?? null);
 		const onClear = () => setActiveObject(null);
 
@@ -116,7 +212,9 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 		c.on("selection:updated", onSel);
 		c.on("selection:cleared", onClear);
 
-		// 🔥 FIX: reubicar el textarea de Fabric en MOBILE
+		// -----------------------------------------
+		// 🔥 FIX FABRIC TEXTAREA POSITION ON MOBILE
+		// -----------------------------------------
 		if (isMobile) {
 			const fixTextareaPosition = () => {
 				const textarea = document.querySelector(
@@ -125,30 +223,28 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 
 				if (!textarea) return;
 
-				// Lo hacemos fijo y en un lugar estable
 				textarea.style.position = "fixed";
 				textarea.style.left = "100px";
 				textarea.style.top = "120px";
-
 				textarea.style.width = "1px";
 				textarea.style.height = "1px";
 				textarea.style.opacity = "0";
 				textarea.style.zIndex = "-1";
 				textarea.style.transform = "none";
-
-				// Evitar zoom raro en mobile
 				textarea.style.fontSize = "16px";
 			};
 
 			const handleEditingEntered = () => {
-				// Dejamos que Fabric lo pinte y luego lo corregimos
 				requestAnimationFrame(fixTextareaPosition);
 			};
 
 			c.on("text:editing:entered", handleEditingEntered);
 
-			// limpieza
+			// cleanup MOBILE
 			return () => {
+				c.off("mouse:wheel", handleWheel);
+				c.off("mouse:move", handleTouchMove);
+				c.off("mouse:up", resetPinch);
 				c.off("selection:created", onSel);
 				c.off("selection:updated", onSel);
 				c.off("selection:cleared", onClear);
@@ -157,8 +253,11 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 			};
 		}
 
-		// cleanup cuando NO es mobile
+		// cleanup DESKTOP
 		return () => {
+			c.off("mouse:wheel", handleWheel);
+			c.off("mouse:move", handleTouchMove);
+			c.off("mouse:up", resetPinch);
 			c.off("selection:created", onSel);
 			c.off("selection:updated", onSel);
 			c.off("selection:cleared", onClear);
@@ -181,7 +280,11 @@ export default function DesignerCanvasSide({ side, product }: Props) {
         absolute inset-0 
         flex justify-center items-center
         transition-opacity duration-200
-        ${isVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
+        ${
+					isVisible
+						? "opacity-100 pointer-events-auto"
+						: "opacity-0 pointer-events-none"
+				}
       `}
 			style={{ zIndex: isVisible ? 2 : 1 }}
 		>
