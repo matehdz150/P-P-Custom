@@ -1,8 +1,15 @@
 import type { Canvas, TPointerEventInfo } from "fabric";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useCanvasZoom(canvas: Canvas | null) {
 	const [zoom, setZoom] = useState(1);
+	const clampZoom = useCallback(
+		(value: number) => Math.min(Math.max(value, 0.3), 3),
+		[],
+	);
+
+	const zoomIn = () => setZoom((z) => clampZoom(z + 0.1));
+	const zoomOut = () => setZoom((z) => clampZoom(z - 0.1));
 
 	// ---------------------------
 	// 🔵 Sync zoom when canvas changes
@@ -24,7 +31,7 @@ export function useCanvasZoom(canvas: Canvas | null) {
 			const delta = evt.deltaY;
 
 			let newZoom = zoom - delta / 800;
-			newZoom = Math.min(Math.max(newZoom, 0.3), 3);
+			newZoom = clampZoom(newZoom);
 
 			setZoom(newZoom);
 
@@ -37,7 +44,7 @@ export function useCanvasZoom(canvas: Canvas | null) {
 		return () => {
 			canvas.off("mouse:wheel", handleWheel);
 		};
-	}, [canvas, zoom]);
+	}, [canvas, clampZoom, zoom]);
 
 	// ---------------------------
 	// 🤏 2. PINCH TO ZOOM (TOUCH)
@@ -64,7 +71,7 @@ export function useCanvasZoom(canvas: Canvas | null) {
 				}
 
 				let newZoom = zoom * (distance / lastDistance);
-				newZoom = Math.min(Math.max(newZoom, 0.3), 3);
+				newZoom = clampZoom(newZoom);
 
 				setZoom(newZoom);
 				lastDistance = distance;
@@ -88,7 +95,7 @@ export function useCanvasZoom(canvas: Canvas | null) {
 			container.removeEventListener("touchmove", handleTouchMove);
 			container.removeEventListener("touchend", reset);
 		};
-	}, [canvas, zoom]);
+	}, [canvas, clampZoom, zoom]);
 
-	return { zoom, setZoom };
+	return { zoom, setZoom, zoomIn, zoomOut };
 }
