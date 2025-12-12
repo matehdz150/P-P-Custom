@@ -1,6 +1,6 @@
 "use client";
 
-import type { Canvas, FabricObject } from "fabric";
+import type { Canvas, FabricObject, TMat2D } from "fabric";
 import {
 	createContext,
 	type ReactNode,
@@ -88,9 +88,15 @@ export function DesignerProvider({ children }: { children: ReactNode }) {
 				// 2. Resetear PAN pero conservar el zoom
 				const vt = currentCanvas.viewportTransform;
 				if (vt) {
-					const next: number[] = [...vt]; // copiar
-					next[4] = 0; // tx
-					next[5] = 0; // ty
+					const next: TMat2D = [
+						vt[0], // scaleX
+						vt[1], // skewY
+						vt[2], // skewX
+						vt[3], // scaleY
+						0, // tx reset
+						0, // ty reset
+					];
+
 					currentCanvas.setViewportTransform(next);
 				}
 
