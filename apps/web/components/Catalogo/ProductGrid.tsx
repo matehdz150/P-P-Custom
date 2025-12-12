@@ -55,7 +55,7 @@ export default function ProductGrid() {
 
 	const scroll = (direction: "left" | "right") => {
 		if (!scrollRef.current) return;
-		const amount = 320; // píxeles por click
+		const amount = 320;
 		scrollRef.current.scrollBy({
 			left: direction === "left" ? -amount : amount,
 			behavior: "smooth",
@@ -63,48 +63,49 @@ export default function ProductGrid() {
 	};
 
 	return (
-		<section className="w-full mt-10">
+		<section className="w-full mt-8">
 			<div className="relative">
-				{/* Botón izquierda */}
+				{/* 🔥 Flecha izquierda (solo desktop) */}
 				<Button
 					variant="outline"
 					size="icon"
-					className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-full shadow-sm bg-white/80"
+					className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 shadow-sm"
 					onClick={() => scroll("left")}
 				>
 					<ChevronLeft className="w-5 h-5" />
 				</Button>
 
-				{/* CONTENEDOR SCROLLEABLE */}
+				{/* 🔥 Grid scrolleable */}
 				<div
 					ref={scrollRef}
 					className="
             flex 
-            gap-4 
-            overflow-x-auto 
-            scroll-smooth 
+            gap-3
+            overflow-x-auto
+            scroll-smooth
             pb-2 
-            pr-2
+            pr-1
           "
 				>
 					{products.map((product) => (
 						<article
 							key={product.id}
 							className="
-                min-w-[220px]
+                min-w-[170px]       /* 📱 Mobile */
+                md:min-w-[220px]    /* 💻 Desktop */
                 max-w-[240px]
                 flex-shrink-0
-                rounded-[0.2rem]
-                border 
-                bg-[#f5f5f1] 
-                py-3 
-                hover:shadow-md 
-                transition-shadow 
-                duration-200
+                rounded-[0.25rem]
+                border
+                bg-[#f5f5f1]
+                py-3
+                hover:shadow-md
+                transition-shadow
                 cursor-pointer
               "
 						>
-							<div className="relative w-full h-50 mb-3 bg-[#f5f5f1] rounded-sm overflow-hidden">
+							{/* Imagen */}
+							<div className="relative w-full h-40 md:h-50 mb-3 bg-[#f5f5f1] rounded-sm overflow-hidden">
 								<Image
 									src={product.image}
 									alt={product.name}
@@ -113,18 +114,18 @@ export default function ProductGrid() {
 								/>
 							</div>
 
-							<h4 className="text-sm font-semibold mb-1 text-center">
+							<h4 className="text-sm font-semibold mb-1 text-center px-2">
 								{product.name}
 							</h4>
 						</article>
 					))}
 				</div>
 
-				{/* Botón derecha */}
+				{/* 🔥 Flecha derecha (solo desktop) */}
 				<Button
 					variant="outline"
 					size="icon"
-					className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-full shadow-sm bg-white/80"
+					className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 shadow-sm"
 					onClick={() => scroll("right")}
 				>
 					<ChevronRight className="w-5 h-5" />

@@ -35,7 +35,7 @@ export default function PackagesSection({
 }: PackagesSectionProps) {
 	return (
 		<section className={`w-full mt-12 ${sora.className}`}>
-			{/* Header */}
+			{/* HEADER */}
 			<div className="flex items-baseline justify-between mb-6">
 				<div>
 					<h2 className="text-xl font-semibold text-[#2A2A26]">{title}</h2>
@@ -44,20 +44,35 @@ export default function PackagesSection({
 
 				<Link
 					href={href}
-					className="text-sm font-medium underline-offset-4 hover:underline"
+					className="text-sm font-medium underline-offset-4 hover:underline whitespace-nowrap"
 				>
 					Ver todos
 				</Link>
 			</div>
 
-			{/* Grid de paquetes */}
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+			{/* 
+        📱 MOBILE → scroll horizontal
+        🖥 DESKTOP → grid tradicional
+      */}
+
+			{/* MOBILE SCROLL (solo en mobile) */}
+			<div
+				className="
+          flex gap-4 overflow-x-auto pb-3 
+          -mx-4 px-4 md:hidden
+          scrollbar-hide
+        "
+			>
 				{packages.map((pack) => (
 					<article
 						key={pack.id}
-						className="bg-white rounded-[0.2rem] overflow-hidden hover:shadow-md transition-shadow duration-200 cursor-pointer"
+						className="
+              bg-white rounded-[0.2rem] overflow-hidden 
+              hover:shadow-md transition-shadow duration-200 cursor-pointer
+
+              min-w-[220px] max-w-[240px] flex-shrink-0
+            "
 					>
-						{/* Imagen */}
 						<div className="relative w-full aspect-[4/3] bg-[#f5f5f1]">
 							<Image
 								src={pack.image}
@@ -67,18 +82,45 @@ export default function PackagesSection({
 							/>
 						</div>
 
-						{/* Texto */}
 						<div className="p-4 space-y-1">
 							<h3 className="text-sm font-semibold leading-snug">
 								{pack.title}
 							</h3>
-
 							<p className="text-xs text-muted-foreground">Por {pack.brand}</p>
-
 							<p className="text-sm font-semibold mt-2">{pack.priceFrom}</p>
-
 							<p className="text-xs text-muted-foreground">{pack.details}</p>
+							<p className="text-xs text-muted-foreground mt-1">{pack.sizes}</p>
+						</div>
+					</article>
+				))}
+			</div>
 
+			{/* DESKTOP GRID (solo en md+) */}
+			<div className="hidden md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+				{packages.map((pack) => (
+					<article
+						key={pack.id}
+						className="
+              bg-white rounded-[0.2rem] overflow-hidden 
+              hover:shadow-md transition-shadow duration-200 cursor-pointer
+            "
+					>
+						<div className="relative w-full aspect-[4/3] bg-[#f5f5f1]">
+							<Image
+								src={pack.image}
+								alt={pack.title}
+								fill
+								className="object-cover"
+							/>
+						</div>
+
+						<div className="p-4 space-y-1">
+							<h3 className="text-sm font-semibold leading-snug">
+								{pack.title}
+							</h3>
+							<p className="text-xs text-muted-foreground">Por {pack.brand}</p>
+							<p className="text-sm font-semibold mt-2">{pack.priceFrom}</p>
+							<p className="text-xs text-muted-foreground">{pack.details}</p>
 							<p className="text-xs text-muted-foreground mt-1">{pack.sizes}</p>
 						</div>
 					</article>

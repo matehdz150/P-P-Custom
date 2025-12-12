@@ -19,14 +19,11 @@ function applySelectionStyle(obj: FabricObject) {
 	});
 }
 
-export default function SidebarAddImage() {
+export function useAddImageLogic() {
 	const { getCanvas, getEditableAreas, setActiveObject } = useDesigner();
 	const { execute } = useHistory();
 
-	const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0];
-		if (!file) return;
-
+	const addImage = (file: File) => {
 		const canvas = getCanvas();
 		if (!canvas) return;
 
@@ -78,15 +75,13 @@ export default function SidebarAddImage() {
 										radius: area.radius,
 										absolutePositioned: true,
 									})
-								: (area.clone() as unknown as FabricObject);
+								: (area.clone() as FabricObject);
 
 					clip.set({ selectable: false, evented: false });
 					img.clipPath = clip;
 				}
 
-				// 🔥 AQUI USAMOS EL COMMAND PATTERN
 				execute(new AddObjectCommand(img));
-
 				setActiveObject(img);
 			};
 		};
@@ -94,14 +89,24 @@ export default function SidebarAddImage() {
 		reader.readAsDataURL(file);
 	};
 
+	return { addImage };
+}
+
+// El componente normal sigue igual:
+export default function SidebarAddImage() {
+	const { addImage } = useAddImageLogic();
+
 	return (
-		<label className="bg-black text-white py-2 rounded hover:bg-gray-900 text-center cursor-pointer text-sm">
+		<label className="bg-black text-white py-2 rounded cursor-pointer text-sm">
 			Agregar imagen
 			<input
 				type="file"
 				accept="image/*"
 				className="hidden"
-				onChange={addImage}
+				onChange={(e) => {
+					const file = e.target.files?.[0];
+					if (file) addImage(file);
+				}}
 			/>
 		</label>
 	);

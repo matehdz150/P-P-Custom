@@ -120,3 +120,18 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Ocultar scrollbar — Webkit (Chrome, Safari, Edge) */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ocultar scrollbar — Firefox */
+* {
+  scrollbar-width: none;
+}
+
+/* Ocultar scrollbar — IE/Edge antiguo */
+* {
+  -ms-overflow-style: none;
+}
