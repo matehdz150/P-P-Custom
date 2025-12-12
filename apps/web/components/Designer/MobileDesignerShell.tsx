@@ -20,7 +20,7 @@ export default function MobileDesignerShell({
 			className="
     fixed inset-0       /* 🔒 evita scroll del viewport */
     w-full
-    h-screen
+    h-[calc(var(--vh,1vh)*100)]
     flex flex-col
     overflow-hidden
     bg-[#f2f3ea]
