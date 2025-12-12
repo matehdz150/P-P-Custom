@@ -135,3 +135,10 @@
 * {
   -ms-overflow-style: none;
 }
+
+/* Evita zoom automático de Safari en inputs */
+input,
+textarea,
+select {
+  font-size: 16px !important;
+}
