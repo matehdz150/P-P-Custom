@@ -30,11 +30,11 @@ export function useAddImageLogic() {
 		const area = getEditableAreas()[0] ?? null;
 
 		const reader = new FileReader();
-		reader.onload = () => {
+		reader.onload = async () => {
 			const htmlImg = new Image();
 			htmlImg.src = reader.result as string;
 
-			htmlImg.onload = () => {
+			htmlImg.onload = async () => {
 				const img = new FabricImage(htmlImg, {
 					originX: "center",
 					originY: "center",
@@ -75,7 +75,7 @@ export function useAddImageLogic() {
 										radius: area.radius,
 										absolutePositioned: true,
 									})
-								: (area.clone() as FabricObject);
+								: ((await area.clone()) as unknown as FabricObject);
 
 					clip.set({ selectable: false, evented: false });
 					img.clipPath = clip;

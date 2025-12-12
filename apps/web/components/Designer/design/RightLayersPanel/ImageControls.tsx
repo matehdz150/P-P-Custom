@@ -21,7 +21,13 @@ export default function ImageControls({ obj }: { obj: FabricImage }) {
 			/>
 
 			{/* ROTATE */}
-			<RotationInput obj={obj} />
+			<RotationInput
+				label="Rotar"
+				value={obj.angle ?? 0}
+				onChange={(angle) =>
+					execute(new ChangePropertyCommand(obj, "angle", angle))
+				}
+			/>
 
 			{/* VISIBILITY */}
 			<div className="flex items-center gap-3">

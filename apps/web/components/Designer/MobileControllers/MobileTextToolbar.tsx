@@ -1,5 +1,6 @@
 "use client";
 
+import { Textbox } from "fabric";
 import {
 	AlignCenter,
 	AlignLeft,
@@ -17,7 +18,7 @@ export default function MobileTextToolbar({
 }) {
 	const { activeObject, getCanvas } = useDesigner();
 
-	if (!activeObject || activeObject.type !== "textbox") return null;
+	if (!activeObject || !(activeObject instanceof Textbox)) return null;
 
 	const canvas = getCanvas();
 	const text = activeObject;

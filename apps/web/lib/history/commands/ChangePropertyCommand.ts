@@ -11,7 +11,7 @@ export class ChangePropertyCommand<TValue = unknown> implements Command {
 	constructor(object: FabricObject, prop: string, nextValue: TValue) {
 		this.object = object;
 		this.prop = prop;
-		this.prev = object[prop] as TValue;
+		this.prev = object.get(prop) as TValue;
 		this.next = nextValue;
 	}
 

@@ -34,7 +34,7 @@ export default function MobileDesignerShell({
 				{product.sides.map((side) => (
 					<DesignerCanvasSide key={side} side={side} product={product} />
 				))}
-				<MobileTextToolbar openFontDrawer={() => setShowFontDrawer(true)} />
+				<MobileTextToolbar openFontDrawer={() => {}} />
 			</div>
 
 			<DesignerSideSwitcher

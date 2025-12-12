@@ -20,7 +20,9 @@ import { useIsMobile } from "./hooks/useIsMobile";
 // -----------------------------
 // Helpers para crear áreas editables desde JSON
 // -----------------------------
-function createAreaFromShape(shape: EditableShape): FabricObject {
+function createAreaFromShape(
+	shape: EditableShape & { type: string },
+): FabricObject {
 	if (shape.type === "rect") {
 		return new Rect({
 			left: shape.left,
@@ -43,8 +45,7 @@ function createAreaFromShape(shape: EditableShape): FabricObject {
 			evented: false,
 		});
 	}
-
-	throw new Error(`Unsupported shape type: ${shape.type ?? "unknown"}`);
+	throw new Error("Unsupported shape type");
 }
 
 type Props = {
