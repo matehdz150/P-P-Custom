@@ -1,4 +1,4 @@
-import type { Canvas } from "fabric";
+import type { Canvas, TPointerEventInfo } from "fabric";
 import { useEffect, useState } from "react";
 
 export function useCanvasZoom(canvas: Canvas | null) {
@@ -19,16 +19,17 @@ export function useCanvasZoom(canvas: Canvas | null) {
 	useEffect(() => {
 		if (!canvas) return;
 
-		const handleWheel = (opt: any) => {
-			const delta = opt.e.deltaY;
-			let newZoom = zoom - delta / 800;
+		const handleWheel = (opt: TPointerEventInfo<WheelEvent>) => {
+			const evt = opt.e;
+			const delta = evt.deltaY;
 
+			let newZoom = zoom - delta / 800;
 			newZoom = Math.min(Math.max(newZoom, 0.3), 3);
 
 			setZoom(newZoom);
 
-			opt.e.preventDefault();
-			opt.e.stopPropagation();
+			evt.preventDefault();
+			evt.stopPropagation();
 		};
 
 		canvas.on("mouse:wheel", handleWheel);
