@@ -15,6 +15,8 @@ import type {
 	ProductTemplate,
 } from "@/lib/products/types";
 
+import { useIsMobile } from "./hooks/useIsMobile";
+
 // -----------------------------
 // Helpers para crear áreas editables desde JSON
 // -----------------------------
@@ -42,10 +44,7 @@ function createAreaFromShape(shape: EditableShape): FabricObject {
 		});
 	}
 
-	const unknownShape: { type?: string } = shape;
-	const exhaustiveCheck: never = shape;
-	void exhaustiveCheck;
-	throw new Error(`Unsupported shape type: ${unknownShape.type ?? "unknown"}`);
+	throw new Error(`Unsupported shape type: ${shape.type ?? "unknown"}`);
 }
 
 type Props = {
@@ -61,6 +60,9 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 	const { registerCanvas, setEditableAreas, setActiveObject, activeSide } =
 		useDesigner();
 
+	const isMobile = useIsMobile();
+	const scale = isMobile ? 0.6 : 1;
+
 	useEffect(() => {
 		if (!canvasRef.current) return;
 
@@ -71,7 +73,6 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 		});
 
 		c.backgroundColor = "#f2f3ea";
-
 		c.selectionColor = "rgba(254, 98, 65, 0.15)";
 		c.selectionBorderColor = "#fe6241";
 		c.selectionLineWidth = 2;
@@ -96,7 +97,6 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 		// ÁREAS EDITABLES
 		const shapes = product.editableAreas[side] ?? [];
 		const areaRects: FabricObject[] = [];
-		type CanvasWithEditableAreas = Canvas & { editableAreas?: FabricObject[] };
 
 		shapes.forEach((shape) => {
 			const areaObj = createAreaFromShape(shape);
@@ -105,26 +105,72 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 		});
 
 		setEditableAreas(side, areaRects);
-		(c as CanvasWithEditableAreas).editableAreas = areaRects;
-
 		registerCanvas(side, c);
 
 		// listeners de selección
-		const onSelCreated = () => setActiveObject(c.getActiveObject() ?? null);
-		const onSelUpdated = () => setActiveObject(c.getActiveObject() ?? null);
-		const onSelCleared = () => setActiveObject(null);
+		const onSel = () => setActiveObject(c.getActiveObject() ?? null);
+		const onClear = () => setActiveObject(null);
 
-		c.on("selection:created", onSelCreated);
-		c.on("selection:updated", onSelUpdated);
-		c.on("selection:cleared", onSelCleared);
+		c.on("selection:created", onSel);
+		c.on("selection:updated", onSel);
+		c.on("selection:cleared", onClear);
 
+		// 🔥 FIX: reubicar el textarea de Fabric en MOBILE
+		if (isMobile) {
+			const fixTextareaPosition = () => {
+				const textarea = document.querySelector(
+					'textarea[data-fabric="textarea"]',
+				) as HTMLTextAreaElement | null;
+
+				if (!textarea) return;
+
+				// Lo hacemos fijo y en un lugar estable
+				textarea.style.position = "fixed";
+				textarea.style.left = "100px";
+				textarea.style.top = "120px";
+
+				textarea.style.width = "1px";
+				textarea.style.height = "1px";
+				textarea.style.opacity = "0";
+				textarea.style.zIndex = "-1";
+				textarea.style.transform = "none";
+
+				// Evitar zoom raro en mobile
+				textarea.style.fontSize = "16px";
+			};
+
+			const handleEditingEntered = () => {
+				// Dejamos que Fabric lo pinte y luego lo corregimos
+				requestAnimationFrame(fixTextareaPosition);
+			};
+
+			c.on("text:editing:entered", handleEditingEntered);
+
+			// limpieza
+			return () => {
+				c.off("selection:created", onSel);
+				c.off("selection:updated", onSel);
+				c.off("selection:cleared", onClear);
+				c.off("text:editing:entered", handleEditingEntered);
+				c.dispose();
+			};
+		}
+
+		// cleanup cuando NO es mobile
 		return () => {
-			c.off("selection:created", onSelCreated);
-			c.off("selection:updated", onSelUpdated);
-			c.off("selection:cleared", onSelCleared);
+			c.off("selection:created", onSel);
+			c.off("selection:updated", onSel);
+			c.off("selection:cleared", onClear);
 			c.dispose();
 		};
-	}, [product, side, registerCanvas, setEditableAreas, setActiveObject]);
+	}, [
+		product,
+		side,
+		registerCanvas,
+		setEditableAreas,
+		setActiveObject,
+		isMobile,
+	]);
 
 	const isVisible = activeSide === side;
 
@@ -138,12 +184,22 @@ export default function DesignerCanvasSide({ side, product }: Props) {
       `}
 			style={{ zIndex: isVisible ? 2 : 1 }}
 		>
-			<canvas
-				ref={canvasRef}
-				width={1445}
-				height={825}
-				className="absolute inset-0 w-full h-full"
-			/>
+			{/* wrapper escalado */}
+			<div
+				style={{
+					transform: `scale(${scale})`,
+					transformOrigin: "top center",
+					marginTop: isMobile ? 300 : 0,
+					marginLeft: isMobile ? 10 : 0,
+				}}
+			>
+				<canvas
+					ref={canvasRef}
+					width={1445}
+					height={825}
+					className="absolute inset-0"
+				/>
+			</div>
 		</div>
 	);
 }
