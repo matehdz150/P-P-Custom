@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import type { ProductSide, ProductTemplate } from "@/lib/products/types";
 import { LoadingOverlay } from "./design/LoadingOverlay";
+import { useMobilePanZoomGesture } from "./hooks/UseMobilePanZoomGesture";
 import { useCanvasZoom } from "./hooks/useCanvasZoom";
 import { useFabricCanvas } from "./hooks/useFabricCanvas";
 import { useFabricMockup } from "./hooks/useFabricMockup";
@@ -22,13 +23,33 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 	const isMobile = useIsMobile();
 	const scale = isMobile ? 0.6 : 1;
 
-	// ✅ core
+	// ---------------------------
+	// Core Fabric setup
+	// ---------------------------
 	const { getCanvas } = useFabricCanvas(hostRef, side, product);
 
-	// ✅ extras (sin leer refs en render)
+	// ---------------------------
+	// Mockup loader
+	// ---------------------------
 	const { isLoading } = useFabricMockup(getCanvas, product.mockups[side]);
-	useCanvasZoom(getCanvas()); // si tu hook acepta Canvas|null, esto está ok
-	useMobileTextareaFix(getCanvas(), isMobile);
+
+	// ---------------------------
+	// Gestures
+	// ---------------------------
+	const canvas = getCanvas();
+
+	// 🖥 Desktop zoom
+	useCanvasZoom(!isMobile ? canvas : null);
+
+	// 📱 Mobile pan + pinch zoom
+	useMobilePanZoomGesture(
+		canvas,
+		isMobile, // ✅ enabled
+		{ minZoom: 0.3, maxZoom: 3 },
+	);
+
+	// 📱 Fix textarea mobile
+	useMobileTextareaFix(canvas, isMobile);
 
 	const isVisible = activeSide === side;
 
@@ -36,7 +57,11 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 		<div
 			className={`
         absolute inset-0 flex justify-center items-center transition-opacity duration-200
-        ${isVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
+        ${
+					isVisible
+						? "opacity-100 pointer-events-auto"
+						: "opacity-0 pointer-events-none"
+				}
       `}
 			style={{ zIndex: isVisible ? 2 : 1 }}
 		>
@@ -49,10 +74,10 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 					marginLeft: isMobile ? 10 : 0,
 				}}
 			>
-				{/* ✅ overlay loader */}
+				{/* Loader profesional */}
 				{isLoading && <LoadingOverlay />}
 
-				{/* ✅ Fabric vive aquí, React no renderiza canvas */}
+				{/* Fabric vive aquí */}
 				<div ref={hostRef} className="relative w-[1445px] h-[825px]" />
 			</div>
 		</div>
