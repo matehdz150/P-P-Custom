@@ -66,36 +66,43 @@ export function useMobilePanZoomGesture(
 			const mid = getMid(t1, t2);
 			const dist = getDist(t1, t2);
 
-			//  THRESHOLD anti-jitter
-			const scale = dist / lastDist;
-
-			if (Math.abs(scale - 1) < 0.01) {
+			if (!lastDist || !lastMid) {
 				lastDist = dist;
 				lastMid = mid;
 				return;
 			}
 
-			// 1) PAN (deslizamiento con 2 dedos)
-			if (lastMid) {
-				const dx = mid.x - lastMid.x;
-				const dy = mid.y - lastMid.y;
+			// 🔵 SCALE (pinch)
+			const scaleFactor = dist / lastDist;
 
-				// relativePan opera en píxeles de pantalla -> perfecto para gesture
-				canvas.relativePan(new Point(dx, dy));
+			// 🧘 Anti-jitter
+			if (Math.abs(scaleFactor - 1) < 0.01) {
+				lastDist = dist;
+				lastMid = mid;
+				return;
 			}
 
-			// 2) ZOOM (pinch)
-			if (lastDist) {
-				const zoom = canvas.getZoom();
-				const scale = dist / lastDist;
-				const nextZoom = clamp(zoom * scale);
+			// 🔵 PAN (2-finger drag)
+			const dx = mid.x - lastMid.x;
+			const dy = mid.y - lastMid.y;
+			canvas.relativePan(new Point(dx, dy));
 
-				const rect = el.getBoundingClientRect();
+			// 🔵 ZOOM (centrado correctamente)
+			const zoom = canvas.getZoom();
+			const nextZoom = clamp(zoom * scaleFactor);
 
-				const canvasPoint = new Point(mid.x - rect.left, mid.y - rect.top);
+			const rect = el.getBoundingClientRect();
 
-				canvas.zoomToPoint(canvasPoint, nextZoom);
-			}
+			// 🔑 compensar CSS scale
+			const scaleX = rect.width / el.clientWidth;
+			const scaleY = rect.height / el.clientHeight;
+
+			const point = new Point(
+				(mid.x - rect.left) / scaleX,
+				(mid.y - rect.top) / scaleY,
+			);
+
+			canvas.zoomToPoint(point, nextZoom);
 
 			lastDist = dist;
 			lastMid = mid;

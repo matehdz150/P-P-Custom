@@ -78,7 +78,10 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 				{isLoading && <LoadingOverlay />}
 
 				{/* Fabric vive aquí */}
-				<div ref={hostRef} className="relative w-[1445px] h-[825px]" />
+				<div
+					ref={hostRef}
+					className="fabric-gesture-surface relative w-[1445px] h-[825px]"
+				/>
 			</div>
 		</div>
 	);
