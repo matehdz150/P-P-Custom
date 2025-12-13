@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 export function useFabricMockup(
 	getCanvas: () => Canvas | null,
 	mockupUrl?: string,
-	debugDelayMs = 1000,
+	debugDelayMs = 0,
 ) {
 	const [isLoading, setIsLoading] = useState(false);
 
