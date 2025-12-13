@@ -18,19 +18,21 @@ export function useMobilePanZoomGesture(
 	const maxZoom = opts.maxZoom ?? 3;
 
 	useEffect(() => {
-		if (!enabled) return;
-		if (!canvas) return;
+		if (!enabled || !canvas) return;
 
 		const el = canvas.upperCanvasEl;
 		if (!el) return;
 
-		// 🔑 Evita que el navegador haga scroll/zoom de página sobre el canvas (Android / browsers modernos)
-		// 🔑 Evita scroll / zoom del navegador
 		el.style.setProperty("touch-action", "none");
 
 		let isTwoFinger = false;
 		let lastDist = 0;
 		let lastMid: { x: number; y: number } | null = null;
+
+		// 🔥 velocities for smooth pan + inertia
+		let vx = 0;
+		let vy = 0;
+		let rafId: number | null = null;
 
 		const clamp = (z: number) => Math.min(Math.max(z, minZoom), maxZoom);
 
@@ -42,84 +44,107 @@ export function useMobilePanZoomGesture(
 		const getDist = (t1: Touch, t2: Touch) =>
 			Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
 
+		const applyPan = () => {
+			const vpt = canvas.viewportTransform;
+			if (!vpt) return;
+
+			vpt[4] += vx;
+			vpt[5] += vy;
+			canvas.requestRenderAll();
+		};
+
 		const onTouchStart = (e: TouchEvent) => {
-			if (e.touches.length === 2) {
-				isTwoFinger = true;
+			if (e.touches.length !== 2) return;
 
-				// opcional: evita selección rara mientras haces gesto
-				canvas.discardActiveObject();
-				canvas.selection = false;
+			isTwoFinger = true;
+			canvas.discardActiveObject();
+			canvas.selection = false;
 
-				const [t1, t2] = [e.touches[0], e.touches[1]];
-				lastDist = getDist(t1, t2);
-				lastMid = getMid(t1, t2);
+			const [t1, t2] = e.touches;
+			lastDist = getDist(t1, t2);
+			lastMid = getMid(t1, t2);
 
-				e.preventDefault();
-			}
+			vx = 0;
+			vy = 0;
+
+			if (rafId) cancelAnimationFrame(rafId);
+			e.preventDefault();
 		};
 
 		const onTouchMove = (e: TouchEvent) => {
-			if (!isTwoFinger) return;
-			if (e.touches.length !== 2) return;
+			if (!isTwoFinger || e.touches.length !== 2) return;
 
-			const [t1, t2] = [e.touches[0], e.touches[1]];
+			const [t1, t2] = e.touches;
 			const mid = getMid(t1, t2);
 			const dist = getDist(t1, t2);
 
-			if (!lastDist || !lastMid) {
-				lastDist = dist;
+			if (!lastMid || !lastDist) {
 				lastMid = mid;
+				lastDist = dist;
 				return;
 			}
 
-			// 🔵 SCALE (pinch)
-			const scaleFactor = dist / lastDist;
-
-			// 🧘 Anti-jitter
-			if (Math.abs(scaleFactor - 1) < 0.01) {
-				lastDist = dist;
-				lastMid = mid;
-				return;
-			}
-
-			// 🔵 PAN (2-finger drag)
-			const dx = mid.x - lastMid.x;
-			const dy = mid.y - lastMid.y;
-			canvas.relativePan(new Point(dx, dy));
-
-			// 🔵 ZOOM (centrado correctamente)
+			// ----------------
+			// 🔵 PAN (smooth)
+			// ----------------
 			const zoom = canvas.getZoom();
-			const nextZoom = clamp(zoom * scaleFactor);
+			const dx = (mid.x - lastMid.x) / zoom;
+			const dy = (mid.y - lastMid.y) / zoom;
 
-			const rect = el.getBoundingClientRect();
+			const SMOOTH = 0.25;
+			vx += (dx - vx) * SMOOTH;
+			vy += (dy - vy) * SMOOTH;
 
-			// 🔑 compensar CSS scale
-			const scaleX = rect.width / el.clientWidth;
-			const scaleY = rect.height / el.clientHeight;
+			if (rafId) cancelAnimationFrame(rafId);
+			rafId = requestAnimationFrame(applyPan);
 
-			const point = new Point(
-				(mid.x - rect.left) / scaleX,
-				(mid.y - rect.top) / scaleY,
-			);
+			// ----------------
+			// 🔵 ZOOM
+			// ----------------
+			const scale = dist / lastDist;
+			if (Math.abs(scale - 1) > 0.01) {
+				const nextZoom = clamp(zoom * scale);
+				const rect = el.getBoundingClientRect();
 
-			canvas.zoomToPoint(point, nextZoom);
+				const canvasPoint = new Point(mid.x - rect.left, mid.y - rect.top);
 
-			lastDist = dist;
+				canvas.zoomToPoint(canvasPoint, nextZoom);
+			}
+
 			lastMid = mid;
+			lastDist = dist;
 
-			canvas.requestRenderAll();
 			e.preventDefault();
 		};
 
 		const onTouchEnd = () => {
-			if (isTwoFinger) {
-				isTwoFinger = false;
-				lastDist = 0;
-				lastMid = null;
+			if (!isTwoFinger) return;
 
-				// restaurar selección
-				canvas.selection = true;
-			}
+			isTwoFinger = false;
+			lastMid = null;
+			lastDist = 0;
+			canvas.selection = true;
+
+			// ----------------
+			// 🔵 INERTIA
+			// ----------------
+			const FRICTION = 0.92;
+
+			const inertia = () => {
+				vx *= FRICTION;
+				vy *= FRICTION;
+
+				if (Math.abs(vx) < 0.1 && Math.abs(vy) < 0.1) {
+					vx = 0;
+					vy = 0;
+					return;
+				}
+
+				applyPan();
+				requestAnimationFrame(inertia);
+			};
+
+			inertia();
 		};
 
 		el.addEventListener("touchstart", onTouchStart, { passive: false });
@@ -132,6 +157,7 @@ export function useMobilePanZoomGesture(
 			el.removeEventListener("touchmove", onTouchMove);
 			el.removeEventListener("touchend", onTouchEnd);
 			el.removeEventListener("touchcancel", onTouchEnd);
+			if (rafId) cancelAnimationFrame(rafId);
 		};
 	}, [canvas, enabled, minZoom, maxZoom]);
 }
