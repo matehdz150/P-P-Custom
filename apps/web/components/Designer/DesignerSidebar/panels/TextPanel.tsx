@@ -1,13 +1,13 @@
 "use client";
 
-import { Textbox } from "fabric";
+import { Circle, type FabricObject, Rect, Textbox } from "fabric";
 import { ChevronDown, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import { AVAILABLE_FONTS } from "@/lib/fabric/fontList";
 
 export default function SidebarTextPanel({ close }: { close: () => void }) {
-	const { getCanvas, setActiveObject } = useDesigner();
+	const { getCanvas, getEditableAreas, setActiveObject } = useDesigner();
 
 	const [search, setSearch] = useState("");
 
@@ -31,15 +31,64 @@ export default function SidebarTextPanel({ close }: { close: () => void }) {
 		const canvas = getCanvas();
 		if (!canvas) return;
 
+		const areas = getEditableAreas?.();
+		const area = areas?.[0] ?? null;
+
 		const text = new Textbox("Nuevo texto", {
-			left: canvas.getWidth() / 2,
-			top: canvas.getHeight() / 2,
 			originX: "center",
 			originY: "center",
 			fontSize: 32,
 			fontFamily: font,
 			fill: "#000",
+			textAlign: "center",
 		});
+
+		let centerX = canvas.getWidth() / 2;
+		let centerY = canvas.getHeight() / 2;
+		let maxW = 300;
+
+		if (area) {
+			const b = area.getBoundingRect();
+			centerX = b.left + b.width / 2;
+			centerY = b.top + b.height / 2;
+			maxW = b.width * 0.8;
+		}
+
+		text.set({
+			left: centerX,
+			top: centerY,
+			width: maxW,
+		});
+
+		// 🔒 CLIP PATH (MISMO QUE IMÁGENES)
+		if (area) {
+			let clip: FabricObject;
+
+			if (area instanceof Rect) {
+				clip = new Rect({
+					left: area.left,
+					top: area.top,
+					width: area.width,
+					height: area.height,
+					absolutePositioned: true,
+				});
+			} else if (area instanceof Circle) {
+				clip = new Circle({
+					left: area.left,
+					top: area.top,
+					radius: area.radius,
+					absolutePositioned: true,
+				});
+			} else {
+				// fallback seguro (no debería pasar en tu sistema)
+				return;
+			}
+
+			clip.set({ selectable: false, evented: false });
+			text.clipPath = clip;
+			clip.set({ selectable: false, evented: false });
+			text.clipPath = clip;
+		}
 
 		canvas.add(text);
 		canvas.setActiveObject(text);
