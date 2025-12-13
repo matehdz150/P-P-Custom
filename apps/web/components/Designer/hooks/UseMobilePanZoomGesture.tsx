@@ -66,6 +66,15 @@ export function useMobilePanZoomGesture(
 			const mid = getMid(t1, t2);
 			const dist = getDist(t1, t2);
 
+			//  THRESHOLD anti-jitter
+			const scale = dist / lastDist;
+
+			if (Math.abs(scale - 1) < 0.01) {
+				lastDist = dist;
+				lastMid = mid;
+				return;
+			}
+
 			// 1) PAN (deslizamiento con 2 dedos)
 			if (lastMid) {
 				const dx = mid.x - lastMid.x;
@@ -81,16 +90,11 @@ export function useMobilePanZoomGesture(
 				const scale = dist / lastDist;
 				const nextZoom = clamp(zoom * scale);
 
-				// zoom around the midpoint
-				const pe = new PointerEvent("pointermove", {
-					clientX: mid.x,
-					clientY: mid.y,
-					pointerType: "touch",
-				});
+				const rect = el.getBoundingClientRect();
 
-				// ✅ evita "any": usa unknown
-				const pointer = canvas.getPointer(pe as unknown as PointerEvent);
-				canvas.zoomToPoint(pointer, nextZoom);
+				const canvasPoint = new Point(mid.x - rect.left, mid.y - rect.top);
+
+				canvas.zoomToPoint(canvasPoint, nextZoom);
 			}
 
 			lastDist = dist;
