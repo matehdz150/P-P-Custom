@@ -12,7 +12,7 @@ import {
 export default function MobileDrawer({
 	trigger,
 	title,
-	children, // ahora es UNA FUNCIÓN
+	children,
 }: {
 	trigger: React.ReactNode;
 	title: string;
@@ -26,13 +26,17 @@ export default function MobileDrawer({
 		<Drawer open={open} onOpenChange={setOpen}>
 			<DrawerTrigger asChild>{trigger}</DrawerTrigger>
 
-			<DrawerContent className="rounded-t-2xl pb-10">
-				<DrawerHeader>
+			<DrawerContent className="rounded-t-2xl pb-6 max-h-[85vh]">
+				<DrawerHeader className="shrink-0">
 					<DrawerTitle className="text-xl font-semibold">{title}</DrawerTitle>
 				</DrawerHeader>
 
-				<div className="px-4 mt-3">
-					{children({ closeDrawer })} {/* ← PASANDO la función */}
+				{/* ✅ Área scrolleable */}
+				<div
+					className="px-4 pb-6 overflow-y-auto overscroll-contain"
+					style={{ WebkitOverflowScrolling: "touch" }}
+				>
+					{children({ closeDrawer })}
 				</div>
 			</DrawerContent>
 		</Drawer>
