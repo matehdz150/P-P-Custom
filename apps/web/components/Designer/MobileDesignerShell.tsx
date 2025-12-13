@@ -6,7 +6,8 @@ import DesignerCanvasSide from "./DesignerCanvasSide";
 import DesignerHeaderMobile from "./MobileControllers/DesignerHeaderMobile";
 import DesignerSideSwitcher from "./MobileControllers/DesignerSideSwitcherMobile";
 import DesignerToolbarMobile from "./MobileControllers/DesignerToolbarMobile";
-import MobileTextToolbar from "./MobileControllers/MobileTextToolbar";
+import MobileImageToolbarContainer from "./MobileControllers/MobileTextToolbar/MobileImageToolbar/ImageToolbarContainer";
+import MobileTextToolbarContainer from "./MobileControllers/MobileTextToolbar/MobiletextToolbarContainer";
 
 export default function MobileDesignerShell({
 	product,
@@ -34,7 +35,8 @@ export default function MobileDesignerShell({
 				{product.sides.map((side) => (
 					<DesignerCanvasSide key={side} side={side} product={product} />
 				))}
-				<MobileTextToolbar openFontDrawer={() => {}} />
+				<MobileTextToolbarContainer openFontDrawer={() => {}} />
+				<MobileImageToolbarContainer />
 			</div>
 
 			<DesignerSideSwitcher
