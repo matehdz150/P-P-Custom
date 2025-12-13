@@ -1,6 +1,6 @@
 "use client";
 
-import { Circle, FabricImage, type FabricObject, Rect } from "fabric";
+import { Circle, FabricImage, type FabricObject, Rect, Textbox } from "fabric";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import { useHistory } from "@/Contexts/HistoryContext";
 import { AddObjectCommand } from "@/lib/history/commands/AddObjectCommand";
@@ -19,6 +19,39 @@ function applySelectionStyle(obj: FabricObject) {
 	});
 }
 
+function applyClip(obj: FabricObject, area: FabricObject | null) {
+	if (!area) return;
+
+	const clip =
+		area instanceof Rect
+			? new Rect({
+					left: area.left,
+					top: area.top,
+					width: area.width,
+					height: area.height,
+					absolutePositioned: true,
+				})
+			: area instanceof Circle
+				? new Circle({
+						left: area.left,
+						top: area.top,
+						radius: area.radius,
+						absolutePositioned: true,
+					})
+				: (() => {
+						const c = area.clone() as FabricObject;
+						c.absolutePositioned = true;
+						return c;
+					})();
+
+	clip.set({ selectable: false, evented: false });
+	obj.clipPath = clip;
+}
+
+/* 👇👇👇
+   ESTA FUNCIÓN NO SE QUITA
+   porque otros componentes la importan
+*/
 export function useAddImageLogic() {
 	const { getCanvas, getEditableAreas, setActiveObject } = useDesigner();
 	const { execute } = useHistory();
@@ -30,11 +63,11 @@ export function useAddImageLogic() {
 		const area = getEditableAreas()[0] ?? null;
 
 		const reader = new FileReader();
-		reader.onload = async () => {
+		reader.onload = () => {
 			const htmlImg = new Image();
 			htmlImg.src = reader.result as string;
 
-			htmlImg.onload = async () => {
+			htmlImg.onload = () => {
 				const img = new FabricImage(htmlImg, {
 					originX: "center",
 					originY: "center",
@@ -54,32 +87,9 @@ export function useAddImageLogic() {
 				}
 
 				img.scaleToWidth(maxW);
-				img.left = centerX;
-				img.top = centerY;
+				img.set({ left: centerX, top: centerY });
 
-				// ClipPath
-				if (area) {
-					const clip =
-						area instanceof Rect
-							? new Rect({
-									left: area.left,
-									top: area.top,
-									width: area.width,
-									height: area.height,
-									absolutePositioned: true,
-								})
-							: area instanceof Circle
-								? new Circle({
-										left: area.left,
-										top: area.top,
-										radius: area.radius,
-										absolutePositioned: true,
-									})
-								: ((await area.clone()) as unknown as FabricObject);
-
-					clip.set({ selectable: false, evented: false });
-					img.clipPath = clip;
-				}
+				applyClip(img, area);
 
 				execute(new AddObjectCommand(img));
 				setActiveObject(img);
@@ -89,25 +99,77 @@ export function useAddImageLogic() {
 		reader.readAsDataURL(file);
 	};
 
-	return { addImage };
+	const addText = () => {
+		const canvas = getCanvas();
+		if (!canvas) return;
+
+		const area = getEditableAreas()[0] ?? null;
+
+		const text = new Textbox("TU TEXTO", {
+			fontSize: 42,
+			fontFamily: "Inter",
+			fill: "#000",
+			textAlign: "center",
+			originX: "center",
+			originY: "center",
+		});
+
+		applySelectionStyle(text);
+
+		let centerX = canvas.getWidth() / 2;
+		let centerY = canvas.getHeight() / 2;
+		let maxW = 300;
+
+		if (area) {
+			const b = area.getBoundingRect();
+			centerX = b.left + b.width / 2;
+			centerY = b.top + b.height / 2;
+			maxW = b.width * 0.8;
+		}
+
+		text.set({
+			left: centerX,
+			top: centerY,
+			width: maxW,
+		});
+
+		applyClip(text, area);
+
+		execute(new AddObjectCommand(text));
+		setActiveObject(text);
+	};
+
+	return { addImage, addText };
 }
 
-// El componente normal sigue igual:
+/* 👇👇👇
+   DEFAULT EXPORT para el sidebar
+*/
 export default function SidebarAddImage() {
-	const { addImage } = useAddImageLogic();
+	const { addImage, addText } = useAddImageLogic();
 
 	return (
-		<label className="bg-black text-white py-2 rounded cursor-pointer text-sm">
-			Agregar imagen
-			<input
-				type="file"
-				accept="image/*"
-				className="hidden"
-				onChange={(e) => {
-					const file = e.target.files?.[0];
-					if (file) addImage(file);
-				}}
-			/>
-		</label>
+		<div className="flex flex-col gap-2">
+			<label className="bg-black text-white py-2 rounded cursor-pointer text-sm text-center">
+				Agregar imagen
+				<input
+					type="file"
+					accept="image/*"
+					className="hidden"
+					onChange={(e) => {
+						const file = e.target.files?.[0];
+						if (file) addImage(file);
+					}}
+				/>
+			</label>
+
+			<button
+				type="button"
+				onClick={addText}
+				className="bg-white border py-2 rounded text-sm"
+			>
+				Agregar texto
+			</button>
+		</div>
 	);
 }
