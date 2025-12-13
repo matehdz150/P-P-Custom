@@ -4,7 +4,7 @@
 import { Spinner } from "@/components/ui/spinner";
 
 export function LoadingOverlay({
-	label = "Cargando Producto",
+	label = "Cargando Producto...",
 }: {
 	label?: string;
 }) {
