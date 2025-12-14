@@ -67,7 +67,7 @@ export function ColorPickerPanel({
 					className="
             flex-1 py-2 border border-l-0
             rounded-r-[0.2rem]
-            text-sm uppercase pl-1
+            text-[16px] uppercase pl-1
             outline-none
           "
 				/>

@@ -37,7 +37,7 @@ export function FontCombobox({ value, onChange }: FontComboboxProps) {
 					variant="outline"
 					role="combobox"
 					aria-expanded={open}
-					className=" min-w-[100px] max-w-[100px] justify-between rounded-[0.2rem] px-3 shadow-none border"
+					className="min-w-[100px] max-w-[100px] justify-between rounded-[0.2rem] px-3 shadow-none border"
 				>
 					<span
 						className="truncate text-sm"
@@ -49,11 +49,15 @@ export function FontCombobox({ value, onChange }: FontComboboxProps) {
 				</Button>
 			</PopoverTrigger>
 
-			<PopoverContent className="w-60 p-0">
+			<PopoverContent
+				side="bottom"
+				align="start"
+				sideOffset={6}
+				avoidCollisions={false}
+				className="w-60 p-0"
+			>
 				<Command>
-					{/* 🔍 INPUT REAL */}
 					<CommandInput placeholder="Buscar fuente..." />
-
 					<CommandEmpty>No se encontró la fuente.</CommandEmpty>
 
 					<CommandGroup className="max-h-60 overflow-y-auto">
