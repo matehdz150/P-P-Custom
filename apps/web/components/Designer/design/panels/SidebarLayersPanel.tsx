@@ -2,6 +2,7 @@
 
 import { type FabricObject, Textbox } from "fabric";
 import { Image as ImageIcon, Trash, Type } from "lucide-react";
+import { nanoid } from "nanoid"; // 👈 NUEVO
 import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import { useHistory } from "@/Contexts/HistoryContext";
@@ -9,6 +10,19 @@ import { RemoveObjectCommand } from "@/lib/history/commands/RemoveObjectCommand"
 
 interface LayerItem {
 	obj: FabricObject;
+}
+
+const layerKeyMap = new WeakMap<FabricObject, string>();
+
+function getLayerKey(obj: FabricObject): string {
+	let key = layerKeyMap.get(obj);
+
+	if (!key) {
+		key = nanoid();
+		layerKeyMap.set(obj, key);
+	}
+
+	return key;
 }
 
 export default function SidebarLayersPanel({ close }: { close: () => void }) {
@@ -22,10 +36,8 @@ export default function SidebarLayersPanel({ close }: { close: () => void }) {
 		if (!canvas) return;
 
 		const updateLayers = () => {
-			// Tomamos SOLO objetos seleccionables (ignoramos mockups, áreas, etc.)
 			const objs = canvas.getObjects().filter((o) => o.selectable !== false);
 
-			// Los invertimos para que el top esté arriba en la lista
 			setLayers(
 				objs
 					.slice()
@@ -126,7 +138,7 @@ export default function SidebarLayersPanel({ close }: { close: () => void }) {
 				)}
 
 				<div className="flex flex-col gap-2">
-					{layers.map(({ obj }, idx) => {
+					{layers.map(({ obj }) => {
 						const isActive = obj === activeObject;
 						const label = renderLabel(obj);
 						const subtitle = renderSubtitle(obj);
@@ -134,12 +146,7 @@ export default function SidebarLayersPanel({ close }: { close: () => void }) {
 						return (
 							<button
 								type="button"
-								key={
-									(obj as { id?: string | number }).id ??
-									obj.type ??
-									obj.toString() ??
-									idx
-								}
+								key={getLayerKey(obj)} // ✅ FIX DEFINITIVO
 								onClick={() => handleSelect(obj)}
 								className={`
                   w-full flex items-center justify-between gap-3

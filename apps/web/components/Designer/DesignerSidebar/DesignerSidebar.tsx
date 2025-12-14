@@ -1,12 +1,12 @@
 "use client";
 
-import { ArrowLeft, Layers, Type, Upload } from "lucide-react";
+import { ArrowLeft, Info, Layers, Type, Upload } from "lucide-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import SidebarPanelManager from "./panels/SidebarPanelManager";
 
 export default function DesignerSidebar() {
-	const [activePanel, setActivePanel] = useState<string | null>(null);
+	const [activePanel, setActivePanel] = useState<string | null>("info");
 
 	const toggle = (panel: string) => {
 		setActivePanel(activePanel === panel ? null : panel);
@@ -41,6 +41,12 @@ export default function DesignerSidebar() {
 					label="Layers"
 					onClick={() => toggle("layers")}
 					active={activePanel === "layers"}
+				/>
+				<SidebarIcon
+					icon={<Info size={22} />}
+					label="info"
+					onClick={() => toggle("info")}
+					active={activePanel === "info"}
 				/>
 			</div>
 

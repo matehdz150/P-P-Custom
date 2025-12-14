@@ -149,3 +149,7 @@ select {
   -webkit-user-select: none;
   user-select: none;
 }
+
+.font-sora {
+  font-family: var(--font-sora);
+}

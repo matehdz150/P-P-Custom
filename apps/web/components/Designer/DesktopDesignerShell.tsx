@@ -26,6 +26,7 @@ export default function DesktopDesignerShell({
 	const { zoom, zoomIn, zoomOut } = useCanvasZoom(canvas);
 	const [isPanning, setIsPanning] = useState(false);
 	useCanvasPan({ fabricCanvas: canvas, isPanning });
+	const [layersOpen, setLayersOpen] = useState(true);
 
 	return (
 		<div className="w-full h-screen flex overflow-hidden">
@@ -37,8 +38,15 @@ export default function DesktopDesignerShell({
 				))}
 
 				<UndoRedoButtons />
-				<PreviewEditButtons />
-				<RightLayersPanel />
+				<PreviewEditButtons
+					isLayersOpen={layersOpen}
+					onOpenLayers={() => setLayersOpen(true)}
+				/>
+
+				<RightLayersPanel
+					open={layersOpen}
+					onClose={() => setLayersOpen(false)}
+				/>
 
 				<DesignerSideSwitcher
 					currentSide={activeSide}

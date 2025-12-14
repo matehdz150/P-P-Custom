@@ -31,7 +31,7 @@ export default function DesignerSideSwitcher({
 						key={side}
 						type="button"
 						onClick={() => onChange(side)}
-						className={`px-7 py-2 text-sm rounded-2xl border transition ${
+						className={`px-7 py-2 text-sm rounded-2xl border transition font-sora ${
 							currentSide === side
 								? "bg-black text-white border-black"
 								: "bg-white text-black border-gray-300 hover:bg-gray-100"
