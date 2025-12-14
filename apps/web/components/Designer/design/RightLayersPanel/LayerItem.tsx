@@ -1,8 +1,9 @@
 "use client";
 
 import { FabricImage, type FabricObject, Textbox } from "fabric";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp, Trash } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import { useHistory } from "@/Contexts/HistoryContext";
 
@@ -27,9 +28,11 @@ export default function LayerItem({ obj }: { obj: FabricObject }) {
 		canvas.setActiveObject(obj);
 		canvas.requestRenderAll();
 		setActiveObject(obj);
-
-		setOpen(!open);
 	};
+
+	useEffect(() => {
+		setOpen(isActive);
+	}, [isActive]);
 
 	return (
 		<div className="border border-gray-300 rounded-[0.2rem]">
@@ -70,12 +73,26 @@ export default function LayerItem({ obj }: { obj: FabricObject }) {
 			</button>
 
 			{/* PANEL CONTENT */}
-			{open && (
-				<div className="bg-[#fbfaf6] border-t">
-					{obj instanceof Textbox && <TextControls obj={obj} />}
-					{obj instanceof FabricImage && <ImageControls obj={obj} />}
-				</div>
-			)}
+			<AnimatePresence initial={false}>
+				{open && (
+					<motion.div
+						key="content"
+						initial={{ height: 0, opacity: 0 }}
+						animate={{ height: "auto", opacity: 1 }}
+						exit={{ height: 0, opacity: 0 }}
+						transition={{
+							height: { duration: 0.25, ease: "easeInOut" },
+							opacity: { duration: 0.15 },
+						}}
+						className="bg-[#fbfaf6] border-t overflow-hidden"
+					>
+						<div className="py-2">
+							{obj instanceof Textbox && <TextControls obj={obj} />}
+							{obj instanceof FabricImage && <ImageControls obj={obj} />}
+						</div>
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</div>
 	);
 }

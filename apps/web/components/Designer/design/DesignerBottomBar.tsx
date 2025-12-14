@@ -56,7 +56,7 @@ export default function DesignerBottomBar({
 			{/* BOTÓN DE GUARDAR */}
 			<button
 				type="button"
-				className="bg-[#fe6241] hover:bg-lime-400 text-black font-medium px-6 py-2 rounded"
+				className="bg-[#fe6241] hover:bg-lime-400 text-black font-medium px-6 py-2 rounded font-sora"
 			>
 				Guardar producto
 			</button>

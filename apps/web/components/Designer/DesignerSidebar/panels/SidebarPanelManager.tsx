@@ -1,6 +1,7 @@
 "use client";
 
 import SidebarLayersPanel from "../../design/panels/SidebarLayersPanel";
+import InfoPanel from "./InfoPanel";
 import SidebarTextPanel from "./TextPanel";
 import SidebarUploadPanel from "./UploadPanel";
 
@@ -22,6 +23,7 @@ export default function SidebarPanelManager({
 			{activePanel === "upload" && <SidebarUploadPanel close={close} />}
 			{activePanel === "text" && <SidebarTextPanel close={close} />}
 			{activePanel === "layers" && <SidebarLayersPanel close={close} />}
+			{activePanel === "info" && <InfoPanel close={close} />}
 		</div>
 	);
 }
