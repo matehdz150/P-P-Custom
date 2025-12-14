@@ -56,8 +56,8 @@ export default function DesignerToolbarMobile() {
 						type="button"
 						className="flex flex-col items-center justify-center gap-1 mt-4"
 					>
-						<SlidersHorizontal size={28} strokeWidth={1.5} />
-						<p className="text-base font-medium font-sora">Variantes</p>
+						<SlidersHorizontal size={20} strokeWidth={1.5} />
+						<p className="text-sm font-medium font-sora">Variantes</p>
 					</button>
 				}
 				title="Variantes"
@@ -88,8 +88,8 @@ export default function DesignerToolbarMobile() {
 							type="button"
 							className="flex flex-col items-center justify-center gap-1 mt-4 text-black"
 						>
-							<Layers size={28} strokeWidth={1.5} className="text-black" />
-							<p className="text-base font-medium text-black">Capas</p>
+							<Layers size={20} strokeWidth={1.5} className="text-black" />
+							<p className="text-sm font-medium text-black">Capas</p>
 						</button>
 					}
 					title="Capas"
@@ -103,8 +103,8 @@ export default function DesignerToolbarMobile() {
 					disabled
 					className="flex flex-col items-center justify-center gap-1 mt-4 opacity-40 cursor-not-allowed"
 				>
-					<Layers size={32} strokeWidth={1.5} className="text-gray-800" />
-					<p className="text-l font-medium text-gray-800">Capas</p>
+					<Layers size={20} strokeWidth={1.5} className="text-gray-800" />
+					<p className="text-sm font-medium text-gray-800">Capas</p>
 				</button>
 			)}
 		</div>
