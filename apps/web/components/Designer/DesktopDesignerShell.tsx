@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Textbox } from "fabric";
+import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import type { ProductTemplate } from "@/lib/products/types";
 import DesignerCanvasSide from "./DesignerCanvasSide";
@@ -27,6 +28,36 @@ export default function DesktopDesignerShell({
 	const [isPanning, setIsPanning] = useState(false);
 	useCanvasPan({ fabricCanvas: canvas, isPanning });
 	const [layersOpen, setLayersOpen] = useState(true);
+
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key !== "Delete" && e.key !== "Backspace") return;
+
+			const canvas = getCanvas();
+			if (!canvas) return;
+
+			const activeObjects = canvas.getActiveObjects();
+			if (activeObjects.length === 0) return;
+
+			// 🛑 No borrar si algún Textbox está en edición
+			const isEditingText = activeObjects.some(
+				(obj) => obj instanceof Textbox && obj.isEditing,
+			);
+
+			if (isEditingText) return;
+
+			// 🗑️ Borrar selección
+			canvas.discardActiveObject();
+			activeObjects.forEach((obj) => {
+				canvas.remove(obj);
+			});
+
+			canvas.requestRenderAll();
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, [getCanvas]);
 
 	return (
 		<div className="w-full h-screen flex overflow-hidden">
