@@ -1,11 +1,13 @@
 "use client";
 
-import { Layers, Palette, Plus } from "lucide-react";
+import { Layers, Palette, Plus, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
+import VariantsPanel from "../design/RightLayersPanel/VariantsPanel";
 import MobileAddMenu from "./MobileAddMenu";
 import MobileDrawer from "./MobileDrawer";
 import MobileLayersPanel from "./MobileLayersPanel";
+import MobileVariantsPanel from "./MobileVariantsPanel";
 
 export default function DesignerToolbarMobile() {
 	const { getCanvas } = useDesigner();
@@ -46,15 +48,22 @@ export default function DesignerToolbarMobile() {
 	}, [getCanvas]);
 
 	return (
-		<div className="h-24 border-t bg-white flex items-start justify-around px-10">
-			{/* Diseños */}
-			<button
-				type="button"
-				className="flex flex-col items-center justify-center gap-1 mt-4"
+		<div className="h-24 border-t bg-white flex items-start justify-around px-10 font-sora">
+			{/* Variantes */}
+			<MobileDrawer
+				trigger={
+					<button
+						type="button"
+						className="flex flex-col items-center justify-center gap-1 mt-4"
+					>
+						<SlidersHorizontal size={28} strokeWidth={1.5} />
+						<p className="text-base font-medium font-sora">Variantes</p>
+					</button>
+				}
+				title="Variantes"
 			>
-				<Palette size={32} strokeWidth={1.5} />
-				<p className="text-l font-medium">Diseños</p>
-			</button>
+				{({ closeDrawer }) => <MobileVariantsPanel />}
+			</MobileDrawer>
 
 			{/* Agregar diseño (Drawer) */}
 			<MobileDrawer
@@ -79,8 +88,8 @@ export default function DesignerToolbarMobile() {
 							type="button"
 							className="flex flex-col items-center justify-center gap-1 mt-4 text-black"
 						>
-							<Layers size={32} strokeWidth={1.5} className="text-black" />
-							<p className="text-l font-medium text-black">Capas</p>
+							<Layers size={28} strokeWidth={1.5} className="text-black" />
+							<p className="text-base font-medium text-black">Capas</p>
 						</button>
 					}
 					title="Capas"

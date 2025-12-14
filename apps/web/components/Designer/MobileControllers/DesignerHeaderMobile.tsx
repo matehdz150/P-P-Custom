@@ -1,7 +1,9 @@
 "use client";
 
-import { ArrowLeft, Eye, Pencil } from "lucide-react";
+import { ArrowLeft, Eye, Info, Pencil } from "lucide-react";
 import { useState } from "react";
+import InfoPanelMobile from "./InfoPanelMobile";
+import MobileDrawer from "./MobileDrawer";
 
 export default function DesignerHeaderMobile() {
 	const [mode, setMode] = useState<"edit" | "preview">("edit");
@@ -9,7 +11,20 @@ export default function DesignerHeaderMobile() {
 	return (
 		<div className="relative h-20 w-full border-b flex items-center px-4 bg-white rounded-[0.2rem]">
 			{/* ⬅ Flecha izquierda */}
-			<ArrowLeft className="z-10" />
+
+			<div className="flex">
+				<ArrowLeft className="z-10" />
+				<MobileDrawer
+					trigger={
+						<button type="button" className="ml-3">
+							<Info size={22} />
+						</button>
+					}
+					title="Información del producto"
+				>
+					{({ closeDrawer }) => <InfoPanelMobile close={closeDrawer} />}
+				</MobileDrawer>
+			</div>
 
 			{/* 🔘 Botones centrados */}
 			<div className="absolute left-1/2 -translate-x-1/2 flex border rounded-[0.2rem] overflow-hidden">
@@ -39,7 +54,7 @@ export default function DesignerHeaderMobile() {
 			{/* 🟧 Botón Guardar alineado a la derecha */}
 			<button
 				type="button"
-				className="ml-auto px-3 py-1.5 bg-[#fe6241] rounded-[0.2rem] font-medium z-10"
+				className="ml-auto px-3 py-1.5 bg-[#fe6241] rounded-[0.2rem] font-medium z-10 font-sora"
 			>
 				Guardar
 			</button>
