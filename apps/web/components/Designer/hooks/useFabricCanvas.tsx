@@ -1,7 +1,7 @@
 // hooks/useFabricCanvas.ts
 "use client";
 
-import { Canvas, Circle, type FabricObject, Rect } from "fabric";
+import { Canvas, Circle, type FabricObject, Rect, Textbox } from "fabric";
 import { useEffect, useRef } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import type {
@@ -90,6 +90,22 @@ export function useFabricCanvas(
 		const onSel = () => setActiveObject(c.getActiveObject() ?? null);
 		const onClear = () => setActiveObject(null);
 
+		// ---- auto select all text on edit ----
+		const onTextEditingEntered = (options: { target?: FabricObject }) => {
+			const target = options.target;
+
+			if (!(target instanceof Textbox)) return;
+
+			// ✅ Espera EXACTA a que Fabric monte el textarea interno
+			requestAnimationFrame(() => {
+				target.selectAll();
+				c.requestRenderAll();
+			});
+		};
+
+		c.on("text:editing:entered", onTextEditingEntered);
+
+		c.on("text:editing:entered", onTextEditingEntered);
 		c.on("selection:created", onSel);
 		c.on("selection:updated", onSel);
 		c.on("selection:cleared", onClear);
@@ -98,6 +114,7 @@ export function useFabricCanvas(
 			c.off("selection:created", onSel);
 			c.off("selection:updated", onSel);
 			c.off("selection:cleared", onClear);
+			c.off("text:editing:entered", onTextEditingEntered);
 
 			c.dispose();
 			fabricRef.current = null;
