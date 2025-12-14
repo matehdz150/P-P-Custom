@@ -23,6 +23,7 @@
 		"fabric": "^6.9.0",
 		"fabricjs-react": "^2.1.0",
 		"framer-motion": "^12.23.26",
+		"lottie-react": "^2.4.1",
 		"lucide-react": "^0.555.0",
 		"nanoid": "^5.1.6",
 		"next": "16.0.7",

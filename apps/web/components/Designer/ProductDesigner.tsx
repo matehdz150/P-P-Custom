@@ -5,6 +5,7 @@ import { loadProductTemplate } from "@/lib/products/loadProductsTemplate";
 import type { ProductTemplate } from "@/lib/products/types";
 import DesktopDesignerShell from "./DesktopDesignerShell";
 import { useIsMobile } from "./hooks/useIsMobile";
+import Loading from "./Loading";
 import MobileDesignerShell from "./MobileDesignerShell";
 
 export default function ProductDesigner({ productId }: { productId: string }) {
@@ -15,7 +16,7 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 		loadProductTemplate(productId).then(setProduct);
 	}, [productId]);
 
-	if (!product) return <div>Cargando...</div>;
+	if (!product) return <Loading />;
 
 	return isMobile ? (
 		<MobileDesignerShell product={product} />
