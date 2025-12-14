@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import LayerItem from "./LayerItem";
+import VariantsPanel from "./VariantsPanel";
 
 export default function RightLayersPanel({
 	open,
@@ -74,50 +75,7 @@ export default function RightLayersPanel({
     ${hasLayers ? "h-[calc(100vh-7rem)]" : "h-60"}
   `}
 		>
-			{/* HEADER */}
-			<div className="px-4 py-3 flex items-center justify-between">
-				<h2 className="text-lg font-semibold text-black font-sora px-2 py-2">
-					Variantes y capas
-				</h2>
-
-				<button
-					type="button"
-					onClick={onClose}
-					className="p-1 hover:bg-gray-100 rounded-md"
-				>
-					<X size={22} className="text-gray-600" />
-				</button>
-			</div>
-
-			{/* Variantes */}
-			<div className="px-7 mt-1 flex flex-col gap-4 font-sora">
-				{/* Título */}
-				<span className="font-semibold text-base">Variantes</span>
-
-				{/* Opciones */}
-				<div className="flex gap-7 w-fullitems-center">
-					<span className="text-sm">Color</span>
-					<span className="text-sm">Talla</span>
-
-					<button
-						type="button"
-						className="ml-auto border rounded-[0.2rem] px-2.5 py-1.5 text-sm font-semibold cursor-pointer"
-					>
-						Seleccionar variantes
-					</button>
-				</div>
-
-				{/* Valores seleccionados */}
-				<div className="flex gap-7">
-					{/* Color */}
-					<div className="h-10 w-10 rounded-full border-2 border-black bg-white" />
-
-					{/* Talla */}
-					<div className="h-10 w-10 rounded-full border-2 border-black flex items-center justify-center font-semibold">
-						M
-					</div>
-				</div>
-			</div>
+			<VariantsPanel />
 
 			{/* LIST */}
 			{hasLayers && (

@@ -121,8 +121,8 @@ export default function MobileTextToolbarContainer({
 			ref={toolbarRef}
 			style={{
 				position: "fixed",
-				left: pos.x - 10,
-				top: pos.y + 50,
+				left: pos.x - 90,
+				top: pos.y + 40,
 				zIndex: 100,
 				touchAction: "none", // 👈 CLAVE
 			}}
