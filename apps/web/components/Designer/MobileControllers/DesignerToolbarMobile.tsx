@@ -48,7 +48,7 @@ export default function DesignerToolbarMobile() {
 	}, [getCanvas]);
 
 	return (
-		<div className="h-24 border-t bg-white flex items-start justify-around px-10 font-sora">
+		<div className="h-20 border-t bg-white flex items-start justify-around px-10 font-sora">
 			{/* Variantes */}
 			<MobileDrawer
 				trigger={
