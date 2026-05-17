@@ -3,6 +3,7 @@
 import { useDesigner } from "@/Contexts/DesignerContext";
 import type { ProductTemplate } from "@/lib/products/types";
 import DesignerCanvasSide from "./DesignerCanvasSide";
+import DesignerNoticeModal from "./DesignerNoticeModal";
 import DesignerHeaderMobile from "./MobileControllers/DesignerHeaderMobile";
 import DesignerSideSwitcher from "./MobileControllers/DesignerSideSwitcherMobile";
 import DesignerToolbarMobile from "./MobileControllers/DesignerToolbarMobile";
@@ -48,6 +49,8 @@ export default function MobileDesignerShell({
 
 			{/* 🧰 Toolbar inferior */}
 			<DesignerToolbarMobile />
+
+			<DesignerNoticeModal />
 		</div>
 	);
 }

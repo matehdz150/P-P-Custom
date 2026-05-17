@@ -3,6 +3,9 @@
 import { Textbox } from "fabric";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
+import { CurvedText } from "@/lib/fabric/CurvedText";
+import { ReplaceObjectCommand } from "@/lib/history/commands/ReplaceObjectCommand";
+import { useHistory } from "@/Contexts/HistoryContext";
 import MobileTextToolbar from "./MobileTextToolbar";
 
 export default function MobileTextToolbarContainer({
@@ -10,10 +13,15 @@ export default function MobileTextToolbarContainer({
 }: {
 	openFontDrawer: () => void;
 }) {
-	const { activeObject, getCanvas } = useDesigner();
+	const { activeObject, getCanvas, setActiveObject } = useDesigner();
+	const { execute } = useHistory();
 	const canvas = getCanvas();
 
-	const text = activeObject instanceof Textbox ? activeObject : undefined;
+	// Accept both Textbox and CurvedText
+	const text =
+		activeObject instanceof Textbox || activeObject instanceof CurvedText
+			? (activeObject as Textbox | CurvedText)
+			: undefined;
 
 	// 🔒 Hooks SIEMPRE arriba
 	const toolbarRef = useRef<HTMLDivElement | null>(null);
@@ -112,6 +120,57 @@ export default function MobileTextToolbarContainer({
 		canvas.requestRenderAll();
 	};
 
+	const toggleCurved = () => {
+		if (!canvas || !text) return;
+		const ORANGE = "#fe6241";
+		const applyStyle = (obj: CurvedText | Textbox) =>
+			obj.set({
+				transparentCorners: false,
+				cornerColor: "#ffffff",
+				cornerStrokeColor: ORANGE,
+				borderColor: ORANGE,
+				cornerSize: 8,
+				cornerStyle: "rect",
+			} as never);
+
+		if (text instanceof Textbox) {
+			const curved = new CurvedText({
+				text: text.text ?? "Texto",
+				left: text.left,
+				top: text.top,
+				fontSize: text.fontSize,
+				fontFamily: text.fontFamily,
+				fontWeight: text.fontWeight as string,
+				fontStyle: text.fontStyle as string,
+				fill: typeof text.fill === "string" ? text.fill : "#000000",
+				angle: text.angle,
+				opacity: text.opacity,
+				curvature: -50,
+				clipPath: text.clipPath as never,
+			} as never);
+			applyStyle(curved);
+			execute(new ReplaceObjectCommand(text, curved));
+			setActiveObject(curved);
+		} else if (text instanceof CurvedText) {
+			const tb = new Textbox((text as unknown as CurvedText).text, {
+				left: text.left,
+				top: text.top,
+				fontSize: (text as unknown as CurvedText).fontSize,
+				fontFamily: (text as unknown as CurvedText).fontFamily,
+				fontWeight: (text as unknown as CurvedText).fontWeight as string,
+				fontStyle: (text as unknown as CurvedText).fontStyle as string,
+				fill: typeof text.fill === "string" ? text.fill : "#000000",
+				angle: text.angle,
+				opacity: text.opacity,
+				width: 300,
+				clipPath: text.clipPath as never,
+			});
+			applyStyle(tb);
+			execute(new ReplaceObjectCommand(text as never, tb));
+			setActiveObject(tb);
+		}
+	};
+
 	// -------------------------
 	// Guard clause FINAL
 	if (!canvas || !text) return null;
@@ -136,8 +195,10 @@ export default function MobileTextToolbarContainer({
 		>
 			<MobileTextToolbar
 				text={text}
+				isCurved={text instanceof CurvedText}
 				openFontDrawer={openFontDrawer}
 				apply={apply}
+				onToggleCurved={toggleCurved}
 				onDuplicate={duplicate}
 				onRemove={remove}
 			/>

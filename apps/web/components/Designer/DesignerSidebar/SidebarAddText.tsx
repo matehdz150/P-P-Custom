@@ -6,6 +6,7 @@ import { useDesigner } from "@/Contexts/DesignerContext";
 import { useHistory } from "@/Contexts/HistoryContext";
 import { AVAILABLE_FONTS } from "@/lib/fabric/fontList";
 import { AddObjectCommand } from "@/lib/history/commands/AddObjectCommand";
+import { useElementGuard } from "../hooks/useProductConfig";
 
 const ORANGE = "#fe6241";
 
@@ -23,10 +24,12 @@ function applySelectionStyle(obj: FabricObject) {
 export default function SidebarAddText() {
 	const { getCanvas, getEditableAreas, setActiveObject } = useDesigner();
 	const { execute } = useHistory();
+	const guard = useElementGuard();
 
 	const addTextWithFont = async (fontFamily: string) => {
 		const canvas = getCanvas();
 		if (!canvas) return;
+		if (!guard.canAdd(1)) return;
 
 		const area = getEditableAreas()[0] ?? null;
 

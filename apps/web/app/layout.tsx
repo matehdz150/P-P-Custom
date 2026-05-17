@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import IOSViewportProvider from "@/components/hooks/IOSViewportProvider"; // 👈 IMPORTANTE
+import { AuthProvider } from "@/Contexts/AuthContext";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -29,7 +30,9 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				<IOSViewportProvider>{children}</IOSViewportProvider>
+				<AuthProvider>
+					<IOSViewportProvider>{children}</IOSViewportProvider>
+				</AuthProvider>
 			</body>
 		</html>
 	);

@@ -1,7 +1,15 @@
 // hooks/useFabricCanvas.ts
 "use client";
 
-import { Canvas, Circle, type FabricObject, Rect, Textbox } from "fabric";
+import {
+	Canvas,
+	Circle,
+	Ellipse,
+	type FabricObject,
+	Rect,
+	Textbox,
+	Triangle,
+} from "fabric";
 import { useEffect, useRef } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import type {
@@ -25,6 +33,31 @@ function createAreaFromShape(
 		});
 	}
 
+	if (shape.type === "ellipse") {
+		return new Ellipse({
+			left: shape.left,
+			top: shape.top,
+			rx: shape.width / 2,
+			ry: shape.height / 2,
+			fill: "rgba(0,0,0,0.05)",
+			selectable: false,
+			evented: false,
+		});
+	}
+
+	if (shape.type === "triangle") {
+		return new Triangle({
+			left: shape.left,
+			top: shape.top,
+			width: shape.width,
+			height: shape.height,
+			fill: "rgba(0,0,0,0.05)",
+			selectable: false,
+			evented: false,
+		});
+	}
+
+	// legacy: círculo con cx/cy/radius
 	if (shape.type === "circle") {
 		return new Circle({
 			left: shape.cx - shape.radius,

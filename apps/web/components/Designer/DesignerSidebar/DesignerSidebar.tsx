@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Info, Layers, Type, Upload } from "lucide-react";
+import { ArrowLeft, Info, Layers, Shapes, Type, Upload } from "lucide-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import SidebarPanelManager from "./panels/SidebarPanelManager";
@@ -35,6 +35,12 @@ export default function DesignerSidebar() {
 					label="Text"
 					onClick={() => toggle("text")}
 					active={activePanel === "text"}
+				/>
+				<SidebarIcon
+					icon={<Shapes size={22} />}
+					label="Shapes"
+					onClick={() => toggle("shapes")}
+					active={activePanel === "shapes"}
 				/>
 				<SidebarIcon
 					icon={<Layers size={22} />}

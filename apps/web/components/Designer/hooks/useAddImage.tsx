@@ -1,6 +1,8 @@
 "use client";
-import { FabricImage, type FabricObject, Rect } from "fabric";
+import { FabricImage, type FabricObject } from "fabric";
 import { useDesigner } from "@/Contexts/DesignerContext";
+import { makeAreaClip } from "@/lib/fabric/areaClip";
+import { useElementGuard } from "./useProductConfig";
 
 const ORANGE = "#fe6241";
 
@@ -18,10 +20,12 @@ function applySelectionStyle(obj: FabricObject) {
 
 export function useAddImage() {
 	const { getCanvas, getEditableAreas, setActiveObject } = useDesigner();
+	const guard = useElementGuard();
 
 	const addImage = (file: File) => {
 		const canvas = getCanvas();
 		if (!canvas) return;
+		if (!guard.canAdd(1)) return;
 
 		const areas = getEditableAreas();
 		const area = areas[0] ?? null;
@@ -52,15 +56,10 @@ export function useAddImage() {
 					img.top = canvas.getHeight() / 2;
 				}
 
-				// clip
+				// clip — soporta rect/elipse/triángulo
 				if (area) {
-					img.clipPath = new Rect({
-						left: area.left,
-						top: area.top,
-						width: area.width,
-						height: area.height,
-						absolutePositioned: true,
-					});
+					const clip = makeAreaClip(area);
+					if (clip) img.clipPath = clip;
 				}
 
 				canvas.add(img);

@@ -1,9 +1,10 @@
 "use client";
 
-import { Circle, type FabricObject, Rect, Textbox } from "fabric";
+import { Textbox } from "fabric";
 import { ChevronDown } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
+import { makeAreaClip } from "@/lib/fabric/areaClip";
 import { AVAILABLE_FONTS } from "@/lib/fabric/fontList";
 
 export default function MobileAddTextPanel({
@@ -61,35 +62,10 @@ export default function MobileAddTextPanel({
 			width: maxW,
 		});
 
-		// 🔒 CLIP PATH (IGUAL QUE IMÁGENES / DESKTOP)
+		// 🔒 CLIP PATH — soporta rect/elipse/triángulo
 		if (area) {
-			let clip: FabricObject;
-
-			if (area instanceof Rect) {
-				clip = new Rect({
-					left: area.left,
-					top: area.top,
-					width: area.width,
-					height: area.height,
-					absolutePositioned: true,
-				});
-			} else if (area instanceof Circle) {
-				clip = new Circle({
-					left: area.left,
-					top: area.top,
-					radius: area.radius,
-					absolutePositioned: true,
-				});
-			} else {
-				// fallback seguro (no debería pasar en tu sistema)
-				return;
-			}
-
-			clip.set({ selectable: false, evented: false });
-			text.clipPath = clip;
-
-			clip.set({ selectable: false, evented: false });
-			text.clipPath = clip;
+			const clip = makeAreaClip(area);
+			if (clip) text.clipPath = clip;
 		}
 
 		canvas.add(text);

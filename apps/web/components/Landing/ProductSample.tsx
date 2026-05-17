@@ -1,115 +1,82 @@
 import { Sora } from "next/font/google";
 import Image from "next/image";
+import Link from "next/link";
 
 const sora = Sora({
 	subsets: ["latin-ext"],
-	weight: ["300", "400", "500", "600", "700", "800"],
+	weight: ["300", "400", "600", "700", "800"],
 	display: "swap",
 });
 
+const CATEGORIES = [
+	{
+		img: "/event1.png",
+		label: "Para eventos",
+		desc: "Uniformes, gorras y más para tu próximo evento.",
+	},
+	{
+		img: "/business.png",
+		label: "Para negocios",
+		desc: "Branding profesional bordado en tus artículos.",
+	},
+	{
+		img: "/event2.png",
+		label: "Personalizado",
+		desc: "Cualquier diseño, cualquier artículo.",
+	},
+];
+
 export default function ProductSample() {
 	return (
-		<div className="w-full flex flex-col items-center">
-			{/* ---------- CONTENEDOR DE TARJETAS ---------- */}
-			<div
-				className="
-          w-full 
-          max-w-[60%] 
-          mx-auto 
-          flex 
-          flex-col 
-          md:flex-row 
-          justify-center 
-          gap-6 
-          mt-10
-        "
-			>
-				{[
-					{ img: "/prueba2.png", title: "Productos", subtitle: "Para eventos" },
-					{
-						img: "/business.png",
-						title: "Productos",
-						subtitle: "Para negocios",
-					},
-				].map((card) => (
-					<div
-						key={`${card.title}-${card.subtitle}`}
-						className="
-              relative 
-              w-full 
-              h-72 
-              sm:h-80 
-              md:h-110 
-              bg-[#F2F1EF] 
-              overflow-hidden 
-              group 
-              cursor-pointer
-            "
-					>
-						{/* Imagen */}
-						<Image
-							src={card.img}
-							alt={card.title}
-							fill
-							className="
-                object-cover 
-                transition-transform 
-                duration-500 
-                ease-out 
-                group-hover:scale-105
-              "
-						/>
-
-						{/* Overlay */}
-						<div
-							className="
-                absolute inset-0 
-                bg-black/30 
-                transition-all 
-                duration-500 
-                group-hover:bg-black/50
-              "
-						></div>
-
-						{/* Texto */}
-						<h1
-							className={`
-                absolute 
-                z-10 
-                text-white 
-                font-bold 
-                leading-tight 
-                text-right
-                ${sora.className}
-                right-4 
-                top-6 
-                text-3xl 
-                sm:text-4xl 
-                md:text-4xl 
-                transition-all 
-                duration-500 
-                group-hover:translate-y-[-4px] 
-                group-hover:text-[2.7rem]
-              `}
-						>
-							{card.title}
+		<section className={`${sora.className} bg-[#f9f8f5] py-20 px-6`}>
+			<div className="max-w-6xl mx-auto">
+				{/* Heading */}
+				<div className="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+					<div>
+						<h2 className="text-3xl sm:text-4xl font-black text-[#1a1a17] leading-tight">
+							Tu marca,
 							<br />
-							{card.subtitle}
-						</h1>
+							en buenas manos
+						</h2>
+						<p className="mt-2 text-sm text-[#777] font-light">
+							Tecnología de bordado moderna y materiales de alta calidad.
+						</p>
 					</div>
-				))}
-			</div>
+					<Link
+						href="/catalogo"
+						className="text-sm font-semibold text-[#1a1a17] underline underline-offset-4 hover:text-[#fe6241] transition-colors whitespace-nowrap"
+					>
+						Ver catálogo completo →
+					</Link>
+				</div>
 
-			{/* ---------- TEXTO INFORMATIVO DEBAJO ---------- */}
-			<div className="w-full flex flex-col items-center mt-10 gap-2 text-center">
-				<p className={`text-lg font-semibold text-[#2A2A26] ${sora.className}`}>
-					Tu marca, en buenas manos
-				</p>
-
-				<p className={`text-sm text-[#555] ${sora.className}`}>
-					Tecnología de impresión moderna y materiales de alta calidad.
-				</p>
+				{/* Grid */}
+				<div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+					{CATEGORIES.map((cat) => (
+						<Link
+							href="/catalogo"
+							key={cat.label}
+							className="group relative overflow-hidden rounded-xl aspect-[3/4] block shadow-sm"
+						>
+							<Image
+								src={cat.img}
+								alt={cat.label}
+								fill
+								className="object-cover transition-transform duration-500 group-hover:scale-105"
+							/>
+							<div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+							<div className="absolute bottom-0 left-0 p-5">
+								<h3 className="text-white font-bold text-lg leading-tight">
+									{cat.label}
+								</h3>
+								<p className="text-white/75 text-xs mt-1 font-light">
+									{cat.desc}
+								</p>
+							</div>
+						</Link>
+					))}
+				</div>
 			</div>
-		</div>
+		</section>
 	);
 }

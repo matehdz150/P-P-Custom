@@ -1,6 +1,7 @@
 "use client";
 
 import type { Textbox } from "fabric";
+import type { CurvedText } from "@/lib/fabric/CurvedText";
 import { Bold, Copy, Italic, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { DEFAULT_COLORS } from "@/lib/fabric/defaultColors";
@@ -20,13 +21,17 @@ function normalizeAlign(
 
 export default function MobileTextToolbar({
 	text,
+	isCurved = false,
 	apply,
+	onToggleCurved,
 	onDuplicate,
 	onRemove,
 }: {
-	text: Textbox;
+	text: Textbox | CurvedText;
+	isCurved?: boolean;
 	openFontDrawer: () => void;
 	apply: (props: Record<string, unknown>) => void;
+	onToggleCurved?: () => void;
 	onDuplicate: () => void;
 	onRemove: () => void;
 }) {
@@ -99,13 +104,30 @@ export default function MobileTextToolbar({
 					</TextToggleButton>
 				</div>
 
-				{/* Align */}
-				<div className="shrink-0">
-					<TextAlignGroup
-						value={normalizeAlign(text.textAlign)}
-						onChange={(align) => apply({ textAlign: align })}
-					/>
-				</div>
+				{/* Align — solo Textbox */}
+				{"textAlign" in text && (
+					<div className="shrink-0">
+						<TextAlignGroup
+							value={normalizeAlign((text as Textbox).textAlign)}
+							onChange={(align) => apply({ textAlign: align })}
+						/>
+					</div>
+				)}
+
+				{/* Curvar texto */}
+				{onToggleCurved && (
+					<button
+						type="button"
+						className={`shrink-0 px-2 py-1 rounded text-xs font-semibold border transition-colors ${
+							isCurved
+								? "bg-[#fe6241] text-white border-[#fe6241]"
+								: "bg-white text-gray-700 border-gray-300"
+						}`}
+						onClick={onToggleCurved}
+					>
+						⌒ Curva
+					</button>
+				)}
 
 				{/* Color */}
 				<ColorPickerButton

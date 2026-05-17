@@ -1,82 +1,105 @@
 // hooks/useFabricMockup.ts
 "use client";
 
-import { type Canvas, Image as FabricImage } from "fabric";
+import { type Canvas, FabricImage } from "fabric";
 import { useEffect, useRef, useState } from "react";
 
 export function useFabricMockup(
 	getCanvas: () => Canvas | null,
 	mockupUrl?: string,
-	debugDelayMs = 0,
+	_debugDelayMs = 0,
 ) {
 	const [isLoading, setIsLoading] = useState(false);
+	const [reloadKey, setReloadKey] = useState(0);
 
-	// ✅ evita bucle por identidad cambiante de getCanvas()
+	// fuerza recargar y reaplicar el mockup en el canvas actual
+	const reload = () => setReloadKey((k) => k + 1);
+
+	// evita bucle por identidad cambiante de getCanvas()
 	const getCanvasRef = useRef(getCanvas);
 	useEffect(() => {
 		getCanvasRef.current = getCanvas;
 	}, [getCanvas]);
 
-	// ✅ evita recargar si ya cargaste este url
-	const lastLoadedUrlRef = useRef<string | undefined>(undefined);
-
 	useEffect(() => {
 		if (!mockupUrl) return;
-		if (lastLoadedUrlRef.current === mockupUrl) return;
 
 		let cancelled = false;
-		let timeoutId: number | null = null;
+		let intervalId = 0;
+		let htmlImg: HTMLImageElement | null = null;
+		let appliedCanvas: Canvas | null = null;
 
-		const run = () => {
-			const canvas = getCanvasRef.current();
-			if (!canvas) {
-				// si aún no existe canvas, reintenta en el siguiente frame
-				requestAnimationFrame(() => {
-					if (!cancelled) run();
-				});
-				return;
-			}
+		setIsLoading(true);
 
-			queueMicrotask(() => {
-				if (!cancelled) setIsLoading(true);
+		const place = (canvas: Canvas) => {
+			if (!htmlImg) return;
+			// FabricImage desde un elemento YA cargado → 100% síncrono,
+			// sin fetch interno ni promesas que se queden colgadas.
+			const fImg = new FabricImage(htmlImg, {
+				originX: "center",
+				originY: "center",
+				selectable: false,
+				evented: false,
 			});
-
-			FabricImage.fromURL(mockupUrl)
-				.then((img) => {
-					if (cancelled) return;
-
-					img.scaleToWidth(700);
-					img.originX = "center";
-					img.originY = "center";
-					img.left = canvas.getWidth() / 2;
-					img.top = canvas.getHeight() / 2;
-					img.selectable = false;
-
-					canvas.backgroundImage = img;
-					canvas.requestRenderAll();
-
-					lastLoadedUrlRef.current = mockupUrl;
-				})
-				.finally(() => {
-					const finish = () => {
-						if (!cancelled) setIsLoading(false);
-					};
-
-					if (debugDelayMs > 0) {
-						timeoutId = window.setTimeout(finish, debugDelayMs);
-					} else {
-						queueMicrotask(finish);
-					}
-				});
+			fImg.scaleToWidth(700);
+			fImg.set({
+				left: canvas.getWidth() / 2,
+				top: canvas.getHeight() / 2,
+			});
+			canvas.backgroundImage = fImg;
+			canvas.requestRenderAll();
+			requestAnimationFrame(() => {
+				if (!cancelled) canvas.requestRenderAll();
+			});
+			appliedCanvas = canvas;
 		};
 
-		run();
+		// garantiza que el canvas ACTUAL tenga el fondo; sobrevive a
+		// recreaciones del canvas (navegación SPA / re-render del contexto)
+		const ensure = () => {
+			if (cancelled || !htmlImg) return;
+			const canvas = getCanvasRef.current();
+			if (!canvas) return;
+			if (
+				canvas !== appliedCanvas ||
+				!canvas.backgroundImage
+			) {
+				place(canvas);
+			}
+		};
+
+		// watcher persistente desde ya: en cuanto haya imagen + canvas, pinta
+		intervalId = window.setInterval(ensure, 200);
+
+		// --- carga determinista con HTMLImageElement nativo ---
+		const el = new window.Image();
+		el.decoding = "async";
+		el.onload = () => {
+			if (cancelled) return;
+			htmlImg = el;
+			setIsLoading(false);
+			ensure();
+		};
+		el.onerror = () => {
+			if (cancelled) return;
+			setIsLoading(false); // nunca dejes el overlay pegado
+		};
+		// sin crossOrigin: solo mostramos el mockup, no exportamos el canvas
+		el.src = mockupUrl;
+		// si ya estaba en caché y completó antes de asignar onload
+		if (el.complete && el.naturalWidth > 0) {
+			htmlImg = el;
+			setIsLoading(false);
+			ensure();
+		}
 
 		return () => {
 			cancelled = true;
-			if (timeoutId) window.clearTimeout(timeoutId);
+			if (intervalId) window.clearInterval(intervalId);
+			el.onload = null;
+			el.onerror = null;
 		};
-	}, [mockupUrl, debugDelayMs]);
+	}, [mockupUrl, reloadKey]);
 
-	return { isLoading };
+	return { isLoading, reload };
 }

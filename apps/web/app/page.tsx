@@ -1,3 +1,1 @@
-export default function Home() {
-	return <p>lol</p>;
-}
+export { default } from "./landing/page";

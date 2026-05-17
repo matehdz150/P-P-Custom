@@ -4,6 +4,8 @@ import { Textbox } from "fabric";
 import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import type { ProductTemplate } from "@/lib/products/types";
+import CurvedTextEditor from "./design/CurvedTextEditor";
+import DesignerNoticeModal from "./DesignerNoticeModal";
 import DesignerCanvasSide from "./DesignerCanvasSide";
 import DesignerSidebar from "./DesignerSidebar/DesignerSidebar";
 import DesignerBottomBar from "./design/DesignerBottomBar";
@@ -11,6 +13,7 @@ import DesignerSideSwitcher from "./design/DesignerSideSwitcher";
 import PreviewEditButtons from "./design/PreviewEditButtons";
 import RightLayersPanel from "./design/RightLayersPanel/RightLayersPanel";
 import ImageToolbar from "./design/toolbar/ImageToolbar";
+import ShapeToolbar from "./design/toolbar/ShapeToolbar";
 import TextToolbar from "./design/toolbar/TextToolbar";
 import UndoRedoButtons from "./design/UndoRedoButtons";
 import { useCanvasPan } from "./hooks/useCanvasPan";
@@ -32,6 +35,18 @@ export default function DesktopDesignerShell({
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key !== "Delete" && e.key !== "Backspace") return;
+
+			// 🛑 No borrar el objeto si el usuario está escribiendo en un campo
+			// (input del panel derecho, editor de texto curvo, etc.)
+			const t = e.target as HTMLElement | null;
+			if (
+				t &&
+				(t.tagName === "INPUT" ||
+					t.tagName === "TEXTAREA" ||
+					t.isContentEditable)
+			) {
+				return;
+			}
 
 			const canvas = getCanvas();
 			if (!canvas) return;
@@ -95,7 +110,10 @@ export default function DesktopDesignerShell({
 				/>
 				<TextToolbar />
 				<ImageToolbar />
+				<ShapeToolbar />
+				<CurvedTextEditor />
 			</div>
+			<DesignerNoticeModal />
 		</div>
 	);
 }

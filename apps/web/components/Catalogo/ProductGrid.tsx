@@ -2,135 +2,144 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { useRef } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { getCategories, type Category } from "@/lib/api/categories";
 
-const products = [
-	{
-		id: 1,
-		name: "Playera personalizada",
-		description: "Ideal para equipos, marcas o eventos.",
-		price: "$249",
-		image: "/products/tshirt.png",
-	},
-	{
-		id: 2,
-		name: "Termo personalizado",
-		description: "Mantén tus bebidas frías o calientes.",
-		price: "$329",
-		image: "/products/thermo2.png",
-	},
-	{
-		id: 3,
-		name: "Tote bag",
-		description: "Perfecta para regalos o eventos.",
-		price: "$199",
-		image: "/products/totebag.png",
-	},
-	{
-		id: 4,
-		name: "Gorra tipo baseball",
-		description: "Tu marca siempre visible.",
-		price: "$279",
-		image: "/products/cap.png",
-	},
-	{
-		id: 5,
-		name: "Vasos personalizados",
-		description: "Todo en un solo paquete.",
-		price: "$699",
-		image: "/products/vaso2.png",
-	},
-	{
-		id: 6,
-		name: "Kit para graduación",
-		description: "Todo en un solo paquete.",
-		price: "$699",
-		image: "/products/grad-kit.png",
-	},
-];
+/* =========================
+   COMPONENT
+========================= */
 
 export default function ProductGrid() {
-	const scrollRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
 
-	const scroll = (direction: "left" | "right") => {
-		if (!scrollRef.current) return;
-		const amount = 320;
-		scrollRef.current.scrollBy({
-			left: direction === "left" ? -amount : amount,
-			behavior: "smooth",
-		});
-	};
+  useEffect(() => {
+    getCategories()
+      .then(setCategories)
+      .finally(() => setLoading(false));
+  }, []);
 
-	return (
-		<section className="w-full mt-8">
-			<div className="relative">
-				{/* 🔥 Flecha izquierda (solo desktop) */}
-				<Button
-					variant="outline"
-					size="icon"
-					className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 shadow-sm"
-					onClick={() => scroll("left")}
-				>
-					<ChevronLeft className="w-5 h-5" />
-				</Button>
+  const scroll = (direction: "left" | "right") => {
+    if (!scrollRef.current) return;
+    scrollRef.current.scrollBy({
+      left: direction === "left" ? -320 : 320,
+      behavior: "smooth",
+    });
+  };
 
-				{/* 🔥 Grid scrolleable */}
-				<div
-					ref={scrollRef}
-					className="
-            flex 
+  if (loading) {
+    return (
+      <div className="py-8 text-center text-sm">
+        Cargando categorías…
+      </div>
+    );
+  }
+
+  return (
+    <section className="w-full mt-8">
+      <div className="relative">
+        {/* Flecha izquierda */}
+        <Button
+          variant="outline"
+          size="icon"
+          className="
+            hidden md:flex
+            absolute left-0 top-1/2 -translate-y-1/2
+            z-10 rounded-full
+            bg-white/80 shadow-sm
+          "
+          onClick={() => scroll("left")}
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </Button>
+
+        {/* Grid */}
+        <div
+          ref={scrollRef}
+          className="
+            flex
             gap-3
             overflow-x-auto
             scroll-smooth
-            pb-2 
+            pb-2
             pr-1
           "
-				>
-					{products.map((product) => (
-						<article
-							key={product.id}
-							className="
-                min-w-[170px]       /* 📱 Mobile */
-                md:min-w-[220px]    /* 💻 Desktop */
-                max-w-[240px]
-                flex-shrink-0
-                rounded-[0.25rem]
-                border
-                bg-[#f5f5f1]
-                py-3
-                hover:shadow-md
-                transition-shadow
-                cursor-pointer
-              "
-						>
-							{/* Imagen */}
-							<div className="relative w-full h-40 md:h-50 mb-3 bg-[#f5f5f1] rounded-sm overflow-hidden">
-								<Image
-									src={product.image}
-									alt={product.name}
-									fill
-									className="object-contain"
-								/>
-							</div>
+        >
+          {categories.map((category) => (
+            <Link
+              key={category.id}
+              href={`/catalogo/productos/${category.id}`}
+              className="block"
+            >
+              <article
+                className="
+                  group
+                  min-w-[170px]
+                  md:min-w-[220px]
+                  max-w-[240px]
+                  flex-shrink-0
+                  rounded-[0.25rem]
+                  border
+                  bg-[#f5f5f1]
+                  py-3
+                  cursor-pointer
+                  transition-shadow
+                  hover:shadow-md
+                "
+              >
+                {/* Imagen */}
+                <div
+                  className="
+                    relative
+                    w-full
+                    h-40
+                    md:h-52
+                    mb-3
+                    rounded-sm
+                    overflow-hidden
+                  "
+                >
+                  <Image
+                    src={category.image}
+                    alt={category.name}
+                    fill
+                    className="
+                      object-contain
+                      transition-transform
+                      duration-300
+                      ease-out
+                      group-hover:scale-105
+                    "
+                  />
+                </div>
 
-							<h4 className="text-sm font-semibold mb-1 text-center px-2">
-								{product.name}
-							</h4>
-						</article>
-					))}
-				</div>
+                {/* Nombre */}
+                <h4 className="text-sm font-semibold text-center px-2">
+                  {category.name}
+                </h4>
+              </article>
+            </Link>
+          ))}
+        </div>
 
-				{/* 🔥 Flecha derecha (solo desktop) */}
-				<Button
-					variant="outline"
-					size="icon"
-					className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 shadow-sm"
-					onClick={() => scroll("right")}
-				>
-					<ChevronRight className="w-5 h-5" />
-				</Button>
-			</div>
-		</section>
-	);
+        {/* Flecha derecha */}
+        <Button
+          variant="outline"
+          size="icon"
+          className="
+            hidden md:flex
+            absolute right-0 top-1/2 -translate-y-1/2
+            z-10 rounded-full
+            bg-white/80 shadow-sm
+          "
+          onClick={() => scroll("right")}
+        >
+          <ChevronRight className="w-5 h-5" />
+        </Button>
+      </div>
+    </section>
+  );
 }

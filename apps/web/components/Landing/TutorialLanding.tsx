@@ -1,115 +1,82 @@
+import { Sora } from "next/font/google";
 import Image from "next/image";
+import Link from "next/link";
+
+const sora = Sora({
+	subsets: ["latin-ext"],
+	weight: ["300", "400", "600", "700", "800"],
+	display: "swap",
+});
+
+const STEPS = [
+	{
+		n: "1",
+		title: "Escoge un producto",
+		desc: "Explora nuestro catálogo y encuentra artículos ideales para tu marca. Tenemos opciones para eventos, negocios y proyectos personales.",
+	},
+	{
+		n: "2",
+		title: "Diseña tu creación",
+		desc: "Personaliza colores, textos e imágenes con nuestro editor sencillo. Visualiza el resultado en tiempo real.",
+	},
+	{
+		n: "3",
+		title: "Haz tu pedido",
+		desc: "Finaliza tu compra y nosotros nos encargamos de producirlo. Rápido, seguro y con calidad garantizada.",
+	},
+];
 
 export default function TutorialLanding() {
 	return (
-		<div
-			className="
-        w-full 
-        flex flex-col md:flex-row 
-        items-start md:items-center 
-        justify-center 
-        gap-12 
-        px-6 md:px-10 
-        py-10 md:py-20
-      "
-		>
-			{/* --------------------------------- */}
-			{/*   LEFT SECTION — TEXT STEPS       */}
-			{/* --------------------------------- */}
-			<div
-				className="
-          flex flex-col 
-          text-left 
-          gap-8 md:gap-10 
-          w-full md:w-1/2 
-          ml-0 md:ml-35
-          text-3xl sm:text-4xl
-        "
-			>
-				<h1 className="font-bold leading-tight">
-					Crea productos <br /> en minutos
-				</h1>
+		<section className={`${sora.className} bg-white py-20 px-6`}>
+			<div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
+				{/* LEFT — STEPS */}
+				<div className="flex flex-col gap-4 w-full md:w-1/2">
+					<h2 className="text-3xl sm:text-4xl font-black text-[#1a1a17] leading-tight mb-4">
+						Crea productos
+						<br />
+						en minutos
+					</h2>
 
-				{/* STEP 1 */}
-				<div className="mt-4 md:mt-12 text-xl sm:text-2xl border-b-2 pb-5 border-black">
-					<div className="flex gap-5">
-						<h1 className="text-3xl sm:text-4xl font-bold">1</h1>
-						<h2>
-							Escoge un <br /> producto
-						</h2>
-					</div>
+					{STEPS.map((step, i) => (
+						<div
+							key={step.n}
+							className={`flex gap-5 py-6 ${i < STEPS.length - 1 ? "border-b border-[#e5e5e5]" : ""}`}
+						>
+							<span className="text-4xl font-black text-[#fe6241] leading-none pt-0.5 min-w-[2rem]">
+								{step.n}
+							</span>
+							<div className="flex flex-col gap-1.5">
+								<h3 className="text-xl font-bold text-[#1a1a17]">
+									{step.title}
+								</h3>
+								<p className="text-sm text-[#666] font-light leading-relaxed">
+									{step.desc}
+								</p>
+							</div>
+						</div>
+					))}
 
-					<div className="flex-col font-light ml-6 sm:ml-8 mt-1">
-						<span className="block text-[1rem] ">
-							Explora nuestro catálogo y descubre artículos ideales para tu
-							marca.
-						</span>
-						<span className="block text-[1rem]">
-							Tenemos opciones para eventos, negocios y proyectos personales.
-						</span>
-					</div>
+					<Link
+						href="/catalogo"
+						className="mt-4 w-fit px-8 py-3.5 bg-[#1a1a17] text-white text-sm font-bold rounded-sm hover:bg-[#333] transition-colors"
+					>
+						Empieza a diseñar
+					</Link>
 				</div>
 
-				{/* STEP 2 */}
-				<div className="mt-6 md:mt-10 text-xl sm:text-2xl border-b-2 pb-5 border-black">
-					<div className="flex gap-5">
-						<h1 className="text-3xl sm:text-4xl font-bold">2</h1>
-						<h2>
-							Diseña tu <br /> creacion
-						</h2>
+				{/* RIGHT — IMAGE */}
+				<div className="w-full md:w-1/2 flex justify-center">
+					<div className="relative w-full max-w-[520px] aspect-[4/3] rounded-xl overflow-hidden shadow-md">
+						<Image
+							src="/tutorial2.png"
+							alt="Editor de diseño"
+							fill
+							className="object-cover"
+						/>
 					</div>
-
-					<div className="flex-col font-light ml-6 sm:ml-10 mt-1">
-						<span className="block text-[1rem]">
-							Personaliza colores, textos e imágenes con nuestro editor
-							sencillo.
-						</span>
-						<span className="block text-[1rem]">
-							Da tu toque especial y visualiza el resultado en tiempo real.
-						</span>
-					</div>
-				</div>
-
-				{/* STEP 3 */}
-				<div className="mt-6 md:mt-10 text-xl sm:text-2xl border-b-2 pb-5 border-black">
-					<div className="flex gap-5">
-						<h1 className="text-3xl sm:text-4xl font-bold">3</h1>
-						<h2>
-							Haz tu <br /> pedido
-						</h2>
-					</div>
-
-					<div className="flex-col font-light ml-6 sm:ml-10 mt-1">
-						<span className="block text-[1rem]">
-							Finaliza tu compra y nosotros nos encargamos de producirlo.
-						</span>
-						<span className="block text-[1rem]">
-							DRápido, seguro y con calidad garantizada.
-						</span>
-					</div>
-				</div>
-				{/* BOTON */}
-				<button
-					type="button"
-					className=" bg-black w-60 h-15 text-sm rounded-[0.2rem] text-white mt-10"
-				>
-					Empieza a diseñar
-				</button>
-			</div>
-
-			{/* --------------------------------- */}
-			{/*   RIGHT SECTION — IMAGE           */}
-			{/* --------------------------------- */}
-			<div className="w-full md:w-1/2 flex justify-center mt-6 md:mt-0">
-				<div className="relative w-full max-w-[620px] h-[280px] sm:h-[260px] md:h-230 bg-[#F5F5F5] overflow-hidden">
-					<Image
-						src="/tutorial2.png"
-						alt="tutorial-step"
-						fill
-						className="object-cover"
-					/>
 				</div>
 			</div>
-		</div>
+		</section>
 	);
 }
