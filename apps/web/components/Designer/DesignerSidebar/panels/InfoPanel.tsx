@@ -1,8 +1,24 @@
 "use client";
 
-import { Download, Info, X } from "lucide-react";
+import { Check, ImageIcon, Type, X } from "lucide-react";
+import { useDesigner } from "@/Contexts/DesignerContext";
+import { usePriceBreakdown } from "@/components/Designer/hooks/useProductConfig";
+
+function money(n: number) {
+	return new Intl.NumberFormat("es-MX", {
+		style: "currency",
+		currency: "MXN",
+		maximumFractionDigits: 2,
+	}).format(n);
+}
 
 export default function InfoPanel({ close }: { close: () => void }) {
+	const { config } = useDesigner();
+	const { lines, total, sidesEdited, designElements, colorsUsed } =
+		usePriceBreakdown();
+
+	const rules = config?.rules;
+
 	return (
 		<div className="h-[80%] flex flex-col font-sora bg-white">
 			{/* HEADER */}
@@ -15,122 +31,110 @@ export default function InfoPanel({ close }: { close: () => void }) {
 				</button>
 			</div>
 
-			{/* CONTENT */}
 			<div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
-				{/* PRODUCT TITLE */}
-				<h3 className="font-semibold text-sm text-black">
-					Unisex Garment-Dyed T-shirt
+				{/* NOMBRE */}
+				<h3 className="font-semibold text-base text-black">
+					{config?.name ?? "Producto"}
 				</h3>
 
-				{/* PRODUCT CARD */}
-				<div className="flex gap-4">
-					<div className="bg-gray-200 h-36 w-36 rounded-[0.2rem] shrink-0" />
-
-					<div className="flex flex-col gap-2 text-xs text-[#5b5b4a]">
-						<span>Comfort Colors® · 1717</span>
-						<span>Fulfilled by Printify Choice</span>
-						<span>41 of 410 disponibles</span>
-
-						<button
-							type="button"
-							className="text-sm font-medium underline text-black w-fit"
-						>
-							Ver detalles
-						</button>
+				{/* REGLAS DE PERSONALIZACIÓN */}
+				<div className="flex flex-col gap-2">
+					<span className="text-sm font-semibold">
+						Personalización permitida
+					</span>
+					<div className="flex flex-col gap-2 text-sm">
+						<RuleRow
+							icon={<Type size={16} />}
+							label="Texto"
+							allowed={rules?.allowText ?? true}
+						/>
+						<RuleRow
+							icon={<ImageIcon size={16} />}
+							label="Imágenes"
+							allowed={rules?.allowImages ?? true}
+						/>
+						{rules?.maxDesigns != null && (
+							<p className="text-xs text-[#5b5b4a]">
+								Máx. {rules.maxDesigns} elementos de diseño
+							</p>
+						)}
+						{rules?.maxColorsPerDesign != null && (
+							<p className="text-xs text-[#5b5b4a]">
+								Máx. {rules.maxColorsPerDesign} colores
+							</p>
+						)}
 					</div>
 				</div>
 
-				{/* MAIN ACTION */}
-				<button
-					type="button"
-					className="
-            flex items-center gap-3
-            border rounded-[0.2rem]
-            px-4 py-3
-            font-semibold text-sm
-            hover:bg-gray-50
-          "
-				>
-					<Download size={18} />
-					Descargar plantilla de diseño
-				</button>
-
-				{/* TECH INFO */}
-				<div className="flex flex-col gap-3 text-sm">
-					<div className="flex justify-between">
-						<span className="font-medium">Costo de producción</span>
-						<span className="text-[#5b5b4a]">USD 12.41 – 17.66</span>
-					</div>
-
-					<div className="flex justify-between">
-						<span className="font-medium">Área de impresión</span>
-						<span className="text-[#5b5b4a]">4494 × 5097 px</span>
-					</div>
-				</div>
-
-				{/* MATERIAL & FIT */}
-				<div className="bg-[#f4f4ee] rounded-[0.2rem] p-4 flex gap-3">
-					<div className="w-1 bg-black/70 rounded-full" />
+				{/* DESGLOSE DE PRECIO */}
+				<div className="bg-[#f4f4ee] rounded-lg p-4 flex flex-col gap-3">
+					<span className="font-semibold text-sm text-black">
+						Desglose de precio
+					</span>
 
 					<div className="flex flex-col gap-2 text-sm">
-						<span className="font-semibold text-black">Material y ajuste</span>
-
-						<ul className="text-[#5b5b4a] space-y-1">
-							<li>• 100% algodón ring-spun</li>
-							<li>• Tela teñida en prenda (garment-dyed)</li>
-							<li>• Fit unisex regular</li>
-						</ul>
+						{lines.map((l) => (
+							<div
+								key={l.label}
+								className="flex justify-between items-baseline"
+							>
+								<div className="flex flex-col">
+									<span className="text-[#3b3b2f]">{l.label}</span>
+									<span className="text-xs text-[#8a8a76]">
+										{l.detail}
+									</span>
+								</div>
+								<span className="font-medium">
+									{money(l.amount)}
+								</span>
+							</div>
+						))}
 					</div>
-				</div>
 
-				{/* DESIGN RECOMMENDATIONS */}
-				<div className="bg-[#f4f4ee] rounded-[0.2rem] p-4 flex gap-3">
-					<div className="w-1 bg-black/70 rounded-full" />
+					<div className="h-px bg-[#deded4]" />
 
-					<div className="flex flex-col gap-2 text-sm">
-						<span className="font-semibold text-black">
-							Recomendaciones de diseño
+					<div className="flex justify-between items-center">
+						<span className="font-bold text-black">Total</span>
+						<span className="font-bold text-lg text-[#fe6241]">
+							{money(total)}
 						</span>
-
-						<ul className="text-[#5b5b4a] space-y-1">
-							<li>• Resolución mínima: 300 DPI</li>
-							<li>• Usar archivos PNG con fondo transparente</li>
-							<li>• Evitar líneas muy delgadas</li>
-						</ul>
 					</div>
-				</div>
 
-				{/* PRINT METHOD */}
-				<div className="bg-[#efefe8] rounded-[0.2rem] p-4 flex gap-3">
-					<Info size={20} className="shrink-0 mt-1" />
-
-					<div className="flex flex-col gap-2">
-						<span className="font-semibold text-sm">Método de impresión</span>
-
-						<p className="text-sm text-[#5b5b4a] leading-relaxed">
-							Impresión DTG con tintas base agua. Ideal para ilustraciones
-							detalladas y degradados suaves.
-						</p>
-					</div>
-				</div>
-
-				{/* CARE */}
-				<div className="bg-[#f4f4ee] rounded-[0.2rem] p-4 flex gap-3">
-					<div className="w-1 bg-black/70 rounded-full" />
-
-					<div className="flex flex-col gap-2 text-sm">
-						<span className="font-semibold text-black">
-							Cuidado de la prenda
-						</span>
-
-						<ul className="text-[#5b5b4a] space-y-1">
-							<li>• Lavar en frío</li>
-							<li>• No usar secadora</li>
-							<li>• Planchar del reverso</li>
-						</ul>
-					</div>
+					<p className="text-xs text-[#8a8a76]">
+						El precio se actualiza según tu diseño: {sidesEdited}{" "}
+						lado(s) · {designElements} elemento(s) · {colorsUsed}{" "}
+						color(es).
+					</p>
 				</div>
 			</div>
+		</div>
+	);
+}
+
+function RuleRow({
+	icon,
+	label,
+	allowed,
+}: {
+	icon: React.ReactNode;
+	label: string;
+	allowed: boolean;
+}) {
+	return (
+		<div className="flex items-center justify-between">
+			<span className="flex items-center gap-2 text-[#3b3b2f]">
+				{icon}
+				{label}
+			</span>
+			{allowed ? (
+				<span className="flex items-center gap-1 text-xs font-semibold text-green-600">
+					<Check size={14} /> Permitido
+				</span>
+			) : (
+				<span className="flex items-center gap-1 text-xs font-semibold text-red-500">
+					<X size={14} /> No permitido
+				</span>
+			)}
 		</div>
 	);
 }

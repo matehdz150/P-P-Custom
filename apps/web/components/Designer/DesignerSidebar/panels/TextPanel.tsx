@@ -1,13 +1,21 @@
 "use client";
 
-import { Circle, type FabricObject, Rect, Textbox } from "fabric";
+import { Textbox } from "fabric";
 import { ChevronDown, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
+import { makeAreaClip } from "@/lib/fabric/areaClip";
+import {
+	useDesignRules,
+	useElementGuard,
+} from "@/components/Designer/hooks/useProductConfig";
 import { AVAILABLE_FONTS } from "@/lib/fabric/fontList";
+import TextPresets from "./TextPresets";
 
 export default function SidebarTextPanel({ close }: { close: () => void }) {
 	const { getCanvas, getEditableAreas, setActiveObject } = useDesigner();
+	const { allowText } = useDesignRules();
+	const guard = useElementGuard();
 
 	const [search, setSearch] = useState("");
 
@@ -30,6 +38,7 @@ export default function SidebarTextPanel({ close }: { close: () => void }) {
 	const addTextWithFont = (font: string) => {
 		const canvas = getCanvas();
 		if (!canvas) return;
+		if (!guard.canAdd(1)) return;
 
 		const areas = getEditableAreas?.();
 		const area = areas?.[0] ?? null;
@@ -60,34 +69,10 @@ export default function SidebarTextPanel({ close }: { close: () => void }) {
 			width: maxW,
 		});
 
-		// 🔒 CLIP PATH (MISMO QUE IMÁGENES)
+		// 🔒 CLIP PATH (MISMO QUE IMÁGENES) — soporta rect/elipse/triángulo
 		if (area) {
-			let clip: FabricObject;
-
-			if (area instanceof Rect) {
-				clip = new Rect({
-					left: area.left,
-					top: area.top,
-					width: area.width,
-					height: area.height,
-					absolutePositioned: true,
-				});
-			} else if (area instanceof Circle) {
-				clip = new Circle({
-					left: area.left,
-					top: area.top,
-					radius: area.radius,
-					absolutePositioned: true,
-				});
-			} else {
-				// fallback seguro (no debería pasar en tu sistema)
-				return;
-			}
-
-			clip.set({ selectable: false, evented: false });
-			text.clipPath = clip;
-			clip.set({ selectable: false, evented: false });
-			text.clipPath = clip;
+			const clip = makeAreaClip(area);
+			if (clip) text.clipPath = clip;
 		}
 
 		canvas.add(text);
@@ -106,7 +91,20 @@ export default function SidebarTextPanel({ close }: { close: () => void }) {
 				</button>
 			</div>
 
-			{/* CONTENT (scrollable) */}
+			{!allowText ? (
+				<div className="flex-1 p-6">
+					<div className="border border-dashed rounded-xl p-8 text-center text-neutral-500">
+						<p className="font-medium text-neutral-700 mb-1">
+							Este producto no permite texto
+						</p>
+						<p className="text-sm">
+							El proveedor configuró este producto para
+							personalizarse solo con imágenes.
+						</p>
+					</div>
+				</div>
+			) : (
+			/* CONTENT (scrollable) */
 			<div className="flex-1 overflow-y-auto p-6">
 				{/* Search */}
 				<div className="mb-4">
@@ -118,6 +116,9 @@ export default function SidebarTextPanel({ close }: { close: () => void }) {
 						className="w-full px-4 py-2 rounded-[0.2rem] border text-sm bg-[#faf9f5] placeholder:text-gray-500"
 					/>
 				</div>
+
+				{/* Preset designs */}
+				<TextPresets />
 
 				{/* Fonts Section */}
 				<h3 className="mt-8 mb-2 text-md font-semibold">Fuentes</h3>
@@ -147,6 +148,7 @@ export default function SidebarTextPanel({ close }: { close: () => void }) {
 					))}
 				</div>
 			</div>
+			)}
 		</div>
 	);
 }

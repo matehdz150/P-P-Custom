@@ -1,6 +1,7 @@
 "use client";
 
-import { FabricImage, type FabricObject, Textbox } from "fabric";
+import { FabricImage, type FabricObject, Path, Textbox } from "fabric";
+import { CurvedText } from "@/lib/fabric/CurvedText";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -11,6 +12,7 @@ import { RemoveObjectCommand } from "@/lib/history/commands/RemoveObjectCommand"
 
 import { getIcon, getLabel, getSubtitle } from "./helpers";
 import ImageControls from "./ImageControls";
+import ShapeControls from "./ShapeControls";
 import TextControls from "./TextControls";
 
 export default function LayerItem({ obj }: { obj: FabricObject }) {
@@ -87,8 +89,11 @@ export default function LayerItem({ obj }: { obj: FabricObject }) {
 						className="bg-[#fbfaf6] border-t overflow-hidden"
 					>
 						<div className="py-2">
-							{obj instanceof Textbox && <TextControls obj={obj} />}
+							{(obj instanceof Textbox || obj instanceof CurvedText) && (
+								<TextControls obj={obj} />
+							)}
 							{obj instanceof FabricImage && <ImageControls obj={obj} />}
+							{obj instanceof Path && <ShapeControls obj={obj} />}
 						</div>
 					</motion.div>
 				)}

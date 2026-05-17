@@ -1,10 +1,12 @@
 "use client";
 
-import { HardDrive, Upload, X } from "lucide-react";
+import { HardDrive, ImageOff, Upload, X } from "lucide-react";
 import { useAddImage } from "@/components/Designer/hooks/useAddImage";
+import { useDesignRules } from "@/components/Designer/hooks/useProductConfig";
 
 export default function SidebarUploadPanel({ close }: { close: () => void }) {
 	const { addImage } = useAddImage();
+	const { allowImages } = useDesignRules();
 
 	const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
@@ -20,6 +22,19 @@ export default function SidebarUploadPanel({ close }: { close: () => void }) {
 				</button>
 			</div>
 
+			{!allowImages ? (
+				<div className="border border-dashed rounded-xl p-8 text-center flex flex-col items-center gap-3 text-neutral-500">
+					<ImageOff size={36} />
+					<p className="font-medium text-neutral-700">
+						Este producto no permite imágenes
+					</p>
+					<p className="text-sm">
+						El proveedor configuró este producto para personalizarse
+						solo con texto.
+					</p>
+				</div>
+			) : (
+			<>
 			{/* ZONA DE DROP */}
 			<div className="border-2 border-dashed border-neutral-300 rounded-xl p-8 text-center">
 				<Upload size={40} className="mx-auto mb-2 text-neutral-500" />
@@ -64,6 +79,8 @@ export default function SidebarUploadPanel({ close }: { close: () => void }) {
 					Google Drive
 				</button>
 			</div>
+			</>
+			)}
 		</div>
 	);
 }

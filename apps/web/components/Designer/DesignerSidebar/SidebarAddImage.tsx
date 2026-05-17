@@ -1,9 +1,11 @@
 "use client";
 
-import { Circle, FabricImage, type FabricObject, Rect } from "fabric";
+import { FabricImage, type FabricObject } from "fabric";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import { useHistory } from "@/Contexts/HistoryContext";
+import { makeAreaClip } from "@/lib/fabric/areaClip";
 import { AddObjectCommand } from "@/lib/history/commands/AddObjectCommand";
+import { useElementGuard } from "../hooks/useProductConfig";
 
 const ORANGE = "#fe6241";
 
@@ -20,31 +22,8 @@ function applySelectionStyle(obj: FabricObject) {
 }
 
 function applyClip(obj: FabricObject, area: FabricObject | null) {
-	if (!area) return;
-
-	let clip: FabricObject | null = null;
-
-	if (area instanceof Rect) {
-		clip = new Rect({
-			left: area.left,
-			top: area.top,
-			width: area.width,
-			height: area.height,
-			absolutePositioned: true,
-		});
-	} else if (area instanceof Circle) {
-		clip = new Circle({
-			left: area.left,
-			top: area.top,
-			radius: area.radius,
-			absolutePositioned: true,
-		});
-	}
-
-	if (!clip) return;
-
-	clip.set({ selectable: false, evented: false });
-	obj.clipPath = clip;
+	const clip = makeAreaClip(area);
+	if (clip) obj.clipPath = clip;
 }
 
 /* 👇👇👇
@@ -54,10 +33,12 @@ function applyClip(obj: FabricObject, area: FabricObject | null) {
 export function useAddImageLogic() {
 	const { getCanvas, getEditableAreas, setActiveObject } = useDesigner();
 	const { execute } = useHistory();
+	const guard = useElementGuard();
 
 	const addImage = (file: File) => {
 		const canvas = getCanvas();
 		if (!canvas) return;
+		if (!guard.canAdd(1)) return;
 
 		const area = getEditableAreas()[0] ?? null;
 

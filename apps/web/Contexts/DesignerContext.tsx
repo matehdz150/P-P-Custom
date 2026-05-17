@@ -14,9 +14,33 @@ interface SideState {
 	editableAreas: FabricObject[];
 }
 
+export interface DesignerProductConfig {
+	name?: string;
+	rules: {
+		allowText: boolean;
+		allowImages: boolean;
+		maxDesigns?: number;
+		maxColorsPerDesign?: number;
+	};
+	pricing: {
+		basePrice: number;
+		perSidePrice?: number;
+		perDesignPrice?: number;
+		perColorPrice?: number;
+		embroideryExtra?: number;
+	};
+}
+
 interface DesignerContextType {
 	activeSide: string;
 	setActiveSide: (side: string) => void;
+
+	config: DesignerProductConfig | null;
+	setConfig: (c: DesignerProductConfig) => void;
+
+	notice: { title: string; message: string } | null;
+	showNotice: (title: string, message: string) => void;
+	clearNotice: () => void;
 
 	sides: Record<string, SideState>;
 	initSides: (sides: string[]) => void;
@@ -37,6 +61,18 @@ const DesignerContext = createContext<DesignerContextType>(
 
 export function DesignerProvider({ children }: { children: ReactNode }) {
 	const [activeSide, _setActiveSide] = useState<string>("front");
+
+	const [config, setConfig] = useState<DesignerProductConfig | null>(null);
+
+	const [notice, setNotice] = useState<{
+		title: string;
+		message: string;
+	} | null>(null);
+	const showNotice = useCallback(
+		(title: string, message: string) => setNotice({ title, message }),
+		[],
+	);
+	const clearNotice = useCallback(() => setNotice(null), []);
 
 	const [sides, setSides] = useState<Record<string, SideState>>({});
 
@@ -130,6 +166,11 @@ export function DesignerProvider({ children }: { children: ReactNode }) {
 				getEditableAreas,
 				activeObject,
 				setActiveObject,
+				config,
+				setConfig,
+				notice,
+				showNotice,
+				clearNotice,
 			}}
 		>
 			{children}

@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef } from "react";
+import { RefreshCw, X } from "lucide-react";
+import { useRef, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import type { ProductSide, ProductTemplate } from "@/lib/products/types";
 import { LoadingOverlay } from "./design/LoadingOverlay";
@@ -31,7 +32,12 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 	// ---------------------------
 	// Mockup loader
 	// ---------------------------
-	const { isLoading } = useFabricMockup(getCanvas, product.mockups[side]);
+	const { isLoading, reload } = useFabricMockup(
+		getCanvas,
+		product.mockups[side],
+	);
+
+	const [noticeHidden, setNoticeHidden] = useState(false);
 
 	// ---------------------------
 	// Gestures
@@ -65,6 +71,33 @@ export default function DesignerCanvasSide({ side, product }: Props) {
       `}
 			style={{ zIndex: isVisible ? 2 : 1 }}
 		>
+			{/* Aviso: recargar el mockup si no se ve */}
+			{isVisible && !isLoading && !noticeHidden && (
+				<div className="absolute top-4 left-1/2 -translate-x-1/2 z-50">
+					<div className="flex items-center gap-2 bg-white/95 backdrop-blur border border-gray-200 shadow-md rounded-full pl-4 pr-1.5 py-1.5">
+						<span className="text-xs text-gray-600">
+							¿No ves el producto?
+						</span>
+						<button
+							type="button"
+							onClick={() => reload()}
+							className="flex items-center gap-1.5 bg-[#fe6241] text-black text-xs font-semibold rounded-full px-3 py-1.5 hover:bg-[#e5573a] transition-colors"
+						>
+							<RefreshCw size={13} />
+							Recargar imagen
+						</button>
+						<button
+							type="button"
+							onClick={() => setNoticeHidden(true)}
+							aria-label="Cerrar aviso"
+							className="p-1.5 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+						>
+							<X size={14} />
+						</button>
+					</div>
+				</div>
+			)}
+
 			<div
 				className="relative"
 				style={{

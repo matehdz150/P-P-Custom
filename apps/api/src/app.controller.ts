@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Controller, Get } from "@nestjs/common";
 import type { AppService } from "./app.service";
 

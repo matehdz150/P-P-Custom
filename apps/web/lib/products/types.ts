@@ -17,7 +17,29 @@ export type EditableCircleShape = {
 	radius: number;
 };
 
-export type EditableShape = EditableRectShape | EditableCircleShape;
+export type EditableEllipseShape = {
+	id: string;
+	type: "ellipse";
+	left: number;
+	top: number;
+	width: number;
+	height: number;
+};
+
+export type EditableTriangleShape = {
+	id: string;
+	type: "triangle";
+	left: number;
+	top: number;
+	width: number;
+	height: number;
+};
+
+export type EditableShape =
+	| EditableRectShape
+	| EditableEllipseShape
+	| EditableTriangleShape
+	| EditableCircleShape;
 
 // 👇 cualquier string es un lado válido
 export type ProductSide = string;
@@ -34,4 +56,19 @@ export interface ProductTemplate<S extends ProductSide = ProductSide> {
 	mockups: Record<S, string>;
 
 	editableAreas: Record<S, EditableShape[]>;
+
+	customizationRules?: {
+		maxDesigns?: number;
+		allowText?: boolean;
+		allowImages?: boolean;
+		maxColorsPerDesign?: number;
+	};
+
+	pricing?: {
+		basePrice: number;
+		perSidePrice?: number;
+		perDesignPrice?: number;
+		perColorPrice?: number;
+		embroideryExtra?: number;
+	};
 }

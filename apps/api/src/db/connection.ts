@@ -1,10 +1,17 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import * as schema from "../../../../packages/db/schema";
+import { schema, type DBSchema } from "../../../../packages/db/schema/schema";
 
-export const pool = new Pool({
-	connectionString: process.env.DATABASE_URL,
-});
+// En Docker DATABASE_URL apunta a postgres://...@postgres:5432; en local
+// (sin la variable) cae al default localhost.
+const pool = process.env.DATABASE_URL
+  ? new Pool({ connectionString: process.env.DATABASE_URL })
+  : new Pool({
+      host: "localhost",
+      port: 5432,
+      user: "ppcustom",
+      password: "ppcustom123",
+      database: "ppcustom_db",
+    });
 
-// exportamos la instancia del ORM con schemas incluidos
-export const db = drizzle(pool, { schema });
+export const db = drizzle<DBSchema>(pool, { schema });

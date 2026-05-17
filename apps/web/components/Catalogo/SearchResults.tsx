@@ -1,88 +1,139 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Sora } from "next/font/google";
 import Image from "next/image";
-
-// TEMPORAL: Productos mock para simular búsqueda
-const mockProducts = [
-	{
-		id: 1,
-		name: "Playera personalizada",
-		category: "Ropa",
-		price: "Desde $199",
-		image: "/products/shirt.png",
-	},
-	{
-		id: 2,
-		name: "Termo con logo",
-		category: "Accesorios",
-		price: "Desde $249",
-		image: "/products/bottle.png",
-	},
-	{
-		id: 3,
-		name: "Tote Bag estampada",
-		category: "Bolsas",
-		price: "Desde $149",
-		image: "/products/totebag.png",
-	},
-];
+import Link from "next/link";
+import { searchCatalog, SearchResultItem } from "@/lib/api/search";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const sora = Sora({
-	subsets: ["latin"],
-	weight: ["400", "600", "700"],
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
 });
 
 export default function SearchResults({ query }: { query: string }) {
-	const search = query.toLowerCase().trim();
+  const [results, setResults] = useState<SearchResultItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
-	// FILTRADO
-	const results = mockProducts.filter(
-		(p) =>
-			p.name.toLowerCase().includes(search) ||
-			p.category.toLowerCase().includes(search),
-	);
+  useEffect(() => {
+    const q = query.trim();
 
-	const hasResults = results.length > 0;
+    // Si no hay búsqueda, resetea todo
+    if (!q) {
+      setResults([]);
+      setLoading(false);
+      setHasSearched(false);
+      return;
+    }
 
-	return (
-		<div className={`w-full mt-6 ${sora.className}`}>
-			{/* Si NO hay resultados */}
-			{!hasResults && (
-				<div className="text-gray-500 text-sm mt-10">
-					No encontramos productos relacionados con{" "}
-					<span className="font-semibold">{query}</span>.
-				</div>
-			)}
+    setLoading(true);      // 👈 se activa inmediatamente
+    setHasSearched(false);
 
-			{/* GRID DE RESULTADOS */}
-			{hasResults && (
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-					{results.map((product) => (
-						<div
-							key={product.id}
-							className="bg-white rounded-[0.2rem] border hover:shadow-md transition-shadow p-0 cursor-pointer"
-						>
-							{/* Imagen */}
-							<div className="relative w-full aspect-[4/3] bg-[#f5f5f1] rounded-sm overflow-hidden">
-								<Image
-									src={product.image}
-									alt={product.name}
-									fill
-									className="object-cover"
-								/>
-							</div>
+    const timeout = setTimeout(async () => {
+      try {
+        const data = await searchCatalog(q);
+        setResults(data);
+      } finally {
+        setLoading(false);
+        setHasSearched(true); // 👈 búsqueda finalizada
+      }
+    }, 300); // debounce real
 
-							{/* Info */}
-							<div className="mt-3 space-y-1">
-								<h3 className="text-sm font-semibold">{product.name}</h3>
-								<p className="text-xs text-gray-500">{product.category}</p>
-								<p className="text-sm font-semibold mt-1">{product.price}</p>
-							</div>
-						</div>
-					))}
-				</div>
-			)}
-		</div>
-	);
+    return () => clearTimeout(timeout);
+  }, [query]);
+
+  const hasResults = results.length > 0;
+
+  return (
+    <div className={`w-full mt-6 ${sora.className}`}>
+      {/* LOADING */}
+      {loading && <SearchResultsSkeleton />}
+
+      {/* NO RESULTS */}
+      {hasSearched && !loading && !hasResults && (
+        <div className="text-gray-500 text-sm mt-10">
+          No encontramos resultados para{" "}
+          <span className="font-semibold">{query}</span>.
+        </div>
+      )}
+
+      {/* RESULTS */}
+      {!loading && hasResults && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {results.map((item) => (
+            <Link
+              key={`${item.type}-${item.id}`}
+              href={
+                item.type === "product"
+                  ? `/product/${item.id}`
+                  : `/package/${item.id}`
+              }
+              className="bg-white rounded-[0.2rem] border hover:shadow-md transition-shadow cursor-pointer block"
+            >
+              {/* IMAGE */}
+              <div className="relative w-full aspect-[4/3] bg-[#f5f5f1] rounded-sm overflow-hidden">
+                {item.image ? (
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">
+                    Sin imagen
+                  </div>
+                )}
+              </div>
+
+              {/* INFO */}
+              <div className="p-3 space-y-1">
+                <h3 className="text-sm font-semibold">{item.name}</h3>
+
+                <p className="text-xs text-gray-500 capitalize">
+                  {item.type === "product" ? "Producto" : "Paquete"}
+                </p>
+
+                {item.price != null && (
+                  <p className="text-sm font-semibold mt-1">
+                    Desde ${item.price.toLocaleString()}
+                  </p>
+                )}
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* =========================
+   SKELETON
+========================= */
+
+function SearchResultsSkeleton() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div
+          key={i}
+          className="bg-white rounded-[0.2rem] border overflow-hidden"
+        >
+          {/* IMAGE */}
+          <Skeleton className="w-full aspect-[4/3]" />
+
+          {/* INFO */}
+          <div className="p-3 space-y-2">
+            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-3 w-1/3" />
+            <Skeleton className="h-4 w-1/2 mt-2" />
+          </div>
+		  
+        </div>
+      ))}
+    </div>
+  );
 }
