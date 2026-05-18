@@ -7,6 +7,7 @@ import {
 import crypto from "crypto";
 import { desc, eq } from "drizzle-orm";
 import {
+	packages,
 	products,
 	providerSessions,
 	providers,
@@ -255,6 +256,14 @@ export class ProvidersService {
 			where: eq(products.providerId, providerId),
 			orderBy: desc(products.createdAt),
 			with: { images: true, pricing: true },
+		});
+	}
+
+	listPackagesByProvider(providerId: string) {
+		return db.query.packages.findMany({
+			where: eq(packages.providerId, providerId),
+			orderBy: desc(packages.createdAt),
+			with: { pricing: true },
 		});
 	}
 }

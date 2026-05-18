@@ -8,6 +8,8 @@ interface Props {
 	zoomOut: () => void;
 	isPanning: boolean;
 	togglePan: () => void;
+	onSave: () => void;
+	saving?: boolean;
 }
 
 export default function DesignerBottomBar({
@@ -16,6 +18,8 @@ export default function DesignerBottomBar({
 	zoomOut,
 	isPanning,
 	togglePan,
+	onSave,
+	saving,
 }: Props) {
 	return (
 		<div
@@ -56,9 +60,11 @@ export default function DesignerBottomBar({
 			{/* BOTÓN DE GUARDAR */}
 			<button
 				type="button"
-				className="bg-[#fe6241] hover:bg-lime-400 text-black font-medium px-6 py-2 rounded font-sora"
+				onClick={onSave}
+				disabled={saving}
+				className="bg-[#1a1a1a] hover:bg-[#333] disabled:opacity-50 text-white font-semibold px-6 py-2 rounded-lg text-sm transition-colors font-sora"
 			>
-				Guardar producto
+				{saving ? "Preparando…" : "Continuar con el pedido →"}
 			</button>
 		</div>
 	);

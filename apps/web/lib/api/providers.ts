@@ -98,3 +98,24 @@ export function createProviderProduct(payload: any) {
 		body: JSON.stringify(payload),
 	});
 }
+
+/* ---- Provider packages ---- */
+export type ProviderPackage = {
+	id: string;
+	name: string;
+	status: string;
+	image?: string | null;
+	pricing?: { basePrice: number } | null;
+};
+
+export function getMyPackages() {
+	return apiFetch<ProviderPackage[]>("/providers/me/packages");
+}
+
+// biome-ignore lint/suspicious/noExplicitAny: payload reuses admin package shape
+export function createProviderPackage(payload: any) {
+	return apiFetch<{ id: string }>("/providers/packages", {
+		method: "POST",
+		body: JSON.stringify(payload),
+	});
+}

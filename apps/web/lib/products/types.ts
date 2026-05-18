@@ -71,4 +71,6 @@ export interface ProductTemplate<S extends ProductSide = ProductSide> {
 		perColorPrice?: number;
 		embroideryExtra?: number;
 	};
+
+	images?: { url: string; order: number }[];
 }
