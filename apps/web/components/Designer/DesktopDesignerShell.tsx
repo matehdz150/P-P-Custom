@@ -23,8 +23,15 @@ import { usePriceBreakdown } from "./hooks/useProductConfig";
 
 export default function DesktopDesignerShell({
 	product,
+	saveDraft,
+	saving,
 }: {
 	product: ProductTemplate;
+	saveDraft: (
+		manual?: boolean,
+		status?: "draft" | "completed",
+	) => Promise<string | null>;
+	saving: boolean;
 }) {
 	const router = useRouter();
 	const { activeSide, setActiveSide, getCanvas, sides, config } = useDesigner();
@@ -34,7 +41,7 @@ export default function DesktopDesignerShell({
 	const [isPanning, setIsPanning] = useState(false);
 	useCanvasPan({ fabricCanvas: canvas, isPanning });
 	const [layersOpen, setLayersOpen] = useState(true);
-	const [saving, setSaving] = useState(false);
+	const [exporting, setExporting] = useState(false);
 
 	const { lines, total } = usePriceBreakdown();
 
@@ -73,8 +80,11 @@ export default function DesktopDesignerShell({
 	}, [getCanvas]);
 
 	async function handleSave() {
-		setSaving(true);
+		setExporting(true);
 		try {
+			// Guardar el borrador como diseño completado en la base de datos
+			await saveDraft(false, "completed");
+
 			// Export each side — remove background first to avoid tainted-canvas error
 			// (the mockup is loaded without crossOrigin so it taints the canvas).
 			// We export only the design layer cropped to the editable area, then restore.
@@ -139,7 +149,7 @@ export default function DesktopDesignerShell({
 
 			router.push(`/design/${product.id}/resumen`);
 		} finally {
-			setSaving(false);
+			setExporting(false);
 		}
 	}
 
@@ -177,7 +187,8 @@ export default function DesktopDesignerShell({
 					isPanning={isPanning}
 					togglePan={() => setIsPanning((p) => !p)}
 					onSave={handleSave}
-					saving={saving}
+					saving={exporting || saving}
+					onSaveDraft={() => saveDraft(true, "draft")}
 				/>
 				<TextToolbar />
 				<ImageToolbar />

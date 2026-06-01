@@ -12,8 +12,15 @@ import MobileTextToolbarContainer from "./MobileControllers/MobileTextToolbar/Mo
 
 export default function MobileDesignerShell({
 	product,
+	saveDraft,
+	saving,
 }: {
 	product: ProductTemplate;
+	saveDraft: (
+		manual?: boolean,
+		status?: "draft" | "completed",
+	) => Promise<string | null>;
+	saving: boolean;
 }) {
 	const { activeSide, setActiveSide } = useDesigner();
 
