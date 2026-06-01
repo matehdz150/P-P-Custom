@@ -1,14 +1,14 @@
 "use client";
 
 import { Textbox } from "fabric";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import type { ProductTemplate } from "@/lib/products/types";
-import CurvedTextEditor from "./design/CurvedTextEditor";
-import DesignerNoticeModal from "./DesignerNoticeModal";
 import DesignerCanvasSide from "./DesignerCanvasSide";
+import DesignerNoticeModal from "./DesignerNoticeModal";
 import DesignerSidebar from "./DesignerSidebar/DesignerSidebar";
+import CurvedTextEditor from "./design/CurvedTextEditor";
 import DesignerBottomBar from "./design/DesignerBottomBar";
 import DesignerSideSwitcher from "./design/DesignerSideSwitcher";
 import PreviewEditButtons from "./design/PreviewEditButtons";
@@ -71,7 +71,9 @@ export default function DesktopDesignerShell({
 			if (isEditingText) return;
 
 			canvas.discardActiveObject();
-			activeObjects.forEach((obj) => canvas.remove(obj));
+			activeObjects.forEach((obj) => {
+				canvas.remove(obj);
+			});
 			canvas.requestRenderAll();
 		};
 
@@ -82,6 +84,27 @@ export default function DesktopDesignerShell({
 	async function handleSave() {
 		setExporting(true);
 		try {
+			// Forzar salida de edición de texto en todos los lados antes de guardar
+			for (const [, state] of Object.entries(sides)) {
+				if (state.canvas) {
+					try {
+						const c = state.canvas;
+						const activeObj = c.getActiveObject();
+						if (activeObj && typeof (activeObj as any).exitEditing === "function" && (activeObj as any).isEditing) {
+							(activeObj as any).exitEditing();
+						}
+						const objects = c.getObjects();
+						for (const obj of objects) {
+							if (obj && typeof (obj as any).exitEditing === "function" && (obj as any).isEditing) {
+								(obj as any).exitEditing();
+							}
+						}
+					} catch (e) {
+						console.warn("Error exiting text editing in handleSave:", e);
+					}
+				}
+			}
+
 			// Guardar el borrador como diseño completado en la base de datos
 			await saveDraft(false, "completed");
 
@@ -107,18 +130,37 @@ export default function DesktopDesignerShell({
 					await new Promise((r) => setTimeout(r, 60));
 
 					// Compute bounding box from the first editable area shape
-					const area = product.editableAreas[side as keyof typeof product.editableAreas]?.[0];
-					let cropOpts: { left: number; top: number; width: number; height: number } | undefined;
+					const area =
+						product.editableAreas[
+							side as keyof typeof product.editableAreas
+						]?.[0];
+					let cropOpts:
+						| { left: number; top: number; width: number; height: number }
+						| undefined;
 					if (area) {
 						if (area.type === "circle") {
-							cropOpts = { left: area.cx - area.radius, top: area.cy - area.radius, width: area.radius * 2, height: area.radius * 2 };
+							cropOpts = {
+								left: area.cx - area.radius,
+								top: area.cy - area.radius,
+								width: area.radius * 2,
+								height: area.radius * 2,
+							};
 						} else {
-							cropOpts = { left: area.left, top: area.top, width: area.width, height: area.height };
+							cropOpts = {
+								left: area.left,
+								top: area.top,
+								width: area.width,
+								height: area.height,
+							};
 						}
 					}
 
 					try {
-						snapshots[side] = c.toDataURL({ format: "png", multiplier: 1, ...cropOpts });
+						snapshots[side] = c.toDataURL({
+							format: "png",
+							multiplier: 1,
+							...cropOpts,
+						});
 					} catch {
 						snapshots[side] = "";
 					}
@@ -133,7 +175,9 @@ export default function DesktopDesignerShell({
 			}
 
 			// Store summary payload in sessionStorage
-			const sortedImages = [...(product.images ?? [])].sort((a, b) => a.order - b.order);
+			const sortedImages = [...(product.images ?? [])].sort(
+				(a, b) => a.order - b.order,
+			);
 			const payload = {
 				productId: product.id,
 				productName: config?.name ?? product.name,
@@ -144,6 +188,7 @@ export default function DesktopDesignerShell({
 				sideLabels: product.sideLabels ?? {},
 				pricingLines: lines,
 				total,
+				editableAreas: product.editableAreas,
 			};
 			sessionStorage.setItem("designer_order_summary", JSON.stringify(payload));
 

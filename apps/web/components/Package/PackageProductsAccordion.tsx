@@ -24,7 +24,7 @@ type ProductTemplateData = {
 type PackageItem = {
   id: string;
   quantity: number;
-  product: {
+  product?: {
     id: string;
     name: string;
     images?: {
@@ -67,6 +67,9 @@ export function PackageProductsAccordion({ items = [] }: Props) {
     <Accordion type="single" collapsible className="space-y-2">
       {items.map((item) => {
         const product = item.product;
+
+        // Guard: skip items without an associated product
+        if (!product) return null;
 
         const sideLabels = product.productTemplateData?.sideLabels ?? {};
 

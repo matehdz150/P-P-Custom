@@ -34,6 +34,22 @@ export default function ShapesPanel({ close }: { close: () => void }) {
 		if (!canvas) return;
 		if (!guard.canAdd(1)) return;
 
+		// Forzar salida de edición de texto
+		try {
+			const activeObj = canvas.getActiveObject();
+			if (activeObj && typeof (activeObj as any).exitEditing === "function" && (activeObj as any).isEditing) {
+				(activeObj as any).exitEditing();
+			}
+			const objects = canvas.getObjects();
+			for (const obj of objects) {
+				if (obj && typeof (obj as any).exitEditing === "function" && (obj as any).isEditing) {
+					(obj as any).exitEditing();
+				}
+			}
+		} catch (e) {
+			console.warn("Error exiting text editing in insertShape:", e);
+		}
+
 		const area = getEditableAreas?.()?.[0] ?? null;
 		let cx = canvas.getWidth() / 2;
 		let cy = canvas.getHeight() / 2;

@@ -35,13 +35,35 @@ export function useDesignerAutosave(productId: string) {
 
 			for (const [side, state] of Object.entries(sidesRef.current)) {
 				if (state.canvas && (state.canvas as any).contextContainer) {
-					const json = state.canvas.toJSON();
-					canvasData[side] = json;
+					const c = state.canvas;
 
-					// Validamos si hay elementos colocados por el usuario
-					// (excludeFromExport: true hace que las áreas editables no aparezcan en 'objects')
-					if (json.objects && json.objects.length > 0) {
-						hasObjects = true;
+					// Desactivar edición de texto de forma segura
+					try {
+						const activeObj = c.getActiveObject();
+						if (activeObj && typeof (activeObj as any).exitEditing === "function" && (activeObj as any).isEditing) {
+							(activeObj as any).exitEditing();
+						}
+						const objects = c.getObjects();
+						for (const obj of objects) {
+							if (obj && typeof (obj as any).exitEditing === "function" && (obj as any).isEditing) {
+								(obj as any).exitEditing();
+							}
+						}
+					} catch (e) {
+						console.warn("Error exiting text editing in saveDraft:", e);
+					}
+
+					try {
+						const json = c.toJSON();
+						canvasData[side] = json;
+
+						// Validamos si hay elementos colocados por el usuario
+						// (excludeFromExport: true hace que las áreas editables no aparezcan en 'objects')
+						if (json.objects && json.objects.length > 0) {
+							hasObjects = true;
+						}
+					} catch (err) {
+						console.error(`Error serializing canvas to JSON for side ${side}:`, err);
 					}
 				}
 			}
