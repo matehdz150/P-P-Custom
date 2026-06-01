@@ -193,7 +193,8 @@ export function ProviderProductForm() {
 					)}
 
 					{current.id === "info" && (
-						<GeneralInfoSection value={form} onChange={update} />
+						// biome-ignore lint/suspicious/noExplicitAny: generic key vs string mismatch
+						<GeneralInfoSection value={form} onChange={update as any} />
 					)}
 
 					{current.id === "images" && (

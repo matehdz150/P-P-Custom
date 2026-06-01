@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createProduct } from "@/lib/api/products";
+import { createProduct, type ProductPrintSide, type ProductImage, type ProductSize, type ProductColor } from "@/lib/api/products";
 import { getTemplates } from "@/lib/api/templates";
 
 import { GeneralInfoSection } from "./FormCreate/GeneralInfoSection";
@@ -41,14 +41,14 @@ export function ProductForm() {
     templateId: "",
     isCustomizable: true,
 
-    images: [],
+    images: [] as ProductImage[],
     pricing: { basePrice: 0 },
-    sizes: [],
-    colors: [],
-    printSides: [],
+    sizes: [] as ProductSize[],
+    colors: [] as ProductColor[],
+    printSides: [] as ProductPrintSide[],
 
     production: undefined,
-    customizationRules: {},
+    customizationRules: undefined as (Record<string, any> | undefined),
   });
 
   function update<K extends keyof typeof form>(key: K, value: any) {
@@ -132,7 +132,8 @@ export function ProductForm() {
       />
 
       {/* GENERAL */}
-      <GeneralInfoSection value={form} onChange={update} />
+      {/* biome-ignore lint/suspicious/noExplicitAny: generic key vs string mismatch between parent and child forms */}
+      <GeneralInfoSection value={form} onChange={update as any} />
 
       {/* IMAGES */}
       <ImagesSection
@@ -166,7 +167,7 @@ export function ProductForm() {
 
       {/* CUSTOM RULES */}
       <CustomizationRulesSection
-        value={form.customizationRules}
+        value={form.customizationRules as any}
         onChange={(v) => update("customizationRules", v)}
       />
 

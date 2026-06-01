@@ -26,10 +26,8 @@ export type GeneralInfo = {
 
 type Props = {
   value: GeneralInfo;
-  onChange: <K extends keyof GeneralInfo>(
-    key: K,
-    value: GeneralInfo[K]
-  ) => void;
+  // biome-ignore lint/suspicious/noExplicitAny: parent form uses a generic updater
+  onChange: (key: string, value: any) => void;
 };
 
 export function GeneralInfoSection({ value, onChange }: Props) {
