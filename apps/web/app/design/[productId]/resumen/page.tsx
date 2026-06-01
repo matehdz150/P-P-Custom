@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ChevronRight, Package, ShoppingBag } from "lucide-react";
+import { ArrowLeft, Package, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
@@ -17,6 +17,7 @@ type OrderSummary = {
 	sideLabels: Record<string, string>;
 	pricingLines: PriceLine[];
 	total: number;
+	editableAreas?: Record<string, any[]>;
 };
 
 function money(n: number) {
@@ -25,6 +26,80 @@ function money(n: number) {
 		currency: "MXN",
 		maximumFractionDigits: 2,
 	}).format(n);
+}
+
+function DesignMockupPreview({
+	mockupUrl,
+	snapshotUrl,
+	area,
+	className = "",
+}: {
+	mockupUrl: string | null;
+	snapshotUrl: string | null;
+	area: any;
+	className?: string;
+}) {
+	let leftPct = 0;
+	let topPct = 0;
+	let widthPct = 0;
+	let heightPct = 0;
+
+	if (area) {
+		if (area.type === "circle") {
+			const left = area.cx - area.radius;
+			const top = area.cy - area.radius;
+			const size = area.radius * 2;
+			leftPct = (left / 1445) * 100;
+			topPct = (top / 825) * 100;
+			widthPct = (size / 1445) * 100;
+			heightPct = (size / 825) * 100;
+		} else {
+			leftPct = (area.left / 1445) * 100;
+			topPct = (area.top / 825) * 100;
+			widthPct = (area.width / 1445) * 100;
+			heightPct = (area.height / 825) * 100;
+		}
+	}
+
+	return (
+		<div
+			className={`relative aspect-[1445/825] bg-[#f2f3ea] overflow-hidden ${className}`}
+		>
+			{mockupUrl && (
+				<img
+					src={mockupUrl}
+					alt="Prenda base"
+					className="absolute top-0 bottom-0 left-[25.78%] w-[48.44%] h-full object-contain pointer-events-none select-none"
+				/>
+			)}
+			{snapshotUrl &&
+				(area ? (
+					<div
+						className="absolute pointer-events-none select-none"
+						style={{
+							left: `${leftPct}%`,
+							top: `${topPct}%`,
+							width: `${widthPct}%`,
+							height: `${heightPct}%`,
+						}}
+					>
+						<img
+							src={snapshotUrl}
+							alt="Diseño personalizado"
+							className="w-full h-full object-contain"
+						/>
+					</div>
+				) : (
+					<div className="absolute top-0 bottom-0 left-[25.78%] w-[48.44%] h-full flex items-center justify-center p-4 pointer-events-none select-none">
+						<img
+							src={snapshotUrl}
+							alt="Diseño personalizado"
+							className="max-w-full max-h-full object-contain"
+						/>
+					</div>
+				))}
+		</div>
+	);
 }
 
 export default function OrderSummaryPage({
@@ -53,7 +128,9 @@ export default function OrderSummaryPage({
 			<div className="flex min-h-screen items-center justify-center bg-white">
 				<div className="text-center">
 					<Package className="mx-auto h-12 w-12 text-[#ccc]" />
-					<p className="mt-4 text-[15px] font-semibold text-[#1a1a1a]">No hay resumen disponible</p>
+					<p className="mt-4 text-[15px] font-semibold text-[#1a1a1a]">
+						No hay resumen disponible
+					</p>
 					<Link
 						href={`/design/${productId}`}
 						className="mt-4 inline-flex items-center gap-1.5 text-sm text-[#555] underline"
@@ -66,10 +143,12 @@ export default function OrderSummaryPage({
 	}
 
 	const sideLabel = (s: string) =>
-		summary.sideLabels?.[s] ?? (s === "front" ? "Frente" : s === "back" ? "Espalda" : s);
+		summary.sideLabels?.[s] ??
+		(s === "front" ? "Frente" : s === "back" ? "Espalda" : s);
 
 	const activeSnapshot = summary.snapshots[activeSide];
 	const activeMockup = summary.mockups[activeSide];
+	const activeArea = summary.editableAreas?.[activeSide]?.[0];
 
 	return (
 		<div className="min-h-screen bg-[#f7f7f5]">
@@ -83,20 +162,23 @@ export default function OrderSummaryPage({
 						<ArrowLeft className="h-4 w-4" />
 						Editar diseño
 					</Link>
-					<p className="text-[13px] font-semibold text-[#1a1a1a]">Resumen del pedido</p>
+					<p className="text-[13px] font-semibold text-[#1a1a1a]">
+						Resumen del pedido
+					</p>
 					<div className="w-24" />
 				</div>
 			</header>
 
 			<div className="mx-auto max-w-6xl px-4 py-8">
 				<div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px]">
-
 					{/* ── LEFT: product + design ── */}
 					<div className="space-y-5">
 						{/* Product card */}
 						<div className="overflow-hidden rounded-2xl border border-[#e8e8e8] bg-white">
 							<div className="border-b border-[#f0f0f0] px-6 py-4">
-								<h2 className="text-[15px] font-bold text-[#1a1a1a]">Tu producto</h2>
+								<h2 className="text-[15px] font-bold text-[#1a1a1a]">
+									Tu producto
+								</h2>
 							</div>
 
 							<div className="p-6">
@@ -120,8 +202,12 @@ export default function OrderSummaryPage({
 
 									{/* Info */}
 									<div className="flex-1">
-										<p className="text-[16px] font-bold text-[#1a1a1a]">{summary.productName}</p>
-										<p className="mt-1 text-[13px] text-[#888]">Producto personalizado</p>
+										<p className="text-[16px] font-bold text-[#1a1a1a]">
+											{summary.productName}
+										</p>
+										<p className="mt-1 text-[13px] text-[#888]">
+											Producto personalizado
+										</p>
 
 										{/* Side selector */}
 										{summary.sides.length > 1 && (
@@ -153,45 +239,52 @@ export default function OrderSummaryPage({
 								<h2 className="text-[15px] font-bold text-[#1a1a1a]">
 									Vista previa del diseño
 									{summary.sides.length > 1 && (
-										<span className="ml-2 text-[13px] font-normal text-[#888]">— {sideLabel(activeSide)}</span>
+										<span className="ml-2 text-[13px] font-normal text-[#888]">
+											— {sideLabel(activeSide)}
+										</span>
 									)}
 								</h2>
 							</div>
 
 							<div className="p-6">
-								{/* Main preview: design only (cropped to editable area) */}
-								<div className="relative mx-auto aspect-square max-w-sm overflow-hidden rounded-xl bg-[#f3f3f1]">
-									{activeSnapshot && (
-										<Image
-											src={activeSnapshot}
-											alt="Diseño"
-											fill
-											className="object-contain"
-											sizes="400px"
-										/>
-									)}
+								{/* Main preview: design layered over mockup */}
+								<div className="relative mx-auto w-full max-w-lg overflow-hidden rounded-xl border border-gray-200/80 shadow-sm">
+									<DesignMockupPreview
+										mockupUrl={activeMockup}
+										snapshotUrl={activeSnapshot}
+										area={activeArea}
+										className="w-full"
+									/>
 								</div>
 
 								{/* Thumbnail strip if multiple sides */}
 								{summary.sides.length > 1 && (
 									<div className="mt-4 flex justify-center gap-3">
-										{summary.sides.map((s) => (
-											<button
-												key={s}
-												type="button"
-												onClick={() => setActiveSide(s)}
-												className={`relative h-16 w-16 overflow-hidden rounded-lg border-2 bg-[#e8e8e8] transition-colors ${
-													activeSide === s ? "border-[#1a1a1a]" : "border-transparent hover:border-[#ccc]"
-												}`}
-											>
-												{summary.snapshots[s] && (
-													<Image src={summary.snapshots[s]} alt="design" fill className="object-contain" sizes="64px" />
-												)}
-												<span className="absolute bottom-0 left-0 right-0 bg-black/40 py-0.5 text-center text-[9px] font-semibold text-white">
-													{sideLabel(s)}
-												</span>
-											</button>
-										))}
+										{summary.sides.map((s) => {
+											const sideArea = summary.editableAreas?.[s]?.[0];
+											return (
+												<button
+													key={s}
+													type="button"
+													onClick={() => setActiveSide(s)}
+													className={`relative h-16 w-24 overflow-hidden rounded-lg border-2 transition-all ${
+														activeSide === s
+															? "border-[#1a1a1a] scale-105 shadow-sm"
+															: "border-transparent opacity-75 hover:opacity-100"
+													}`}
+												>
+													<DesignMockupPreview
+														mockupUrl={summary.mockups[s]}
+														snapshotUrl={summary.snapshots[s]}
+														area={sideArea}
+														className="w-full h-full"
+													/>
+													<span className="absolute bottom-0 left-0 right-0 bg-black/60 py-0.5 text-center text-[8px] font-semibold text-white tracking-wide uppercase">
+														{sideLabel(s)}
+													</span>
+												</button>
+											);
+										})}
 									</div>
 								)}
 							</div>
@@ -201,12 +294,17 @@ export default function OrderSummaryPage({
 					{/* ── RIGHT: summary ── */}
 					<div className="space-y-5">
 						<div className="rounded-2xl border border-[#e8e8e8] bg-white p-6">
-							<h2 className="mb-5 text-[16px] font-bold text-[#1a1a1a]">Resumen</h2>
+							<h2 className="mb-5 text-[16px] font-bold text-[#1a1a1a]">
+								Resumen
+							</h2>
 
 							{/* Price lines */}
 							<div className="space-y-3">
 								{summary.pricingLines.map((line) => (
-									<div key={line.label} className="flex items-start justify-between gap-3">
+									<div
+										key={line.label}
+										className="flex items-start justify-between gap-3"
+									>
 										<div>
 											<p className="text-[13px] text-[#1a1a1a]">{line.label}</p>
 											{line.detail && (
@@ -225,10 +323,14 @@ export default function OrderSummaryPage({
 							{/* Total */}
 							<div className="flex items-center justify-between">
 								<p className="text-[15px] font-bold text-[#1a1a1a]">Total</p>
-								<p className="text-[20px] font-black text-[#1a1a1a]">{money(summary.total)}</p>
+								<p className="text-[20px] font-black text-[#1a1a1a]">
+									{money(summary.total)}
+								</p>
 							</div>
 
-							<p className="mt-2 text-[11px] text-[#bbb]">Precio estimado · IVA no incluido</p>
+							<p className="mt-2 text-[11px] text-[#bbb]">
+								Precio estimado · IVA no incluido
+							</p>
 
 							{/* CTA */}
 							<button
@@ -246,8 +348,12 @@ export default function OrderSummaryPage({
 
 						{/* Edit link */}
 						<div className="rounded-2xl border border-[#e8e8e8] bg-white p-5">
-							<p className="text-[13px] font-semibold text-[#1a1a1a]">¿Quieres cambiar algo?</p>
-							<p className="mt-1 text-[12px] text-[#888]">Puedes volver al diseñador y seguir editando tu producto.</p>
+							<p className="text-[13px] font-semibold text-[#1a1a1a]">
+								¿Quieres cambiar algo?
+							</p>
+							<p className="mt-1 text-[12px] text-[#888]">
+								Puedes volver al diseñador y seguir editando tu producto.
+							</p>
 							<Link
 								href={`/design/${productId}`}
 								className="mt-3 flex items-center gap-1 text-[13px] font-semibold text-[#1a1a1a] underline underline-offset-2"
