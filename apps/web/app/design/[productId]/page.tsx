@@ -61,6 +61,9 @@ const fontClasses = `
   ${greatvibes.variable}
 `;
 
+import { Suspense } from "react";
+import Loading from "@/components/Designer/Loading";
+
 export default async function Page({
 	params,
 }: {
@@ -72,7 +75,9 @@ export default async function Page({
 		<div className={fontClasses}>
 			<DesignerProvider>
 				<HistoryProvider>
-					<ProductDesigner productId={productId} />
+					<Suspense fallback={<Loading />}>
+						<ProductDesigner productId={productId} />
+					</Suspense>
 				</HistoryProvider>
 			</DesignerProvider>
 		</div>

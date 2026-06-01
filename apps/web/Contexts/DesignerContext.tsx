@@ -45,7 +45,7 @@ interface DesignerContextType {
 	sides: Record<string, SideState>;
 	initSides: (sides: string[]) => void;
 
-	registerCanvas: (side: string, canvas: Canvas) => void;
+	registerCanvas: (side: string, canvas: Canvas | null) => void;
 	setEditableAreas: (side: string, areas: FabricObject[]) => void;
 
 	getCanvas: () => Canvas | null;
@@ -89,7 +89,7 @@ export function DesignerProvider({ children }: { children: ReactNode }) {
 	}, []);
 
 	// Registrar canvas
-	const registerCanvas = useCallback((side: string, canvas: Canvas) => {
+	const registerCanvas = useCallback((side: string, canvas: Canvas | null) => {
 		setSides((prev) => {
 			if (prev[side]?.canvas === canvas) return prev;
 			return { ...prev, [side]: { ...prev[side], canvas } };
