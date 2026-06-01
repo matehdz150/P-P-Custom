@@ -33,6 +33,27 @@ export default function MobileDesignerShell({
 	async function handleSave() {
 		setExporting(true);
 		try {
+			// Forzar salida de edición de texto en todos los lados antes de guardar
+			for (const [, state] of Object.entries(sides)) {
+				if (state.canvas) {
+					try {
+						const c = state.canvas;
+						const activeObj = c.getActiveObject();
+						if (activeObj && typeof (activeObj as any).exitEditing === "function" && (activeObj as any).isEditing) {
+							(activeObj as any).exitEditing();
+						}
+						const objects = c.getObjects();
+						for (const obj of objects) {
+							if (obj && typeof (obj as any).exitEditing === "function" && (obj as any).isEditing) {
+								(obj as any).exitEditing();
+							}
+						}
+					} catch (e) {
+						console.warn("Error exiting text editing in mobile handleSave:", e);
+					}
+				}
+			}
+
 			// Guardar el borrador como diseño completado en la base de datos
 			await saveDraft(false, "completed");
 
