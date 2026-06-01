@@ -12,13 +12,14 @@ import { TemplatesModule } from "./templates/templates.module";
 import { CategoriesModule } from "./categories/categories.module";
 import { SearchModule } from "./catalog/catalog.module";
 import { ProvidersModule } from "./providers/providers.module";
+import { UserDesignsModule } from "./user-designs/user-designs.module";
 
 @Module({
 	imports: [
 		ConfigModule.forRoot({
 			isGlobal: true,
 		}),
-		DbModule, AuthModule, ProductsModule, UploadsModule, PackagesModule, TemplatesModule, CategoriesModule, SearchModule, ProvidersModule
+		DbModule, AuthModule, ProductsModule, UploadsModule, PackagesModule, TemplatesModule, CategoriesModule, SearchModule, ProvidersModule, UserDesignsModule
 	],
 	controllers: [AppController],
 	providers: [AppService],
