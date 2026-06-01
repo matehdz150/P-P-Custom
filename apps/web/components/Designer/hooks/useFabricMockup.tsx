@@ -40,6 +40,7 @@ export function useFabricMockup(
 				originY: "center",
 				selectable: false,
 				evented: false,
+				excludeFromExport: true,
 			});
 			fImg.scaleToWidth(700);
 			fImg.set({

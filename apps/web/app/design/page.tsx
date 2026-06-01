@@ -57,6 +57,9 @@ const greatvibes = Great_Vibes({
 	weight: "400",
 });
 
+import { Suspense } from "react";
+import Loading from "@/components/Designer/Loading";
+
 export default function Page({ params }: { params: { productId: string } }) {
 	return (
 		<div
@@ -69,7 +72,9 @@ export default function Page({ params }: { params: { productId: string } }) {
 		>
 			<DesignerProvider>
 				<HistoryProvider>
-					<ProductDesigner productId={params.productId} />
+					<Suspense fallback={<Loading />}>
+						<ProductDesigner productId={params.productId} />
+					</Suspense>
 				</HistoryProvider>
 			</DesignerProvider>
 		</div>
