@@ -4,10 +4,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useProviderAuth } from "@/Contexts/ProviderAuthContext";
 import { providerLogin } from "@/lib/api/providers";
 
 export default function ProviderLoginPage() {
 	const router = useRouter();
+	const { refresh } = useProviderAuth();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState<string | null>(null);
@@ -19,7 +21,9 @@ export default function ProviderLoginPage() {
 		setLoading(true);
 		try {
 			await providerLogin(email.trim(), password);
-			router.push("/proveedor");
+			// Recargar el contexto para que la cookie recién seteada sea leída
+			await refresh();
+			router.replace("/proveedor");
 		} catch {
 			setError("Correo o contraseña incorrectos");
 		} finally {
