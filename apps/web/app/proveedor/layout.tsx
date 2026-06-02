@@ -9,6 +9,7 @@ import {
 	PanelLeft,
 	Plus,
 	Settings,
+	ShoppingBag,
 	UserRound,
 } from "lucide-react";
 import Link from "next/link";
@@ -71,7 +72,9 @@ function Shell({ children }: { children: React.ReactNode }) {
 						? "Nuevo paquete"
 						: pathname.includes("/paquetes")
 							? "Mis paquetes"
-							: "Proveedor";
+							: pathname.includes("/pedidos")
+								? "Pedidos"
+								: "Proveedor";
 
 	const SIDEBAR_W = 230;
 
@@ -105,6 +108,7 @@ function Shell({ children }: { children: React.ReactNode }) {
 				<nav className="mt-3 flex-1 overflow-y-auto px-2">
 					<NavLink href="/proveedor" label="Mis productos" icon={Grid2X2} />
 					<NavLink href="/proveedor/paquetes" label="Mis paquetes" icon={Package} />
+					<NavLink href="/proveedor/pedidos" label="Pedidos" icon={ShoppingBag} />
 					<NavLink href="/proveedor/perfil" label="Perfil público" icon={UserRound} />
 
 					<div className="mt-4 mb-1 flex items-center justify-between px-2">
