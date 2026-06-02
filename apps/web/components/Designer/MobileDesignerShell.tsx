@@ -55,7 +55,7 @@ export default function MobileDesignerShell({
 			}
 
 			// Guardar el borrador como diseño completado en la base de datos
-			await saveDraft(false, "completed");
+			const designId = await saveDraft(false, "completed");
 
 			// Export each side — remove background first to avoid tainted-canvas error
 			const snapshots: Record<string, string> = {};
@@ -126,6 +126,7 @@ export default function MobileDesignerShell({
 				(a, b) => a.order - b.order,
 			);
 			const payload = {
+				designId,
 				productId: product.id,
 				productName: config?.name ?? product.name,
 				productImage: sortedImages[0]?.url ?? null,

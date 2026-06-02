@@ -1,13 +1,23 @@
 "use client";
 
-import { ArrowLeft, Package, ShoppingBag } from "lucide-react";
+import {
+	ArrowLeft,
+	CheckCircle2,
+	Loader2,
+	Package,
+	ShoppingBag,
+	XCircle,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
+import { createOrder } from "@/lib/api/orders";
 
 type PriceLine = { label: string; detail: string; amount: number };
 
 type OrderSummary = {
+	designId: string | null;
 	productId: string;
 	productName: string;
 	productImage: string | null;
@@ -19,6 +29,8 @@ type OrderSummary = {
 	total: number;
 	editableAreas?: Record<string, any[]>;
 };
+
+type CheckoutState = "idle" | "loading" | "success" | "error";
 
 function money(n: number) {
 	return new Intl.NumberFormat("es-MX", {
@@ -108,8 +120,12 @@ export default function OrderSummaryPage({
 	params: Promise<{ productId: string }>;
 }) {
 	const { productId } = use(params);
+	const router = useRouter();
 	const [summary, setSummary] = useState<OrderSummary | null>(null);
 	const [activeSide, setActiveSide] = useState<string>("");
+	const [checkoutState, setCheckoutState] = useState<CheckoutState>("idle");
+	const [errorMsg, setErrorMsg] = useState("");
+	const [orderId, setOrderId] = useState<string | null>(null);
 
 	useEffect(() => {
 		const raw = sessionStorage.getItem("designer_order_summary");
@@ -122,6 +138,70 @@ export default function OrderSummaryPage({
 			// malformed — ignore
 		}
 	}, []);
+
+	async function handleConfirm() {
+		if (!summary?.designId) {
+			setErrorMsg(
+				"No se encontró el ID del diseño. Vuelve al diseñador e intenta de nuevo.",
+			);
+			setCheckoutState("error");
+			return;
+		}
+
+		setCheckoutState("loading");
+		setErrorMsg("");
+
+		try {
+			const res = await createOrder({ designId: summary.designId });
+			setOrderId(res.id);
+			setCheckoutState("success");
+			sessionStorage.removeItem("designer_order_summary");
+		} catch (err: any) {
+			const msg =
+				err?.message ||
+				"Ocurrió un error al confirmar el pedido. Intenta de nuevo.";
+			setErrorMsg(msg);
+			setCheckoutState("error");
+		}
+	}
+
+	// ---- Estado de éxito ----
+	if (checkoutState === "success") {
+		return (
+			<div className="flex min-h-screen flex-col items-center justify-center bg-[#f7f7f5] px-4">
+				<div className="w-full max-w-sm rounded-2xl border border-[#e8e8e8] bg-white p-8 text-center shadow-sm">
+					<div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50">
+						<CheckCircle2 className="h-9 w-9 text-emerald-600" />
+					</div>
+					<h1 className="mt-5 text-[20px] font-black text-[#1a1a1a]">
+						¡Pedido confirmado!
+					</h1>
+					<p className="mt-2 text-[13px] text-[#888]">
+						Tu pedido fue enviado al proveedor. Puedes seguir el estado desde tu
+						dashboard.
+					</p>
+					{orderId && (
+						<p className="mt-3 rounded-lg bg-[#f3f3f1] px-3 py-2 text-[11px] font-mono text-[#555]">
+							ID: {orderId}
+						</p>
+					)}
+					<button
+						type="button"
+						onClick={() => router.push("/dashboard")}
+						className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#1a1a1a] py-3 text-[14px] font-bold text-white hover:bg-[#333] transition-colors"
+					>
+						Ver mis pedidos
+					</button>
+					<Link
+						href="/catalogo"
+						className="mt-3 block text-center text-[13px] text-[#888] underline underline-offset-2 hover:text-[#1a1a1a]"
+					>
+						Seguir comprando
+					</Link>
+				</div>
+			</div>
+		);
+	}
 
 	if (!summary) {
 		return (
@@ -247,7 +327,7 @@ export default function OrderSummaryPage({
 							</div>
 
 							<div className="p-6">
-								{/* Main preview: design layered over mockup */}
+								{/* Main preview */}
 								<div className="relative mx-auto w-full max-w-lg overflow-hidden rounded-xl border border-gray-200/80 shadow-sm">
 									<DesignMockupPreview
 										mockupUrl={activeMockup}
@@ -257,7 +337,7 @@ export default function OrderSummaryPage({
 									/>
 								</div>
 
-								{/* Thumbnail strip if multiple sides */}
+								{/* Thumbnail strip */}
 								{summary.sides.length > 1 && (
 									<div className="mt-4 flex justify-center gap-3">
 										{summary.sides.map((s) => {
@@ -332,13 +412,33 @@ export default function OrderSummaryPage({
 								Precio estimado · IVA no incluido
 							</p>
 
+							{/* Error banner */}
+							{checkoutState === "error" && (
+								<div className="mt-4 flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+									<XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-500" />
+									<p className="text-[12px] text-red-700">{errorMsg}</p>
+								</div>
+							)}
+
 							{/* CTA */}
 							<button
+								id="confirm-order-btn"
 								type="button"
-								className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#1a1a1a] py-3.5 text-[14px] font-bold text-white hover:bg-[#333] transition-colors"
+								disabled={checkoutState === "loading"}
+								onClick={handleConfirm}
+								className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#1a1a1a] py-3.5 text-[14px] font-bold text-white transition-colors hover:bg-[#333] disabled:opacity-60 disabled:cursor-not-allowed"
 							>
-								<ShoppingBag className="h-4 w-4" />
-								Confirmar pedido
+								{checkoutState === "loading" ? (
+									<>
+										<Loader2 className="h-4 w-4 animate-spin" />
+										Confirmando pedido…
+									</>
+								) : (
+									<>
+										<ShoppingBag className="h-4 w-4" />
+										Confirmar pedido
+									</>
+								)}
 							</button>
 
 							<p className="mt-3 text-center text-[11px] text-[#bbb]">
