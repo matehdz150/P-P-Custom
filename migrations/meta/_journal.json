@@ -113,6 +113,13 @@
       "when": 1780340582240,
       "tag": "0015_bizarre_sleeper",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1780374787455,
+      "tag": "0016_brave_maverick",
+      "breakpoints": true
     }
   ]
 }

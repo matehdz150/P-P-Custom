@@ -106,7 +106,7 @@ export default function DesktopDesignerShell({
 			}
 
 			// Guardar el borrador como diseño completado en la base de datos
-			await saveDraft(false, "completed");
+			const designId = await saveDraft(false, "completed");
 
 			// Export each side — remove background first to avoid tainted-canvas error
 			// (the mockup is loaded without crossOrigin so it taints the canvas).
@@ -179,6 +179,7 @@ export default function DesktopDesignerShell({
 				(a, b) => a.order - b.order,
 			);
 			const payload = {
+				designId,
 				productId: product.id,
 				productName: config?.name ?? product.name,
 				productImage: sortedImages[0]?.url ?? null,

@@ -5,3 +5,4 @@ dist
 .env.local
 pnpm-lock.yaml
 project_context.md
+.pnpm-store
