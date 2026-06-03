@@ -1,0 +1,1 @@
+ALTER TABLE "packages" ADD COLUMN IF NOT EXISTS "provider_id" uuid;

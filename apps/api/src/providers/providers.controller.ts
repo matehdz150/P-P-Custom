@@ -13,6 +13,8 @@ import {
 import type { Request, Response } from "express";
 import { ProductsService } from "../products/products.service";
 import type { CreateProductDto } from "../products/dto/create_product_dto";
+import { PackagesService } from "../packages/packages.service";
+import type { CreatePackageDto } from "../packages/dto/create-packages.dto";
 import { ProvidersService } from "./providers.service";
 
 type ReqWithCookies = Request & { cookies: { provider_session?: string } };
@@ -24,6 +26,8 @@ export class ProvidersController {
 		private readonly providersService: ProvidersService,
 		@Inject(ProductsService)
 		private readonly productsService: ProductsService,
+		@Inject(PackagesService)
+		private readonly packagesService: PackagesService,
 	) {}
 
 	// ---- Admin ----
@@ -122,6 +126,30 @@ export class ProvidersController {
 		);
 		if (!provider) throw new UnauthorizedException();
 		return this.productsService.create({
+			...dto,
+			providerId: provider.id,
+		});
+	}
+
+	// ---- Paquetes del proveedor ----
+	@Get("me/packages")
+	async myPackages(@Req() req: ReqWithCookies) {
+		const provider = await this.providersService.resolveFromToken(
+			req.cookies.provider_session,
+		);
+		return this.providersService.listPackagesByProvider(provider.id);
+	}
+
+	@Post("packages")
+	async createPackage(
+		@Req() req: ReqWithCookies,
+		@Body() dto: CreatePackageDto,
+	) {
+		const provider = await this.providersService.resolveFromToken(
+			req.cookies.provider_session,
+		);
+		if (!provider) throw new UnauthorizedException();
+		return this.packagesService.create({
 			...dto,
 			providerId: provider.id,
 		});

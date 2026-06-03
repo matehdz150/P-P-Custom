@@ -27,6 +27,7 @@ export class PackagesService {
         description: dto.description ?? null,
         image: dto.image ?? null,
         status: "draft",
+        providerId: dto.providerId ?? null,
       })
       .returning({ id: packages.id });
 

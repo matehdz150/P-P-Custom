@@ -8,6 +8,9 @@ interface Props {
 	zoomOut: () => void;
 	isPanning: boolean;
 	togglePan: () => void;
+	onSave: () => void;
+	saving?: boolean;
+	onSaveDraft?: () => void;
 }
 
 export default function DesignerBottomBar({
@@ -16,6 +19,9 @@ export default function DesignerBottomBar({
 	zoomOut,
 	isPanning,
 	togglePan,
+	onSave,
+	saving,
+	onSaveDraft,
 }: Props) {
 	return (
 		<div
@@ -36,11 +42,11 @@ export default function DesignerBottomBar({
 				>
 					-
 				</button>
-
+ 
 				<span className="px-4 py-1 border rounded text-sm bg-white">
 					{Math.round(zoom * 100)}%
 				</span>
-
+ 
 				<button
 					type="button"
 					onClick={zoomIn}
@@ -48,18 +54,32 @@ export default function DesignerBottomBar({
 				>
 					+
 				</button>
-
+ 
 				{/* Botón de mover (mano) */}
 				<DesignerPanButton isPanning={isPanning} togglePan={togglePan} />
 			</div>
-
-			{/* BOTÓN DE GUARDAR */}
-			<button
-				type="button"
-				className="bg-[#fe6241] hover:bg-lime-400 text-black font-medium px-6 py-2 rounded font-sora"
-			>
-				Guardar producto
-			</button>
+ 
+			{/* ACCIONES DE GUARDADO */}
+			<div className="flex gap-2">
+				{onSaveDraft && (
+					<button
+						type="button"
+						onClick={onSaveDraft}
+						disabled={saving}
+						className="border border-[#1a1a1a] hover:bg-gray-50 disabled:opacity-50 text-[#1a1a1a] font-semibold px-5 py-2 rounded-lg text-sm transition-colors cursor-pointer"
+					>
+						Guardar borrador
+					</button>
+				)}
+				<button
+					type="button"
+					onClick={onSave}
+					disabled={saving}
+					className="bg-[#1a1a1a] hover:bg-[#333] disabled:opacity-50 text-white font-semibold px-6 py-2 rounded-lg text-sm transition-colors font-sora cursor-pointer"
+				>
+					{saving ? "Preparando…" : "Continuar con el pedido →"}
+				</button>
+			</div>
 		</div>
 	);
 }

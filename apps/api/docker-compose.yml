@@ -1,0 +1,29 @@
+name: ppcustom-api
+
+services:
+  api:
+    image: node:20-bookworm-slim
+    container_name: ppcustom_api_only
+    working_dir: /app/apps/api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      PORT: "8000"
+      NODE_ENV: development
+      CHOKIDAR_USEPOLLING: "true"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../..:/app
+      - root_node_modules:/app/node_modules
+      - api_node_modules:/app/apps/api/node_modules
+    command: >
+      sh -c "corepack enable &&
+             cd /app &&
+             pnpm install &&
+             pnpm --dir apps/api start:dev"
+
+volumes:
+  root_node_modules:
+  api_node_modules:

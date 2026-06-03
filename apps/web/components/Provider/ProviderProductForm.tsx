@@ -1,6 +1,6 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { ColorsSection } from "@/components/Admin/productos/FormCreate/ColorsSection";
@@ -21,18 +21,17 @@ const STEPS = [
 	{ id: "mockup", label: "Mockup" },
 	{ id: "info", label: "Información" },
 	{ id: "images", label: "Imágenes" },
-	{ id: "pricing", label: "Precio y extras" },
-	{ id: "variants", label: "Tallas y colores" },
-	{ id: "print", label: "Lados de impresión" },
+	{ id: "pricing", label: "Precio" },
+	{ id: "variants", label: "Variantes" },
+	{ id: "print", label: "Impresión" },
 	{ id: "rules", label: "Personalización" },
-	{ id: "review", label: "Revisar y crear" },
+	{ id: "review", label: "Revisar" },
 ] as const;
 
 export function ProviderProductForm() {
 	const router = useRouter();
 	const [templates, setTemplates] = useState<ProductTemplate[]>([]);
-	const [selectedTemplate, setSelectedTemplate] =
-		useState<ProductTemplate | null>(null);
+	const [selectedTemplate, setSelectedTemplate] = useState<ProductTemplate | null>(null);
 	const [submitting, setSubmitting] = useState(false);
 	const [step, setStep] = useState(0);
 
@@ -43,7 +42,7 @@ export function ProviderProductForm() {
 		sku: "",
 		description: "",
 		brand: "",
-		categoryIds: [] as string[],
+		categoryIds: [] as AnyVal[],
 		status: "active" as "draft" | "active" | "archived",
 		templateId: "",
 		isCustomizable: true,
@@ -66,15 +65,12 @@ export function ProviderProductForm() {
 	const current = STEPS[step];
 	const isLast = step === STEPS.length - 1;
 
-	// validación por paso → habilita "Continuar"
 	const canContinue = useMemo(() => {
 		switch (current.id) {
 			case "mockup":
 				return !!selectedTemplate;
 			case "info":
-				return Boolean(
-					form.name.trim() && form.slug.trim() && form.sku.trim(),
-				);
+				return Boolean(form.name.trim() && form.slug.trim() && form.sku.trim());
 			case "images":
 				return form.images.length >= 2;
 			case "pricing":
@@ -96,104 +92,94 @@ export function ProviderProductForm() {
 		try {
 			setSubmitting(true);
 			await createProviderProduct(payload);
-			alert("✅ Producto creado");
 			router.push("/proveedor");
 		} catch {
-			alert("❌ Error al crear el producto");
+			alert("Error al crear el producto");
 		} finally {
 			setSubmitting(false);
 		}
 	}
 
-	function next() {
+	function handleNext() {
 		if (!canContinue) return;
 		if (isLast) return submit();
 		setStep((s) => Math.min(s + 1, STEPS.length - 1));
 	}
 
-	const PrimaryBtn = (
-		<button
-			type="button"
-			onClick={next}
-			disabled={!canContinue || submitting}
-			className="px-6 py-2.5 rounded-lg bg-[#fe6241] text-black text-sm font-bold hover:bg-[#e5573a] transition disabled:opacity-40"
-		>
-			{isLast
-				? submitting
-					? "Creando…"
-					: "Crear producto"
-				: "Continuar"}
-		</button>
-	);
-
 	return (
-		<div>
-			{/* HEADER */}
-			<div className="flex items-center justify-between mb-8">
-				<h1 className="text-2xl font-bold">Nuevo producto</h1>
-				<div className="flex items-center gap-3">
+		<div className="min-h-screen bg-[#f7f7f5]">
+			{/* ── TOP BAR ── */}
+			<div className="sticky top-[52px] z-20 border-b border-[#e7e7e2] bg-white px-8 py-4">
+				<div className="mx-auto flex max-w-3xl items-center justify-between gap-4">
+					{/* back */}
 					<button
 						type="button"
 						onClick={() => router.push("/proveedor")}
-						className="px-5 py-2.5 rounded-lg border text-sm font-medium hover:bg-muted transition"
+						className="flex shrink-0 items-center gap-1.5 text-sm text-[#77776f] hover:text-[#171717]"
 					>
-						Cancelar
+						<ChevronLeft className="h-4 w-4" />
+						Mis productos
 					</button>
-					{PrimaryBtn}
+
+					{/* stepper — dots + label del paso actual */}
+					<div className="flex items-center gap-1.5 overflow-x-auto">
+						{STEPS.map((s, i) => (
+							<button
+								key={s.id}
+								type="button"
+								disabled={i > step}
+								onClick={() => i <= step && setStep(i)}
+								className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors disabled:cursor-default ${
+									i < step
+										? "bg-[#171717] text-white"
+										: i === step
+											? "border-2 border-[#171717] text-[#171717] bg-white"
+											: "border-2 border-[#d9d9d2] text-[#aaa]"
+								}`}
+							>
+								{i < step ? <Check className="h-3 w-3" /> : i + 1}
+							</button>
+						))}
+						<span className="ml-2 hidden shrink-0 text-sm font-semibold text-[#171717] sm:block">
+							{current.label}
+						</span>
+					</div>
+
+					{/* nav buttons */}
+					<div className="flex shrink-0 items-center gap-2">
+						<button
+							type="button"
+							onClick={() => setStep((s) => s - 1)}
+							disabled={step === 0}
+							className="flex items-center gap-1 rounded-lg border border-[#d9d9d2] px-4 py-2 text-sm font-semibold text-[#171717] hover:bg-[#f4f4f1] disabled:pointer-events-none disabled:opacity-40"
+						>
+							<ChevronLeft className="h-4 w-4" />
+							Atrás
+						</button>
+						<button
+							type="button"
+							onClick={handleNext}
+							disabled={!canContinue || submitting}
+							className="flex items-center gap-1 rounded-lg bg-[#171717] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2a2a2a] disabled:pointer-events-none disabled:opacity-40"
+						>
+							{isLast ? (submitting ? "Creando…" : "Crear") : "Siguiente"}
+							{!isLast && <ChevronRight className="h-4 w-4" />}
+						</button>
+					</div>
 				</div>
 			</div>
 
-			<div className="flex gap-10">
-				{/* STEPPER */}
-				<div className="w-56 shrink-0">
-					<div className="space-y-1">
-						{STEPS.map((s, i) => {
-							const active = i === step;
-							const done = i < step;
-							return (
-								<button
-									type="button"
-									key={s.id}
-									onClick={() => i <= step && setStep(i)}
-									className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition ${
-										active ? "bg-[#fe6241]/10" : "hover:bg-muted"
-									} ${i > step ? "cursor-default" : ""}`}
-								>
-									<span
-										className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-											active
-												? "bg-[#fe6241] text-white"
-												: done
-													? "bg-[#fe6241]/20 text-[#fe6241]"
-													: "border text-muted-foreground"
-										}`}
-									>
-										{done ? <Check size={13} /> : i + 1}
-									</span>
-									<span
-										className={`text-sm ${
-											active
-												? "font-semibold text-[#1a1a17]"
-												: done
-													? "text-[#1a1a17]"
-													: "text-muted-foreground"
-										}`}
-									>
-										{s.label}
-									</span>
-								</button>
-							);
-						})}
-					</div>
-				</div>
-
-				{/* CONTENT */}
-				<div className="flex-1 max-w-2xl">
-					<p className="text-sm text-muted-foreground mb-1">
+			{/* ── CONTENT ── */}
+			<div className="mx-auto max-w-3xl px-4 py-8">
+				<div className="mb-6">
+					<p className="text-xs font-semibold uppercase tracking-wide text-[#aaa]">
 						Paso {step + 1} de {STEPS.length}
 					</p>
-					<h2 className="text-xl font-bold mb-6">{current.label}</h2>
+					<h2 className="mt-1 text-2xl font-bold text-[#171717]">{current.label}</h2>
+					<p className="mt-1 text-sm text-[#77776f]">{STEP_DESCRIPTIONS[current.id]}</p>
+				</div>
 
+				<div className="rounded-2xl border border-[#e7e7e2] bg-white p-6">
 					{current.id === "mockup" && (
 						<ProviderTemplateSelector
 							templates={templates}
@@ -207,7 +193,8 @@ export function ProviderProductForm() {
 					)}
 
 					{current.id === "info" && (
-						<GeneralInfoSection value={form} onChange={update} />
+						// biome-ignore lint/suspicious/noExplicitAny: generic key vs string mismatch
+						<GeneralInfoSection value={form} onChange={update as any} />
 					)}
 
 					{current.id === "images" && (
@@ -226,29 +213,22 @@ export function ProviderProductForm() {
 
 					{current.id === "variants" && (
 						<div className="space-y-6">
-							<SizesSection
-								value={form.sizes}
-								onChange={(v) => update("sizes", v)}
-							/>
-							<ColorsSection
-								value={form.colors}
-								onChange={(v) => update("colors", v)}
-							/>
+							<SizesSection value={form.sizes} onChange={(v) => update("sizes", v)} />
+							<ColorsSection value={form.colors} onChange={(v) => update("colors", v)} />
 						</div>
 					)}
 
-					{current.id === "print" &&
-						(selectedTemplate ? (
+					{current.id === "print" && (
+						selectedTemplate ? (
 							<PrintSidesSection
 								templateData={selectedTemplate.data}
 								value={form.printSides}
 								onChange={(v) => update("printSides", v)}
 							/>
 						) : (
-							<p className="text-sm text-muted-foreground">
-								Selecciona un mockup primero.
-							</p>
-						))}
+							<p className="text-sm text-[#77776f]">Selecciona un mockup primero.</p>
+						)
+					)}
 
 					{current.id === "rules" && (
 						<CustomizationRulesSection
@@ -258,50 +238,52 @@ export function ProviderProductForm() {
 					)}
 
 					{current.id === "review" && (
-						<div className="rounded-xl border divide-y text-sm">
-							<Row k="Mockup" v={selectedTemplate?.name ?? "—"} />
-							<Row k="Nombre" v={form.name || "—"} />
-							<Row k="Slug" v={form.slug || "—"} />
-							<Row k="SKU" v={form.sku || "—"} />
-							<Row
-								k="Precio base"
-								v={`$${form.pricing?.basePrice ?? 0}`}
-							/>
-							<Row
-								k="Tallas / Colores"
-								v={`${form.sizes.length} / ${form.colors.length}`}
-							/>
-							<Row
-								k="Lados de impresión"
-								v={String(form.printSides.length)}
-							/>
-							<Row k="Imágenes" v={String(form.images.length)} />
-						</div>
+						<ReviewStep form={form} template={selectedTemplate} />
 					)}
-
-					{/* NAV INFERIOR */}
-					<div className="flex justify-between mt-10">
-						<button
-							type="button"
-							onClick={() => setStep((s) => Math.max(0, s - 1))}
-							disabled={step === 0}
-							className="px-5 py-2.5 rounded-lg border text-sm font-medium hover:bg-muted transition disabled:opacity-30"
-						>
-							Atrás
-						</button>
-						{PrimaryBtn}
-					</div>
 				</div>
+
 			</div>
 		</div>
 	);
 }
 
-function Row({ k, v }: { k: string; v: string }) {
+/* ─── Review step ────────────────────────────────────────── */
+
+function ReviewStep({ form, template }: { form: AnyVal; template: ProductTemplate | null }) {
 	return (
-		<div className="flex justify-between px-4 py-3">
-			<span className="text-muted-foreground">{k}</span>
-			<span className="font-medium text-right">{v}</span>
+		<div className="divide-y divide-[#f0f0ec]">
+			<ReviewRow label="Mockup" value={template?.name ?? "—"} />
+			<ReviewRow label="Nombre" value={form.name || "—"} />
+			<ReviewRow label="Slug" value={form.slug || "—"} />
+			<ReviewRow label="SKU" value={form.sku || "—"} />
+			<ReviewRow label="Estado" value={form.status} />
+			<ReviewRow label="Precio base" value={`$${form.pricing?.basePrice ?? 0}`} />
+			<ReviewRow label="Tallas" value={String(form.sizes.length)} />
+			<ReviewRow label="Colores" value={String(form.colors.length)} />
+			<ReviewRow label="Lados de impresión" value={String(form.printSides.length)} />
+			<ReviewRow label="Imágenes" value={String(form.images.length)} />
 		</div>
 	);
 }
+
+function ReviewRow({ label, value }: { label: string; value: string }) {
+	return (
+		<div className="flex items-center justify-between py-3">
+			<span className="text-sm text-[#77776f]">{label}</span>
+			<span className="text-sm font-semibold text-[#171717]">{value}</span>
+		</div>
+	);
+}
+
+/* ─── Step descriptions ──────────────────────────────────── */
+
+const STEP_DESCRIPTIONS: Record<string, string> = {
+	mockup: "Elige la base sobre la que tus clientes van a diseñar.",
+	info: "Nombre, slug, SKU y datos generales del producto.",
+	images: "Sube al menos 2 imágenes del producto.",
+	pricing: "Define el precio base.",
+	variants: "Agrega las tallas y colores disponibles.",
+	print: "Selecciona qué lados del producto admiten diseño.",
+	rules: "Configura qué puede personalizar el cliente.",
+	review: "Revisa todo antes de publicar.",
+};

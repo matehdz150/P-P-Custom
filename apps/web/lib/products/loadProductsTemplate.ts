@@ -41,5 +41,6 @@ export async function loadProductTemplate(
       maxColorsPerDesign: (rules.maxColorsPerDesign as number) ?? undefined,
     },
     pricing: product.pricing,
+    images: product.images,
   };
 }

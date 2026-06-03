@@ -40,6 +40,7 @@ export function useFabricMockup(
 				originY: "center",
 				selectable: false,
 				evented: false,
+				excludeFromExport: true,
 			});
 			fImg.scaleToWidth(700);
 			fImg.set({
@@ -60,10 +61,7 @@ export function useFabricMockup(
 			if (cancelled || !htmlImg) return;
 			const canvas = getCanvasRef.current();
 			if (!canvas) return;
-			if (
-				canvas !== appliedCanvas ||
-				!canvas.backgroundImage
-			) {
+			if (canvas !== appliedCanvas || !canvas.backgroundImage) {
 				place(canvas);
 			}
 		};
@@ -84,7 +82,8 @@ export function useFabricMockup(
 			if (cancelled) return;
 			setIsLoading(false); // nunca dejes el overlay pegado
 		};
-		// sin crossOrigin: solo mostramos el mockup, no exportamos el canvas
+		// habilitamos CORS para poder exportar snapshots del canvas (evitando canvas tainted)
+		el.crossOrigin = "anonymous";
 		el.src = mockupUrl;
 		// si ya estaba en caché y completó antes de asignar onload
 		if (el.complete && el.naturalWidth > 0) {

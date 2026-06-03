@@ -5,7 +5,13 @@ import { useState } from "react";
 import InfoPanelMobile from "./InfoPanelMobile";
 import MobileDrawer from "./MobileDrawer";
 
-export default function DesignerHeaderMobile() {
+export default function DesignerHeaderMobile({
+	onSave,
+	saving,
+}: {
+	onSave?: () => void;
+	saving?: boolean;
+}) {
 	const [mode, setMode] = useState<"edit" | "preview">("edit");
 
 	return (
@@ -51,12 +57,14 @@ export default function DesignerHeaderMobile() {
 				</button>
 			</div>
 
-			{/* 🟧 Botón Guardar alineado a la derecha */}
+			{/* 🟧 Botón Guardar / Continuar alineado a la derecha */}
 			<button
 				type="button"
-				className="ml-auto px-3 py-1.5 bg-[#fe6241] rounded-[0.2rem] font-medium z-10 font-sora"
+				onClick={onSave}
+				disabled={saving}
+				className="ml-auto px-4 py-1.5 bg-[#fe6241] disabled:opacity-50 text-white font-bold rounded-lg text-sm z-10 font-sora cursor-pointer transition-all hover:bg-[#e5573a]"
 			>
-				Guardar
+				{saving ? "Guardando..." : "Continuar"}
 			</button>
 		</div>
 	);

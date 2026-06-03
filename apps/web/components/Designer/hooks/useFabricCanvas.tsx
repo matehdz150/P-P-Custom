@@ -30,6 +30,7 @@ function createAreaFromShape(
 			fill: "rgba(0,0,0,0.05)",
 			selectable: false,
 			evented: false,
+			excludeFromExport: true,
 		});
 	}
 
@@ -42,6 +43,7 @@ function createAreaFromShape(
 			fill: "rgba(0,0,0,0.05)",
 			selectable: false,
 			evented: false,
+			excludeFromExport: true,
 		});
 	}
 
@@ -54,6 +56,7 @@ function createAreaFromShape(
 			fill: "rgba(0,0,0,0.05)",
 			selectable: false,
 			evented: false,
+			excludeFromExport: true,
 		});
 	}
 
@@ -66,6 +69,7 @@ function createAreaFromShape(
 			fill: "rgba(0,0,0,0.05)",
 			selectable: false,
 			evented: false,
+			excludeFromExport: true,
 		});
 	}
 
@@ -154,6 +158,8 @@ export function useFabricCanvas(
 
 			// limpiar DOM creado
 			el.remove();
+
+			registerCanvas(side, null);
 		};
 	}, [
 		hostRef,

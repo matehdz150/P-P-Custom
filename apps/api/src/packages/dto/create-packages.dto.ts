@@ -9,6 +9,8 @@ export class CreatePackageDto {
   description?: string;
   categories?: string[];
 
+  providerId?: string;
+
   image?: string;
 
   items!: CreatePackageItemDto[];

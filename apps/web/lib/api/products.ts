@@ -68,6 +68,7 @@ export type DesignerProductTemplate = {
   editableAreas: Record<string, any[]>;
   customizationRules?: DesignerCustomizationRules;
   pricing?: ProductPricing;
+  images?: ProductImage[];
 };
 
 export type Product = {

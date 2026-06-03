@@ -1,0 +1,1 @@
+ALTER TABLE "packages" RENAME COLUMN "category" TO "categories";

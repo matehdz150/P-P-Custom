@@ -103,7 +103,7 @@ export default function ProductGrid() {
                   "
                 >
                   <Image
-                    src={category.image}
+                    src={category.image || "/placeholder.png"}
                     alt={category.name}
                     fill
                     className="
