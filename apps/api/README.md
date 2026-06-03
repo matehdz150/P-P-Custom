@@ -31,6 +31,26 @@
 $ pnpm install
 ```
 
+## Docker development
+
+This compose file starts only the NestJS API.
+It mounts the monorepo, installs dependencies, reads `apps/api/.env`, and runs the API in watch mode.
+
+```bash
+$ docker compose up
+```
+
+Useful commands:
+
+```bash
+$ docker compose logs -f api
+$ docker compose down
+$ docker compose down -v # also removes dependency volumes
+```
+
+The API is exposed at `http://localhost:8000`.
+When `ENVIROMENT=dev`, the API connects to `DATABASE_URL_DEV`.
+
 ## Compile and run the project
 
 ```bash

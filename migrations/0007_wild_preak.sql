@@ -1,1 +1,0 @@
-ALTER TABLE "products" ADD COLUMN "product_template_data" jsonb NOT NULL;
