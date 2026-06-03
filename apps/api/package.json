@@ -12,6 +12,8 @@
 		"start:debug": "nest start --debug --watch",
 		"start:prod": "node dist/apps/api/main.js",
 		"lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+		"db:generate": "pnpm --dir ../.. exec drizzle-kit generate --config packages/db/drizzle.config.ts",
+		"db:migrate": "pnpm --dir ../.. exec drizzle-kit migrate --config packages/db/drizzle.config.ts",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:cov": "jest --coverage",
