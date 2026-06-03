@@ -38,6 +38,8 @@ export class OrdersController {
       quantity?: number;
       notes?: string;
       shippingAddress?: Record<string, string>;
+      designSnapshot?: Record<string, string>;
+      designAssets?: Record<string, unknown[]>;
     },
   ) {
     const userId = await this.getUserIdFromCookie(req);

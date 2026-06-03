@@ -1,0 +1,1 @@
+ALTER TABLE "orders" ADD COLUMN "design_assets" jsonb;

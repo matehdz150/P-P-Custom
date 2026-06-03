@@ -1,4 +1,7 @@
+import type { DesignAsset } from "@/lib/designer/orderDesignExport";
 import { apiFetch } from "./api";
+
+export type { DesignAsset };
 
 // ---- Tipos ----
 export type OrderStatus =
@@ -30,6 +33,7 @@ export type Order = {
   notes: string | null;
   providerNote: string | null;
   designSnapshot: Record<string, string> | null;
+  designAssets: Record<string, DesignAsset[]> | null;
   shippingAddress: Record<string, string> | null;
   createdAt: string;
   updatedAt: string;
@@ -57,6 +61,8 @@ export function createOrder(data: {
   quantity?: number;
   notes?: string;
   shippingAddress?: Record<string, string>;
+  designSnapshot?: Record<string, string>;
+  designAssets?: Record<string, DesignAsset[]>;
 }) {
   return apiFetch<{ id: string; status: OrderStatus }>("/orders", {
     method: "POST",

@@ -58,7 +58,11 @@ export const orders = pgTable("orders", {
   providerNote: text("provider_note"),
 
   // Snapshot del diseño al momento del pedido (para que el proveedor lo vea)
-  designSnapshot: jsonb("design_snapshot"), // { front: "data:...", back: "data:..." }
+  designSnapshot: jsonb("design_snapshot"), // { front: "https://...", back: "https://..." } (Cloudinary, HD)
+
+  // Componentes del diseño exportados por separado en HD (texto, imágenes, formas)
+  // { front: [{ id, type, label, url, ... }], back: [...] }
+  designAssets: jsonb("design_assets"),
 
   // Información de envío
   shippingAddress: jsonb("shipping_address"), // { street, city, state, zip, country }

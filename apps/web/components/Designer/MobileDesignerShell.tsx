@@ -3,9 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
+import { buildOrderDesignExport } from "@/lib/designer/orderDesignExport";
 import type { ProductTemplate } from "@/lib/products/types";
 import DesignerCanvasSide from "./DesignerCanvasSide";
 import DesignerNoticeModal from "./DesignerNoticeModal";
+import ExportProgressOverlay from "./ExportProgressOverlay";
 import { usePriceBreakdown } from "./hooks/useProductConfig";
 import DesignerHeaderMobile from "./MobileControllers/DesignerHeaderMobile";
 import DesignerSideSwitcher from "./MobileControllers/DesignerSideSwitcherMobile";
@@ -28,10 +30,15 @@ export default function MobileDesignerShell({
 	const { activeSide, setActiveSide, sides, config } = useDesigner();
 	const router = useRouter();
 	const [exporting, setExporting] = useState(false);
+	const [progress, setProgress] = useState<{ done: number; total: number }>({
+		done: 0,
+		total: 0,
+	});
 	const { lines, total } = usePriceBreakdown();
 
 	async function handleSave() {
 		setExporting(true);
+		setProgress({ done: 0, total: 0 });
 		try {
 			// Forzar salida de edición de texto en todos los lados antes de guardar
 			for (const [, state] of Object.entries(sides)) {
@@ -57,69 +64,13 @@ export default function MobileDesignerShell({
 			// Guardar el borrador como diseño completado en la base de datos
 			const designId = await saveDraft(false, "completed");
 
-			// Export each side — remove background first to avoid tainted-canvas error
-			const snapshots: Record<string, string> = {};
-			for (const [side, state] of Object.entries(sides)) {
-				if (state.canvas) {
-					const c = state.canvas;
-					c.discardActiveObject();
-
-					// stash and remove background
-					const bg = c.backgroundImage;
-					// biome-ignore lint/suspicious/noExplicitAny: fabric backgroundImage accepts undefined
-					(c as any).backgroundImage = undefined;
-
-					// Reset viewport to identity so crop coords match canvas coords
-					const savedVP = c.viewportTransform;
-					c.setViewportTransform([1, 0, 0, 1, 0, 0]);
-					c.requestRenderAll();
-
-					await new Promise((r) => setTimeout(r, 60));
-
-					// Compute bounding box from the first editable area shape
-					const area =
-						product.editableAreas[
-							side as keyof typeof product.editableAreas
-						]?.[0];
-					let cropOpts:
-						| { left: number; top: number; width: number; height: number }
-						| undefined;
-					if (area) {
-						if (area.type === "circle") {
-							cropOpts = {
-								left: area.cx - area.radius,
-								top: area.cy - area.radius,
-								width: area.radius * 2,
-								height: area.radius * 2,
-							};
-						} else {
-							cropOpts = {
-								left: area.left,
-								top: area.top,
-								width: area.width,
-								height: area.height,
-							};
-						}
-					}
-
-					try {
-						snapshots[side] = c.toDataURL({
-							format: "png",
-							multiplier: 1,
-							...cropOpts,
-						});
-					} catch {
-						snapshots[side] = "";
-					}
-
-					// Restore viewport and background
-					c.setViewportTransform(savedVP);
-					if (bg) {
-						c.backgroundImage = bg;
-					}
-					c.requestRenderAll();
-				}
-			}
+			// Exportar en HD: compuesto por lado + cada componente por separado,
+			// subiéndolos a Cloudinary.
+			const { snapshots, assets } = await buildOrderDesignExport(
+				sides,
+				product,
+				(done, total) => setProgress({ done, total }),
+			);
 
 			// Store summary payload in sessionStorage
 			const sortedImages = [...(product.images ?? [])].sort(
@@ -132,6 +83,7 @@ export default function MobileDesignerShell({
 				productImage: sortedImages[0]?.url ?? null,
 				mockups: product.mockups,
 				snapshots,
+				designAssets: assets,
 				sides: product.sides,
 				sideLabels: product.sideLabels ?? {},
 				pricingLines: lines,
@@ -180,6 +132,7 @@ export default function MobileDesignerShell({
 			<DesignerToolbarMobile />
 
 			<DesignerNoticeModal />
+			<ExportProgressOverlay open={exporting} progress={progress} />
 		</div>
 	);
 }

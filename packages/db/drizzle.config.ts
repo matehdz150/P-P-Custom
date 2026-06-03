@@ -37,17 +37,20 @@ const getDatabaseUrl = () => {
 	const environment = (
 		process.env.ENVIROMENT ??
 		process.env.ENVIRONMENT ??
-		""
+		"local"
 	).toLowerCase();
 
 	if (environment === "dev") {
-		process.env.AWS_ACCESS_KEY_ID ??= getRequiredEnv("AWS_ACCESS_KEY");
-		process.env.AWS_SECRET_ACCESS_KEY ??= getRequiredEnv("AWS_SECRET_KEY");
-
 		return withConnectionTimeout(getRequiredEnv("DATABASE_URL_DEV"));
 	}
 
-	return withConnectionTimeout(getRequiredEnv("DATABASE_URL"));
+	if (environment === "local") {
+		return withConnectionTimeout(getRequiredEnv("DATABASE_URL"));
+	}
+
+	throw new Error(
+		`Invalid ENVIROMENT value "${environment}". Use "dev" or "local".`,
+	);
 };
 
 export default defineConfig({

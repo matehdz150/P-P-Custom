@@ -5,9 +5,13 @@ import {
   ChevronDown,
   Circle,
   Clock,
+  Download,
+  ImageIcon,
   Package,
   PackageCheck,
+  Shapes,
   Truck,
+  Type,
   X,
 } from "lucide-react";
 import Image from "next/image";
@@ -15,9 +19,40 @@ import { useEffect, useRef, useState } from "react";
 import {
   getProviderOrders,
   updateOrderStatus,
+  type DesignAsset,
   type Order,
   type OrderStatus,
 } from "@/lib/api/orders";
+
+// Forzar descarga de un archivo (Cloudinary tiene CORS habilitado)
+async function downloadFile(url: string, filename: string) {
+  try {
+    const res = await fetch(url, { mode: "cors" });
+    const blob = await res.blob();
+    const objUrl = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = objUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(objUrl);
+  } catch {
+    window.open(url, "_blank");
+  }
+}
+
+const SIDE_LABELS: Record<string, string> = {
+  front: "Frente",
+  back: "Espalda",
+};
+const sideLabel = (s: string) => SIDE_LABELS[s] ?? s;
+
+const ASSET_ICON: Record<DesignAsset["type"], React.ComponentType<{ className?: string }>> = {
+  text: Type,
+  image: ImageIcon,
+  shape: Shapes,
+};
 
 // ---- Configuración de estados ----
 export const STATUS_CONFIG: Record<
@@ -278,10 +313,6 @@ function OrderDetailDrawer({
     }
   };
 
-  const snapshot =
-    order.designSnapshot?.front ||
-    (Object.values(order.designSnapshot ?? {})[0] as string | undefined);
-
   return (
     <>
       {/* Backdrop */}
@@ -321,22 +352,7 @@ function OrderDetailDrawer({
           </div>
 
           {/* Diseño personalizado */}
-          {snapshot && (
-            <div>
-              <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-[#aaa]">
-                Diseño del cliente
-              </p>
-              <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-[#f5f5f3]">
-                <Image
-                  src={snapshot}
-                  alt="Diseño personalizado"
-                  fill
-                  className="object-contain p-2"
-                  sizes="440px"
-                />
-              </div>
-            </div>
-          )}
+          <DesignSection order={order} />
 
           {/* Detalles */}
           <div>
@@ -472,6 +488,122 @@ function OrderDetailDrawer({
         </div>
       </div>
     </>
+  );
+}
+
+// ---- Sección de diseño: compuesto HD + componentes descargables ----
+function DesignSection({ order }: { order: Order }) {
+  const snapshots = order.designSnapshot ?? {};
+  const assets = order.designAssets ?? {};
+
+  const sides = Array.from(
+    new Set([...Object.keys(snapshots), ...Object.keys(assets)]),
+  ).filter((s) => snapshots[s] || (assets[s]?.length ?? 0) > 0);
+
+  if (sides.length === 0) return null;
+
+  const slug = (order.product?.name ?? "diseno")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return (
+    <div className="space-y-5">
+      {sides.map((side) => {
+        const composite = snapshots[side];
+        const sideAssets = assets[side] ?? [];
+        return (
+          <div key={side}>
+            <div className="mb-2 flex items-center justify-between">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-[#aaa]">
+                Diseño del cliente · {sideLabel(side)}
+              </p>
+              {composite && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    downloadFile(composite, `${slug}-${side}-hd.png`)
+                  }
+                  className="flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-semibold text-[#1a1a1a] hover:bg-[#f3f3f1] transition-colors"
+                >
+                  <Download className="h-3 w-3" />
+                  Descargar HD
+                </button>
+              )}
+            </div>
+
+            {composite && (
+              <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-[#f5f5f3]">
+                <Image
+                  src={composite}
+                  alt={`Diseño ${sideLabel(side)}`}
+                  fill
+                  unoptimized
+                  className="object-contain p-2"
+                  sizes="440px"
+                />
+              </div>
+            )}
+
+            {sideAssets.length > 0 && (
+              <div className="mt-3">
+                <p className="mb-2 text-[11px] font-medium text-[#999]">
+                  Componentes ({sideAssets.length}) — descarga individual
+                </p>
+                <div className="grid grid-cols-3 gap-2">
+                  {sideAssets.map((asset, i) => (
+                    <AssetCard
+                      key={asset.id}
+                      asset={asset}
+                      filename={`${slug}-${side}-${asset.type}-${i + 1}.png`}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function AssetCard({
+  asset,
+  filename,
+}: {
+  asset: DesignAsset;
+  filename: string;
+}) {
+  const Icon = ASSET_ICON[asset.type] ?? ImageIcon;
+  return (
+    <div className="group relative overflow-hidden rounded-lg border border-[#efefec] bg-[#f5f5f3]">
+      <div className="relative aspect-square">
+        <Image
+          src={asset.url}
+          alt={asset.label}
+          fill
+          unoptimized
+          className="object-contain p-1.5"
+          sizes="140px"
+        />
+        <button
+          type="button"
+          onClick={() => downloadFile(asset.url, filename)}
+          className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all group-hover:bg-black/40 group-hover:opacity-100"
+          title={`Descargar ${asset.label}`}
+        >
+          <span className="flex items-center gap-1 rounded-md bg-white px-2 py-1 text-[10px] font-semibold text-[#1a1a1a]">
+            <Download className="h-3 w-3" />
+            Descargar
+          </span>
+        </button>
+      </div>
+      <div className="flex items-center gap-1 border-t border-[#efefec] px-1.5 py-1">
+        <Icon className="h-2.5 w-2.5 shrink-0 text-[#aaa]" />
+        <span className="truncate text-[10px] text-[#888]">{asset.label}</span>
+      </div>
+    </div>
   );
 }
 

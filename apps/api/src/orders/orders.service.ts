@@ -35,6 +35,8 @@ export class OrdersService {
       quantity?: number;
       notes?: string;
       shippingAddress?: Record<string, string>;
+      designSnapshot?: Record<string, string>;
+      designAssets?: Record<string, unknown[]>;
     },
   ) {
     // Recuperar el diseño y validar que pertenece al usuario
@@ -84,7 +86,10 @@ export class OrdersService {
         quantity: qty,
         totalPrice: total,
         notes: dto.notes,
-        designSnapshot: (design.snapshots ?? {}) as Record<string, unknown>,
+        designSnapshot: (dto.designSnapshot ??
+          design.snapshots ??
+          {}) as Record<string, unknown>,
+        designAssets: (dto.designAssets ?? {}) as Record<string, unknown>,
         shippingAddress: (dto.shippingAddress ?? {}) as Record<string, unknown>,
       })
       .returning();

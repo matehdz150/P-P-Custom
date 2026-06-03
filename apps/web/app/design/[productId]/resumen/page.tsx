@@ -13,6 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { createOrder } from "@/lib/api/orders";
+import type { DesignAsset } from "@/lib/designer/orderDesignExport";
 
 type PriceLine = { label: string; detail: string; amount: number };
 
@@ -23,6 +24,7 @@ type OrderSummary = {
 	productImage: string | null;
 	mockups: Record<string, string>;
 	snapshots: Record<string, string>;
+	designAssets?: Record<string, DesignAsset[]>;
 	sides: string[];
 	sideLabels: Record<string, string>;
 	pricingLines: PriceLine[];
@@ -152,7 +154,11 @@ export default function OrderSummaryPage({
 		setErrorMsg("");
 
 		try {
-			const res = await createOrder({ designId: summary.designId });
+			const res = await createOrder({
+				designId: summary.designId,
+				designSnapshot: summary.snapshots,
+				designAssets: summary.designAssets,
+			});
 			setOrderId(res.id);
 			setCheckoutState("success");
 			sessionStorage.removeItem("designer_order_summary");

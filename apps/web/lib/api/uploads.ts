@@ -24,3 +24,11 @@ export async function uploadImage(file: File): Promise<UploadResponse> {
 
   return res.json();
 }
+
+export async function uploadImageBlob(
+  blob: Blob,
+  filename = "image.png",
+): Promise<UploadResponse> {
+  const file = new File([blob], filename, { type: blob.type || "image/png" });
+  return uploadImage(file);
+}

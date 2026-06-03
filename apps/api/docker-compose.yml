@@ -21,7 +21,7 @@ services:
     command: >
       sh -c "corepack enable &&
              cd /app &&
-             pnpm install &&
+             if [ ! -d node_modules/.pnpm ]; then pnpm install --frozen-lockfile; fi &&
              pnpm --dir apps/api start:dev"
 
 volumes:
