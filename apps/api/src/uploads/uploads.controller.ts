@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {
   Controller,
   Inject,
@@ -8,14 +7,14 @@ import {
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { memoryStorage } from "multer";
-import { CloudinaryService } from "./cloudinary.service";
+import { S3Service } from "./s3.service";
 
 @Controller("uploads")
 export class UploadController {
   constructor(
-      @Inject(CloudinaryService)
-      private readonly cloudinary: CloudinaryService,
-    ) {}
+    @Inject(S3Service)
+    private readonly s3Service: S3Service,
+  ) {}
 
   @Post("image")
   @UseInterceptors(
@@ -24,6 +23,6 @@ export class UploadController {
     }),
   )
   async uploadImage(@UploadedFile() file: Express.Multer.File) {
-    return this.cloudinary.uploadImage(file);
+    return this.s3Service.uploadImage(file);
   }
 }

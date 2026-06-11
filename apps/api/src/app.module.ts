@@ -14,13 +14,14 @@ import { SearchModule } from "./catalog/catalog.module";
 import { ProvidersModule } from "./providers/providers.module";
 import { UserDesignsModule } from "./user-designs/user-designs.module";
 import { OrdersModule } from "./orders/orders.module";
+import { EmailsModule } from "./emails/emails.module";
 
 @Module({
 	imports: [
 		ConfigModule.forRoot({
 			isGlobal: true,
 		}),
-		DbModule, AuthModule, ProductsModule, UploadsModule, PackagesModule, TemplatesModule, CategoriesModule, SearchModule, ProvidersModule, UserDesignsModule, OrdersModule
+		DbModule, AuthModule, ProductsModule, UploadsModule, PackagesModule, TemplatesModule, CategoriesModule, SearchModule, ProvidersModule, UserDesignsModule, OrdersModule, EmailsModule
 	],
 	controllers: [AppController],
 	providers: [AppService],

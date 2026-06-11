@@ -1,12 +1,28 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException, Inject } from "@nestjs/common";
 import { db } from "../db/connection";
 import { eq, and, desc } from "drizzle-orm";
 import { userDesigns } from "../../../../packages/db/schema";
 import type { SaveDesignDto } from "./dto/save-design-dto";
+import { S3Service } from "../uploads/s3.service";
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class UserDesignsService {
+  constructor(
+    @Inject(S3Service)
+    private readonly s3Service: S3Service
+  ) {}
+
   async save(userId: string, dto: SaveDesignDto) {
+    let canvasDataDbValue = dto.canvasData;
+
+    // Subir canvasData a S3 y guardar la referencia en la DB
+    if (dto.canvasData) {
+      const designKey = `designs/${userId}/${uuidv4()}.json`;
+      const s3Url = await this.s3Service.uploadJson(designKey, dto.canvasData);
+      canvasDataDbValue = { s3Url };
+    }
+
     // 1. Si viene con id explícito, es una actualización de ese diseño
     if (dto.id) {
       const existing = await db.query.userDesigns.findFirst({
@@ -21,7 +37,7 @@ export class UserDesignsService {
         .update(userDesigns)
         .set({
           name: dto.name ?? existing.name,
-          canvasData: dto.canvasData,
+          canvasData: canvasDataDbValue ?? existing.canvasData,
           snapshots: dto.snapshots ?? existing.snapshots,
           status: dto.status ?? existing.status,
           updatedAt: new Date(),
@@ -47,7 +63,7 @@ export class UserDesignsService {
         .update(userDesigns)
         .set({
           name: dto.name ?? existingDraft.name,
-          canvasData: dto.canvasData,
+          canvasData: canvasDataDbValue ?? existingDraft.canvasData,
           snapshots: dto.snapshots ?? existingDraft.snapshots,
           status: dto.status ?? "draft",
           updatedAt: new Date(),
@@ -65,7 +81,7 @@ export class UserDesignsService {
         userId,
         productId: dto.productId,
         name: dto.name ?? "Mi diseño personalizado",
-        canvasData: dto.canvasData,
+        canvasData: canvasDataDbValue ?? {},
         snapshots: dto.snapshots ?? {},
         status: dto.status ?? "draft",
       })
@@ -85,7 +101,7 @@ export class UserDesignsService {
       conditions.push(eq(userDesigns.productId, productId));
     }
 
-    return db.query.userDesigns.findMany({
+    const list = await db.query.userDesigns.findMany({
       where: and(...conditions),
       orderBy: desc(userDesigns.updatedAt),
       with: {
@@ -99,6 +115,23 @@ export class UserDesignsService {
         },
       },
     });
+
+    // Descargar el canvasData de S3 en paralelo para todos los diseños
+    await Promise.all(
+      list.map(async (design) => {
+        if (design.canvasData && typeof design.canvasData === "object" && "s3Url" in design.canvasData) {
+          try {
+            const s3Url = (design.canvasData as any).s3Url;
+            const fullCanvas = await this.s3Service.downloadJson(s3Url);
+            design.canvasData = fullCanvas;
+          } catch (err) {
+            console.error(`Error downloading design ${design.id} from S3:`, err);
+          }
+        }
+      })
+    );
+
+    return list;
   }
 
   async findOne(userId: string, id: string) {
@@ -111,6 +144,17 @@ export class UserDesignsService {
 
     if (!design) {
       throw new NotFoundException("Diseño no encontrado");
+    }
+
+    // Descargar el canvasData de S3 si está almacenado como referencia
+    if (design.canvasData && typeof design.canvasData === "object" && "s3Url" in design.canvasData) {
+      try {
+        const s3Url = (design.canvasData as any).s3Url;
+        const fullCanvas = await this.s3Service.downloadJson(s3Url);
+        design.canvasData = fullCanvas;
+      } catch (err) {
+        console.error(`Error downloading design ${design.id} from S3:`, err);
+      }
     }
 
     return design;

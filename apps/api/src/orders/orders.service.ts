@@ -1,11 +1,13 @@
-import { Injectable, NotFoundException, BadRequestException } from "@nestjs/common";
+import { Injectable, NotFoundException, BadRequestException, Inject } from "@nestjs/common";
 import { db } from "../db/connection";
 import { eq, and, desc } from "drizzle-orm";
 import {
   orders,
   orderStatusHistory,
   userDesigns,
+  users,
 } from "../../../../packages/db/schema";
+import { EmailsService } from "../emails/emails.service";
 
 export type OrderStatus =
   | "pending"
@@ -27,6 +29,11 @@ const VALID_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
 
 @Injectable()
 export class OrdersService {
+  constructor(
+    @Inject(EmailsService)
+    private readonly emailsService: EmailsService,
+  ) {}
+
   // ---- Crear pedido (usuario autenticado) ----
   async createOrder(
     userId: string,
@@ -104,7 +111,32 @@ export class OrdersService {
       .set({ status: "completed", updatedAt: new Date() })
       .where(eq(userDesigns.id, design.id));
 
+    // Enviar correo de confirmación de forma asíncrona
+    this.sendOrderEmailNotification(userId, order.id, product.name, qty, total).catch(err => {
+      console.error("Failed to send order email notification:", err);
+    });
+
     return { id: order.id, status: order.status };
+  }
+
+  private async sendOrderEmailNotification(
+    userId: string,
+    orderId: string,
+    productName: string,
+    quantity: number,
+    totalPrice: string,
+  ) {
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, userId),
+    });
+    if (user?.email) {
+      await this.emailsService.sendOrderConfirmation(user.email, {
+        orderId,
+        productName,
+        quantity,
+        totalPrice,
+      });
+    }
   }
 
   // ---- Listar pedidos del usuario ----
