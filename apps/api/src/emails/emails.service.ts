@@ -1,28 +1,20 @@
 import { Injectable, Inject } from "@nestjs/common";
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import { Resend } from "resend";
 import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class EmailsService {
-  private sesClient: SESClient;
+  private resend: Resend;
   private fromEmail: string;
 
   constructor(
     @Inject(ConfigService)
     private readonly configService: ConfigService
   ) {
-    const accessKeyId = this.configService.get<string>("AWS_ACCESS_KEY_ID") || "";
-    const secretAccessKey = this.configService.get<string>("AWS_SECRET_ACCESS_KEY") || "";
-    const region = this.configService.get<string>("AWS_REGION") || "us-east-1";
-    this.fromEmail = this.configService.get<string>("AWS_SES_FROM_EMAIL") || "no-reply@ppcustom.com";
+    const apiKey = this.configService.get<string>("RESEND_API_KEY") || "";
+    this.fromEmail = this.configService.get<string>("RESEND_FROM_EMAIL") || "onboarding@resend.dev";
 
-    this.sesClient = new SESClient({
-      region,
-      credentials: {
-        accessKeyId,
-        secretAccessKey,
-      },
-    });
+    this.resend = new Resend(apiKey);
   }
 
   async sendOrderConfirmation(
@@ -165,33 +157,20 @@ export class EmailsService {
       Te notificaremos en cuanto el estado cambie.
     `;
 
-    const command = new SendEmailCommand({
-      Source: this.fromEmail,
-      Destination: {
-        ToAddresses: [toEmail],
-      },
-      Message: {
-        Subject: {
-          Data: subject,
-          Charset: "UTF-8",
-        },
-        Body: {
-          Html: {
-            Data: htmlBody,
-            Charset: "UTF-8",
-          },
-          Text: {
-            Data: textBody,
-            Charset: "UTF-8",
-          },
-        },
-      },
-    });
-
     try {
-      await this.sesClient.send(command);
+      const response = await this.resend.emails.send({
+        from: this.fromEmail,
+        to: toEmail,
+        subject: subject,
+        html: htmlBody,
+        text: textBody,
+      });
+
+      if (response.error) {
+        throw response.error;
+      }
     } catch (error) {
-      console.error("Error sending order confirmation email via AWS SES:", error);
+      console.error("Error sending order confirmation email via Resend:", error);
     }
   }
 }

@@ -456,7 +456,6 @@ export class ProductsService {
         id: true,
         name: true,
         brand: true,
-        category: true,
         description: true,
       },
       with: {

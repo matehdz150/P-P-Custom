@@ -1,5 +1,5 @@
 // categories/dto/create-category.dto.ts
 export class CreatePackageCategoryDto {
-  name?: string;
+  name!: string;
   description?: string;
 }
