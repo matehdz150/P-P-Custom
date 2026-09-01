@@ -20,7 +20,7 @@ export function TextAlignGroup({ value, onChange }: TextAlignGroupProps) {
 				className={cn(
 					"h-9 w-9 flex items-center justify-center transition border-r",
 					value === "left"
-						? "bg-black text-white border-r-0"
+						? "bg-tinta text-hueso-suave border-r-0"
 						: "text-gray-700 hover:bg-gray-100",
 				)}
 			>
@@ -34,7 +34,7 @@ export function TextAlignGroup({ value, onChange }: TextAlignGroupProps) {
 				className={cn(
 					"h-9 w-9 flex items-center justify-center transition border-r",
 					value === "center"
-						? "bg-black text-white border-r-0"
+						? "bg-tinta text-hueso-suave border-r-0"
 						: "text-gray-700 hover:bg-gray-100",
 				)}
 			>
@@ -48,7 +48,7 @@ export function TextAlignGroup({ value, onChange }: TextAlignGroupProps) {
 				className={cn(
 					"h-9 w-9 flex items-center justify-center transition",
 					value === "right"
-						? "bg-black text-white"
+						? "bg-tinta text-hueso-suave"
 						: "text-gray-700 hover:bg-gray-100",
 				)}
 			>

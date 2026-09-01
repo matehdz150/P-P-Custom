@@ -120,7 +120,7 @@ export default function MobileTextToolbar({
 						type="button"
 						className={`shrink-0 px-2 py-1 rounded text-xs font-semibold border transition-colors ${
 							isCurved
-								? "bg-[#fe6241] text-white border-[#fe6241]"
+								? "bg-tinta text-hueso-suave border-tinta"
 								: "bg-white text-gray-700 border-gray-300"
 						}`}
 						onClick={onToggleCurved}

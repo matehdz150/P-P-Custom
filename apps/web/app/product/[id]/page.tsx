@@ -1,20 +1,32 @@
-import { getProduct } from "@/lib/api/products";
-import { ProductDetails } from "@/components/Product/ProductDetails";
+import { notFound } from "next/navigation";
+import ProductoVista from "@/components/Producto/ProductoVista";
+import { ApiError } from "@/lib/api/api";
+import { getCatalogProducts, getProduct } from "@/lib/api/products";
+
+/** Cuántas piezas asoman en "También se personalizan". */
+const RECOMENDADOS = 4;
 
 export default async function ProductPage({
-  params,
+	params,
 }: {
-  params: Promise<{ id: string }>;
+	params: Promise<{ id: string }>;
 }) {
-  const { id } = await params; // ✅ ESTO ES CLAVE
+	const { id } = await params;
 
-  console.log("🆔 PRODUCT ID (frontend):", id);
+	// Un id que ya no existe es un 404, no una página rota: pasa cada vez que
+	// se archiva un producto o se vuelve a poblar la base.
+	const product = await getProduct(id).catch((error) => {
+		if (error instanceof ApiError && error.status === 404) notFound();
+		throw error;
+	});
 
-  const product = await getProduct(id);
+	// El catálogo es para las recomendaciones: si falla, la sección no se pinta
+	// pero la ficha sigue en pie.
+	const catalogo = await getCatalogProducts().catch(() => []);
 
-  return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
-      <ProductDetails product={product} />
-    </div>
-  );
+	const recomendados = catalogo
+		.filter((p) => p.id !== product.id)
+		.slice(0, RECOMENDADOS);
+
+	return <ProductoVista product={product} recomendados={recomendados} />;
 }

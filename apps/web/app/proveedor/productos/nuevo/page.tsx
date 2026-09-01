@@ -1,7 +1,7 @@
 "use client";
 
-import { ProviderProductForm } from "@/components/Provider/ProviderProductForm";
+import AltaProducto from "@/components/Provider/alta/AltaProducto";
 
-export default function NewProviderProductPage() {
-	return <ProviderProductForm />;
+export default function NuevoProductoPage() {
+	return <AltaProducto />;
 }

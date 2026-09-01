@@ -4,10 +4,10 @@ import { Textbox } from "fabric";
 import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import type { ProductTemplate } from "@/lib/products/types";
-import CurvedTextEditor from "./design/CurvedTextEditor";
-import DesignerNoticeModal from "./DesignerNoticeModal";
 import DesignerCanvasSide from "./DesignerCanvasSide";
+import DesignerNoticeModal from "./DesignerNoticeModal";
 import DesignerSidebar from "./DesignerSidebar/DesignerSidebar";
+import CurvedTextEditor from "./design/CurvedTextEditor";
 import DesignerBottomBar from "./design/DesignerBottomBar";
 import DesignerSideSwitcher from "./design/DesignerSideSwitcher";
 import PreviewEditButtons from "./design/PreviewEditButtons";
@@ -86,7 +86,7 @@ export default function DesktopDesignerShell({
 				<UndoRedoButtons />
 				<PreviewEditButtons
 					isLayersOpen={layersOpen}
-					onOpenLayers={() => setLayersOpen(true)}
+					onToggleLayers={() => setLayersOpen((v) => !v)}
 				/>
 
 				<RightLayersPanel

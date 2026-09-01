@@ -64,6 +64,9 @@ export interface ProductTemplate<S extends ProductSide = ProductSide> {
 		maxColorsPerDesign?: number;
 	};
 
+	/** Los colores en que se puede pedir la prenda. Tiñen el mockup. */
+	colors?: { name: string; hex: string }[];
+
 	pricing?: {
 		basePrice: number;
 		perSidePrice?: number;

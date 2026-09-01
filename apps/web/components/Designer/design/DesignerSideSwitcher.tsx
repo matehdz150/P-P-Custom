@@ -33,8 +33,8 @@ export default function DesignerSideSwitcher({
 						onClick={() => onChange(side)}
 						className={`px-7 py-2 text-sm rounded-2xl border transition font-sora ${
 							currentSide === side
-								? "bg-black text-white border-black"
-								: "bg-white text-black border-gray-300 hover:bg-gray-100"
+								? "bg-tinta text-hueso-suave border-tinta"
+								: "bg-white text-tinta border-gray-300 hover:bg-gray-100"
 						}`}
 					>
 						{label}

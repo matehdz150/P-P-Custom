@@ -41,6 +41,18 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Marca kustto */
+  --font-display: var(--font-figtree);
+  --font-brand: var(--font-poppins);
+  --color-tinta: #2b2812;
+  --color-lima: #aeff6e;
+  --color-lima-oscuro: #7cb944;
+  --color-naranja: #f8774d;
+  --color-lavanda: #c9b8ff;
+  --color-hueso: #fffdf8;
+  --color-hueso-suave: #efebe1;
+  --color-gris: #f3f3f1;
 }
 
 :root {
@@ -152,4 +164,19 @@ select {
 
 .font-sora {
   font-family: var(--font-sora);
+}
+/* Entrada de los bloques del catálogo.
+   El estado base es visible y la animación arranca DESDE la opacidad 0: si
+   por lo que sea no llega a correr, el contenido se ve igual. */
+@keyframes aparece {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aparece {
+    animation: aparece 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
 }

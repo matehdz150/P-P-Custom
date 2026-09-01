@@ -129,7 +129,7 @@ export default function CurvedTextEditor() {
 				zIndex: 400,
 			}}
 			className="px-3 py-2 text-center text-sm font-medium
-				bg-white border-2 border-[#fe6241] rounded-md shadow-lg
+				bg-white border-2 border-tinta rounded-md shadow-lg
 				outline-none min-w-[180px]"
 		/>
 	);

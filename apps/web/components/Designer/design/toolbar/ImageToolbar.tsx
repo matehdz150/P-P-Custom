@@ -93,7 +93,7 @@ export default function ImageToolbar() {
 				className="p-1 rounded hover:bg-gray-200"
 				title="Delete"
 			>
-				<Trash size={22} className="text-black" />
+				<Trash size={22} className="text-tinta" />
 			</button>
 		</div>
 	);

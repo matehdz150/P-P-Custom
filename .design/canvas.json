@@ -1,0 +1,34 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 4900,
+      "title": "Landing — escritorio",
+      "print": "flow"
+    },
+    {
+      "file": "Movil.dc.html",
+      "x": 1620,
+      "y": 0,
+      "w": 390,
+      "h": 6180,
+      "title": "Landing — móvil",
+      "print": "flow"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "placeholders",
+      "x": 0,
+      "y": -150,
+      "w": 620,
+      "text": "Todo lo que va entre corchetes es dato tuyo por llenar: [TU PRECIO], [TU CORREO], [TU WHATSAPP], [TU INSTAGRAM].\nLa única cifra dura es \"más de 50 productos\", que ya usabas en tu landing actual."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

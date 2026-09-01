@@ -1,0 +1,315 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@700;800&amp;family=Poppins:wght@400;500;600;700&amp;display=swap">
+  <style>
+    body { margin: 0; background: #fffdf8; color: #2b2812; font-family: Poppins, "Segoe UI", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3, p { margin: 0; }
+    p { text-wrap: pretty; }
+    a { color: #2b2812; text-decoration: none; }
+    .display { font-family: Figtree, "Segoe UI", system-ui, sans-serif; font-weight: 800; }
+    .flecha { flex-shrink: 0; }
+  </style>
+</helmet>
+
+<div style="width: 390px; background: #fffdf8; color: #2b2812;">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; background: #fffdf8;">
+    <div style="display: flex; align-items: center; gap: 9px;">
+      <svg width="26" height="26" viewBox="0 0 260 260" fill="none">
+        <rect width="260" height="260" rx="48" fill="#a5f35c"></rect>
+        <path d="M106,66 C114,82 146,82 154,66 L182,75 L205,105 L185,126 L173,112 L173,193 Q173,200 166,200 L94,200 Q87,200 87,193 L87,112 L75,126 L55,105 L78,75 Z" fill="#2b2812"></path>
+        <g transform="translate(158,150) scale(2.35)">
+          <polygon points="0,0 0,21 5.8,15.9 9.7,24 13.5,22.1 9.7,14.4 16.4,14.4" fill="none" stroke="#a5f35c" stroke-width="6.5" stroke-linejoin="round"></polygon>
+          <polygon points="0,0 0,21 5.8,15.9 9.7,24 13.5,22.1 9.7,14.4 16.4,14.4" fill="#2b2812"></polygon>
+        </g>
+      </svg>
+      <span style="font-size: 26px; font-weight: 500; letter-spacing: -1.3px; line-height: 1;">fabbo</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <a href="#" style="display: inline-flex; align-items: center; height: 44px; padding: 0 16px; border-radius: 9999px; background: #a5f35c; font-size: 15px; font-weight: 600;">Diseñar</a>
+      <button type="button" aria-label="Abrir menú" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 1.5px solid #2b2812; border-radius: 10px; background: transparent; color: #2b2812;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <section style="padding: 32px 20px 0 20px;">
+    <h1 class="display" style="max-width: 320px; font-size: 42px; line-height: 47px; letter-spacing: -0.9px;">Todo el catálogo, listo para llevar tu nombre</h1>
+    <p style="margin-top: 16px; font-size: 15px; line-height: 26px; color: rgba(43,40,18,0.6);">Cada pieza la produce un proveedor distinto en México. Tú eliges cuál y desde cuántas.</p>
+
+    <div style="display: flex; align-items: center; gap: 12px; margin-top: 30px; padding-bottom: 13px; border-bottom: 1.5px solid #2b2812;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" class="flecha">
+        <circle cx="10.8" cy="10.8" r="6.8" stroke="#2b2812" stroke-width="1.8"></circle>
+        <path d="M15.8 15.8L20 20" stroke="#2b2812" stroke-width="1.8" stroke-linecap="round"></path>
+      </svg>
+      <span style="flex-grow: 1; font-size: 17px; letter-spacing: -0.3px; color: rgba(43,40,18,0.38);">Busca playeras, gorras…</span>
+      <span style="font-size: 13px; color: rgba(43,40,18,0.45); white-space: nowrap;">[N]</span>
+    </div>
+
+    <!-- Los filtros se recorren de lado; el último asoma para que se note. -->
+    <div style="display: flex; align-items: center; gap: 8px; margin: 18px -20px 0 0; padding-right: 20px; overflow: hidden;">
+      <a href="#" style="display: inline-flex; flex-shrink: 0; align-items: center; padding: 9px 16px; border-radius: 9999px; background: #a5f35c; font-size: 14px; font-weight: 600;">Todo</a>
+      <a href="#" style="display: inline-flex; flex-shrink: 0; align-items: center; padding: 9px 16px; border-radius: 9999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 14px; font-weight: 500;">Playeras</a>
+      <a href="#" style="display: inline-flex; flex-shrink: 0; align-items: center; padding: 9px 16px; border-radius: 9999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 14px; font-weight: 500;">Gorras</a>
+      <a href="#" style="display: inline-flex; flex-shrink: 0; align-items: center; padding: 9px 16px; border-radius: 9999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 14px; font-weight: 500;">Bolsas</a>
+      <a href="#" style="display: inline-flex; flex-shrink: 0; align-items: center; padding: 9px 16px; border-radius: 9999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 14px; font-weight: 500;">Termos</a>
+    </div>
+
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px;">
+      <span style="font-size: 13px; color: rgba(43,40,18,0.45);">[N] productos</span>
+      <span style="font-size: 13px; color: rgba(43,40,18,0.5);">Más relevantes ⌄</span>
+    </div>
+  </section>
+
+  <section style="padding: 26px 20px 0 20px;">
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 16px;">
+
+      <a href="#" style="display: flex; flex-direction: column; gap: 11px;">
+        <div style="display: flex; align-items: center; justify-content: center; height: 158px;">
+          <img src="prod-playera.png" alt="Playera cuello redondo" style="max-width: 80%; max-height: 96%; object-fit: contain;">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 11px; border-top: 1px solid rgba(43,40,18,0.14);">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.3px;">Playera cuello redondo</span>
+            <span style="font-size: 14px; color: rgba(43,40,18,0.7); white-space: nowrap;">$189</span>
+          </div>
+          <span style="font-size: 11px; line-height: 16px; color: rgba(43,40,18,0.5);">[PROVEEDOR] · bordado · 7 días</span>
+        </div>
+      </a>
+
+      <a href="#" style="display: flex; flex-direction: column; gap: 11px;">
+        <div style="display: flex; align-items: center; justify-content: center; height: 158px;">
+          <img src="prod-gorra.png" alt="Gorra snapback" style="max-width: 80%; max-height: 96%; object-fit: contain;">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 11px; border-top: 1px solid rgba(43,40,18,0.14);">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.3px;">Gorra snapback</span>
+            <span style="font-size: 14px; color: rgba(43,40,18,0.7); white-space: nowrap;">$245</span>
+          </div>
+          <span style="font-size: 11px; line-height: 16px; color: rgba(43,40,18,0.5);">[PROVEEDOR] · bordado · 6 días</span>
+        </div>
+      </a>
+
+      <a href="#" style="display: flex; flex-direction: column; gap: 11px;">
+        <div style="display: flex; align-items: center; justify-content: center; height: 158px;">
+          <img src="prod-tote.png" alt="Tote bag natural" style="max-width: 80%; max-height: 96%; object-fit: contain;">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 11px; border-top: 1px solid rgba(43,40,18,0.14);">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.3px;">Tote bag natural</span>
+            <span style="font-size: 14px; color: rgba(43,40,18,0.7); white-space: nowrap;">$129</span>
+          </div>
+          <span style="font-size: 11px; line-height: 16px; color: rgba(43,40,18,0.5);">[PROVEEDOR] · serigrafía · 9 días</span>
+        </div>
+      </a>
+
+      <a href="#" style="display: flex; flex-direction: column; gap: 11px;">
+        <div style="display: flex; align-items: center; justify-content: center; height: 158px;">
+          <img src="prod-termo.png" alt="Termo 600 ml" style="max-width: 80%; max-height: 96%; object-fit: contain;">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 11px; border-top: 1px solid rgba(43,40,18,0.14);">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.3px;">Termo 600 ml</span>
+            <span style="font-size: 14px; color: rgba(43,40,18,0.7); white-space: nowrap;">$310</span>
+          </div>
+          <span style="font-size: 11px; line-height: 16px; color: rgba(43,40,18,0.5);">[PROVEEDOR] · grabado láser · 12 días</span>
+        </div>
+      </a>
+
+      <a href="#" style="display: flex; flex-direction: column; gap: 11px;">
+        <div style="display: flex; align-items: center; justify-content: center; height: 158px;">
+          <img src="prod-vaso.png" alt="Vaso con tapa" style="max-width: 80%; max-height: 96%; object-fit: contain;">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 11px; border-top: 1px solid rgba(43,40,18,0.14);">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.3px;">Vaso con tapa</span>
+            <span style="font-size: 14px; color: rgba(43,40,18,0.7); white-space: nowrap;">$165</span>
+          </div>
+          <span style="font-size: 11px; line-height: 16px; color: rgba(43,40,18,0.5);">[PROVEEDOR] · sublimación · 8 días</span>
+        </div>
+      </a>
+
+      <a href="#" style="display: flex; flex-direction: column; gap: 11px;">
+        <div style="display: flex; align-items: center; justify-content: center; height: 158px;">
+          <img src="prod-playera.png" alt="Playera oversize" style="max-width: 80%; max-height: 96%; object-fit: contain;">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 11px; border-top: 1px solid rgba(43,40,18,0.14);">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.3px;">Playera oversize</span>
+            <span style="font-size: 14px; color: rgba(43,40,18,0.7); white-space: nowrap;">$229</span>
+          </div>
+          <span style="font-size: 11px; line-height: 16px; color: rgba(43,40,18,0.5);">[PROVEEDOR] · DTG · 8 días</span>
+        </div>
+      </a>
+
+      <a href="#" style="display: flex; flex-direction: column; gap: 11px;">
+        <div style="display: flex; align-items: center; justify-content: center; height: 158px;">
+          <img src="prod-gorra.png" alt="Gorra trucker" style="max-width: 80%; max-height: 96%; object-fit: contain;">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 11px; border-top: 1px solid rgba(43,40,18,0.14);">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.3px;">Gorra trucker</span>
+            <span style="font-size: 14px; color: rgba(43,40,18,0.7); white-space: nowrap;">$215</span>
+          </div>
+          <span style="font-size: 11px; line-height: 16px; color: rgba(43,40,18,0.5);">[PROVEEDOR] · bordado · 10 días</span>
+        </div>
+      </a>
+
+      <a href="#" style="display: flex; flex-direction: column; gap: 11px;">
+        <div style="display: flex; align-items: center; justify-content: center; height: 158px;">
+          <img src="prod-tote.png" alt="Tote bag grande" style="max-width: 80%; max-height: 96%; object-fit: contain;">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 11px; border-top: 1px solid rgba(43,40,18,0.14);">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+            <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.3px;">Tote bag grande</span>
+            <span style="font-size: 14px; color: rgba(43,40,18,0.7); white-space: nowrap;">$159</span>
+          </div>
+          <span style="font-size: 11px; line-height: 16px; color: rgba(43,40,18,0.5);">[PROVEEDOR] · bordado · 11 días</span>
+        </div>
+      </a>
+
+    </div>
+
+    <a href="#" style="display: flex; align-items: center; justify-content: center; gap: 9px; height: 56px; margin-top: 32px; border-radius: 9999px; background: #a5f35c; font-size: 16px; font-weight: 600;">
+      Ver los [N] productos
+      <svg width="15" height="15" viewBox="0 0 14 14" fill="none" class="flecha"><path d="M5.833 10.5L9.333 7L5.833 3.5" stroke="#2b2812" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </a>
+  </section>
+
+  <section style="padding: 64px 20px 0 20px;">
+    <div style="display: flex; flex-direction: column; gap: 12px; padding-bottom: 22px; border-bottom: 1px solid rgba(43,40,18,0.14);">
+      <h2 class="display" style="font-size: 30px; line-height: 36px; letter-spacing: -0.64px;">Paquetes para eventos</h2>
+      <p style="font-size: 15px; line-height: 26px; color: rgba(43,40,18,0.6);">Combos pensados para graduaciones, bodas y eventos especiales.</p>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 26px; padding-top: 26px;">
+      <a href="#" style="display: flex; flex-direction: column; gap: 14px;">
+        <img src="cat-eventos.jpg" alt="Totes para boda" style="display: block; width: 100%; height: 280px; border-radius: 24px; object-fit: cover;">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+            <span style="font-size: 21px; font-weight: 600; letter-spacing: -0.5px;">Kit de boda</span>
+            <span style="font-size: 15px; color: rgba(43,40,18,0.7); white-space: nowrap;">desde [PRECIO]</span>
+          </div>
+          <span style="font-size: 14px; line-height: 23px; color: rgba(43,40,18,0.55);">Totes y playeras para invitados, con el diseño de los novios.</span>
+        </div>
+      </a>
+
+      <a href="#" style="display: flex; flex-direction: column; gap: 14px;">
+        <img src="cat-graduaciones.jpg" alt="Graduación" style="display: block; width: 100%; height: 280px; border-radius: 24px; object-fit: cover;">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+            <span style="font-size: 21px; font-weight: 600; letter-spacing: -0.5px;">Kit de graduación</span>
+            <span style="font-size: 15px; color: rgba(43,40,18,0.7); white-space: nowrap;">desde [PRECIO]</span>
+          </div>
+          <span style="font-size: 14px; line-height: 23px; color: rgba(43,40,18,0.55);">Generación, escuela y nombres, en pedidos de grupo.</span>
+        </div>
+      </a>
+    </div>
+
+    <a href="#" style="display: inline-flex; align-items: center; gap: 9px; margin-top: 24px; font-size: 15px; font-weight: 600;">
+      Ver todos los paquetes de eventos
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="flecha"><path d="M5.833 10.5L9.333 7L5.833 3.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </a>
+  </section>
+
+  <section style="padding: 56px 20px 0 20px;">
+    <div style="display: flex; flex-direction: column; gap: 12px; padding-bottom: 22px; border-bottom: 1px solid rgba(43,40,18,0.14);">
+      <h2 class="display" style="font-size: 30px; line-height: 36px; letter-spacing: -0.64px;">Paquetes empresariales</h2>
+      <p style="font-size: 15px; line-height: 26px; color: rgba(43,40,18,0.6);">Soluciones personalizadas para equipos, oficinas y marcas.</p>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 26px; padding-top: 26px;">
+      <a href="#" style="display: flex; flex-direction: column; gap: 14px;">
+        <img src="cat-empresas.jpg" alt="Equipo de trabajo" style="display: block; width: 100%; height: 280px; border-radius: 24px; object-fit: cover;">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+            <span style="font-size: 21px; font-weight: 600; letter-spacing: -0.5px;">Uniforme de equipo</span>
+            <span style="font-size: 15px; color: rgba(43,40,18,0.7); white-space: nowrap;">desde [PRECIO]</span>
+          </div>
+          <span style="font-size: 14px; line-height: 23px; color: rgba(43,40,18,0.55);">Playeras con tu logo, en tallas surtidas por persona.</span>
+        </div>
+      </a>
+
+      <a href="#" style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 18px; width: 100%; height: 280px; border-radius: 24px; background: #c9b8ff;">
+          <img src="prod-tote.png" alt="Tote del kit de bienvenida" style="max-height: 58%; object-fit: contain;">
+          <img src="prod-termo.png" alt="Termo del kit de bienvenida" style="max-height: 40%; object-fit: contain;">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+            <span style="font-size: 21px; font-weight: 600; letter-spacing: -0.5px;">Kit de bienvenida</span>
+            <span style="font-size: 15px; color: rgba(43,40,18,0.7); white-space: nowrap;">desde [PRECIO]</span>
+          </div>
+          <span style="font-size: 14px; line-height: 23px; color: rgba(43,40,18,0.55);">Tote, termo y playera para quien entra al equipo.</span>
+        </div>
+      </a>
+    </div>
+
+    <a href="#" style="display: inline-flex; align-items: center; gap: 9px; margin-top: 24px; font-size: 15px; font-weight: 600;">
+      Ver todos los paquetes empresariales
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="flecha"><path d="M5.833 10.5L9.333 7L5.833 3.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </a>
+  </section>
+
+  <section style="padding: 56px 20px 64px 20px;">
+    <div style="display: flex; flex-direction: column; gap: 22px; padding-top: 30px; border-top: 1.5px solid #2b2812;">
+      <h2 class="display" style="font-size: 30px; line-height: 37px; letter-spacing: -0.64px;">Nada de esto lo produce una sola fábrica</h2>
+      <a href="#" style="display: flex; align-items: center; justify-content: center; gap: 9px; height: 56px; border-radius: 9999px; background: #a5f35c; font-size: 16px; font-weight: 600;">
+        Conoce a los proveedores
+        <svg width="15" height="15" viewBox="0 0 14 14" fill="none" class="flecha"><path d="M5.833 10.5L9.333 7L5.833 3.5" stroke="#2b2812" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </a>
+    </div>
+  </section>
+
+  <footer style="padding: 56px 20px 40px 20px; background: #2b2812;">
+    <div style="display: flex; flex-direction: column; gap: 40px;">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-size: 20px; font-weight: 500; letter-spacing: -1px; line-height: 1; color: #fffdf8;">fabbo</span>
+        <p style="font-size: 14px; line-height: 24px; color: rgba(255,253,248,0.55);">Personalización bajo demanda, hecha en México.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px;">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; font-weight: 600; letter-spacing: 1.1px; color: rgba(255,253,248,0.45);">CATÁLOGO</span>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Playeras</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Gorras</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Bolsas y totes</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Termos y vasos</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; font-weight: 600; letter-spacing: 1.1px; color: rgba(255,253,248,0.45);">PAQUETES</span>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Para eventos</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Empresariales</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Editor de diseño</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Rastrea tu pedido</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; font-weight: 600; letter-spacing: 1.1px; color: rgba(255,253,248,0.45);">CONTACTO</span>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">[TU CORREO]</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">[TU WHATSAPP]</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">[TU INSTAGRAM]</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Publica tus productos</a>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid rgba(255,253,248,0.15);">
+        <span style="font-size: 13px; color: rgba(255,253,248,0.5);">© 2026 fabbo · México (es-MX)</span>
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <a href="#" style="font-size: 13px; color: rgba(255,253,248,0.5);">Aviso de privacidad</a>
+          <a href="#" style="font-size: 13px; color: rgba(255,253,248,0.5);">Términos y condiciones</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+</body>
+</html>

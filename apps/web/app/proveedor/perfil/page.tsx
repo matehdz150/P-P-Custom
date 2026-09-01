@@ -5,13 +5,15 @@ import { useEffect, useState } from "react";
 import { useProviderAuth } from "@/Contexts/ProviderAuthContext";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { updateMyProfile } from "@/lib/api/providers";
+import { actualizarMiPerfil } from "@/lib/api/proveedores";
 import { uploadImage } from "@/lib/api/uploads";
 
 export default function ProviderProfilePage() {
 	const { provider, loading, refresh } = useProviderAuth();
 
 	const [displayName, setDisplayName] = useState("");
+	// Sólo de lectura: el slug es la URL pública y cambiarlo rompe los
+	// enlaces que ya circulan. Por eso la API no lo deja tocar desde aquí.
 	const [slug, setSlug] = useState("");
 	const [bio, setBio] = useState("");
 	const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
@@ -29,10 +31,7 @@ export default function ProviderProfilePage() {
 		}
 	}, [provider]);
 
-	async function handleUpload(
-		file: File,
-		set: (u: string) => void,
-	) {
+	async function handleUpload(file: File, set: (u: string) => void) {
 		const res = await uploadImage(file);
 		set(res.url);
 	}
@@ -41,9 +40,8 @@ export default function ProviderProfilePage() {
 		setSaving(true);
 		setMsg(null);
 		try {
-			await updateMyProfile({
+			await actualizarMiPerfil({
 				displayName: displayName.trim(),
-				slug: slug.trim(),
 				bio: bio.trim(),
 				avatarUrl: avatarUrl ?? undefined,
 				bannerUrl: bannerUrl ?? undefined,
@@ -51,7 +49,7 @@ export default function ProviderProfilePage() {
 			await refresh();
 			setMsg("Perfil guardado");
 		} catch {
-			setMsg("No se pudo guardar (¿slug en uso?)");
+			setMsg("No se pudo guardar");
 		} finally {
 			setSaving(false);
 		}
@@ -79,9 +77,7 @@ export default function ProviderProfilePage() {
 				</button>
 			</div>
 
-			{msg && (
-				<p className="mb-4 text-sm text-[#fe6241] font-medium">{msg}</p>
-			)}
+			{msg && <p className="mb-4 text-sm text-[#fe6241] font-medium">{msg}</p>}
 
 			{/* BANNER */}
 			<section className="border rounded-xl p-5 mb-5">
@@ -132,9 +128,7 @@ export default function ProviderProfilePage() {
 				</div>
 
 				<div>
-					<label className="text-sm font-semibold">
-						Nombre público
-					</label>
+					<label className="text-sm font-semibold">Nombre público</label>
 					<Input
 						value={displayName}
 						onChange={(e) => setDisplayName(e.target.value)}
@@ -143,18 +137,10 @@ export default function ProviderProfilePage() {
 				</div>
 
 				<div>
-					<label className="text-sm font-semibold">
-						URL pública
-					</label>
+					<label className="text-sm font-semibold">URL pública</label>
 					<div className="flex items-center gap-1 mt-1">
-						<span className="text-sm text-muted-foreground">
-							/proveedores/
-						</span>
-						<Input
-							value={slug}
-							onChange={(e) => setSlug(e.target.value)}
-							placeholder="mi-marca"
-						/>
+						<span className="text-sm text-muted-foreground">/proveedores/</span>
+						<Input value={slug} readOnly disabled placeholder="mi-marca" />
 					</div>
 				</div>
 

@@ -13,7 +13,7 @@ import { eq, ilike } from "drizzle-orm";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { CreatePackageCategoryDto } from "./dto/create-packageCategory.dto";
-import { packagePricing, packages, productImages, productPricing, products } from "../../../../packages/db/schema";
+import { packagePricing, packages, productColors, productImages, productPricing, productProduction, products } from "../../../../packages/db/schema";
 
 @Injectable()
 export class CategoriesService {
@@ -88,14 +88,24 @@ export class CategoriesService {
         basePrice: productPricing.basePrice,
         imageUrl: productImages.url,
         imageOrder: productImages.order,
+        provider: productProduction.provider,
+        productionMeta: productProduction.meta,
+        colorName: productColors.name,
+        colorHex: productColors.hex,
       })
       .from(productCategories)
       .innerJoin(products, eq(productCategories.productId, products.id))
       .leftJoin(productImages, eq(productImages.productId, products.id))
       .leftJoin(productPricing, eq(productPricing.productId, products.id))
+      .leftJoin(
+        productProduction,
+        eq(productProduction.productId, products.id)
+      )
+      .leftJoin(productColors, eq(productColors.productId, products.id))
       .where(eq(productCategories.categoryId, categoryId));
 
-    // 3. Normalizar (agrupar imágenes por producto)
+    // 3. Normalizar. Los left join multiplican filas por imagen y por color,
+    //    así que se agrupan sin repetir.
     const map = new Map<
       string,
       {
@@ -104,24 +114,41 @@ export class CategoriesService {
         description?: string | null;
         basePrice?: number;
         images: { url: string }[];
+        provider?: string | null;
+        technique?: string | null;
+        productionDays?: number | null;
+        colors: { name: string; hex?: string | null }[];
       }
     >();
 
     for (const row of rows) {
       if (!map.has(row.id)) {
+        const meta = (row.productionMeta ?? {}) as {
+          tecnica?: string;
+          diasProduccion?: number;
+        };
+
         map.set(row.id, {
           id: row.id,
           name: row.name,
           description: row.description,
           basePrice: row.basePrice ?? undefined,
           images: [],
+          provider: row.provider ?? null,
+          technique: meta.tecnica ?? null,
+          productionDays: meta.diasProduccion ?? null,
+          colors: [],
         });
       }
 
-      if (row.imageUrl) {
-        map.get(row.id)!.images.push({
-          url: row.imageUrl,
-        });
+      const item = map.get(row.id)!;
+
+      if (row.imageUrl && !item.images.some((i) => i.url === row.imageUrl)) {
+        item.images.push({ url: row.imageUrl });
+      }
+
+      if (row.colorName && !item.colors.some((c) => c.name === row.colorName)) {
+        item.colors.push({ name: row.colorName, hex: row.colorHex });
       }
     }
 

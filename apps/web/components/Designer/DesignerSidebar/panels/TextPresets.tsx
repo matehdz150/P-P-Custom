@@ -1,27 +1,32 @@
 "use client";
 
 import { type FabricObject, Textbox } from "fabric";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import { useHistory } from "@/Contexts/HistoryContext";
-import { CurvedText } from "@/lib/fabric/CurvedText";
-import { AddObjectCommand } from "@/lib/history/commands/AddObjectCommand";
-import { GroupCommand } from "@/lib/history/commands/GroupCommand";
 import { useElementGuard } from "@/components/Designer/hooks/useProductConfig";
 import { makeAreaClip } from "@/lib/fabric/areaClip";
+import { CurvedText } from "@/lib/fabric/CurvedText";
 import {
 	type PresetElement,
 	TEXT_PRESETS,
 	type TextPreset,
 } from "@/lib/fabric/textPresets";
+import { AddObjectCommand } from "@/lib/history/commands/AddObjectCommand";
+import { GroupCommand } from "@/lib/history/commands/GroupCommand";
 
-const ORANGE = "#fe6241";
+const SELECCION = "#2b2812";
+
+/** Cuántos diseños se asoman en la tira antes de abrirlos todos. */
+const ASOMADOS = 6;
 
 function applySelectionStyle(obj: FabricObject) {
 	obj.set({
 		transparentCorners: false,
 		cornerColor: "#ffffff",
-		cornerStrokeColor: ORANGE,
-		borderColor: ORANGE,
+		cornerStrokeColor: SELECCION,
+		borderColor: SELECCION,
 		cornerSize: 8,
 		cornerStyle: "rect",
 	} as never);
@@ -179,23 +184,52 @@ export default function TextPresets() {
 		canvas.requestRenderAll();
 	};
 
+	const [abierto, setAbierto] = useState(false);
+	const visibles = abierto ? TEXT_PRESETS : TEXT_PRESETS.slice(0, ASOMADOS);
+
+	const miniatura = (preset: TextPreset) => (
+		<button
+			key={preset.id}
+			type="button"
+			onClick={() => insertPreset(preset)}
+			title={preset.name}
+			className={`aspect-square rounded-lg border border-gray-200 bg-white p-2
+				hover:border-tinta hover:shadow-sm transition flex items-center justify-center
+				${abierto ? "" : "w-[104px] shrink-0"}`}
+		>
+			<PresetThumb preset={preset} />
+		</button>
+	);
+
 	return (
 		<div>
-			<h3 className="mt-2 mb-3 text-md font-semibold">Diseños</h3>
-			<div className="grid grid-cols-2 gap-3">
-				{TEXT_PRESETS.map((preset) => (
-					<button
-						key={preset.id}
-						type="button"
-						onClick={() => insertPreset(preset)}
-						title={preset.name}
-						className="aspect-square rounded-lg border border-gray-200 bg-white p-2
-							hover:border-[#fe6241] hover:shadow-sm transition flex items-center justify-center"
-					>
-						<PresetThumb preset={preset} />
-					</button>
-				))}
+			<div className="mt-2 mb-3 flex items-center justify-between gap-3">
+				<h3 className="text-md font-semibold">Diseños</h3>
+				<button
+					type="button"
+					onClick={() => setAbierto((v) => !v)}
+					className="flex items-center gap-1 text-sm font-medium text-tinta hover:underline"
+				>
+					{abierto ? (
+						"Ver menos"
+					) : (
+						<>
+							<Plus size={16} />
+							Ver más
+						</>
+					)}
+				</button>
 			</div>
+
+			{abierto ? (
+				<div className="grid grid-cols-2 gap-3">{visibles.map(miniatura)}</div>
+			) : (
+				// Tira horizontal: una fila en vez de media pantalla. El margen
+				// negativo deja que se recorran hasta el borde del panel.
+				<div className="-mx-6 overflow-x-auto px-6 pb-1">
+					<div className="flex w-max gap-3">{visibles.map(miniatura)}</div>
+				</div>
+			)}
 		</div>
 	);
 }

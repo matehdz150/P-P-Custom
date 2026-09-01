@@ -1,32 +1,26 @@
 "use client";
 
+import { useDesigner } from "@/Contexts/DesignerContext";
+import SelectorColorPrenda from "../design/SelectorColorPrenda";
+
 export default function MobileVariantsPanel() {
+	const { colores } = useDesigner();
+
 	return (
 		<div className="flex flex-col font-sora px-6 pb-24">
 			{/* COLOR */}
-			<div className="mt-4">
-				<span className="text-lg font-medium text-black font-sora">Color</span>
-
-				<div className="flex gap-4 mt-3">
-					{["#ffffff", "#000000", "#6b7280", "#c2410c"].map((color, idx) => (
-						<button
-							key={color}
-							type="button"
-							className={`
-                h-12 w-12 rounded-full
-                border
-                ${idx === 0 ? "ring-2 ring-black" : "border-gray-300"}
-              `}
-							style={{ backgroundColor: color }}
-							aria-label={`Color ${color}`}
-						/>
-					))}
+			{colores.length > 0 && (
+				<div className="mt-4">
+					<span className="text-lg font-medium text-tinta font-sora">
+						Color
+					</span>
+					<SelectorColorPrenda className="mt-3" tamano={48} />
 				</div>
-			</div>
+			)}
 
 			{/* TALLA */}
 			<div className="mt-8">
-				<span className="text-lg font-medium text-black">Talla</span>
+				<span className="text-lg font-medium text-tinta">Talla</span>
 
 				<div className="flex gap-3 mt-3 flex-wrap">
 					{["XS", "S", "M", "L", "XL"].map((size) => (
@@ -38,8 +32,8 @@ export default function MobileVariantsPanel() {
                 border
                 ${
 									size === "M"
-										? "bg-black text-white border-black"
-										: "bg-white text-black border-gray-300"
+										? "bg-tinta text-hueso-suave border-tinta"
+										: "bg-white text-tinta border-gray-300"
 								}
               `}
 						>

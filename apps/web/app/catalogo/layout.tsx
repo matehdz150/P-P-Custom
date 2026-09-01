@@ -1,81 +1,59 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { SearchProvider, useSearch } from "@/Contexts/SearchContext";
-import SearchBar from "@/components/Catalogo/SearchBar";
-import SearchText from "@/components/Catalogo/SearchText";
-import SortSelect from "@/components/Catalogo/SortSelect";
-import { Header } from "@/components/Header/Header";
-import AppBreadcrumb from "@/components/shared/AppBreadCrumb";
+import { SearchProvider } from "@/Contexts/SearchContext";
+import BuscadorCatalogo from "@/components/Catalogo/BuscadorCatalogo";
+import Footer from "@/components/Kustto/Footer";
+import Header from "@/components/Kustto/Header";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return (
-    <SearchProvider>
-      <Header />
-      <CatalogLayoutContent>{children}</CatalogLayoutContent>
-    </SearchProvider>
-  );
+	return (
+		<SearchProvider>
+			<div className="font-brand min-h-screen bg-hueso text-tinta">
+				<Header />
+				<CatalogLayoutContent>{children}</CatalogLayoutContent>
+				<Footer />
+			</div>
+		</SearchProvider>
+	);
 }
 
 function CatalogLayoutContent({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const { query } = useSearch();
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
+	const pathname = usePathname();
 
-  const segments = pathname.split("/").filter(Boolean);
-  const isSearching = query.trim().length > 0;
+	// La portada y el listado traen su propio encabezado, con título y
+	// buscador incluidos. Las demás subrutas reciben aquí el mismo buscador.
+	const traeSuChrome =
+		pathname === "/catalogo" || pathname === "/catalogo/productos";
 
-  const breadcrumbItems = [
-    { label: "P&P", href: "/" },
-    ...(segments[0] ? [{ label: "Catálogo", href: "/catalogo" }] : []),
-    ...(segments[1]
-      ? [{ label: capitalize(segments[1]), href: `/catalogo/${segments[1]}` }]
-      : []),
-  ];
+	if (traeSuChrome) {
+		return <main>{children}</main>;
+	}
 
-  // ⚡ condiciones para ocultar SortSelect en mobile
-  const hideSortMobile = isSearching || isSearchFocused;
+	const segmento = pathname.split("/").filter(Boolean)[1];
 
-  return (
-    <div className="mt-4 w-full px-4 sm:px-6 md:px-10 lg:px-20 xl:px-32">
-      <AppBreadcrumb items={breadcrumbItems} />
+	return (
+		<>
+			<section className="px-5 pt-7 md:px-14 md:pt-13">
+				<nav className="flex items-center gap-2.5 pb-5 text-[13px] text-tinta/45">
+					<Link href="/">Inicio</Link>
+					<span aria-hidden="true">/</span>
+					<Link href="/catalogo">Catálogo</Link>
+					{segmento && (
+						<>
+							<span aria-hidden="true">/</span>
+							<span className="text-tinta capitalize">{segmento}</span>
+						</>
+					)}
+				</nav>
 
-      {/* ------------------- 📱 MOBILE ------------------- */}
-      <div className="mt-1 flex items-center gap-2 md:hidden mb-5">
-        <SearchBar
-          className={`
-            transition-all duration-200
-            ${hideSortMobile ? "flex-[1_0_100%]" : "flex-1"}
-          `}
-          onFocusChange={setIsSearchFocused}
-        />
+				<BuscadorCatalogo />
+			</section>
 
-        {!hideSortMobile && (
-          <div className="w-[140px] transition-all duration-200">
-            <SortSelect />
-          </div>
-        )}
-      </div>
-      <div className="md:hidden">
-        <SearchText mobile />
-      </div>
-
-      {/* ------------------- 🖥 DESKTOP ------------------- */}
-      <div className="hidden md:block mt-4">
-        <SearchBar />
-
-        <div className="flex justify-between items-center mt-3">
-          <SearchText />
-          <SortSelect />
-        </div>
-      </div>
-
-      <main className="mt-4">{children}</main>
-    </div>
-  );
-}
-
-function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+			<main className="px-5 pt-8 pb-16 md:px-14 md:pt-10 md:pb-22">
+				{children}
+			</main>
+		</>
+	);
 }

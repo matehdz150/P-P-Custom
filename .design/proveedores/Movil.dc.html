@@ -1,0 +1,311 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@700;800&amp;family=Poppins:wght@400;500;600;700&amp;display=swap">
+  <style>
+    body { margin: 0; background: #fffdf8; color: #2b2812; font-family: Poppins, "Segoe UI", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3, p { margin: 0; }
+    p { text-wrap: pretty; }
+    a { color: #2b2812; text-decoration: none; }
+    .display { font-family: Figtree, "Segoe UI", system-ui, sans-serif; font-weight: 800; }
+    .fx { flex-shrink: 0; }
+  </style>
+</helmet>
+
+<div style="width: 390px; background: #fffdf8; color: #2b2812;">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px;">
+    <div style="display: flex; align-items: center; gap: 9px;">
+      <svg width="26" height="26" viewBox="0 0 260 260" fill="none">
+        <rect width="260" height="260" rx="48" fill="#a5f35c"></rect>
+        <path d="M106,66 C114,82 146,82 154,66 L182,75 L205,105 L185,126 L173,112 L173,193 Q173,200 166,200 L94,200 Q87,200 87,193 L87,112 L75,126 L55,105 L78,75 Z" fill="#2b2812"></path>
+        <g transform="translate(158,150) scale(2.35)">
+          <polygon points="0,0 0,21 5.8,15.9 9.7,24 13.5,22.1 9.7,14.4 16.4,14.4" fill="none" stroke="#a5f35c" stroke-width="6.5" stroke-linejoin="round"></polygon>
+          <polygon points="0,0 0,21 5.8,15.9 9.7,24 13.5,22.1 9.7,14.4 16.4,14.4" fill="#2b2812"></polygon>
+        </g>
+      </svg>
+      <span style="font-size: 26px; font-weight: 500; letter-spacing: -1.3px; line-height: 1;">fabbo</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <a href="#" style="display: inline-flex; align-items: center; height: 44px; padding: 0 16px; border-radius: 9999px; background: #a5f35c; font-size: 15px; font-weight: 600;">Publicar</a>
+      <span style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1.5px solid #2b2812; border-radius: 10px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="#2b2812" stroke-width="1.9" stroke-linecap="round"></path></svg>
+      </span>
+    </div>
+  </header>
+
+  <section style="padding: 30px 20px 0 20px;">
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <span style="display: inline-flex; align-self: flex-start; align-items: center; padding: 7px 15px; border-radius: 9999px; background: #a5f35c; font-size: 13px; font-weight: 600;">Para talleres y proveedores</span>
+
+      <h1 class="display" style="font-size: 38px; line-height: 43px; letter-spacing: -1.14px;">¿Tienes la máquina? Nosotros te traemos los pedidos</h1>
+
+      <p style="font-size: 16px; line-height: 27px; color: rgba(43,40,18,0.72);">Publica tus productos, pon tus precios por cantidad y tus tiempos reales. El cliente diseña, paga, y a ti te llega el pedido cerrado con el archivo listo.</p>
+
+      <a href="#" style="display: flex; align-items: center; justify-content: center; gap: 10px; height: 56px; border-radius: 9999px; background: #2b2812; font-size: 17px; font-weight: 600; color: #a5f35c;">
+        Publica tus productos
+        <svg width="15" height="15" viewBox="0 0 14 14" fill="none" class="fx"><path d="M5.833 10.5L9.333 7L5.833 3.5" stroke="#a5f35c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </a>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 8px 18px;">
+        <span style="display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: rgba(43,40,18,0.65);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="fx"><path d="M4.5 12.6l4.8 4.8L19.5 7.2" stroke="#7cb944" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          Publicar es gratis
+        </span>
+        <span style="display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: rgba(43,40,18,0.65);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="fx"><path d="M4.5 12.6l4.8 4.8L19.5 7.2" stroke="#7cb944" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          Sin exclusividad
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Un pedido real, que es lo que convence -->
+  <section style="padding: 30px 20px 0 20px;">
+    <div style="display: flex; flex-direction: column; border-radius: 24px; background: #fffdf8; box-shadow: 0 18px 44px rgba(43,40,18,0.14);">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; border-bottom: 1px solid rgba(43,40,18,0.12);">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="width: 9px; height: 9px; border-radius: 50%; background: #7cb944;"></span>
+          <span style="font-size: 14px; font-weight: 600;">Pedido nuevo · PAGADO</span>
+        </div>
+        <span style="font-size: 12px; color: rgba(43,40,18,0.5);">hace 4 min</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 14px; padding: 18px 20px;">
+        <div style="display: flex; align-items: center; justify-content: center; width: 72px; height: 72px; flex-shrink: 0; border-radius: 16px; background: #f3f3f1;">
+          <img src="playera.webp" alt="Playera cuello redondo" style="max-height: 78%; max-width: 72%; object-fit: contain;">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.3px;">Playera cuello redondo · Hueso</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.6);">30 piezas · S 6 · M 12 · L 9 · XL 3</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.6);">Bordado, 1 lado, 3 tintas</span>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 11px; margin: 0 20px; padding: 13px 14px; border-radius: 14px; background: #f3f3f1;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="fx"><path d="M14 3v5h5" stroke="#2b2812" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path><path d="M19 9.5V19a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2h6.5L19 9.5z" stroke="#2b2812" stroke-width="1.7" stroke-linejoin="round"></path></svg>
+        <div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1; min-width: 0;">
+          <span style="font-size: 13px; font-weight: 600;">gen-2026-frente.png</span>
+          <span style="font-size: 11px; color: rgba(43,40,18,0.55);">28 × 35 cm · 300 dpi · ya centrado</span>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; margin-top: 18px; padding: 18px 20px; border-top: 1px solid rgba(43,40,18,0.12);">
+        <div style="display: flex; flex-direction: column; gap: 3px;">
+          <span style="font-size: 12px; color: rgba(43,40,18,0.55);">Te toca a ti</span>
+          <span class="display" style="font-size: 28px; line-height: 1; letter-spacing: -0.59px;">[TU COBRO]</span>
+        </div>
+        <span style="display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: 9999px; background: #a5f35c; font-size: 14px; font-weight: 600;">Aceptar</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 64px 20px 0 20px;">
+    <div style="display: flex; flex-direction: column; gap: 26px;">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <span style="display: flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 500;">
+          <span style="display: inline-block; width: 9px; height: 9px; border: 1.6px solid #2b2812; border-radius: 9999px;"></span>
+          Cómo funciona de tu lado
+        </span>
+        <h2 class="display" style="font-size: 32px; line-height: 39px; letter-spacing: -0.67px;">Publicas una vez y produces cuando entra un pedido</h2>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 22px;">
+        <div style="display: flex; flex-direction: column; gap: 9px; padding-top: 18px; border-top: 3px solid #a5f35c;">
+          <span class="display" style="font-size: 30px; line-height: 1; letter-spacing: -0.63px; color: #7cb944;">01</span>
+          <h3 style="font-size: 20px; font-weight: 600; line-height: 25px; letter-spacing: -0.5px;">Publicas tu producto</h3>
+          <p style="font-size: 15px; line-height: 25px; color: rgba(43,40,18,0.65);">Eliges la plantilla, marcas el área imprimible, y pones tus colores, tallas y técnicas.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 9px; padding-top: 18px; border-top: 3px solid #a5f35c;">
+          <span class="display" style="font-size: 30px; line-height: 1; letter-spacing: -0.63px; color: #7cb944;">02</span>
+          <h3 style="font-size: 20px; font-weight: 600; line-height: 25px; letter-spacing: -0.5px;">Pones tus precios</h3>
+          <p style="font-size: 15px; line-height: 25px; color: rgba(43,40,18,0.65);">El precio de la prenda y cuánto suma cada lado, cada diseño y cada tinta. Y tus días reales.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 9px; padding-top: 18px; border-top: 3px solid #a5f35c;">
+          <span class="display" style="font-size: 30px; line-height: 1; letter-spacing: -0.63px; color: #7cb944;">03</span>
+          <h3 style="font-size: 20px; font-weight: 600; line-height: 25px; letter-spacing: -0.5px;">Entra un pedido pagado</h3>
+          <p style="font-size: 15px; line-height: 25px; color: rgba(43,40,18,0.65);">Con el desglose de tallas y el archivo ya escalado a tu área. Tú decides si lo tomas.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 9px; padding-top: 18px; border-top: 3px solid #a5f35c;">
+          <span class="display" style="font-size: 30px; line-height: 1; letter-spacing: -0.63px; color: #7cb944;">04</span>
+          <h3 style="font-size: 20px; font-weight: 600; line-height: 25px; letter-spacing: -0.5px;">Produces y marcas etapas</h3>
+          <p style="font-size: 15px; line-height: 25px; color: rgba(43,40,18,0.65);">Cambias la etapa en el panel y el cliente se entera solo. Nadie te escribe para preguntar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 56px 20px 0 20px;">
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+
+      <div style="display: flex; flex-direction: column; gap: 20px; padding: 30px 24px; border-radius: 24px; background: #2b2812;">
+        <span class="display" style="font-size: 28px; line-height: 34px; letter-spacing: -0.59px; color: #a5f35c;">Tú mandas en</span>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 15px; border-top: 1px solid rgba(255,253,248,0.2);">
+            <span style="font-size: 16px; font-weight: 600; color: #fffdf8;">Tus precios y tu escalonado</span>
+            <span style="font-size: 14px; line-height: 23px; color: rgba(255,253,248,0.6);">Nadie te dice a cuánto vender ni te pide descuento por volumen.</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 15px; border-top: 1px solid rgba(255,253,248,0.2);">
+            <span style="font-size: 16px; font-weight: 600; color: #fffdf8;">Tus tiempos</span>
+            <span style="font-size: 14px; line-height: 23px; color: rgba(255,253,248,0.6);">Pones los días que de verdad te toma. Se los prometemos al cliente, no otros.</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 15px; border-top: 1px solid rgba(255,253,248,0.2);">
+            <span style="font-size: 16px; font-weight: 600; color: #fffdf8;">Tus límites técnicos</span>
+            <span style="font-size: 14px; line-height: 23px; color: rgba(255,253,248,0.6);">El editor no deja al cliente pedirte lo imposible.</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 15px; border-top: 1px solid rgba(255,253,248,0.2);">
+            <span style="font-size: 16px; font-weight: 600; color: #fffdf8;">Qué pedidos tomas</span>
+            <span style="font-size: 14px; line-height: 23px; color: rgba(255,253,248,0.6);">Si vas saturado, lo rechazas y se va con otro. Sin penalización.</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; padding: 30px 24px; border-radius: 24px; background: #c9b8ff;">
+        <span class="display" style="font-size: 28px; line-height: 34px; letter-spacing: -0.59px;">Nosotros ponemos</span>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 15px; border-top: 1px solid rgba(43,40,18,0.22);">
+            <span style="font-size: 16px; font-weight: 600;">Al cliente</span>
+            <span style="font-size: 14px; line-height: 23px; color: rgba(43,40,18,0.7);">Gente que llega buscando personalizados y encuentra tu producto.</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 15px; border-top: 1px solid rgba(43,40,18,0.22);">
+            <span style="font-size: 16px; font-weight: 600;">El editor</span>
+            <span style="font-size: 14px; line-height: 23px; color: rgba(43,40,18,0.7);">El cliente arma su diseño solo. Se acabó el ida y vuelta por WhatsApp.</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 15px; border-top: 1px solid rgba(43,40,18,0.22);">
+            <span style="font-size: 16px; font-weight: 600;">El cobro</span>
+            <span style="font-size: 14px; line-height: 23px; color: rgba(43,40,18,0.7);">El pedido te llega pagado. Ni anticipos ni perseguir a nadie.</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 15px; border-top: 1px solid rgba(43,40,18,0.22);">
+            <span style="font-size: 16px; font-weight: 600;">El archivo listo</span>
+            <span style="font-size: 14px; line-height: 23px; color: rgba(43,40,18,0.7);">A la medida de tu área, a 300 dpi, sin abrir un programa de diseño.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 56px 20px 0 20px;">
+    <div style="display: flex; flex-direction: column; gap: 22px;">
+      <h2 class="display" style="font-size: 32px; line-height: 39px; letter-spacing: -0.67px;">Todo lo abierto, en una pantalla</h2>
+      <p style="font-size: 15px; line-height: 26px; color: rgba(43,40,18,0.72);">Los pedidos por etapa, tus productos publicados y tu perfil público. Cambias una etapa y el cliente recibe el aviso.</p>
+
+      <div style="display: flex; flex-direction: column; border-radius: 20px; background: #f3f3f1; overflow: hidden;">
+        <div style="display: flex; align-items: center; gap: 18px; padding: 15px 18px; background: #fffdf8; border-bottom: 1px solid rgba(43,40,18,0.12);">
+          <span style="font-size: 14px; font-weight: 600;">Pedidos</span>
+          <span style="font-size: 14px; color: rgba(43,40,18,0.5);">Productos</span>
+          <span style="font-size: 14px; color: rgba(43,40,18,0.5);">Perfil</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; padding: 18px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #7cb944;"></span>
+            <span style="font-size: 13px; font-weight: 600;">Por aceptar</span>
+            <span style="font-size: 13px; color: rgba(43,40,18,0.45);">2</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 5px; padding: 13px; border-radius: 13px; background: #fffdf8;">
+            <span style="font-size: 14px; font-weight: 600;">Playera cuello redondo</span>
+            <span style="font-size: 12px; color: rgba(43,40,18,0.55);">30 pzas · bordado</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 5px; padding: 13px; border-radius: 13px; background: #fffdf8;">
+            <span style="font-size: 14px; font-weight: 600;">Gorra trucker</span>
+            <span style="font-size: 12px; color: rgba(43,40,18,0.55);">15 pzas · bordado</span>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px; padding-top: 6px;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #c9b8ff;"></span>
+            <span style="font-size: 13px; font-weight: 600;">En producción</span>
+            <span style="font-size: 13px; color: rgba(43,40,18,0.45);">1</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 5px; padding: 13px; border-radius: 13px; background: #fffdf8;">
+            <span style="font-size: 14px; font-weight: 600;">Tote bag natural</span>
+            <span style="font-size: 12px; color: rgba(43,40,18,0.55);">60 pzas · serigrafía</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 56px 20px 0 20px;">
+    <div style="display: flex; flex-direction: column; gap: 20px; padding-top: 30px; border-top: 1.5px solid #2b2812;">
+      <h2 class="display" style="font-size: 32px; line-height: 39px; letter-spacing: -0.67px;">Qué necesitas para entrar</h2>
+      <p style="font-size: 15px; line-height: 26px; color: rgba(43,40,18,0.72);">No pedimos volumen mínimo ni exclusividad. Sí pedimos que lo que publiques lo puedas cumplir.</p>
+
+      <div style="display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px; padding: 15px 0; border-top: 1px solid rgba(43,40,18,0.14);">
+          <span style="font-size: 15px;">Máquina propia o taller aliado</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55); white-space: nowrap;">obligatorio</span>
+        </div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px; padding: 15px 0; border-top: 1px solid rgba(43,40,18,0.14);">
+          <span style="font-size: 15px;">Tiempos reales, no optimistas</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55); white-space: nowrap;">obligatorio</span>
+        </div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px; padding: 15px 0; border-top: 1px solid rgba(43,40,18,0.14);">
+          <span style="font-size: 15px;">Datos fiscales</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55); white-space: nowrap;">obligatorio</span>
+        </div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px; padding: 15px 0; border-top: 1px solid rgba(43,40,18,0.14); border-bottom: 1px solid rgba(43,40,18,0.14);">
+          <span style="font-size: 15px;">Fotos con fondo transparente</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55); white-space: nowrap;">te ayudamos</span>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px; border-radius: 18px; background: #f3f3f1;">
+        <div style="display: flex; flex-direction: column; gap: 3px;">
+          <span style="font-size: 15px; font-weight: 600;">Qué se queda fabbo</span>
+          <span style="font-size: 13px; line-height: 20px; color: rgba(43,40,18,0.6);">Solo cuando vendes.</span>
+        </div>
+        <span class="display" style="font-size: 24px; line-height: 1; letter-spacing: -0.5px; white-space: nowrap;">[TU COMISIÓN]</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 64px; padding: 64px 20px; background: #a5f35c;">
+    <h2 class="display" style="text-align: center; font-size: 34px; line-height: 41px; letter-spacing: -0.72px;">Tu máquina ya está. Falta que la vean</h2>
+    <p style="text-align: center; font-size: 16px; line-height: 27px; color: rgba(43,40,18,0.72);">Publica tu primer producto hoy y aparece en el catálogo junto a los demás talleres de México.</p>
+    <a href="#" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 56px; border-radius: 9999px; background: #2b2812; font-size: 17px; font-weight: 600; color: #fffdf8;">
+      Publica tus productos
+      <svg width="15" height="15" viewBox="0 0 14 14" fill="none" class="fx"><path d="M5.833 10.5L9.333 7L5.833 3.5" stroke="#fffdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </a>
+    <span style="text-align: center; font-size: 14px; color: rgba(43,40,18,0.7);">¿Dudas antes de entrar? Escríbenos a [TU CORREO]</span>
+  </section>
+
+  <footer style="padding: 56px 20px 40px 20px; background: #2b2812;">
+    <div style="display: flex; flex-direction: column; gap: 40px;">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-size: 20px; font-weight: 500; letter-spacing: -1px; line-height: 1; color: #fffdf8;">fabbo</span>
+        <p style="font-size: 14px; line-height: 24px; color: rgba(255,253,248,0.55);">Personalización bajo demanda, hecha en México.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px;">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; font-weight: 600; letter-spacing: 1.1px; color: rgba(255,253,248,0.45);">PROVEEDORES</span>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Publica tus productos</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Panel de proveedor</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Cómo se cobra</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Iniciar sesión</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; font-weight: 600; letter-spacing: 1.1px; color: rgba(255,253,248,0.45);">CONTACTO</span>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">[TU CORREO]</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">[TU WHATSAPP]</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">[TU INSTAGRAM]</a>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid rgba(255,253,248,0.15);">
+        <span style="font-size: 13px; color: rgba(255,253,248,0.5);">© 2026 fabbo · México (es-MX)</span>
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <a href="#" style="font-size: 13px; color: rgba(255,253,248,0.5);">Aviso de privacidad</a>
+          <a href="#" style="font-size: 13px; color: rgba(255,253,248,0.5);">Términos y condiciones</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+</body>
+</html>

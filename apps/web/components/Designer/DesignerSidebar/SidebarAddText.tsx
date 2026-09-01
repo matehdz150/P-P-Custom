@@ -8,7 +8,7 @@ import { AVAILABLE_FONTS } from "@/lib/fabric/fontList";
 import { AddObjectCommand } from "@/lib/history/commands/AddObjectCommand";
 import { useElementGuard } from "../hooks/useProductConfig";
 
-const ORANGE = "#fe6241";
+const ORANGE = "#2b2812";
 
 function applySelectionStyle(obj: FabricObject) {
 	obj.set({

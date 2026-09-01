@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="260" viewBox="0 0 260 260">
+	<title>kustto</title>
+	<!--
+		El símbolo de la marca, el mismo de components/Kustto/Marca.tsx.
+		Aquí la prenda va 15% más grande dentro de la placa: en la pestaña esto
+		se ve a 16 o 32px y con el encuadre original queda demasiado aire.
+		Si cambia el logo, hay que cambiar los dos archivos.
+	-->
+	<rect width="260" height="260" rx="48" fill="#aeff6e"/>
+	<g transform="translate(130,130) scale(1.15) translate(-130,-133)">
+		<path d="M106,66 C114,82 146,82 154,66 L182,75 L205,105 L185,126 L173,112 L173,193 Q173,200 166,200 L94,200 Q87,200 87,193 L87,112 L75,126 L55,105 L78,75 Z" fill="#2b2812"/>
+		<g transform="translate(158,150) scale(2.35)">
+			<polygon points="0,0 0,21 5.8,15.9 9.7,24 13.5,22.1 9.7,14.4 16.4,14.4" fill="none" stroke="#aeff6e" stroke-width="7.5" stroke-linejoin="round"/>
+			<polygon points="0,0 0,21 5.8,15.9 9.7,24 13.5,22.1 9.7,14.4 16.4,14.4" fill="#2b2812"/>
+		</g>
+	</g>
+</svg>

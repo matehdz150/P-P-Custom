@@ -25,7 +25,7 @@ export function TextToggleButton({
 				"h-9 w-9 flex items-center justify-center rounded-[0.2rem] transition",
 				"border border-transparent",
 				active
-					? "bg-black text-white"
+					? "bg-tinta text-hueso-suave"
 					: "bg-transparent text-gray-700 hover:bg-gray-100",
 			)}
 		>

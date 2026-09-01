@@ -2,22 +2,35 @@
 
 import { useId, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { uploadImage } from "@/lib/api/uploads";
+import { subirMockup } from "@/lib/api/uploads";
 
 type Props = {
 	value?: string;
 	onChange: (url: string) => void;
+	/** Con qué llave se guarda en S3: mockups/<templateId>/<side>-… */
+	templateId: string;
+	side: string;
 };
 
-export function SideMockupUploader({ value, onChange }: Props) {
+export function SideMockupUploader({
+	value,
+	onChange,
+	templateId,
+	side,
+}: Props) {
 	const inputId = useId();
 	const [uploading, setUploading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 
 	async function handleFile(file: File) {
 		setUploading(true);
+		setError(null);
 		try {
-			const res = await uploadImage(file);
-			onChange(res.url);
+			// Devuelve la ruta /mockups/…, no una URL de S3: los mockups se
+			// leen desde el mismo origen o el teñido de prenda deja de servir.
+			onChange(await subirMockup(file, { templateId, side }));
+		} catch (e) {
+			setError(e instanceof Error ? e.message : "No se pudo subir");
 		} finally {
 			setUploading(false);
 		}
@@ -54,6 +67,8 @@ export function SideMockupUploader({ value, onChange }: Props) {
 			{uploading && (
 				<p className="text-xs text-muted-foreground">Subiendo…</p>
 			)}
+
+			{error && <p className="text-xs text-red-600">{error}</p>}
 		</div>
 	);
 }

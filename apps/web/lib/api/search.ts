@@ -15,6 +15,13 @@ export type ProductFromCategory = {
   description?: string | null;
   images: { url: string }[];
   basePrice?: number;
+
+  // Vienen de product_production y product_colors: alimentan la ficha del
+  // catálogo (proveedor · técnica · días) y los filtros del listado.
+  provider?: string | null;
+  technique?: string | null;
+  productionDays?: number | null;
+  colors?: { name: string; hex?: string | null }[];
 };
 
 export async function searchCatalog(

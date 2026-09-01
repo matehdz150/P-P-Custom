@@ -82,10 +82,10 @@ export default function SidebarTextPanel({ close }: { close: () => void }) {
 	};
 
 	return (
-		<div className="h-[80%] flex flex-col">
+		<div className="h-full flex flex-col">
 			{/* HEADER */}
 			<div className="p-6 flex justify-between items-center border-b bg-white">
-				<h2 className="font-semibold text-xl text-black">Añadir texto</h2>
+				<h2 className="font-semibold text-xl text-tinta">Añadir texto</h2>
 				<button type="button" onClick={close}>
 					<X size={22} />
 				</button>

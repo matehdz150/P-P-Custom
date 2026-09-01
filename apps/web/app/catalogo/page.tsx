@@ -1,91 +1,68 @@
 "use client";
 
-
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { useSearch } from "@/Contexts/SearchContext";
+import CatalogoHero from "@/components/Catalogo/CatalogoHero";
+import CierreProveedores from "@/components/Catalogo/CierreProveedores";
 import PackagesSection from "@/components/Catalogo/PackageSection";
-import ProductGrid from "@/components/Catalogo/ProductGrid";
+import ProductosGrid from "@/components/Catalogo/ProductosGrid";
 import SearchResults from "@/components/Catalogo/SearchResults";
-import { getPackageCategories } from "@/lib/api/categories";
-
-
-type PackageCategory = {
-  id: string;
-  name: string;
-};
-
-type CategoryMap = {
-  eventos?: string;
-  empresariales?: string;
-};
+import { useProductos } from "@/components/Catalogo/useProductos";
+import { ordenar, type Orden } from "@/components/Catalogo/ordenar";
 
 export default function Page() {
-  const { query } = useSearch();
-  const [categoryIds, setCategoryIds] = useState<CategoryMap>({});
+	const { query } = useSearch();
 
-  const isSearching = query.trim().length > 0;
+	const [categoriaActiva, setCategoriaActiva] = useState("todo");
+	const [orden, setOrden] = useState<Orden>("relevancia");
 
-  useEffect(() => {
-    async function loadCategories() {
-      const categories: PackageCategory[] = await getPackageCategories();
+	const { categorias, productos, cargando } = useProductos(categoriaActiva);
 
-      const map: CategoryMap = {};
+	const ordenados = useMemo(
+		() => ordenar(productos, orden),
+		[productos, orden],
+	);
 
-      for (const cat of categories) {
-        const name = cat.name.toLowerCase();
+	const isSearching = query.trim().length > 0;
 
-        if (name === "eventos") {
-          map.eventos = cat.id;
-        }
+	if (isSearching) {
+		return (
+			<div className="px-5 pt-8 pb-16 md:px-14 md:pt-12">
+				<SearchResults query={query} />
+			</div>
+		);
+	}
 
-        if (
-          name === "empresarial" ||
-          name === "empresariales" ||
-          name === "empresas"
-        ) {
-          map.empresariales = cat.id;
-        }
-      }
+	return (
+		<>
+			<CatalogoHero
+				categorias={categorias}
+				categoriaActiva={categoriaActiva}
+				onCategoria={setCategoriaActiva}
+				orden={orden}
+				onOrden={setOrden}
+				total={cargando ? null : ordenados.length}
+			/>
 
-      setCategoryIds(map);
-    }
+			<ProductosGrid productos={ordenados} cargando={cargando} />
 
-    loadCategories();
-  }, []);
+			<PackagesSection
+				title="Paquetes para eventos"
+				description="Combos pensados para graduaciones, bodas y eventos especiales."
+				href="/catalogo/eventos"
+				verTodos="Ver todos los paquetes de eventos"
+				categoryName="eventos"
+			/>
 
-  return (
-    <div className="min-h-screen">
-      {isSearching ? (
-        <SearchResults query={query} />
-      ) : (
-        <>
-        
+			<PackagesSection
+				title="Paquetes empresariales"
+				description="Soluciones personalizadas para equipos, oficinas y marcas."
+				href="/catalogo/empresariales"
+				verTodos="Ver todos los paquetes empresariales"
+				categoryName="empresariales"
+			/>
 
-          <ProductGrid />
-
-          {/* EVENTOS */}
-          {categoryIds.eventos && (
-            <PackagesSection
-              title="Paquetes para eventos"
-              description="Combos pensados para graduaciones, bodas y eventos especiales."
-              href="/catalogo/eventos"
-              categoryName="eventos"
-              limit={4}
-            />
-          )}
-
-          {/* EMPRESARIALES */}
-          {categoryIds.empresariales && (
-            <PackagesSection
-              title="Paquetes empresariales"
-              description="Soluciones personalizadas para equipos, oficinas y marcas."
-              href="/catalogo/empresariales"
-              categoryName="empresariales"
-              limit={4}
-            />
-          )}
-        </>
-      )}
-    </div>
-  );
+			<CierreProveedores />
+		</>
+	);
 }

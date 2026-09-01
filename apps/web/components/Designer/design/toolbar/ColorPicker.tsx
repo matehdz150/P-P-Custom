@@ -20,7 +20,7 @@ export default function ColorPickerMinimal({
 				className="flex flex-col items-center cursor-pointer"
 				onClick={() => colorInputRef.current?.click()}
 			>
-				<Type size={22} className="text-black" />
+				<Type size={22} className="text-tinta" />
 
 				{/* Dynamic underline showing current color */}
 				<div

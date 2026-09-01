@@ -1,4 +1,4 @@
-import { apiFetch } from "./api";
+import { adminFetch } from "./admin";
 
 /* =========================
    TYPES
@@ -85,21 +85,21 @@ export type UpdateTemplateInput = Partial<{
  * Obtener todos los templates
  */
 export function getTemplates() {
-  return apiFetch<ProductTemplate[]>("/templates");
+  return adminFetch<ProductTemplate[]>("/templates");
 }
 
 /**
  * Obtener un template por ID
  */
 export function getTemplate(id: string) {
-  return apiFetch<ProductTemplate>(`/templates/${id}`);
+  return adminFetch<ProductTemplate>(`/templates/${id}`);
 }
 
 /**
  * Crear un template
  */
 export function createTemplate(data: CreateTemplateInput) {
-  return apiFetch<{ id: string }>("/templates", {
+  return adminFetch<{ id: string }>("/templates", {
     method: "POST",
     body: JSON.stringify(data),
   });
@@ -112,7 +112,7 @@ export function updateTemplate(
   id: string,
   data: UpdateTemplateInput
 ) {
-  return apiFetch<{ ok: true }>(`/templates/${id}`, {
+  return adminFetch<{ ok: true }>(`/templates/${id}`, {
     method: "PATCH",
     body: JSON.stringify(data),
   });
@@ -122,7 +122,7 @@ export function updateTemplate(
  * Eliminar un template
  */
 export function deleteTemplate(id: string) {
-  return apiFetch<{ ok: true }>(`/templates/${id}`, {
+  return adminFetch<{ ok: true }>(`/templates/${id}`, {
     method: "DELETE",
   });
 }

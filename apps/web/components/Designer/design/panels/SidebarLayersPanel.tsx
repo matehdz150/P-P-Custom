@@ -148,7 +148,7 @@ export default function SidebarLayersPanel({ close }: { close: () => void }) {
 				<button
 					type="button"
 					onClick={close}
-					className="text-gray-500 hover:text-black text-sm"
+					className="text-gray-500 hover:text-tinta text-sm"
 				>
 					✕
 				</button>
@@ -210,7 +210,7 @@ export default function SidebarLayersPanel({ close }: { close: () => void }) {
                   ${isDragging ? "opacity-40" : ""}
                   ${
 										isOver
-											? "border-[#fe6241] border-2 bg-[#fff3ef]"
+											? "border-tinta border-2 bg-[#f3f3f1]"
 											: isActive
 												? "border-[#6b6b3a] bg-[#f6f5ee]"
 												: "border-gray-200 hover:border-[#a3a380] hover:bg-[#f8f7f2]"

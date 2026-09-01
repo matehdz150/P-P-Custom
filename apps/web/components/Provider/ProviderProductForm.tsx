@@ -72,9 +72,7 @@ export function ProviderProductForm() {
 			case "mockup":
 				return !!selectedTemplate;
 			case "info":
-				return Boolean(
-					form.name.trim() && form.slug.trim() && form.sku.trim(),
-				);
+				return Boolean(form.name.trim() && form.slug.trim() && form.sku.trim());
 			case "images":
 				return form.images.length >= 2;
 			case "pricing":
@@ -97,7 +95,7 @@ export function ProviderProductForm() {
 			setSubmitting(true);
 			await createProviderProduct(payload);
 			alert("✅ Producto creado");
-			router.push("/proveedor");
+			router.push("/proveedor/productos");
 		} catch {
 			alert("❌ Error al crear el producto");
 		} finally {
@@ -118,11 +116,7 @@ export function ProviderProductForm() {
 			disabled={!canContinue || submitting}
 			className="px-6 py-2.5 rounded-lg bg-[#fe6241] text-black text-sm font-bold hover:bg-[#e5573a] transition disabled:opacity-40"
 		>
-			{isLast
-				? submitting
-					? "Creando…"
-					: "Crear producto"
-				: "Continuar"}
+			{isLast ? (submitting ? "Creando…" : "Crear producto") : "Continuar"}
 		</button>
 	);
 
@@ -134,7 +128,7 @@ export function ProviderProductForm() {
 				<div className="flex items-center gap-3">
 					<button
 						type="button"
-						onClick={() => router.push("/proveedor")}
+						onClick={() => router.push("/proveedor/productos")}
 						className="px-5 py-2.5 rounded-lg border text-sm font-medium hover:bg-muted transition"
 					>
 						Cancelar
@@ -263,18 +257,12 @@ export function ProviderProductForm() {
 							<Row k="Nombre" v={form.name || "—"} />
 							<Row k="Slug" v={form.slug || "—"} />
 							<Row k="SKU" v={form.sku || "—"} />
-							<Row
-								k="Precio base"
-								v={`$${form.pricing?.basePrice ?? 0}`}
-							/>
+							<Row k="Precio base" v={`$${form.pricing?.basePrice ?? 0}`} />
 							<Row
 								k="Tallas / Colores"
 								v={`${form.sizes.length} / ${form.colors.length}`}
 							/>
-							<Row
-								k="Lados de impresión"
-								v={String(form.printSides.length)}
-							/>
+							<Row k="Lados de impresión" v={String(form.printSides.length)} />
 							<Row k="Imágenes" v={String(form.images.length)} />
 						</div>
 					)}

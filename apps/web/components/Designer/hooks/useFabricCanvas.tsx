@@ -103,7 +103,7 @@ export function useFabricCanvas(
 
 		c.backgroundColor = "#f2f3ea";
 		c.selectionColor = "rgba(254, 98, 65, 0.15)";
-		c.selectionBorderColor = "#fe6241";
+		c.selectionBorderColor = "#2b2812";
 		c.selectionLineWidth = 2;
 
 		// ---- editable areas ----

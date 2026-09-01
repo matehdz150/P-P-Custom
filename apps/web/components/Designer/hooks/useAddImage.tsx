@@ -4,7 +4,7 @@ import { useDesigner } from "@/Contexts/DesignerContext";
 import { makeAreaClip } from "@/lib/fabric/areaClip";
 import { useElementGuard } from "./useProductConfig";
 
-const ORANGE = "#fe6241";
+const ORANGE = "#2b2812";
 
 function applySelectionStyle(obj: FabricObject) {
 	obj.set({

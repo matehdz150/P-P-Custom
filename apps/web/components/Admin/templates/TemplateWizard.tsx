@@ -303,6 +303,8 @@ export function TemplateWizard({ onCancel, onSubmit, initial }: Props) {
 						>
 							<div className="space-y-6">
 								<SideMockupUploader
+									templateId={id || "sin-id"}
+									side={currentSide.key}
 									value={mockups[currentSide.key]}
 									onChange={(url) =>
 										setMockups((p) => ({ ...p, [currentSide.key]: url }))

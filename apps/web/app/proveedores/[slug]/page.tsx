@@ -28,9 +28,7 @@ export default function PublicProviderPage({
 		return (
 			<>
 				<Header />
-				<p className="p-10 text-center text-muted-foreground">
-					Cargando…
-				</p>
+				<p className="p-10 text-center text-muted-foreground">Cargando…</p>
 			</>
 		);
 
@@ -85,9 +83,7 @@ export default function PublicProviderPage({
 						<h1 className="text-2xl font-bold">{name}</h1>
 						<div className="flex items-center gap-1 text-sm text-muted-foreground mt-0.5">
 							<Star size={15} className="text-gray-300" />
-							<span>
-								Sin reseñas todavía · {products.length} producto(s)
-							</span>
+							<span>Sin reseñas todavía · {products.length} producto(s)</span>
 						</div>
 					</div>
 				</div>
@@ -124,13 +120,9 @@ export default function PublicProviderPage({
 									)}
 								</div>
 								<div className="p-3">
-									<p className="text-sm font-medium truncate">
-										{p.name}
-									</p>
+									<p className="text-sm font-medium truncate">{p.name}</p>
 									<p className="text-sm text-muted-foreground">
-										{p.pricing
-											? `$${p.pricing.basePrice}`
-											: ""}
+										{p.pricing ? `$${p.pricing.basePrice}` : ""}
 									</p>
 								</div>
 							</Link>

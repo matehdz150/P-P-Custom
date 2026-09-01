@@ -1,5 +1,18 @@
-import type { Canvas, TPointerEvent, TPointerEventInfo } from "fabric";
-import { useCallback, useEffect, useState } from "react";
+import {
+	type Canvas,
+	Point,
+	type TPointerEvent,
+	type TPointerEventInfo,
+} from "fabric";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+/**
+ * Escala real del canvas cuando el usuario ve "100%". Las plantillas entran
+ * demasiado acercadas a escala 1:1, así que el 100% de la interfaz es en
+ * realidad un 77% de la imagen. `zoom` es siempre lo que se le muestra a la
+ * persona; lo que recibe Fabric va multiplicado por esta base.
+ */
+const BASE = 0.77;
 
 export function useCanvasZoom(canvas: Canvas | null) {
 	const [zoom, setZoom] = useState(1);
@@ -12,12 +25,26 @@ export function useCanvasZoom(canvas: Canvas | null) {
 	const zoomIn = () => setZoom((z) => clampZoom(z + 0.1));
 	const zoomOut = () => setZoom((z) => clampZoom(z - 0.1));
 
+	// La rueda y el pellizco ya aplicaron el zoom anclado al puntero. Sin esta
+	// bandera el efecto de abajo volvería a centrarlo y se perdería el anclaje.
+	const anclado = useRef(false);
+
 	// ---------------------------------
 	// 🔵 Sync zoom → canvas
 	// ---------------------------------
 	useEffect(() => {
 		if (!canvas) return;
-		canvas.setZoom(zoom);
+
+		if (anclado.current) {
+			anclado.current = false;
+			return;
+		}
+
+		// `setZoom` escala desde el origen (0,0), así que con una base menor a 1
+		// la prenda se recorre hacia la esquina. Anclando al centro del lienzo
+		// se queda donde está, tanto al montar como con los botones + / −.
+		const centro = new Point(canvas.getWidth() / 2, canvas.getHeight() / 2);
+		canvas.zoomToPoint(centro, zoom * BASE);
 		canvas.requestRenderAll();
 	}, [canvas, zoom]);
 
@@ -34,8 +61,9 @@ export function useCanvasZoom(canvas: Canvas | null) {
 			newZoom = clampZoom(newZoom);
 
 			const pointer = canvas.getPointer(evt);
-			canvas.zoomToPoint(pointer, newZoom);
+			canvas.zoomToPoint(pointer, newZoom * BASE);
 
+			anclado.current = true;
 			setZoom(newZoom);
 
 			evt.preventDefault();
@@ -88,8 +116,9 @@ export function useCanvasZoom(canvas: Canvas | null) {
 			});
 
 			const pointer = canvas.getPointer(pe as TPointerEvent);
-			canvas.zoomToPoint(pointer, newZoom);
+			canvas.zoomToPoint(pointer, newZoom * BASE);
 
+			anclado.current = true;
 			setZoom(newZoom);
 			lastDistance = distance;
 

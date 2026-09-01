@@ -33,7 +33,7 @@ export default function DesignerHeaderMobile() {
 					type="button"
 					onClick={() => setMode("edit")}
 					className={`px-3 py-1.5 ${
-						mode === "edit" ? "bg-black text-white" : "bg-white"
+						mode === "edit" ? "bg-tinta text-hueso-suave" : "bg-white"
 					}`}
 				>
 					<Pencil />
@@ -44,7 +44,7 @@ export default function DesignerHeaderMobile() {
 					type="button"
 					onClick={() => setMode("preview")}
 					className={`px-3 py-1.5 ${
-						mode === "preview" ? "bg-black text-white" : "bg-white"
+						mode === "preview" ? "bg-tinta text-hueso-suave" : "bg-white"
 					}`}
 				>
 					<Eye />
@@ -54,7 +54,7 @@ export default function DesignerHeaderMobile() {
 			{/* 🟧 Botón Guardar alineado a la derecha */}
 			<button
 				type="button"
-				className="ml-auto px-3 py-1.5 bg-[#fe6241] rounded-[0.2rem] font-medium z-10 font-sora"
+				className="ml-auto px-3 py-1.5 bg-lima text-tinta rounded-[0.2rem] font-medium z-10 font-sora"
 			>
 				Guardar
 			</button>

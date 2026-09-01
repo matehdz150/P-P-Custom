@@ -15,7 +15,7 @@ export default function DesignerPanButton({ isPanning, togglePan }: Props) {
 			className={`
         px-2 py-1 border rounded flex items-center gap-1 
         transition
-        ${isPanning ? "bg-black text-white border-black" : "bg-white hover:bg-gray-100"}
+        ${isPanning ? "bg-tinta text-hueso-suave border-tinta" : "bg-white hover:bg-gray-100"}
       `}
 		>
 			<Hand size={18} />

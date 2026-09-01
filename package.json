@@ -8,7 +8,9 @@
 		"lint": "biome check .",
 		"type-check": "tsc --noEmit",
 		"test": "echo no tests yet",
-		"build": "echo no build yet"
+		"build": "echo no build yet",
+		"db:migrate": "drizzle-kit migrate --config packages/db/drizzle.config.ts",
+		"db:seed": "node packages/db/seed.mjs"
 	},
 	"keywords": [],
 	"author": "",

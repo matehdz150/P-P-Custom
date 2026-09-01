@@ -3,10 +3,13 @@
 
 import { type Canvas, FabricImage } from "fabric";
 import { useEffect, useRef, useState } from "react";
+import { recortarPrenda, tenirPrenda } from "@/lib/fabric/prenda";
 
 export function useFabricMockup(
 	getCanvas: () => Canvas | null,
 	mockupUrl?: string,
+	/** Hex del color de la prenda. Sin él, el mockup se pinta tal cual. */
+	colorHex?: string | null,
 	_debugDelayMs = 0,
 ) {
 	const [isLoading, setIsLoading] = useState(false);
@@ -21,6 +24,14 @@ export function useFabricMockup(
 		getCanvasRef.current = getCanvas;
 	}, [getCanvas]);
 
+	// Recortar el fondo es lo caro (un relleno sobre ~800k pixeles), y no
+	// depende del color: se guarda por imagen y se reusa en cada cambio de
+	// color. `canvas: null` significa "esta imagen no se puede teñir".
+	const prendaRef = useRef<{
+		url: string;
+		canvas: HTMLCanvasElement | null;
+	} | null>(null);
+
 	useEffect(() => {
 		if (!mockupUrl) return;
 
@@ -33,9 +44,17 @@ export function useFabricMockup(
 
 		const place = (canvas: Canvas) => {
 			if (!htmlImg) return;
+
+			// Sin color elegido no se toca la imagen: los productos sin colores
+			// se comportan igual que antes.
+			if (colorHex && prendaRef.current?.url !== mockupUrl) {
+				prendaRef.current = { url: mockupUrl, canvas: recortarPrenda(htmlImg) };
+			}
+			const prenda = colorHex ? prendaRef.current?.canvas : null;
+			const fuente = prenda && colorHex ? tenirPrenda(prenda, colorHex) : htmlImg;
 			// FabricImage desde un elemento YA cargado → 100% síncrono,
 			// sin fetch interno ni promesas que se queden colgadas.
-			const fImg = new FabricImage(htmlImg, {
+			const fImg = new FabricImage(fuente, {
 				originX: "center",
 				originY: "center",
 				selectable: false,
@@ -99,7 +118,7 @@ export function useFabricMockup(
 			el.onload = null;
 			el.onerror = null;
 		};
-	}, [mockupUrl, reloadKey]);
+	}, [mockupUrl, colorHex, reloadKey]);
 
 	return { isLoading, reload };
 }

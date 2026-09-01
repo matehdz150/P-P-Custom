@@ -76,7 +76,7 @@ export default function ShapeControls({ obj }: { obj: Path }) {
 					min={0}
 					max={50}
 					step={1}
-					className="w-full accent-[#fe6241]"
+					className="w-full accent-tinta"
 					value={strokeWidth}
 					onChange={(e) =>
 						execute(

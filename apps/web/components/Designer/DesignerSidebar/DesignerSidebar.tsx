@@ -16,7 +16,7 @@ export default function DesignerSidebar() {
 		<>
 			{/* LEFT ICON BAR */}
 			<div
-				className="w-[70px] bg-white text-black flex flex-col items-center 
+				className="w-[70px] bg-white text-tinta flex flex-col items-center 
      pt-0  relative z-80 border"
 			>
 				<SidebarIcon
@@ -81,7 +81,7 @@ function SidebarIcon({ icon, active, onClick, label }: SidebarIconProps) {
 			className={`
         w-full h-[60px] flex items-center justify-center
         transition
-        ${active ? "bg-[#fe6241]" : "hover:bg-[#fe6241]"}
+        ${active ? "bg-tinta text-hueso-suave" : "hover:bg-tinta hover:text-hueso-suave"}
       `}
 		>
 			{icon}

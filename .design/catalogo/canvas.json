@@ -1,0 +1,34 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 4000,
+      "title": "Catálogo — escritorio",
+      "print": "flow"
+    },
+    {
+      "file": "Movil.dc.html",
+      "x": 1620,
+      "y": 0,
+      "w": 390,
+      "h": 4830,
+      "title": "Catálogo — móvil",
+      "print": "flow"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "datos",
+      "x": 0,
+      "y": -160,
+      "w": 700,
+      "text": "Los precios ($189, $245…) vienen de tu propio ejemplo y son de muestra: en la app salen del proveedor.\n[N], [PROVEEDOR] y [PRECIO] son datos por conectar."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

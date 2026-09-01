@@ -51,37 +51,45 @@ export function createProvider(data: {
 	});
 }
 
-/* ---- Provider auth ---- */
-export function providerLogin(email: string, password: string) {
-	return apiFetch<{ ok: true }>("/providers/login", {
+/* ---- Alta pública ---- */
+
+/**
+ * Lo que manda el formulario público de `/proveedores/registro`.
+ *
+ * No crea una cuenta: es una SOLICITUD. El acceso lo damos nosotros a mano
+ * con `createProvider`, que es el único que pide contraseña.
+ *
+ * OJO: `/providers/applications` todavía NO existe en la API. El formulario
+ * está completo de este lado; en cuanto el endpoint aterrice, funciona.
+ */
+export type SolicitudProveedor = {
+	taller: string;
+	contacto: string;
+	email: string;
+	whatsapp: string;
+	ciudad: string;
+	tecnicas: string[];
+	produce: string[];
+	capacidad: string;
+	nota?: string;
+};
+
+export function solicitarAlta(datos: SolicitudProveedor) {
+	return apiFetch<{ ok: true }>("/providers/applications", {
 		method: "POST",
-		body: JSON.stringify({ email, password }),
+		body: JSON.stringify(datos),
 	});
 }
 
-export function providerLogout() {
-	return apiFetch<{ ok: true }>("/providers/logout", { method: "POST" });
-}
+/* ---- Provider auth ----
 
-export function providerMe() {
-	return apiFetch<Provider>("/providers/me");
-}
+   Ya no vive aquí. La sesión del proveedor la da Cognito directo desde el
+   navegador (lib/auth/cognito.ts) y el perfil sale de la Lambda en AWS
+   (lib/api/proveedores.ts). Lo que queda abajo sigue pegándole a la API de
+   Nest y se migra después. */
 
 export function getMyProducts() {
 	return apiFetch<ProviderProduct[]>("/providers/me/products");
-}
-
-export function updateMyProfile(data: {
-	displayName?: string;
-	bio?: string;
-	avatarUrl?: string;
-	bannerUrl?: string;
-	slug?: string;
-}) {
-	return apiFetch<Provider>("/providers/me/profile", {
-		method: "PATCH",
-		body: JSON.stringify(data),
-	});
 }
 
 export function getPublicProvider(slug: string) {

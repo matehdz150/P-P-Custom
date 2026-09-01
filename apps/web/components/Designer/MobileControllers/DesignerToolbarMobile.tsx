@@ -70,7 +70,7 @@ export default function DesignerToolbarMobile() {
 				trigger={
 					<button
 						type="button"
-						className="w-16 h-16 flex items-center justify-center rounded-full bg-black text-white mt-1"
+						className="w-16 h-16 flex items-center justify-center rounded-full bg-tinta text-hueso-suave mt-1"
 					>
 						<Plus size={28} />
 					</button>
@@ -86,10 +86,10 @@ export default function DesignerToolbarMobile() {
 					trigger={
 						<button
 							type="button"
-							className="flex flex-col items-center justify-center gap-1 mt-4 text-black"
+							className="flex flex-col items-center justify-center gap-1 mt-4 text-tinta"
 						>
-							<Layers size={20} strokeWidth={1.5} className="text-black" />
-							<p className="text-sm font-medium text-black">Capas</p>
+							<Layers size={20} strokeWidth={1.5} className="text-tinta" />
+							<p className="text-sm font-medium text-tinta">Capas</p>
 						</button>
 					}
 					title="Capas"

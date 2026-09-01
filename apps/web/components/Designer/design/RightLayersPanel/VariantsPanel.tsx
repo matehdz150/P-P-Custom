@@ -1,6 +1,8 @@
 "use client";
 
 import { X } from "lucide-react";
+import { useDesigner } from "@/Contexts/DesignerContext";
+import SelectorColorPrenda from "../SelectorColorPrenda";
 
 export default function VariantsPanel({
 	onClose,
@@ -9,6 +11,8 @@ export default function VariantsPanel({
 	onClose?: () => void;
 	mobile?: boolean;
 }) {
+	const { colores } = useDesigner();
+
 	return (
 		<div
 			className={`
@@ -19,7 +23,7 @@ export default function VariantsPanel({
 			{/* HEADER (solo si viene onClose, o sea drawer) */}
 			{onClose && (
 				<div className="px-4 py-3 flex items-center justify-between border-b">
-					<h2 className="text-lg font-semibold text-black">Variantes</h2>
+					<h2 className="text-lg font-semibold text-tinta">Variantes</h2>
 
 					<button
 						type="button"
@@ -33,29 +37,18 @@ export default function VariantsPanel({
 
 			{/* CONTENIDO */}
 			<div className="px-6 mt-4 flex flex-col gap-5">
-				{/* Título */}
 				<span className="font-semibold text-base">Opciones</span>
 
-				{/* Labels */}
-				<div className="flex items-center gap-6">
-					<span className="text-sm">Color</span>
+				{colores.length > 0 && (
+					<div className="flex flex-col gap-3">
+						<span className="text-sm">Color</span>
+						<SelectorColorPrenda />
+					</div>
+				)}
+
+				<div className="flex flex-col gap-3">
 					<span className="text-sm">Talla</span>
-
-					<button
-						type="button"
-						className="ml-auto border rounded-[0.2rem] px-2.5 py-1.5 text-sm font-semibold"
-					>
-						Seleccionar variantes
-					</button>
-				</div>
-
-				{/* Valores */}
-				<div className="flex gap-6">
-					{/* Color */}
-					<div className="h-10 w-10 rounded-full border-2 border-black bg-white" />
-
-					{/* Talla */}
-					<div className="h-10 w-10 rounded-full border-2 border-black flex items-center justify-center font-semibold">
+					<div className="h-10 w-10 rounded-full border-2 border-tinta flex items-center justify-center font-semibold">
 						M
 					</div>
 				</div>

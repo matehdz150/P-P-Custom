@@ -14,7 +14,7 @@ export default function Loading() {
 			<div className="flex flex-col items-center gap-3">
 				{/* TÍTULO */}
 				<motion.span
-					className="text-3xl font-medium font-sora text-black"
+					className="text-3xl font-medium font-sora text-tinta"
 					initial={{ y: 6, opacity: 0 }}
 					animate={{ y: 0, opacity: 1 }}
 					transition={{ duration: 0.35, ease: "easeOut" }}
@@ -27,7 +27,7 @@ export default function Loading() {
 					{[0, 1, 2].map((i) => (
 						<motion.span
 							key={i}
-							className="w-2 h-2 rounded-full bg-black"
+							className="w-2 h-2 rounded-full bg-tinta"
 							animate={{ opacity: [0.3, 1, 0.3] }}
 							transition={{
 								duration: 1.2,

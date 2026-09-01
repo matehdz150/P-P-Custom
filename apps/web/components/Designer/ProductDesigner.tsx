@@ -11,12 +11,13 @@ import MobileDesignerShell from "./MobileDesignerShell";
 
 export default function ProductDesigner({ productId }: { productId: string }) {
 	const isMobile = useIsMobile();
-	const { setConfig } = useDesigner();
+	const { setConfig, setColores } = useDesigner();
 	const [product, setProduct] = useState<ProductTemplate | null>(null);
 
 	useEffect(() => {
 		loadProductTemplate(productId).then((tpl) => {
 			setProduct(tpl as unknown as ProductTemplate);
+			setColores(tpl.colors ?? []);
 			setConfig({
 				name: tpl.name,
 				rules: {
@@ -35,7 +36,7 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 				},
 			});
 		});
-	}, [productId, setConfig]);
+	}, [productId, setConfig, setColores]);
 
 	if (!product) return <Loading />;
 

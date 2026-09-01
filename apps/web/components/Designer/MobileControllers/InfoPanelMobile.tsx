@@ -8,7 +8,7 @@ export default function InfoPanelMobile({ close }: { close: () => void }) {
 			{/* CONTENT */}
 			<div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-6">
 				{/* PRODUCT TITLE */}
-				<h3 className="font-semibold text-sm text-black">
+				<h3 className="font-semibold text-sm text-tinta">
 					Unisex Garment-Dyed T-shirt
 				</h3>
 
@@ -23,7 +23,7 @@ export default function InfoPanelMobile({ close }: { close: () => void }) {
 
 						<button
 							type="button"
-							className="text-sm font-medium underline text-black mt-1"
+							className="text-sm font-medium underline text-tinta mt-1"
 						>
 							Ver detalles
 						</button>
@@ -45,10 +45,10 @@ export default function InfoPanelMobile({ close }: { close: () => void }) {
 
 				{/* MATERIAL & FIT */}
 				<div className="bg-[#f4f4ee] rounded-[0.2rem] p-4 flex gap-3">
-					<div className="w-1 bg-black/70 rounded-full" />
+					<div className="w-1 bg-tinta/70 rounded-full" />
 
 					<div className="flex flex-col gap-2 text-sm">
-						<span className="font-semibold text-black">Material y ajuste</span>
+						<span className="font-semibold text-tinta">Material y ajuste</span>
 
 						<ul className="text-[#5b5b4a] space-y-1">
 							<li>• 100% algodón ring-spun</li>
@@ -60,10 +60,10 @@ export default function InfoPanelMobile({ close }: { close: () => void }) {
 
 				{/* DESIGN RECOMMENDATIONS */}
 				<div className="bg-[#f4f4ee] rounded-[0.2rem] p-4 flex gap-3">
-					<div className="w-1 bg-black/70 rounded-full" />
+					<div className="w-1 bg-tinta/70 rounded-full" />
 
 					<div className="flex flex-col gap-2 text-sm">
-						<span className="font-semibold text-black">
+						<span className="font-semibold text-tinta">
 							Recomendaciones de diseño
 						</span>
 
@@ -91,10 +91,10 @@ export default function InfoPanelMobile({ close }: { close: () => void }) {
 
 				{/* CARE */}
 				<div className="bg-[#f4f4ee] rounded-[0.2rem] p-4 flex gap-3">
-					<div className="w-1 bg-black/70 rounded-full" />
+					<div className="w-1 bg-tinta/70 rounded-full" />
 
 					<div className="flex flex-col gap-2 text-sm">
-						<span className="font-semibold text-black">
+						<span className="font-semibold text-tinta">
 							Cuidado de la prenda
 						</span>
 

@@ -12,6 +12,18 @@ function resolveApiUrl(): string {
   return process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 }
 
+/** Error de la API con el código a la mano, para poder distinguir un 404. */
+export class ApiError extends Error {
+  constructor(
+    readonly status: number,
+    readonly path: string,
+    readonly body: string
+  ) {
+    super(`API ${status} en ${path}${body ? ` — ${body}` : ""}`);
+    this.name = "ApiError";
+  }
+}
+
 export async function apiFetch<T>(
   path: string,
   options?: RequestInit
@@ -25,7 +37,9 @@ export async function apiFetch<T>(
   });
 
   if (!res.ok) {
-    throw new Error("API error");
+    // El cuerpo trae el mensaje de Nest; sin él el log queda ciego.
+    const body = await res.text().catch(() => "");
+    throw new ApiError(res.status, path, body.slice(0, 300));
   }
 
   return res.json();

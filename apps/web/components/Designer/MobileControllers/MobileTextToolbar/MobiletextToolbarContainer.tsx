@@ -122,7 +122,7 @@ export default function MobileTextToolbarContainer({
 
 	const toggleCurved = () => {
 		if (!canvas || !text) return;
-		const ORANGE = "#fe6241";
+		const ORANGE = "#2b2812";
 		const applyStyle = (obj: CurvedText | Textbox) =>
 			obj.set({
 				transparentCorners: false,

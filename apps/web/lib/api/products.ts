@@ -68,6 +68,8 @@ export type DesignerProductTemplate = {
   editableAreas: Record<string, any[]>;
   customizationRules?: DesignerCustomizationRules;
   pricing?: ProductPricing;
+  /** Los colores en que se puede pedir la prenda. Tiñen el mockup. */
+  colors?: ProductColor[];
 };
 
 export type Product = {

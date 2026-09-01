@@ -22,7 +22,7 @@ import ColorPickerMinimal from "./ColorPicker";
 import { FontSelector } from "./FontSelector";
 import { FontSizeSelector } from "./FontSizeSelector";
 
-const ORANGE = "#fe6241";
+const ORANGE = "#2b2812";
 
 function applySelectionStyle(obj: Textbox | CurvedText) {
 	obj.set({
@@ -230,7 +230,7 @@ export default function TextToolbar() {
 				title={isCurved ? "Quitar curvatura" : "Texto curvado"}
 				className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs font-semibold transition-colors ${
 					isCurved
-						? "bg-[#fe6241] text-white"
+						? "bg-tinta text-hueso-suave"
 						: "border border-gray-300 hover:bg-gray-100 text-gray-700"
 				}`}
 			>
@@ -257,7 +257,7 @@ export default function TextToolbar() {
 				className="p-1 hover:bg-gray-200 rounded"
 				title="Eliminar"
 			>
-				<Trash size={22} className="text-black" />
+				<Trash size={22} className="text-tinta" />
 			</button>
 		</div>
 	);

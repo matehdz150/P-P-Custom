@@ -1,15 +1,15 @@
-import {
-  getCategories,
-  getPackageCategories,
-} from "@/lib/api/categories";
+import { getPackageCategories, type Category } from "@/lib/api/categories";
+import { adminFetchServidor } from "@/lib/api/admin.servidor";
 import { CategoriesTable } from "@/components/Admin/categorias/CategoriesTable";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { CategoryFormDialog } from "@/components/Admin/categorias/CategoryFormDialog";
 
 export default async function CategoriesAdminPage() {
+  // Las de producto ya viven en DynamoDB; las de paquete siguen en la API
+  // vieja hasta que migren los paquetes.
   const [productCategories, packageCategories] = await Promise.all([
-    getCategories(),
+    adminFetchServidor<Category[]>("/categories"),
     getPackageCategories(),
   ]);
 

@@ -8,6 +8,8 @@ import type { EditableArea } from "@/lib/api/templates";
 
 type Props = {
   side: string;
+  /** Con qué llave se guarda el mockup en S3: mockups/<templateId>/<side>-… */
+  templateId?: string;
   label?: string;
   mockup?: string;
   areas?: EditableArea[];
@@ -20,6 +22,7 @@ type Props = {
 
 export function TemplateSideConfig({
   side,
+  templateId,
   label,
   mockup,
   areas,
@@ -37,6 +40,8 @@ export function TemplateSideConfig({
       />
 
       <SideMockupUploader
+        templateId={templateId ?? "sin-id"}
+        side={side}
         value={mockup}
         onChange={(mockup) => onChange({ mockup })}
       />

@@ -33,12 +33,23 @@ services:
       NODE_ENV: development
       # ayuda al watcher con bind mounts (macOS/Windows)
       CHOKIDAR_USEPOLLING: "true"
+      # DynamoDB. Las llaves NO van aquí: el SDK las lee del perfil que se
+      # monta abajo. En Lambda vendrán del rol de ejecución.
+      AWS_PROFILE: kustto-admin
+      AWS_REGION: us-east-1
+      KUSTTO_TABLA: kustto-prod
     ports:
       - "8000:8000"
     volumes:
       - .:/app
       - api_node_modules:/app/node_modules
       - api_app_node_modules:/app/apps/api/node_modules
+      # `pnpm install` instala TODO el workspace, así que sin este volumen
+      # el contenedor escribe enlaces de Linux dentro de apps/web/node_modules
+      # del host y rompe el `next dev` de Windows.
+      - api_web_node_modules:/app/apps/web/node_modules
+      # Solo lectura: el contenedor usa el perfil, nunca lo escribe.
+      - ${USERPROFILE}/.aws:/root/.aws:ro
     command: >
       sh -c "corepack enable &&
              pnpm install &&
@@ -76,6 +87,7 @@ volumes:
   postgres_data:
   api_node_modules:
   api_app_node_modules:
+  api_web_node_modules:
   web_node_modules:
   web_app_node_modules:
   web_next_cache:

@@ -99,7 +99,7 @@ export default function TextControls({ obj }: { obj: TextLike }) {
 							min={-100}
 							max={100}
 							step={1}
-							className="w-full accent-[#fe6241]"
+							className="w-full accent-tinta"
 							value={(obj as CurvedText).curvature}
 							onChange={(e) => handleRadiusChange(Number(e.target.value))}
 						/>

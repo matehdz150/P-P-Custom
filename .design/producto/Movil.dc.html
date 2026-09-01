@@ -1,0 +1,336 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@700;800&amp;family=Poppins:wght@400;500;600;700&amp;display=swap">
+  <style>
+    body { margin: 0; background: #fffdf8; color: #2b2812; font-family: Poppins, "Segoe UI", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3, p { margin: 0; }
+    p { text-wrap: pretty; }
+    a { color: #2b2812; text-decoration: none; }
+    .display { font-family: Figtree, "Segoe UI", system-ui, sans-serif; font-weight: 800; }
+    .fx { flex-shrink: 0; }
+  </style>
+</helmet>
+
+<div style="width: 390px; background: #fffdf8; color: #2b2812;">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px;">
+    <div style="display: flex; align-items: center; gap: 9px;">
+      <svg width="26" height="26" viewBox="0 0 260 260" fill="none">
+        <rect width="260" height="260" rx="48" fill="#a5f35c"></rect>
+        <path d="M106,66 C114,82 146,82 154,66 L182,75 L205,105 L185,126 L173,112 L173,193 Q173,200 166,200 L94,200 Q87,200 87,193 L87,112 L75,126 L55,105 L78,75 Z" fill="#2b2812"></path>
+        <g transform="translate(158,150) scale(2.35)">
+          <polygon points="0,0 0,21 5.8,15.9 9.7,24 13.5,22.1 9.7,14.4 16.4,14.4" fill="none" stroke="#a5f35c" stroke-width="6.5" stroke-linejoin="round"></polygon>
+          <polygon points="0,0 0,21 5.8,15.9 9.7,24 13.5,22.1 9.7,14.4 16.4,14.4" fill="#2b2812"></polygon>
+        </g>
+      </svg>
+      <span style="font-size: 26px; font-weight: 500; letter-spacing: -1.3px; line-height: 1;">fabbo</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="display: inline-flex; align-items: center; height: 44px; padding: 0 16px; border-radius: 9999px; background: #a5f35c; font-size: 15px; font-weight: 600;">Diseñar</span>
+      <span style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1.5px solid #2b2812; border-radius: 10px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="#2b2812" stroke-width="1.9" stroke-linecap="round"></path></svg>
+      </span>
+    </div>
+  </header>
+
+  <section style="padding: 6px 20px 16px 20px;">
+    <nav style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(43,40,18,0.45);">
+      <a href="#">Catálogo</a><span>/</span><a href="#">Playeras</a><span>/</span>
+      <span style="color: #2b2812;">Playera cuello…</span>
+    </nav>
+  </section>
+
+  <!-- Mismo apilado que en escritorio: el nombre corre por detrás. -->
+  <section style="position: relative; height: 520px; background: #c9b8ff; overflow: hidden;">
+    <h1 class="display" style="position: absolute; left: 20px; top: 34px; z-index: 1; font-size: 52px; line-height: 50px; letter-spacing: -1.6px; text-transform: uppercase;">
+      Playera<br>cuello<br>redondo
+    </h1>
+
+    <img src="playera.webp" alt="Playera cuello redondo" style="position: absolute; left: 96px; bottom: 0; z-index: 2; height: 470px; width: auto;">
+
+    <div style="position: absolute; left: 20px; bottom: 18px; z-index: 3; display: flex; align-items: center; gap: 10px;">
+      <div style="display: flex; align-items: center; justify-content: center; width: 62px; height: 62px; border-radius: 16px; background: #fffdf8; border: 1.5px solid #2b2812; box-sizing: border-box;">
+        <img src="playera.webp" alt="" style="max-height: 74%; max-width: 68%; object-fit: contain;">
+      </div>
+      <div style="display: flex; align-items: center; justify-content: center; width: 62px; height: 62px; border-radius: 16px; background: rgba(255,253,248,0.6);">
+        <img src="mock-frente.webp" alt="" style="max-height: 74%; max-width: 68%; object-fit: contain;">
+      </div>
+      <div style="display: flex; align-items: center; justify-content: center; width: 62px; height: 62px; border-radius: 16px; background: rgba(255,253,248,0.6);">
+        <img src="mock-espalda.webp" alt="" style="max-height: 74%; max-width: 68%; object-fit: contain;">
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 26px 20px 0 20px;">
+    <div style="display: flex; flex-direction: column; gap: 22px;">
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 14px; font-weight: 600;">Textiles del Bajío</span>
+        <span style="font-size: 15px; line-height: 25px; color: rgba(43,40,18,0.7);">Bordado · 7 días de producción · algodón 180 g, unisex.</span>
+      </div>
+
+      <div style="display: flex; align-items: baseline; gap: 10px; padding-bottom: 20px; border-bottom: 1.5px solid #2b2812;">
+        <span class="display" style="font-size: 38px; line-height: 1; letter-spacing: -0.8px;">$189</span>
+        <span style="font-size: 14px;">por pieza · desde 1</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+          <span style="font-size: 15px; font-weight: 600;">Color</span>
+          <span style="font-size: 13px;">Hueso</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="width: 38px; height: 38px; border-radius: 50%; background: #fffdf8; box-shadow: 0 0 0 2px #fffdf8, 0 0 0 4px #2b2812;"></span>
+          <span style="width: 38px; height: 38px; border-radius: 50%; background: #1a1a17;"></span>
+          <span style="width: 38px; height: 38px; border-radius: 50%; background: #a5f35c;"></span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+          <span style="font-size: 15px; font-weight: 600;">Talla</span>
+          <a href="#" style="font-size: 13px;">Ver medidas</a>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="display: flex; flex-grow: 1; align-items: center; justify-content: center; height: 48px; border-radius: 9999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 15px; font-weight: 500;">S</span>
+          <span style="display: flex; flex-grow: 1; align-items: center; justify-content: center; height: 48px; border-radius: 9999px; background: #a5f35c; font-size: 15px; font-weight: 600;">M</span>
+          <span style="display: flex; flex-grow: 1; align-items: center; justify-content: center; height: 48px; border-radius: 9999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 15px; font-weight: 500;">L</span>
+          <span style="display: flex; flex-grow: 1; align-items: center; justify-content: center; height: 48px; border-radius: 9999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 15px; font-weight: 500;">XL</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 15px; font-weight: 600;">¿Cuántas piezas?</span>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="display: flex; flex-grow: 1; align-items: center; justify-content: center; height: 48px; border-radius: 9999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 15px; font-weight: 500;">1</span>
+          <span style="display: flex; flex-grow: 1; align-items: center; justify-content: center; height: 48px; border-radius: 9999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 15px; font-weight: 500;">10</span>
+          <span style="display: flex; flex-grow: 1; align-items: center; justify-content: center; height: 48px; border-radius: 9999px; background: #a5f35c; font-size: 15px; font-weight: 600;">30</span>
+          <span style="display: flex; flex-grow: 1; align-items: center; justify-content: center; height: 48px; border-radius: 9999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 15px; font-weight: 500;">50</span>
+          <span style="display: flex; flex-shrink: 0; align-items: center; justify-content: center; width: 74px; height: 48px; border-radius: 9999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 15px; font-weight: 500; color: rgba(43,40,18,0.6);">Otra</span>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-top: 18px; border-top: 1px solid rgba(43,40,18,0.14);">
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-size: 14px;">30 piezas · 1 lado · 1 diseño</span>
+          <span style="font-size: 12px; color: rgba(43,40,18,0.6);">Estimado. Se cierra en el editor.</span>
+        </div>
+        <span class="display" style="font-size: 28px; line-height: 1; letter-spacing: -0.59px;">$7,470</span>
+      </div>
+
+      <a href="#" style="display: flex; align-items: center; justify-content: center; gap: 10px; height: 56px; border-radius: 9999px; background: #2b2812; font-size: 17px; font-weight: 600; color: #a5f35c;">
+        Diseñar esta playera
+        <svg width="15" height="15" viewBox="0 0 14 14" fill="none" class="fx"><path d="M5.833 10.5L9.333 7L5.833 3.5" stroke="#a5f35c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </a>
+
+    </div>
+  </section>
+
+  <section style="margin-top: 48px; padding: 24px 20px; background: #2b2812;">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <span style="font-size: 16px; font-weight: 600; color: #a5f35c;">28 × 35 cm · 2 lados · 2 diseños · 4 colores</span>
+      <span style="font-size: 14px; line-height: 22px; color: rgba(255,253,248,0.6);">Los límites los pone el bordado de Textiles del Bajío.</span>
+    </div>
+  </section>
+
+  <section style="padding: 56px 20px 0 20px;">
+    <div style="display: flex; flex-direction: column; gap: 22px;">
+      <span style="display: flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 500;">
+        <span style="display: inline-block; width: 9px; height: 9px; border: 1.6px solid #2b2812; border-radius: 9999px;"></span>
+        Lo que se puede imprimir
+      </span>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 18px;">
+        <div style="display: flex; flex-direction: column; gap: 7px; padding-top: 15px; border-top: 3px solid #a5f35c;">
+          <span class="display" style="font-size: 26px; line-height: 1; letter-spacing: -0.55px;">28 × 35</span>
+          <span style="font-size: 13px; line-height: 20px; color: rgba(43,40,18,0.65);">Centímetros, a 300 dpi.</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 7px; padding-top: 15px; border-top: 3px solid #a5f35c;">
+          <span class="display" style="font-size: 26px; line-height: 1; letter-spacing: -0.55px;">2 lados</span>
+          <span style="font-size: 13px; line-height: 20px; color: rgba(43,40,18,0.65);">Cada lado suma $35 por pieza.</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 7px; padding-top: 15px; border-top: 3px solid #a5f35c;">
+          <span class="display" style="font-size: 26px; line-height: 1; letter-spacing: -0.55px;">2 diseños</span>
+          <span style="font-size: 13px; line-height: 20px; color: rgba(43,40,18,0.65);">Puedes meter texto e imágenes.</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 7px; padding-top: 15px; border-top: 3px solid #a5f35c;">
+          <span class="display" style="font-size: 26px; line-height: 1; letter-spacing: -0.55px;">4 colores</span>
+          <span style="font-size: 13px; line-height: 20px; color: rgba(43,40,18,0.65);">Es el límite del bordado.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 56px 20px 0 20px;">
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <h2 class="display" style="font-size: 32px; line-height: 39px; letter-spacing: -0.67px;">Cómo se arma el precio</h2>
+        <p style="font-size: 15px; line-height: 26px; color: rgba(43,40,18,0.75);">Empiezas con el precio de la prenda y sumas sólo lo que tu diseño realmente use.</p>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding: 15px 0; border-top: 1px solid rgba(43,40,18,0.14);">
+          <span style="font-size: 15px; font-weight: 600;">La prenda</span><span style="font-size: 15px;">$189</span>
+        </div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding: 15px 0; border-top: 1px solid rgba(43,40,18,0.14);">
+          <span style="font-size: 15px;">Cada lado que imprimas</span><span style="font-size: 15px;">+ $35</span>
+        </div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding: 15px 0; border-top: 1px solid rgba(43,40,18,0.14);">
+          <span style="font-size: 15px;">Cada diseño</span><span style="font-size: 15px;">+ $25</span>
+        </div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding: 15px 0; border-top: 1px solid rgba(43,40,18,0.14);">
+          <span style="font-size: 15px;">Cada color del diseño</span><span style="font-size: 15px;">+ $15</span>
+        </div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding: 15px 0; border-top: 1px solid rgba(43,40,18,0.14); border-bottom: 1px solid rgba(43,40,18,0.14);">
+          <span style="font-size: 15px;">Si lo quieres bordado</span><span style="font-size: 15px;">+ $45</span>
+        </div>
+        <span style="padding-top: 12px; font-size: 13px; color: rgba(43,40,18,0.7);">Todo por pieza. El escalonado lo pone el proveedor.</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 56px 20px 0 20px;">
+    <div style="display: flex; flex-direction: column; gap: 18px;">
+      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px;">
+        <h2 class="display" style="font-size: 32px; line-height: 39px; letter-spacing: -0.67px;">Medidas</h2>
+        <span style="flex-shrink: 0; font-size: 13px;">pulgadas</span>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding-bottom: 11px; border-bottom: 1.5px solid #2b2812;">
+          <span style="font-size: 11px; letter-spacing: 1.2px; color: rgba(43,40,18,0.45);">TALLA</span>
+          <span style="font-size: 11px; letter-spacing: 1.2px; color: rgba(43,40,18,0.45);">ANCHO</span>
+          <span style="font-size: 11px; letter-spacing: 1.2px; color: rgba(43,40,18,0.45);">LARGO</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 14px 0; border-bottom: 1px solid rgba(43,40,18,0.14);">
+          <span style="font-size: 15px; font-weight: 600;">S</span><span style="font-size: 15px;">18"</span><span style="font-size: 15px;">27"</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 14px 0; border-bottom: 1px solid rgba(43,40,18,0.14);">
+          <span style="font-size: 15px; font-weight: 600;">M</span><span style="font-size: 15px;">20"</span><span style="font-size: 15px;">28"</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 14px 0; border-bottom: 1px solid rgba(43,40,18,0.14);">
+          <span style="font-size: 15px; font-weight: 600;">L</span><span style="font-size: 15px;">22"</span><span style="font-size: 15px;">29"</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 14px 0; border-bottom: 1px solid rgba(43,40,18,0.14);">
+          <span style="font-size: 15px; font-weight: 600;">XL</span><span style="font-size: 15px;">24"</span><span style="font-size: 15px;">30"</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 56px 20px 0 20px;">
+    <div style="display: flex; flex-direction: column; gap: 18px; padding: 28px 24px; border-radius: 22px; background: #f3f3f1;">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-size: 12px; letter-spacing: 1.3px; color: rgba(43,40,18,0.55);">QUIÉN LA PRODUCE</span>
+        <h2 class="display" style="font-size: 26px; line-height: 32px; letter-spacing: -0.55px;">Textiles del Bajío</h2>
+        <p style="font-size: 15px; line-height: 25px; color: rgba(43,40,18,0.75);">Bordado, hasta 4 tintas por diseño, 7 días de producción. Este mismo modelo lo publican otros proveedores.</p>
+      </div>
+      <a href="#" style="display: flex; align-items: center; justify-content: center; gap: 10px; height: 52px; border-radius: 9999px; background: #2b2812; font-size: 15px; font-weight: 600; color: #fffdf8;">
+        Ver otros proveedores
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="fx"><path d="M5.833 10.5L9.333 7L5.833 3.5" stroke="#fffdf8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </a>
+    </div>
+  </section>
+
+  <section style="padding: 56px 20px 0 20px;">
+    <div style="display: flex; flex-direction: column; gap: 22px;">
+      <h2 class="display" style="font-size: 32px; line-height: 39px; letter-spacing: -0.67px;">También se personalizan</h2>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 16px;">
+        <a href="#" style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; align-items: center; justify-content: center; height: 158px;">
+            <img src="prod-gorra.png" alt="Gorra snapback" style="max-width: 78%; max-height: 96%; object-fit: contain;">
+          </div>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding-top: 11px; border-top: 1px solid rgba(43,40,18,0.14);">
+            <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.3px;">Gorra snapback</span>
+            <span style="font-size: 14px; white-space: nowrap;">$245</span>
+          </div>
+        </a>
+        <a href="#" style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; align-items: center; justify-content: center; height: 158px;">
+            <img src="prod-tote.png" alt="Tote bag natural" style="max-width: 78%; max-height: 96%; object-fit: contain;">
+          </div>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding-top: 11px; border-top: 1px solid rgba(43,40,18,0.14);">
+            <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.3px;">Tote bag natural</span>
+            <span style="font-size: 14px; white-space: nowrap;">$129</span>
+          </div>
+        </a>
+        <a href="#" style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; align-items: center; justify-content: center; height: 158px;">
+            <img src="prod-termo.png" alt="Termo 600 ml" style="max-width: 78%; max-height: 96%; object-fit: contain;">
+          </div>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding-top: 11px; border-top: 1px solid rgba(43,40,18,0.14);">
+            <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.3px;">Termo 600 ml</span>
+            <span style="font-size: 14px; white-space: nowrap;">$310</span>
+          </div>
+        </a>
+        <a href="#" style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; align-items: center; justify-content: center; height: 158px;">
+            <img src="prod-vaso.png" alt="Vaso con tapa" style="max-width: 78%; max-height: 96%; object-fit: contain;">
+          </div>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding-top: 11px; border-top: 1px solid rgba(43,40,18,0.14);">
+            <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.3px;">Vaso con tapa</span>
+            <span style="font-size: 14px; white-space: nowrap;">$165</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 64px; padding: 64px 20px; background: #a5f35c;">
+    <h2 class="display" style="text-align: center; font-size: 34px; line-height: 41px; letter-spacing: -0.72px;">Trae tu idea. Nosotros la volvemos 30 playeras</h2>
+    <p style="text-align: center; font-size: 16px; line-height: 27px; color: rgba(43,40,18,0.72);">Abre el editor, sube tu logo y mira tu producto terminado antes de gastar un peso.</p>
+    <a href="#" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 56px; border-radius: 9999px; background: #2b2812; font-size: 17px; font-weight: 600; color: #fffdf8;">
+      Empieza a diseñar
+      <svg width="15" height="15" viewBox="0 0 14 14" fill="none" class="fx"><path d="M5.833 10.5L9.333 7L5.833 3.5" stroke="#fffdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </a>
+  </section>
+
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 20px 20px 20px; border-top: 1px solid rgba(43,40,18,0.12); background: rgba(255,253,248,0.97);">
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <span class="display" style="font-size: 22px; line-height: 1; letter-spacing: -0.46px;">$189</span>
+      <span style="font-size: 11px;">por pieza</span>
+    </div>
+    <a href="#" style="display: flex; flex-grow: 1; align-items: center; justify-content: center; gap: 8px; height: 54px; border-radius: 9999px; background: #2b2812; font-size: 16px; font-weight: 600; color: #a5f35c;">
+      Diseñar
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="fx"><path d="M5.833 10.5L9.333 7L5.833 3.5" stroke="#a5f35c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </a>
+  </div>
+
+  <footer style="padding: 56px 20px 40px 20px; background: #2b2812;">
+    <div style="display: flex; flex-direction: column; gap: 40px;">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-size: 20px; font-weight: 500; letter-spacing: -1px; line-height: 1; color: #fffdf8;">fabbo</span>
+        <p style="font-size: 14px; line-height: 24px; color: rgba(255,253,248,0.55);">Personalización bajo demanda, hecha en México.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px;">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; font-weight: 600; letter-spacing: 1.1px; color: rgba(255,253,248,0.45);">CATÁLOGO</span>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Todos los productos</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Para eventos</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Para empresas</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; font-weight: 600; letter-spacing: 1.1px; color: rgba(255,253,248,0.45);">PROVEEDORES</span>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Publica tus productos</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Panel de proveedor</a>
+          <a href="#" style="font-size: 15px; color: rgba(255,253,248,0.8);">Iniciar sesión</a>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid rgba(255,253,248,0.15);">
+        <span style="font-size: 13px; color: rgba(255,253,248,0.5);">© 2026 fabbo · México (es-MX)</span>
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <a href="#" style="font-size: 13px; color: rgba(255,253,248,0.5);">Aviso de privacidad</a>
+          <a href="#" style="font-size: 13px; color: rgba(255,253,248,0.5);">Términos y condiciones</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+</body>
+</html>

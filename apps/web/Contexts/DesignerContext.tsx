@@ -14,6 +14,8 @@ interface SideState {
 	editableAreas: FabricObject[];
 }
 
+export type PrendaColor = { name: string; hex: string };
+
 export interface DesignerProductConfig {
 	name?: string;
 	rules: {
@@ -53,6 +55,12 @@ interface DesignerContextType {
 
 	activeObject: FabricObject | null;
 	setActiveObject: (obj: FabricObject | null) => void;
+
+	/** Colores en que se puede pedir la prenda, y el elegido. */
+	colores: PrendaColor[];
+	setColores: (c: PrendaColor[]) => void;
+	colorPrenda: PrendaColor | null;
+	setColorPrenda: (c: PrendaColor | null) => void;
 }
 
 const DesignerContext = createContext<DesignerContextType>(
@@ -108,6 +116,15 @@ export function DesignerProvider({ children }: { children: ReactNode }) {
 	);
 
 	const [activeObject, setActiveObject] = useState<FabricObject | null>(null);
+
+	const [colores, _setColores] = useState<PrendaColor[]>([]);
+	const [colorPrenda, setColorPrenda] = useState<PrendaColor | null>(null);
+
+	// Al cargar el producto, el primer color de la lista es el que se ve.
+	const setColores = useCallback((lista: PrendaColor[]) => {
+		_setColores(lista);
+		setColorPrenda(lista[0] ?? null);
+	}, []);
 
 	// --------------------------------------------------
 	// ⚡ SET ACTIVE SIDE — des-selecciona al cambiar side
@@ -166,6 +183,10 @@ export function DesignerProvider({ children }: { children: ReactNode }) {
 				getEditableAreas,
 				activeObject,
 				setActiveObject,
+				colores,
+				setColores,
+				colorPrenda,
+				setColorPrenda,
 				config,
 				setConfig,
 				notice,

@@ -7,7 +7,7 @@ import { makeAreaClip } from "@/lib/fabric/areaClip";
 import { AddObjectCommand } from "@/lib/history/commands/AddObjectCommand";
 import { useElementGuard } from "../hooks/useProductConfig";
 
-const ORANGE = "#fe6241";
+const ORANGE = "#2b2812";
 
 function applySelectionStyle(obj: FabricObject) {
 	obj.set({
@@ -90,7 +90,7 @@ export default function SidebarAddImage() {
 
 	return (
 		<div className="flex flex-col gap-2">
-			<label className="bg-black text-white py-2 rounded cursor-pointer text-sm text-center">
+			<label className="bg-tinta text-hueso-suave py-2 rounded cursor-pointer text-sm text-center">
 				Agregar imagen
 				<input
 					type="file"

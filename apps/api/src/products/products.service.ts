@@ -46,6 +46,27 @@ function deriveProductTemplate(
   };
 }
 
+/**
+ * Busca un valor libre agregando -2, -3… al que viene.
+ *
+ * En este marketplace es normal que varios talleres publiquen la misma
+ * prenda: dos productos llamados igual generan el mismo slug y el mismo sku,
+ * y ambas columnas son UNIQUE. Sin esto el alta truena con un 23505 y el
+ * proveedor sólo ve "Internal server error".
+ */
+async function valorLibre(
+  buscar: (valor: string) => Promise<unknown>,
+  base: string
+): Promise<string> {
+  let valor = base;
+  let n = 2;
+  while (await buscar(valor)) {
+    valor = base + "-" + n;
+    n++;
+  }
+  return valor;
+}
+
 @Injectable()
 export class ProductsService {
   constructor() {}
@@ -91,11 +112,22 @@ export class ProductsService {
       );
 
       // 4️⃣ Crear producto
+      // El nombre lo pone el proveedor y se repite entre talleres: hay que
+      // desempatar antes de insertar, no después de que Postgres reclame.
+      const slug = await valorLibre(
+        (v) => tx.query.products.findFirst({ where: eq(products.slug, v) }),
+        dto.slug
+      );
+      const sku = await valorLibre(
+        (v) => tx.query.products.findFirst({ where: eq(products.sku, v) }),
+        dto.sku
+      );
+
       const [p] = await tx
         .insert(products)
         .values({
-          slug: dto.slug,
-          sku: dto.sku,
+          slug,
+          sku,
           internalName: dto.internalName,
           name: dto.name,
           description: dto.description,

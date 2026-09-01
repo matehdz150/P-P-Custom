@@ -41,7 +41,7 @@ export default function SidebarUploadPanel({ close }: { close: () => void }) {
 				<p className="text-neutral-600">Drag & drop your image here</p>
 				<p className="text-neutral-400 text-sm mb-4">or</p>
 
-				<label className="cursor-pointer inline-block bg-black text-white px-4 py-2 rounded-lg text-sm">
+				<label className="cursor-pointer inline-block bg-tinta text-hueso-suave px-4 py-2 rounded-lg text-sm">
 					Upload from device
 					<input
 						type="file"

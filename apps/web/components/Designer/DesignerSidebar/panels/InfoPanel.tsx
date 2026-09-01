@@ -20,10 +20,10 @@ export default function InfoPanel({ close }: { close: () => void }) {
 	const rules = config?.rules;
 
 	return (
-		<div className="h-[80%] flex flex-col font-sora bg-white">
+		<div className="h-full flex flex-col font-sora bg-white">
 			{/* HEADER */}
 			<div className="p-6 pb-2 flex justify-between items-center">
-				<h2 className="font-semibold text-lg text-black">
+				<h2 className="font-semibold text-lg text-tinta">
 					Información del producto
 				</h2>
 				<button type="button" onClick={close}>
@@ -33,7 +33,7 @@ export default function InfoPanel({ close }: { close: () => void }) {
 
 			<div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
 				{/* NOMBRE */}
-				<h3 className="font-semibold text-base text-black">
+				<h3 className="font-semibold text-base text-tinta">
 					{config?.name ?? "Producto"}
 				</h3>
 
@@ -68,7 +68,7 @@ export default function InfoPanel({ close }: { close: () => void }) {
 
 				{/* DESGLOSE DE PRECIO */}
 				<div className="bg-[#f4f4ee] rounded-lg p-4 flex flex-col gap-3">
-					<span className="font-semibold text-sm text-black">
+					<span className="font-semibold text-sm text-tinta">
 						Desglose de precio
 					</span>
 
@@ -94,8 +94,8 @@ export default function InfoPanel({ close }: { close: () => void }) {
 					<div className="h-px bg-[#deded4]" />
 
 					<div className="flex justify-between items-center">
-						<span className="font-bold text-black">Total</span>
-						<span className="font-bold text-lg text-[#fe6241]">
+						<span className="font-bold text-tinta">Total</span>
+						<span className="font-bold text-lg text-tinta">
 							{money(total)}
 						</span>
 					</div>

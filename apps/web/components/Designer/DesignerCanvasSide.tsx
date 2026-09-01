@@ -19,7 +19,7 @@ type Props = {
 
 export default function DesignerCanvasSide({ side, product }: Props) {
 	const hostRef = useRef<HTMLDivElement | null>(null);
-	const { activeSide } = useDesigner();
+	const { activeSide, colorPrenda } = useDesigner();
 
 	const isMobile = useIsMobile();
 	const scale = isMobile ? 0.6 : 1;
@@ -35,6 +35,7 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 	const { isLoading, reload } = useFabricMockup(
 		getCanvas,
 		product.mockups[side],
+		colorPrenda?.hex,
 	);
 
 	const [noticeHidden, setNoticeHidden] = useState(false);
@@ -81,7 +82,7 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 						<button
 							type="button"
 							onClick={() => reload()}
-							className="flex items-center gap-1.5 bg-[#fe6241] text-black text-xs font-semibold rounded-full px-3 py-1.5 hover:bg-[#e5573a] transition-colors"
+							className="flex items-center gap-1.5 bg-tinta text-hueso-suave text-xs font-semibold rounded-full px-3 py-1.5 hover:bg-[#3a3618] transition-colors"
 						>
 							<RefreshCw size={13} />
 							Recargar imagen

@@ -112,7 +112,7 @@ export default function ShapeToolbar() {
 				className="p-1 rounded hover:bg-gray-200"
 				title="Eliminar"
 			>
-				<Trash size={22} className="text-black" />
+				<Trash size={22} className="text-tinta" />
 			</button>
 		</div>
 	);
