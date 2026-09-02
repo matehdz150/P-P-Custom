@@ -15,6 +15,14 @@ import { CustomizationRulesSection } from "./FormCreate/CustomizationRulesSectio
 import { TemplateSelector } from "./FormCreate/TemplateSelector";
 
 import type { ProductTemplate } from "@/lib/api/templates";
+import type {
+	ProductColor,
+	ProductImage,
+	ProductPrintSide,
+	ProductSize,
+} from "@/lib/api/products";
+import type { GeneralInfo } from "./FormCreate/GeneralInfoSection";
+import type { CustomizationRules } from "./FormCreate/CustomizationRulesSection";
 import { useRouter } from "next/navigation";
 
 export function ProductForm() {
@@ -28,7 +36,23 @@ export function ProductForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [form, setForm] = useState({
+  /* El estado tipado a mano. Sin esto, `useState` infiere `never[]` de los
+     arreglos vacíos y `s.sideKey` deja de existir; y `categoryIds` hace falta
+     para que `update` encaje con lo que espera GeneralInfoSection. */
+  const [form, setForm] = useState<
+    GeneralInfo & {
+      templateId: string;
+      isCustomizable: boolean;
+      category: string;
+      images: ProductImage[];
+      pricing: { basePrice: number };
+      sizes: ProductSize[];
+      colors: ProductColor[];
+      printSides: ProductPrintSide[];
+      production: undefined;
+      customizationRules?: CustomizationRules;
+    }
+  >({
     slug: "",
     name: "",
     internalName: "",
@@ -36,6 +60,7 @@ export function ProductForm() {
     description: "",
     brand: "",
     category: "",
+    categoryIds: [],
     status: "draft" as "draft" | "active" | "archived",
 
     templateId: "",
@@ -48,7 +73,7 @@ export function ProductForm() {
     printSides: [],
 
     production: undefined,
-    customizationRules: {},
+    customizationRules: undefined,
   });
 
   function update<K extends keyof typeof form>(key: K, value: any) {

@@ -24,7 +24,9 @@ type ProductTemplateData = {
 type PackageItem = {
   id: string;
   quantity: number;
-  product: {
+  /* Opcional porque la API lo devuelve así: un renglón puede haber quedado
+     apuntando a un producto que ya no está. */
+  product?: {
     id: string;
     name: string;
     images?: {
@@ -67,6 +69,10 @@ export function PackageProductsAccordion({ items = [] }: Props) {
     <Accordion type="single" collapsible className="space-y-2">
       {items.map((item) => {
         const product = item.product;
+
+        // Un renglón sin producto no se pinta: es un dato roto, no un hueco
+        // que el cliente tenga que interpretar.
+        if (!product) return null;
 
         const sideLabels = product.productTemplateData?.sideLabels ?? {};
 

@@ -143,9 +143,12 @@ export type CreateProductInput = {
   internalName: string;
   templateId: string;
 
-  description?: string;
-  brand?: string;
-  category?: string;
+  /* Aceptan `null` porque los formularios mandan el campo vacío como `null`,
+     que es lo que guarda la base. Declararlos sólo como `string` obligaba a
+     limpiarlos en cada sitio que construye un payload. */
+  description?: string | null;
+  brand?: string | null;
+  category?: string | null;
 
   status: string;
 

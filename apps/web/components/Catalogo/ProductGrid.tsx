@@ -104,8 +104,10 @@ export default function ProductGrid() {
                     overflow-hidden
                   "
                 >
+                  {/* La categoría puede no tener imagen, y `next/image` no
+                      acepta `undefined`: rompía el build. */}
                   <Image
-                    src={category.image}
+                    src={category.image ?? "/products/tshirt.png"}
                     alt={category.name}
                     fill
                     className="

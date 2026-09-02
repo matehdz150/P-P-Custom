@@ -1,13 +1,13 @@
 "use client";
 
-import { createPackage } from "@/lib/api/packages";
+import { createPackage, type CreatePackageInput } from "@/lib/api/packages";
 import { PackageForm } from "@/components/Admin/paquetes/PackageForm";
 import { useRouter } from "next/navigation";
 
 export default function NewPackagePage() {
   const router = useRouter();
 
-  async function onSubmit(data) {
+  async function onSubmit(data: CreatePackageInput) {
     await createPackage(data);
     router.push("/admin/paquetes");
   }
