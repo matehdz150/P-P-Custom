@@ -39,7 +39,58 @@ export const llaves = {
     pk: `PROVIDER_EMAIL#${correo.toLowerCase()}`,
     sk: "LOCK",
   }),
+
+  /**
+   * El producto entero en UN ítem.
+   *
+   * En Postgres eran diez tablas (colores, tallas, imágenes, precios, lados,
+   * producción, reglas…) y cada ficha costaba otros tantos joins. Aquí la
+   * ficha se lee de una sola vez, que es como se usa siempre: nadie pide los
+   * colores de un producto sin pedir el producto.
+   */
+  producto: (id: string) => ({ pk: `PRODUCT#${id}`, sk: "META" }),
+
+  /**
+   * "Mis productos" del taller. La fecha va en la llave de orden para que
+   * lleguen del más nuevo al más viejo sin ordenar en memoria.
+   */
+  productoDeProveedor: (proveedorId: string, id: string, creadoEn: string) => ({
+    gsi1pk: `PROVIDER_PRODUCTS#${proveedorId}`,
+    gsi1sk: `${creadoEn}#${id}`,
+  }),
+
+  /**
+   * La bandeja de revisión del admin: los que esperan aprobación, sin
+   * recorrer la tabla entera. Se reescribe en cada cambio de estado.
+   */
+  productoPorEstado: (estado: string, actualizadoEn: string) => ({
+    gsi2pk: `PRODUCT_ESTADO#${estado}`,
+    gsi2sk: actualizadoEn,
+  }),
+
+  /**
+   * El slug es la URL pública del producto, así que se defiende igual que el
+   * correo del proveedor: con un ítem-candado en la misma transacción.
+   */
+  slugDeProducto: (slug: string) => ({ pk: `SLUG#${slug}`, sk: "LOCK" }),
 };
+
+/**
+ * Los estados por los que pasa un producto.
+ *
+ * El taller mueve entre `borrador`, `en_revision` y `archivado`; sólo el
+ * admin pone `activo` o `rechazado`. Que el catálogo público filtre por
+ * `activo` es lo que hace que la aprobación signifique algo.
+ */
+export const ESTADOS = [
+  "borrador",
+  "en_revision",
+  "activo",
+  "rechazado",
+  "archivado",
+] as const;
+
+export type Estado = (typeof ESTADOS)[number];
 
 /** Las llaves son de la tabla, no del recurso: no salen a la API. */
 export function sinLlaves<T extends Record<string, unknown>>(item: T) {

@@ -1,5 +1,8 @@
 import { GetCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
+import * as catalogo from "./rutas/catalogo.js";
+import * as productos from "./rutas/productos.js";
+import * as subidas from "./rutas/subidas.js";
 import { dynamo, llaves, sinLlaves, TABLA } from "./lib/dynamo.js";
 import {
   crearRouter,
@@ -38,6 +41,13 @@ function quienEs(evento: any): Claims {
 }
 
 const router = crearRouter();
+
+/**
+ * Quién hace la petición. El `sub` lo pone el handler desde las claims del
+ * token, así que aquí siempre está: si faltara, `quienEs` ya habría cortado.
+ */
+const quien = (p: { headers: Record<string, string | undefined> }) =>
+  p.headers["x-sub"]!;
 
 /** El perfil del proveedor que trae el token. Nunca el de otro. */
 router.get("/proveedores/yo", async (p) => {
@@ -92,6 +102,26 @@ router.patch("/proveedores/yo", async (p) => {
 
   return sinLlaves(Attributes ?? {});
 });
+
+/* ─── El catálogo del taller ────────────────────────────────────────────── */
+
+/** Las prendas base y las categorías, para el asistente de alta. Sólo leer. */
+router.get("/proveedores/plantillas", () => catalogo.plantillas());
+router.get("/proveedores/categorias", () => catalogo.categorias());
+
+/** El permiso para subir una foto. La carpeta la decide el token, no el cuerpo. */
+router.post("/proveedores/subidas/foto", (p) =>
+  subidas.urlParaFoto(quien(p), p.cuerpo),
+);
+
+router.get("/proveedores/productos", (p) => productos.listar(quien(p)));
+router.post("/proveedores/productos", (p) => productos.crear(quien(p), p.cuerpo));
+router.get("/proveedores/productos/:id", (p) =>
+  productos.obtener(quien(p), p.params.id),
+);
+router.patch("/proveedores/productos/:id", (p) =>
+  productos.actualizar(quien(p), p.params.id, p.cuerpo),
+);
 
 export async function handler(evento: any) {
   const metodo: string = evento?.requestContext?.http?.method ?? "GET";

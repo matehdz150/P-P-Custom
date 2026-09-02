@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { uploadImage } from "@/lib/api/uploads";
+import { subirFotoDeProducto } from "@/lib/api/proveedores";
 import { Ayuda, Etiqueta } from "./campos";
 
 type Foto = { url: string; order: number };
@@ -10,8 +10,10 @@ type Foto = { url: string; order: number };
 /**
  * Las fotos del producto: arrastrar al recuadro o dar clic para elegirlas.
  *
- * Suben a Cloudinary con `uploadImage`, el mismo endpoint que ya usa el
- * admin (`POST /uploads/image`). El orden importa: la primera es la portada.
+ * Van a nuestro bucket, no a Cloudinary: el navegador pide un permiso
+ * firmado y hace PUT directo a S3, bajo la carpeta del propio taller. Lo que
+ * se guarda es la ruta (`/medios/productos/...`), que se sirve desde el
+ * mismo origen que el sitio. El orden importa: la primera es la portada.
  */
 export default function Fotos({
 	fotos,
@@ -23,7 +25,7 @@ export default function Fotos({
 	const input = useRef<HTMLInputElement>(null);
 	const [arrastrando, setArrastrando] = useState(false);
 	// Cada subida en curso lleva su propio id: son huecos en la rejilla y
-	// necesitan identidad estable mientras Cloudinary responde.
+	// necesitan identidad estable mientras S3 responde.
 	const [subiendo, setSubiendo] = useState<string[]>([]);
 	const [fallo, setFallo] = useState<string | null>(null);
 
@@ -48,7 +50,7 @@ export default function Fotos({
 		let acumulado = fotos;
 		for (const { id, archivo } of pendientes) {
 			try {
-				const { url } = await uploadImage(archivo);
+				const url = await subirFotoDeProducto(archivo);
 				acumulado = [...acumulado, { url, order: acumulado.length }];
 				onChange(acumulado);
 			} catch {

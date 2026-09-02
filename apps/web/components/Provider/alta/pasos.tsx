@@ -900,8 +900,9 @@ export function PasoRevisar({
 						/>
 					</svg>
 					<span className="text-sm leading-[22px] text-tinta">
-						Al publicarlo entra al catálogo y cualquier cliente puede pedirlo.
-						Los pedidos que genere te llegan a ti.
+						Al enviarlo lo revisamos y, una vez aprobado, entra al catálogo y
+						cualquier cliente puede pedirlo. Los pedidos que genere te llegan a
+						ti.
 					</span>
 				</div>
 			</div>

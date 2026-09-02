@@ -2,10 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { ApiError } from "@/lib/api/api";
-import { type Category, getCategories } from "@/lib/api/categories";
-import { createProviderProduct } from "@/lib/api/providers";
-import { getTemplates, type ProductTemplate } from "@/lib/api/templates";
+import type { Category } from "@/lib/api/categories";
+import {
+	actualizarMiProducto,
+	categoriasParaAlta,
+	crearMiProducto,
+	ErrorProveedor,
+	plantillasParaAlta,
+} from "@/lib/api/proveedores";
+import type { ProductTemplate } from "@/lib/api/templates";
 import { Palomita } from "./campos";
 import {
 	PasoDatos,
@@ -23,7 +28,7 @@ const PASOS = [
 	{ id: "impresion", nombre: "Cómo se imprime", titulo: "Cómo se imprime" },
 	{ id: "variantes", nombre: "Tallas y colores", titulo: "Tallas y colores" },
 	{ id: "precio", nombre: "Tu precio", titulo: "Tu precio" },
-	{ id: "revisar", nombre: "Revisar", titulo: "Revisa antes de publicar" },
+	{ id: "revisar", nombre: "Revisar", titulo: "Revisa antes de enviarlo" },
 ] as const;
 
 const AYUDA: Record<string, string> = {
@@ -40,20 +45,39 @@ const AYUDA: Record<string, string> = {
 		"Si algo no cuadra, vuelve al paso y corrígelo. Puedes guardarlo como borrador y terminarlo después.",
 };
 
-export default function AltaProducto() {
+/**
+ * El mismo asistente sirve para dar de alta y para corregir.
+ *
+ * Se reusa entero a propósito: las reglas de qué falta en cada paso son las
+ * mismas, y un formulario aparte para editar acabaría divergiendo del alta
+ * en cuanto alguien tocara uno de los dos.
+ */
+export default function AltaProducto({
+	editando,
+}: {
+	editando?: {
+		id: string;
+		inicial: Alta;
+		/** Por qué lo regresó el admin, si lo regresó. */
+		notaRevision?: string | null;
+		yaPublicado: boolean;
+	};
+} = {}) {
 	const router = useRouter();
 	const [plantillas, setPlantillas] = useState<ProductTemplate[]>([]);
 	const [categorias, setCategorias] = useState<Category[]>([]);
-	const [alta, setAlta] = useState<Alta>(ALTA_VACIA);
+	const [alta, setAlta] = useState<Alta>(editando?.inicial ?? ALTA_VACIA);
 	const [paso, setPaso] = useState(0);
 	const [enviando, setEnviando] = useState(false);
 	const [fallo, setFallo] = useState<string | null>(null);
 
 	useEffect(() => {
-		getTemplates()
+		// Por la API del proveedor, con su propio token: el asistente no debe
+		// pasar por el puente del admin ni por la llave compartida.
+		plantillasParaAlta()
 			.then(setPlantillas)
 			.catch(() => setPlantillas([]));
-		getCategories()
+		categoriasParaAlta()
 			.then(setCategorias)
 			.catch(() => setCategorias([]));
 	}, []);
@@ -91,17 +115,22 @@ export default function AltaProducto() {
 		}
 	}, [actual.id, alta]);
 
-	async function guardar(publicar: boolean) {
+	async function guardar(enviar: boolean) {
 		setFallo(null);
 		setEnviando(true);
 		try {
-			await createProviderProduct(aPayload(alta, publicar));
+			if (editando) {
+				await actualizarMiProducto(editando.id, aPayload(alta, enviar));
+			} else {
+				await crearMiProducto(aPayload(alta, enviar));
+			}
 			router.push("/proveedor/productos");
 		} catch (error) {
-			// El API contesta 500 con el motivo en el cuerpo; sin enseñarlo, un
-			// fallo de validación se ve igual que uno de red.
+			// La Lambda contesta con el motivo ("Marca al menos un lado que
+			// puedas imprimir"); sin enseñarlo, un fallo de validación se ve
+			// igual que uno de red.
 			const detalle =
-				error instanceof ApiError && error.body ? `: ${error.body}` : "";
+				error instanceof ErrorProveedor ? `: ${error.message}` : "";
 			setFallo(`No pudimos guardar el producto${detalle}`);
 			setEnviando(false);
 		}
@@ -120,6 +149,27 @@ export default function AltaProducto() {
 						{AYUDA[actual.id]}
 					</p>
 				</div>
+
+				{/* El motivo del rechazo va arriba y en todos los pasos: es la razón
+				    por la que el taller entró aquí, y el paso donde está el problema
+				    no tiene por qué ser el primero. */}
+				{editando?.notaRevision && (
+					<div className="rounded-lg border border-[rgba(192,57,43,0.35)] bg-[rgba(192,57,43,0.07)] p-4">
+						<p className="text-[13px] font-semibold text-tinta">
+							Te lo regresamos con esta nota
+						</p>
+						<p className="pt-1 text-sm leading-[22px] text-tinta/80">
+							{editando.notaRevision}
+						</p>
+					</div>
+				)}
+
+				{editando?.yaPublicado && (
+					<div className="rounded-lg border border-tinta/20 bg-gris p-4 text-sm leading-[22px] text-tinta/80">
+						Este producto está publicado. Al guardar cambios vuelve a revisión
+						y deja de aparecer en el catálogo hasta que lo aprobemos otra vez.
+					</div>
+				)}
 
 				{actual.id === "plantilla" && (
 					<PasoPlantilla
@@ -192,7 +242,7 @@ export default function AltaProducto() {
 							onClick={() => guardar(false)}
 							className="flex h-12 items-center rounded-lg border-[1.5px] border-tinta/20 px-5 text-[15px] font-semibold text-tinta disabled:opacity-50"
 						>
-							Guardar como borrador
+							{editando ? "Guardar sin enviar" : "Guardar como borrador"}
 						</button>
 					)}
 					<button
@@ -204,7 +254,9 @@ export default function AltaProducto() {
 						{enviando
 							? "Guardando…"
 							: ultimo
-								? "Publicar producto"
+								? editando
+									? "Guardar y enviar a revisión"
+									: "Enviar a revisión"
 								: "Continuar"}
 						{!enviando && (
 							<svg

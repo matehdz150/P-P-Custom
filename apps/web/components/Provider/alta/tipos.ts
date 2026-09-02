@@ -87,6 +87,73 @@ export const ALTA_VACIA: Alta = {
 	diasProduccion: "",
 };
 
+/**
+ * El camino de vuelta: lo guardado en DynamoDB al estado del asistente, para
+ * poder editarlo con la misma pantalla con la que se creó.
+ *
+ * Los límites son el caso interesante. `maxDesigns` y `maxColorsPerDesign`
+ * se guardan **ausentes** cuando no hay tope, así que aquí se reconstruye la
+ * palanca: si el número está, el límite estaba encendido. Leerlo al revés
+ * dejaría al taller con un tope de cero.
+ */
+export function deProductoAAlta(p: {
+	name: string;
+	description?: string | null;
+	sku?: string;
+	templateId: string;
+	categoryIds?: string[];
+	images?: { url: string; order: number }[];
+	printSides?: { sideKey: string; widthCm: number; heightCm: number; dpi?: number }[];
+	customizationRules?: {
+		allowText?: boolean;
+		allowImages?: boolean;
+		maxDesigns?: number;
+		maxColorsPerDesign?: number;
+	};
+	sizes?: { size: string; widthIn: number; lengthIn: number }[];
+	colors?: { name: string; hex: string }[];
+	pricing?: Record<string, number | undefined>;
+	production?: { meta?: { diasProduccion?: number } };
+}): Alta {
+	const reglas = p.customizationRules ?? {};
+	const precios = p.pricing ?? {};
+
+	return {
+		templateId: p.templateId,
+		name: p.name,
+		description: p.description ?? "",
+		sku: p.sku ?? "",
+		categoryIds: p.categoryIds ?? [],
+		images: p.images ?? [],
+		printSides: (p.printSides ?? []).map((s) => ({
+			sideKey: s.sideKey,
+			widthCm: s.widthCm,
+			heightCm: s.heightCm,
+			dpi: s.dpi ?? 300,
+		})),
+		reglas: {
+			allowText: reglas.allowText ?? true,
+			allowImages: reglas.allowImages ?? true,
+			limitarDisenos: reglas.maxDesigns !== undefined,
+			maxDisenos: reglas.maxDesigns ?? "",
+			limitarTintas: reglas.maxColorsPerDesign !== undefined,
+			maxTintas: reglas.maxColorsPerDesign ?? "",
+		},
+		// Sin tallas el asistente no deja avanzar; se cae a las de siempre
+		// para que el paso no quede vacío si el producto viene incompleto.
+		sizes: p.sizes?.length ? p.sizes : ALTA_VACIA.sizes,
+		colors: p.colors ?? [],
+		pricing: {
+			basePrice: precios.basePrice ?? "",
+			perSidePrice: precios.perSidePrice ?? "",
+			perDesignPrice: precios.perDesignPrice ?? "",
+			perColorPrice: precios.perColorPrice ?? "",
+			embroideryExtra: precios.embroideryExtra ?? "",
+		},
+		diasProduccion: p.production?.meta?.diasProduccion ?? "",
+	};
+}
+
 /** "Playera cuello redondo 180g" → "playera-cuello-redondo-180g" */
 export function aSlug(nombre: string) {
 	return nombre
@@ -101,26 +168,32 @@ export function aSlug(nombre: string) {
 const cifra = (v: Cifra) => (v === "" ? undefined : v);
 
 /**
- * Traduce el alta al cuerpo que espera `POST /providers/products`, que sigue
- * hablando en el vocabulario del admin.
+ * Traduce el alta al cuerpo que espera `POST /proveedores/productos`.
+ *
+ * `enviar` sustituyó al viejo `status`: el taller no publica, manda a
+ * revisión. Quien pone un producto en el catálogo es el admin, así que
+ * dejarle elegir "activo" aquí habría sido decorativo — la Lambda lo ignora.
+ *
+ * El slug tampoco se manda: lo calcula la Lambda, que es la única que puede
+ * saber si ya está ocupado y añadirle un sufijo.
  */
-export function aPayload(alta: Alta, publicar: boolean) {
+export function aPayload(alta: Alta, enviar: boolean) {
 	const slug = aSlug(alta.name);
 
 	return {
 		name: alta.name.trim(),
-		slug,
 		internalName: alta.name.trim(),
 		sku: alta.sku.trim() || slug.toUpperCase().slice(0, 24),
 		description: alta.description.trim() || undefined,
 		categoryIds: alta.categoryIds,
-		status: publicar ? "active" : "draft",
+		enviar,
 		templateId: alta.templateId,
 		isCustomizable: true,
 		images: alta.images,
 		printSides: alta.printSides.map((s) => ({
 			sideKey: s.sideKey,
-			// NOT NULL en la base: si el campo quedó vacío, vuelve al default.
+			// El área imprimible es lo que limita al cliente en el editor: si el
+			// taller la dejó vacía, vale más un tamaño sensato que un hueco.
 			widthCm: Number(s.widthCm) || 28,
 			heightCm: Number(s.heightCm) || 35,
 			dpi: Number(s.dpi) || 300,
@@ -138,8 +211,8 @@ export function aPayload(alta: Alta, publicar: boolean) {
 				? cifra(alta.reglas.maxTintas)
 				: undefined,
 		},
-		// Una talla sin medidas rompe el alta: en la base width_in y length_in
-		// son NOT NULL. Se van sólo las completas.
+		// Una talla a medias no se puede enseñar en la ficha ni usar para
+		// validar el diseño. Se van sólo las completas.
 		sizes: alta.sizes
 			.filter(
 				(t) => t.size.trim() !== "" && t.widthIn !== "" && t.lengthIn !== "",

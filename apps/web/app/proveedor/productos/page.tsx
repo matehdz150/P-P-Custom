@@ -3,14 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getMyProducts, type ProviderProduct } from "@/lib/api/providers";
+import {
+	ETIQUETA_ESTADO_PRODUCTO,
+	misProductos,
+	type ProductoDeTaller,
+} from "@/lib/api/proveedores";
 
 export default function MisProductosPage() {
-	const [productos, setProductos] = useState<ProviderProduct[]>([]);
+	const [productos, setProductos] = useState<ProductoDeTaller[]>([]);
 	const [cargando, setCargando] = useState(true);
 
 	useEffect(() => {
-		getMyProducts()
+		misProductos()
 			.then(setProductos)
 			.catch(() => setProductos([]))
 			.finally(() => setCargando(false));
@@ -53,7 +57,7 @@ export default function MisProductosPage() {
 					</h2>
 					<p className="max-w-[520px] text-[15px] leading-[26px] text-tinta/70">
 						Da de alta tu primer producto con sus colores, tallas y lados de
-						impresión. En cuanto tenga precio y una foto, aparece en el
+						impresión. Cuando lo mandes a revisión lo aprobamos y entra al
 						catálogo.
 					</p>
 					<Link
@@ -74,9 +78,12 @@ export default function MisProductosPage() {
 						</div>
 
 						{productos.map((p) => (
-							<div
+							// La fila entera lleva a editar: cuando un producto vuelve
+							// rechazado, corregirlo es lo único que el taller quiere hacer.
+							<Link
 								key={p.id}
-								className="flex items-center gap-5 border-t border-tinta/12 py-3.5"
+								href={`/proveedor/productos/${p.id}/editar`}
+								className="flex items-center gap-5 border-t border-tinta/12 py-3.5 transition-colors hover:bg-hueso"
 							>
 								<div className="flex flex-1 items-center gap-3.5">
 									<div className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-lg bg-gris">
@@ -94,9 +101,17 @@ export default function MisProductosPage() {
 										<span className="truncate text-[15px] font-semibold text-tinta">
 											{p.name}
 										</span>
-										<span className="font-mono truncate text-xs text-tinta/55">
-											{p.slug}
-										</span>
+										{/* Si lo regresaron, el motivo pesa más que la dirección:
+										    es lo único que le dice al taller qué corregir. */}
+										{p.estado === "rechazado" && p.notaRevision ? (
+											<span className="truncate text-xs text-[#c0392b]">
+												{p.notaRevision}
+											</span>
+										) : (
+											<span className="font-mono truncate text-xs text-tinta/55">
+												{p.slug}
+											</span>
+										)}
 									</div>
 								</div>
 
@@ -107,23 +122,25 @@ export default function MisProductosPage() {
 								<span className="w-[110px]">
 									<span
 										className={`inline-flex rounded-lg px-3 py-[5px] text-xs font-semibold ${
-											p.status === "active"
+											p.estado === "activo"
 												? "bg-lima text-tinta"
-												: "border-[1.5px] border-tinta/20 text-tinta"
+												: p.estado === "rechazado"
+													? "border-[1.5px] border-[rgba(192,57,43,0.4)] text-[#c0392b]"
+													: "border-[1.5px] border-tinta/20 text-tinta"
 										}`}
 									>
-										{p.status === "active" ? "Publicado" : "Borrador"}
+										{ETIQUETA_ESTADO_PRODUCTO[p.estado] ?? p.estado}
 									</span>
 								</span>
-							</div>
+							</Link>
 						))}
 
 						<div className="border-t border-tinta/12" />
 					</div>
 
 					<span className="pt-4 text-[13px] text-tinta/55">
-						Un borrador no aparece en el catálogo hasta que le pongas precio y
-						al menos una foto.
+						Un producto entra al catálogo cuando lo mandas a revisión y lo
+						aprobamos. Si le cambias algo después, vuelve a revisión.
 					</span>
 				</>
 			)}
