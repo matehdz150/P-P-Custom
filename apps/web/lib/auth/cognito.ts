@@ -57,6 +57,23 @@ export class ErrorCognito extends Error {
       this.tipo === "UserNotFoundException"
     );
   }
+
+  /**
+   * El fallo es nuestro, no de quien intenta entrar: el id de cliente, la
+   * región o el flujo de autenticación están mal.
+   *
+   * Se distingue porque si no, cae en el cajón de "no pudimos conectar" y
+   * manda a buscar el problema al internet del taller. Ya pasó: un
+   * `NEXT_PUBLIC_COGNITO_CLIENTE` cortado a diez caracteres devolvía
+   * `ResourceNotFoundException` y la pantalla decía "revisa tu internet".
+   */
+  get esConfiguracion() {
+    return (
+      this.tipo === "Config" ||
+      this.tipo === "ResourceNotFoundException" ||
+      this.tipo === "InvalidParameterException"
+    );
+  }
 }
 
 async function llamar(accion: string, cuerpo: unknown) {

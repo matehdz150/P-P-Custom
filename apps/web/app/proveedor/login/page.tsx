@@ -37,6 +37,12 @@ const MENSAJES = {
 		texto: "Necesita al menos 10 caracteres, con una letra y un número.",
 		grave: true,
 	},
+	configuracion: {
+		titulo: "El acceso está mal configurado",
+		texto:
+			"No es tu cuenta: el problema es nuestro. Escríbenos y lo arreglamos; el detalle está en la consola del navegador.",
+		grave: true,
+	},
 } as const;
 
 type Fallo = keyof typeof MENSAJES;
@@ -94,12 +100,19 @@ export default function ProviderLoginPage() {
 			// credenciales. Decirle a alguien que su contraseña está mal
 			// cuando lo que falló fue la red lo manda a cambiarla sin motivo.
 			if (error instanceof ErrorCognito) {
+				// El tipo de Cognito, a la consola: sin él, un 400 de
+				// configuración se ve idéntico a uno de contraseña mal y se
+				// busca el problema donde no está.
+				console.error(`Cognito rechazó el login (${error.tipo}): ${error.message}`);
+
 				setFallo(
 					error.tipo === "InvalidPasswordException"
 						? "contrasena"
 						: error.sonCredenciales
 							? "credenciales"
-							: "red",
+							: error.esConfiguracion
+								? "configuracion"
+								: "red",
 				);
 			} else {
 				setFallo("red");
