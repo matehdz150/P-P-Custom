@@ -33,6 +33,7 @@ import {
 import { DesignerProvider } from "@/Contexts/DesignerContext";
 import { HistoryProvider } from "@/Contexts/HistoryContext";
 import ProductDesigner from "@/components/Designer/ProductDesigner";
+import { idsDeProductos } from "@/lib/build/parametros";
 
 // --- fuentes ---
 // Cada una que se declare aquí tiene que estar también en
@@ -211,4 +212,12 @@ export default async function Page({
 			</DesignerProvider>
 		</div>
 	);
+}
+
+/**
+ * Las URLs de esta ruta, resueltas al construir. Ver lib/build/parametros.ts:
+ * un producto aprobado no aparece hasta el siguiente despliegue.
+ */
+export async function generateStaticParams() {
+	return (await idsDeProductos()).map((productId) => ({ productId }));
 }

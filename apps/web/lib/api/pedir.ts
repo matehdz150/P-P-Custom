@@ -226,5 +226,5 @@ export async function subirArchivos(
 
 /** El enlace que se le da al comprador. El token va en la URL, no en la sesión. */
 export function enlaceDeSeguimiento(pedido: { id: string; token: string }) {
-	return `/pedido/${pedido.id}?token=${encodeURIComponent(pedido.token)}`;
+	return `/pedido?id=${encodeURIComponent(pedido.id)}&token=${encodeURIComponent(pedido.token)}`;
 }

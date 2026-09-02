@@ -125,3 +125,12 @@ export default async function PackagePage({ params }: Props) {
     </main>
   );
 }
+
+/**
+ * Los paquetes siguen en Nest, que no se despliega, así que no se genera
+ * ninguna URL. Cuando el dominio migre a DynamoDB se enumeran como los
+ * productos. Ver ESTADO.md.
+ */
+export function generateStaticParams() {
+	return [];
+}

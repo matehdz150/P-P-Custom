@@ -82,7 +82,7 @@ export default function MisProductosPage() {
 							// rechazado, corregirlo es lo único que el taller quiere hacer.
 							<Link
 								key={p.id}
-								href={`/proveedor/productos/${p.id}/editar`}
+								href={`/proveedor/productos/editar?id=${p.id}`}
 								className="flex items-center gap-5 border-t border-tinta/12 py-3.5 transition-colors hover:bg-hueso"
 							>
 								<div className="flex flex-1 items-center gap-3.5">

@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { use, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import AltaProducto from "@/components/Provider/alta/AltaProducto";
 import { type Alta, deProductoAAlta } from "@/components/Provider/alta/tipos";
 import { miProducto, type ProductoDeTaller } from "@/lib/api/proveedores";
@@ -13,12 +14,14 @@ import { miProducto, type ProductoDeTaller } from "@/lib/api/proveedores";
  * mismos pasos. A esta pantalla se llega sobre todo desde un rechazo, así
  * que lo que el admin escribió viaja hasta arriba del formulario.
  */
-export default function EditarProductoPage({
-	params,
-}: {
-	params: Promise<{ id: string }>;
-}) {
-	const { id } = use(params);
+function EditarProducto() {
+	/* El id va en la query y no en la ruta.
+
+	   El sitio se publica como export estático y una ruta dinámica necesita
+	   conocer todas sus URLs en el build. Los productos del taller se crean
+	   después de desplegar, así que `[id]` no se puede pre-renderizar. Aquí no
+	   se pierde nada: es una pantalla privada que no se indexa. */
+	const id = useSearchParams().get("id") ?? "";
 
 	const [producto, setProducto] = useState<ProductoDeTaller | null>(null);
 	const [inicial, setInicial] = useState<Alta | null>(null);
@@ -68,5 +71,21 @@ export default function EditarProductoPage({
 				yaPublicado: producto.estado === "activo",
 			}}
 		/>
+	);
+}
+
+/**
+ * `useSearchParams` obliga a un límite de Suspense.
+ *
+ * Al construir el sitio estático, Next pre-renderiza esta página sin conocer
+ * la query —no existe hasta que alguien abre su enlace—, y sin el Suspense el
+ * build falla. El envoltorio es lo que le permite dejar el hueco y rellenarlo
+ * en el navegador.
+ */
+export default function Pagina() {
+	return (
+		<Suspense fallback={<p className="text-[15px] text-tinta/60">Cargando…</p>}>
+			<EditarProducto />
+		</Suspense>
 	);
 }

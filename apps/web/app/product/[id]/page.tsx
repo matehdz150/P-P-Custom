@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { idsDeProductos } from "@/lib/build/parametros";
 import ProductoVista from "@/components/Producto/ProductoVista";
 import {
 	aProductoViejo,
@@ -34,4 +35,12 @@ export default async function ProductPage({
 	return (
 		<ProductoVista product={aProductoViejo(ficha)} recomendados={recomendados} />
 	);
+}
+
+/**
+ * Las URLs de esta ruta, resueltas al construir. Ver lib/build/parametros.ts:
+ * un producto aprobado no aparece hasta el siguiente despliegue.
+ */
+export async function generateStaticParams() {
+	return (await idsDeProductos()).map((id) => ({ id }));
 }

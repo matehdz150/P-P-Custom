@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { type PedidoEnSeguimiento, seguirPedido } from "@/lib/api/pedir";
 
 /**
@@ -29,19 +29,22 @@ const PASOS: { estado: string; etiqueta: string; explica: string }[] = [
 	{ estado: "entregado", etiqueta: "Entregado", explica: "Se entregó." },
 ];
 
-export default function SeguimientoPage({
-	params,
-}: {
-	params: Promise<{ id: string }>;
-}) {
-	const { id } = use(params);
-	const token = useSearchParams().get("token") ?? "";
+function Seguimiento() {
+	/* El id va en la query y no en la ruta a propósito.
+	
+	   El sitio se publica como export estático, y una ruta dinámica necesita
+	   conocer todas sus URLs en el build. Los pedidos se crean después de
+	   desplegar, así que `/pedido/[id]` no se puede pre-renderizar nunca. Aquí
+	   no se pierde nada: el enlace es privado y no tiene que indexarse. */
+	const parametros = useSearchParams();
+	const id = parametros.get("id") ?? "";
+	const token = parametros.get("token") ?? "";
 
 	const [pedido, setPedido] = useState<PedidoEnSeguimiento | null>(null);
 	const [fallo, setFallo] = useState<string | null>(null);
 
 	useEffect(() => {
-		if (!token) {
+		if (!id || !token) {
 			setFallo("Este enlace está incompleto: abre el que te llegó por correo.");
 			return;
 		}
@@ -184,5 +187,21 @@ export default function SeguimientoPage({
 				por correo.
 			</p>
 		</main>
+	);
+}
+
+/**
+ * `useSearchParams` obliga a un límite de Suspense.
+ *
+ * Al construir el sitio estático, Next pre-renderiza esta página sin conocer
+ * la query —no existe hasta que alguien abre su enlace—, y sin el Suspense el
+ * build falla. El envoltorio es lo que le permite dejar el hueco y rellenarlo
+ * en el navegador.
+ */
+export default function Pagina() {
+	return (
+		<Suspense fallback={<main className="mx-auto max-w-[680px] px-5 py-16 text-tinta/60">Abriendo tu pedido…</main>}>
+			<Seguimiento />
+		</Suspense>
 	);
 }
