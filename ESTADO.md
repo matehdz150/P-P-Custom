@@ -1,6 +1,6 @@
 # Dónde nos quedamos
 
-_Última actualización: 1 de septiembre de 2026 (tarde)._
+_Última actualización: 2 de septiembre de 2026._
 
 Este archivo es el traspaso entre sesiones: lo que **no** se deduce leyendo el
 código. Para el mapa del proyecto ve a `README.md`; para el AWS, a
@@ -9,355 +9,162 @@ sirve si se mantiene corto y cierto.
 
 ---
 
-## Lo último que se terminó
+## El circuito ya cierra
 
-**El admin de categorías y el de proveedores, ya sin Nest de por medio.**
-Estaban a medias de una forma que no se veía: la página de categorías *leía*
-de DynamoDB pero *escribía* en Postgres, y `/admin/proveedores` nunca se
-migró. Con Nest apagado —lo normal ahora— la primera daba 500 y la segunda
-`ERR_CONNECTION_REFUSED`.
+Se puede diseñar, pedir, cobrar el pedido en el panel del taller y moverlo
+hasta entregado. Todo verificado contra AWS real, no en local.
 
-- `/admin/categorias`: crear, editar y borrar las de producto van a DynamoDB.
-  Las de paquete siguen en Nest, pero ya no tumban la página: si la API vieja
-  no contesta, esa sección sola muestra un aviso.
-- `/admin/proveedores`: lista y alta contra la Lambda. El formulario ya no
-  pide contraseña —la genera Cognito— y enseña la temporal una sola vez.
-- **`GET /providers` estaba devolviendo `passwordHash`.** Los proveedores
-  sembrados antes de Cognito lo traen en la tabla y `sinLlaves` sólo quita
-  pk/sk/gsi*. Ahora hay lista blanca de campos.
-- Ruta nueva `POST /uploads/imagen-url`: firma subidas a `medios/<carpeta>/`
-  para imágenes del catálogo que no son mockups. Las de categoría ya no van
-  a Cloudinary. Se leen por `/medios/...`, con su rewrite igual que
-  `/mockups/...`.
-- **`infra/lambda-admin.sh` ya no inventa una llave si no encuentra el
-  archivo.** En una máquina nueva generaba una y la desplegaba, dejando al
-  front hablando con la llave vieja. Ahora, si la función existe, su llave y
-  su `KUSTTO_POOL_ID` mandan. También se arregló el `--environment` con una
-  variable vacía, que rompía el parser del CLI.
+**La salida del editor es una pantalla, no un modal.** `/pedir` es un checkout
+de cuatro pasos plegables (tallas → contacto → entrega → pago) con el resumen
+pegajoso al lado. Recoge dirección completa con los 32 estados, o "recoger con
+el taller", que no pide dirección porque nadie la usaría.
 
-Verificado contra AWS real: firma → `PUT` a S3 → lectura por `/medios/...`
-con los bytes idénticos, el rechazo de carpetas fuera de la lista blanca, y
-que `/providers` ya no trae ningún hash.
+**El taller se entera de un pedido sin recargar.** Por WebSocket, no por
+sondeo. Ver `infra/README.md`.
 
-**El login de proveedores no estaba roto: el `.env.local` de esta máquina
-tenía `NEXT_PUBLIC_COGNITO_CLIENTE` cortado a diez caracteres.** Cognito
-contestaba `ResourceNotFoundException` y la pantalla lo enseñaba como "no
-pudimos conectar", que manda a revisar el internet. Ahora `ErrorCognito`
-distingue los fallos de configuración de los de credenciales, el tipo real
-sale por consola, y el aviso dice que el problema es nuestro.
-
-**Y la tabla se limpió.** Tres de los cinco proveedores eran de la siembra
-vieja de Postgres: estaban en DynamoDB con su `passwordHash` pero sin cuenta
-en Cognito, así que **su login daba `UserNotFoundException` siempre** — y uno
-de ellos, `hola@bordadostapatios.mx`, se confundía a simple vista con el que
-sí funciona, `taller@bordadostapatios.mx`. Se borraron sus ítems `META` y sus
-candados de correo. Ahora la tabla y Cognito coinciden: los mismos dos ids en
-los dos lados, y ya no queda ningún hash de contraseña guardado.
-
-La autenticación de proveedores (Lambda `kustto-proveedores`, login en dos
-pasos con `NEW_PASSWORD_REQUIRED`, perfil y cierre de sesión) quedó lista la
-sesión anterior y sigue en pie.
+**El panel del taller lee pedidos reales** (`/proveedores/pedidos`) y cada uno
+abre una ficha con los archivos de producción, contacto, dirección con botón de
+copiar, y la bitácora.
 
 ---
 
-## Fase 1 de productos: el taller ya puede dar de alta
+## Lo que se le entrega al taller para producir
 
-Sin migrar un solo producto de Postgres —son de prueba y se vuelven a
-capturar—, lo que se construyó es la **capacidad** de crearlos, con
-aprobación del admin de por medio.
+Es lo que más ha costado afinar y lo que más fácil se rompe sin que nadie se
+entere. Por cada lado dibujado salen **dos** archivos:
 
-- El producto es **un ítem** (`PRODUCT#<id>/META`) con todo dentro: en
-  Postgres eran diez tablas y otros tantos joins por ficha.
-- Rutas nuevas en `kustto-proveedores`, todas atadas al `sub` del token:
-  crear, listar los propios, ver, editar, y firmar la subida de fotos.
-- **El asistente de alta ya no pasa por el admin.** Pedía plantillas por
-  `/api/admin/*` —con la llave del admin puesta— y categorías a Nest. Ahora
-  las lee por `/proveedores/plantillas` y `/proveedores/categorias`. Aquello
-  funcionaba sólo porque el proxy no exige sesión; con login de admin, el
-  taller se habría quedado sin poder elegir prenda.
-- Las fotos van a S3 bajo `medios/productos/<sub>/`, no a Cloudinary.
-- El rol `kustto-proveedores-rol` creció lo justo: `PutItem` y
-  `TransactWriteItems` (el producto y su candado de slug van juntos) y
-  `PutObject` acotado a `medios/productos/*`.
+| | qué es | para qué |
+|---|---|---|
+| `arte` | recortado al área, transparente, a los DPI | va a máquina |
+| `colocacion` | la prenda con el diseño encima | comprobar **dónde** va |
 
-Verificado con el token de un taller real: plantillas y categorías se leen,
-la foto sube a su carpeta, el producto se crea con acentos intactos, el slug
-repetido se resuelve con sufijo, las cuatro validaciones devuelven 400, y el
-producto de otro taller da **404 al leerlo, al editarlo y no aparece en la
-lista**.
+Y tres decisiones que conviene no deshacer:
 
-Decisiones que quedaron grabadas y conviene no deshacer sin pensarlas:
-
-- **Editar un producto aprobado lo regresa a revisión.** Si no, bastaría con
-  publicar algo inocuo, esperar el visto bueno y cambiarle el contenido.
-- **El slug no se recalcula al editar el nombre**: es la URL pública, y
-  moverla rompe los enlaces que ya circulan.
-- **`activo` no está en manos del taller.** El asistente ahora dice "Enviar
-  a revisión", no "Publicar".
-
-## Fase 2: la bandeja de revisión
-
-El circuito ya cierra. `/admin/revision` lista por estado (esperando,
-publicados, regresados), aprueba, y regresa con nota.
-
-- `GET /productos?estado=` sale del `gsi2`, con los más viejos primero: es
-  una cola de trabajo, no un listado.
-- **Rechazar sin nota devuelve 400.** La nota es lo único que el taller va a
-  ver de la revisión; sin ella se queda adivinando qué corregir.
-- Sólo se puede revisar lo que está `en_revision`, por condición en el
-  `UpdateItem`: si dos personas resuelven lo mismo, la segunda recibe un 409
-  con el motivo en vez de pisar la decisión de la primera.
-- Aprobar **borra** la nota vieja: dejarla junto a un producto publicado se
-  lee como si siguiera habiendo algo mal.
-- El nombre del taller se resuelve al leer (un `BatchGet` de los talleres
-  distintos de la página), no se guarda dentro del producto: el taller puede
-  cambiárselo y la bandeja mentiría.
-
-Probado de punta a punta con la interfaz real: un producto dado de alta
-desde el navegador se aprobó y quedó `activo`; otro se regresó con nota, y
-el taller la ve en su panel. Las bandejas se reindexan bien —`en_revision`
-quedó vacía, y cada uno apareció en la suya— y un estado inventado en la
-query devuelve 400.
-
-## El bucle completo: corregir y reenviar
-
-`/proveedor/productos/[id]/editar` cierra el circuito. Es **el mismo
-asistente** de alta con el producto cargado dentro, no un formulario aparte:
-las reglas de qué falta en cada paso son las mismas, y dos pantallas
-distintas habrían divergido en cuanto alguien tocara una.
-
-- La nota del admin va arriba y en **todos** los pasos: es la razón por la
-  que el taller entró, y el paso donde está el problema no tiene por qué ser
-  el primero.
-- `deProductoAAlta` es el camino de vuelta, y el caso delicado son los
-  límites: `maxDesigns` y `maxColorsPerDesign` se guardan **ausentes** cuando
-  no hay tope, así que hay que reconstruir la palanca de "limitar" desde si
-  el número existe. Leerlo al revés le pondría al taller un tope de cero.
-- Si el producto está publicado, la pantalla lo avisa antes de guardar: sale
-  del catálogo hasta que se apruebe otra vez.
-- **La nota sobrevive al reenvío**, a propósito: cuando el producto vuelve a
-  la bandeja, el admin ve por qué lo regresó y puede comprobar si de verdad
-  se corrigió.
-
-Probado entero: un producto rechazado se abrió con su nota, se le agregó la
-talla que faltaba, volvió a `en_revision` con la nota intacta para el admin,
-se aprobó —y ahí la nota sí se limpia—, y al cambiarle el precio ya estando
-publicado **salió del catálogo solo**, de vuelta a revisión.
+- **Las medidas se congelan en la línea del pedido**, como el precio. Viven en
+  `printSides` del producto y el taller puede cambiarlas mañana; si la ficha
+  las leyera de ahí, un pedido de hace un mes se imprimiría al tamaño de hoy.
+- **Se guarda la medida REAL del archivo, no la declarada.** No coinciden
+  cuando el área de la plantilla no tiene la proporción de los centímetros
+  declarados. La ficha enseña la real y avisa si se desvían más de medio
+  centímetro, porque eso lo corrige el taller en su plantilla.
+- **Al PNG hay que escribirle el DPI a mano** (`lib/designer/dpi.ts`). Ver
+  abajo.
 
 ---
 
-## Fase 3: el catálogo público sale de DynamoDB
+## Trampas que ya mordieron
 
-Tres rutas nuevas sin llave ni token, bajo el prefijo `/publico/` que ya
-estaba abierto: `/publico/catalogo`, `/publico/catalogo/:id` y
-`/publico/categorias`. Sólo salen productos en `activo`.
+**`canvas.toDataURL()` no escribe la resolución.** Un PNG sin chunk `pHYs` se
+abre asumiendo 72 DPI: comprobado con un arte real, 3307 × 4283 px se
+interpretaban como **116 × 151 cm** en vez de 28. El archivo abre bien, se ve
+bien, y sólo se nota cuando sale la prenda. `conDpi()` inserta el chunk tras
+`IHDR` con su CRC. Si alguien "simplifica" esa función, vuelve el problema y es
+mudo.
 
-Lo que cambió del lado del front:
+**Un `clearTimeout` en la limpieza de un efecto puede matar la única
+ejecución.** En modo estricto React monta, limpia y vuelve a montar. Con un
+guardia de "esto corre una sola vez" en una ref, la limpieza cancela el
+temporizador del primer montaje y el guardia impide el segundo: no corre nunca.
+Pasó en `SalidaAPedir` y dejaba "Preparando tu pedido" girando para siempre.
 
-- El listado pedía los productos **categoría por categoría** y los juntaba
-  en el navegador, porque la API vieja sólo sabía servirlos así. Ahora es
-  una sola petición y la categoría se filtra en memoria.
-- La ficha de producto y **el editor** leen de la misma ruta pública. La
-  plantilla se resuelve en la Lambda: sin ella el editor no tiene lienzo, y
-  encadenar esa lectura en el navegador era una ida y vuelta más antes de
-  pintar nada.
-- La búsqueda ya no tiene endpoint: filtra sobre el catálogo que ya está
-  cargado, sin acentos ni mayúsculas. Un `/search` en Nest para decenas de
-  productos era una pieza más que mantener a cambio de nada.
-- `aProductoViejo` traduce la ficha nueva al tipo `Product` que hablan la
-  página de producto y su docena de componentes. Es un puente a propósito:
-  traducir en un sitio salió mucho más barato que tocar ese árbol, y se
-  borra el día que se refactorice sin que la Lambda se entere.
-
-También salió un 500 que llevaba tiempo escondido: leer un archivo que no
-existe en el bucket devolvía "Error interno". Era `AccessDenied` de S3 —el
-rol tiene `GetObject` pero no `ListBucket`, así que S3 contesta 403 en vez
-de 404 para no revelar qué hay dentro—. Ahora es un 404 con su mensaje.
-
-**Ojo con los datos viejos:** la plantilla `tshirt` apunta a
-`/mockups/tshirtfront.png` y `/mockups/tshirtback.png`, y en el bucket sólo
-está `mockups/tshirt/front-8cdcbb1aa538.png`. La `cap` apunta a
-`/mockups/cap.png`, que tampoco existe. El editor abre pero sin prenda de
-fondo hasta que se vuelvan a subir los mockups desde el admin.
+**El servidor de desarrollo cachea los mockups y tapa un 404.** Las respuestas
+de `/mockups/*` llevan `cache-control: immutable`. En el navegador se veía la
+prenda; contra la Lambda, `/publico/mockups/tshirtfront.png` responde **404**.
+Comprueba siempre contra la API, no contra `localhost:3000`.
 
 ---
 
-## Pedidos: la API, hecha y probada
+## La decisión abierta: mockups de verdad
 
-Ya se puede pedir. Falta la interfaz —carrito y la salida del editor—, pero
-el circuito entero funciona por API.
+**Hoy el mockup es un dibujo de línea, no una fotografía**, y trae el recuadro
+punteado del área y una marca de agua **incrustados en el PNG**. Por eso la
+referencia de colocación que recibe el taller sale con el punteado dentro.
 
-**Las decisiones que se tomaron:**
+No se puede hacer una previsualización realista con eso. Ninguna técnica de
+composición convierte un dibujo vectorial en una foto.
 
-- **Cuenta opcional.** El pedido guarda el correo del comprador y un
-  `compradorId` en null, listo para el día que haya cuentas. El seguimiento
-  va por un enlace con token.
-- **Del token se guarda sólo el hash** (sha256) y se compara en tiempo
-  constante. Si alguien lee la tabla no se lleva los enlaces de nadie, y una
-  comparación normal permitiría adivinarlo midiendo lo que tarda en fallar.
-- **Un pedido es de un solo taller**, aunque lleve varios productos con
-  diseños distintos. Mezclar obligaría a partirlo, y entonces "el pedido"
-  dejaría de ser lo que el cliente cree que mandó.
-- **El precio y el taller salen de la tabla, nunca del cuerpo.** Está
-  probado: un pedido que se dictaba a sí mismo `total: 1` y otro taller se
-  guardó con el precio real y el taller dueño del producto.
-- **Sólo se puede pedir lo que está `activo`.** Un borrador o algo que volvió
-  a revisión no se puede comprar.
-- **El arte se firma al crear el pedido**, no con un firmador abierto: la
-  ruta es pública, y un endpoint que firma subidas a cualquiera es una
-  invitación a llenar el bucket.
-- **Las transiciones de estado están declaradas** (`nuevo → produccion →
-  listo → entregado`, y `cancelado` mientras no se haya entregado). Sin eso,
-  un pedido podría figurar entregado sin haber pasado por producción y la
-  bitácora dejaría de contar lo que pasó. Volver atrás lo tendrá que hacer el
-  admin, y quedará anotado.
+**Lo que falta es material, no código.** Hace falta una foto por prenda y por
+lado, sin guías ni marcas incrustadas y con fondo liso. En cuanto haya una:
 
-Probado de punta a punta contra AWS: pedido creado sin llave con folio corto
-único, seguimiento que exige token (401 sin él y con uno falso), arte subido
-a S3 y leído por su ruta, el taller viéndolo en su panel, las cuatro
-transiciones —incluidos los saltos prohibidos—, el pedido de otro taller
-dando 404 al leerlo y al moverlo, y la bitácora completa llegando al
-comprador por su enlace.
+- `lib/fabric/prenda.ts` **ya resuelve lo difícil**. `recortarPrenda` separa la
+  prenda del fondo y la deja en gris, y ese gris **es** el mapa de pliegues,
+  costuras y sombras. `tenirPrenda` ya lo multiplica para teñir.
+- El realismo sale de multiplicar ese sombreado **encima del arte**: sobre una
+  prenda blanca el multiply no hace nada salvo donde hay sombra, que es
+  justo el efecto de tinta sobre tela.
+- Un mapa de desplazamiento —para que el arte se deforme siguiendo las
+  arrugas— es el paso siguiente, y sólo vale la pena si con el sombreado sigue
+  viéndose plano.
 
-## La salida del editor
-
-El editor ya tiene por dónde salir: un botón "Pedir" que abre el panel con
-tallas, datos y precio, y al mandar exporta el arte, crea el pedido y lleva
-al seguimiento (`/pedido/[id]?token=…`).
-
-Lo delicado está en `lib/designer/exportarArte.ts`, y conviene leerlo antes
-de tocarlo:
-
-- **Todo es síncrono a propósito.** El mockup lo repone un watcher cada
-  200 ms (`useFabricMockup`); si entre quitarlo y exportar hubiera un
-  `await`, el fondo volvería y acabaría dentro del archivo de producción.
-- **La vista se pone en identidad antes de recortar.** El zoom y el
-  desplazamiento son de quien diseña, no del archivo: sin eso, el recorte
-  sale corrido justo cuando alguien exportó con el lienzo movido.
-- **El multiplicador viene de los centímetros y los DPI del lado**, no del
-  tamaño del lienzo: un PNG del tamaño del navegador no imprime nada decente.
-- Se restaura en `finally`, para que un fallo no deje el editor sin prenda y
-  con las guías escondidas.
-
-**Lo que NO está probado todavía:** la exportación en sí. Necesita un
-navegador con canvas de verdad y no se puede comprobar por API, así que
-alguien tiene que dibujar algo, pedirlo, y abrir el PNG que quede en
-`/medios/pedidos/…` para ver que trae el arte solo, transparente y del
-tamaño esperado. Todo lo demás del circuito sí está verificado contra AWS.
-
-**Lo que falta:**
-
-1. **El carrito**, con el aviso al mezclar talleres. Hoy se pide un producto
-   por vez, aunque la API ya acepta varias líneas.
-2. **El panel de pedidos del taller**, que sigue leyendo el endpoint
-   inexistente de Nest en `lib/api/pedidos.ts`. La API del taller ya existe
-   (`/proveedores/pedidos`), sólo falta enchufarla.
-3. **SES**: la cuenta está en **sandbox** y **no hay ninguna identidad
-   verificada**. Hay que verificar `kustto.com.mx` con registros DKIM en el
-   DNS —eso lo tiene que hacer alguien con acceso al dominio— y pedirle a AWS
-   la salida del sandbox, que tarda alrededor de un día. Hasta entonces sólo
-   se puede escribir a direcciones verificadas a mano.
+Descartado a propósito: servicios externos tipo Printful o Placeit (mandarían
+el arte del cliente a un tercero y cobran por render) y renderizar en el
+servidor (el navegador ya tiene el lienzo y los píxeles).
 
 ---
 
-## El hallazgo que cambia las prioridades
+## Lo que sigue, en orden
 
-**No existe el dominio de pedidos. En ningún lado.**
-
-No hay módulo `orders` en Nest, no hay carrito, no hay checkout, y el editor no
-tiene salida: terminas un diseño y no hay a dónde mandarlo. El `pedidos.ts` del
-front sólo lee `/providers/me/orders`, y el "Todavía no te asignamos pedidos"
-del panel del taller es un placeholder sobre nada.
-
-Dicho de otra forma: **hoy la app no puede tomar un solo pedido.** Esa es la
-distancia real entre un catálogo bonito y un negocio, y es más grande que
-cualquiera de los pendientes de infraestructura.
-
-Lo segundo: el front todavía le pide a Nest los productos, las categorías
-públicas, los paquetes, las cuentas de comprador y los productos del
-proveedor. Mientras siga así, desplegar sin Nest deja el catálogo vacío, y
-desplegar *con* Nest es exactamente el servidor que no se quiere pagar. El
-admin ya no está en esa lista: lo único suyo que sigue en Nest son productos
-y paquetes, que se van con el catálogo.
-
----
-
-## El orden propuesto
-
-1. **Que el catálogo público se lea de DynamoDB.** Escribir productos ya está
-   resuelto de las dos puntas (el taller los crea, el admin los aprueba); lo
-   que sigue en Postgres son las LECTURAS: `/catalogo`, la página de producto
-   y los paquetes. Aquí es donde por fin hay que resolver la decisión abierta
-   de abajo.
-2. **Pedidos** — diseño guardado, pedido creado, asignado a un taller, con su
-   bitácora de estados.
-3. **Login de admin y despliegue** — el proxy `/api/admin/*` es una puerta
-   abierta; hay que cerrarla antes de que el sitio sea público.
+1. **SES.** Es lo más grave que queda. Con el panel cerrado nadie se entera de
+   un pedido, y del lado del comprador es peor: el enlace de seguimiento con su
+   token **sólo aparece en pantalla y nunca se manda por correo**. Si cierra esa
+   pestaña pierde su pedido, porque del token sólo guardamos el hash. El dominio
+   `kustto.com.mx` ya existe como identidad en SES con sus **tres CNAME de DKIM
+   esperando en el DNS**, y la cuenta sigue en **sandbox**. Es el único pendiente
+   que necesita un trámite externo de días: arráncalo antes que nada.
+2. **Rechazar un pedido y mover con nota.** La API acepta las dos cosas
+   (`cancelado` está en las transiciones, `cambiarEstado` acepta `nota`, y el
+   seguimiento del comprador ya la enseña) pero el panel no las manda. Es sólo
+   interfaz.
+3. **Contraseña del taller.** No hay forma de cambiarla ni de restablecerla: ni
+   el taller, ni el admin, ni "olvidé mi contraseña". Hoy se arregla entrando a
+   la consola de AWS. El rol de admin **ya tiene `AdminSetUserPassword`**.
+4. **El panel en móvil.** La barra lateral es `fixed w-[236px]` con el contenido
+   en `ml-[236px]` y **ni un breakpoint**: en un teléfono quedan 154 px útiles.
+   Quien produce está en el taller, no en un escritorio.
+5. **Login de admin y despliegue.** El proxy `/api/admin/*` sigue siendo una
+   puerta abierta y hay que cerrarla antes de que el sitio sea público.
 
 ---
 
-## La decisión que estaba abierta, resuelta: Query directo
+## Cosas que hay que limpiar
 
-Se eligió **`Query` directo a DynamoDB**, y el JSON materializado en S3 queda
-para cuando duela. Lo que inclinó la balanza al mirar el código:
-
-- **El catálogo no filtra en el servidor.** Técnica, color y días se aplican
-  en el navegador sobre la lista completa. O sea que el temor de "un índice
-  por cada filtro" no existía: con `PRODUCT_ESTADO#activo` basta, y ese
-  índice ya estaba hecho para la bandeja de revisión.
-- Son decenas de productos y visitas contadas: un Query por visita se paga
-  en centavos y siempre está fresco.
-- Materializar añade una Lambda, un stream y segundos de retraso entre
-  aprobar un producto y verlo publicado.
-
-**Cuándo reabrirla:** cuando el catálogo pase de unos cientos de productos
-—la respuesta empieza a pesar y el Query a paginar— o cuando el tráfico haga
-que la Lambda por visita se note. El cambio no toca ni el modelo ni el front:
-la respuesta de `/publico/catalogo` se puede volcar tal cual a un JSON.
-
----
-
-## Cosas que hay que limpiar antes de que esto sea real
-
-- **Proveedores de prueba vivos en Cognito.** Bórralos antes de abrir esto.
-  - `prueba.login@kustto.mx`, contraseña `kustto2026taller`, puesta como
-    permanente para poder entrar al panel sin el reto de primer ingreso.
-  - `taller@bordadostapatios.mx`, **sin contraseña conocida**: se cambió al
-    probar el reto y Cognito no la devuelve. Se recupera con
-    `admin-set-user-password` o se borra la cuenta.
-- **El admin no puede restablecerle la contraseña a un taller.** Si un
-  proveedor pierde su temporal, hoy hay que entrar a la consola de AWS. El
-  rol de la Lambda ya tiene `AdminSetUserPassword`, así que es una ruta
-  corta: `POST /providers/:id/contrasena`, temporal nueva devuelta una vez.
+- **La plantilla `tshirt` apunta a mockups que no existen.** `/mockups/tshirtfront.png`
+  y `tshirtback.png` dan 404; lo que hay en S3 es
+  `mockups/tshirt/front-8cdcbb1aa538.png`. En producción saldría sin prenda.
+- **El área de esa plantilla es 270 × 350 px** (proporción 0.771) y el producto
+  declara 28 × 35 cm (0.8). De ahí sale la desviación de 1.3 cm que avisa la
+  ficha. Cambiando el rectángulo a **280 × 350** cuadra exacto.
 - **Acentos estropeados en DynamoDB**: `Detr?s` en los `sideLabels` de la
   plantilla `tshirt`, de cuando se escribieron con `curl` desde Git Bash.
-- **`components/Provider/ProviderProductForm.tsx` es código muerto**: nadie
-  lo importa desde que `AltaProducto` lo reemplazó, y es lo único que queda
-  usando `createProviderProduct` contra Nest. Se puede borrar junto con esa
-  función y `getMyProducts` de `lib/api/providers.ts`.
-- **Restos de un dominio de paquetes que nunca se terminó**, sin versionar y
-  del 3 de junio: `apps/api/src/package-{designs,orders}/`,
-  `packages/db/schema/packages/package_{designs,orders}.ts` y las páginas
-  `app/package/[id]/{disenar,resumen}` y `app/proveedor/paquetes`. Importan
-  `user_designs` y `orders/orders`, que ya no existen; no están en
-  `app.module.ts` ni en el índice del esquema, pero **sí rompen
-  `pnpm type-check`**. O se retoman o se borran.
-- **`pnpm-lock.yaml` sigue ignorado y sin versionar.** Para trabajar desde
-  varias máquinas conviene versionarlo; es quitar una línea del `.gitignore`.
-- **`apps/web` ya trae errores de tipos previos** en el admin de productos y
-  algunos formularios. No vienen de la migración; alguien tendrá que sentarse
-  con ellos.
+- **Los productos no tienen colores capturados.** "Tshirt basico" tiene cero, y
+  por eso los pedidos salen con `colorPrenda: null`. Para producir importa: el
+  color decide si lleva subbase blanca.
+- **Proveedores de prueba vivos en Cognito.** Bórralos antes de abrir esto.
+  - `prueba.login@kustto.mx`, contraseña `kustto2026taller`, permanente.
+  - `taller@bordadostapatios.mx`, **sin contraseña conocida**: se cambió al
+    probar el reto y Cognito no la devuelve.
+- **Restos de un dominio de paquetes que nunca se terminó**, ahora ya
+  versionados: `apps/api/src/package-{designs,orders}/`,
+  `packages/db/schema/packages/` y las páginas `app/package/*` y
+  `app/proveedor/paquetes`. Importan módulos que no existen y **son la mayoría
+  de los 17 errores de `pnpm type-check`**. O se retoman o se borran.
+- **`components/Provider/ProviderProductForm.tsx` es código muerto**: nadie lo
+  importa desde que `AltaProducto` lo reemplazó.
+- **`pnpm-lock.yaml` sigue ignorado y sin versionar.**
 - La landing de proveedores vive en `/proveedores` y el panel autenticado en
-  `/proveedor`. Dos nombres a un carácter de distancia van a doler; conviene
-  renombrar antes de que haya enlaces afuera.
+  `/proveedor`. Dos nombres a un carácter de distancia van a doler.
 
 ---
 
 ## Si vienes de otra máquina
 
 1. Clona y sigue "Puesta en marcha en una máquina nueva" del `README.md`.
-2. Los tres secretos (`services/admin/.clave-admin`, `infra/.cognito`,
-   `apps/web/.env.local`) **se recuperan de AWS**, no hay que llevarlos a mano.
+2. Los secretos (`services/admin/.clave-admin`, `infra/.cognito`,
+   `infra/.websocket`, el `.env` del front) **se recuperan de AWS**, no hay que
+   llevarlos a mano.
 3. Reinicia el servidor de desarrollo después de instalar, o los títulos salen
    en Poppins en vez de Figtree: el `@theme` de Tailwind sólo se recompila al
    arrancar.
+4. El proyecto se desarrolló en Windows y ahora también en macOS. Los scripts de
+   `infra/` funcionan igual en los dos: `aws.sh` encuentra el CLI por
+   `command -v` y sólo cae a la ruta de Windows si hace falta.

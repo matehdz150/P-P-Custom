@@ -1,4 +1,4 @@
-import type { ArteDeLado } from "@/lib/designer/exportarArte";
+import type { ArchivoDeLado } from "@/lib/pedido/borrador";
 
 /**
  * Mandar un pedido.
@@ -18,6 +18,15 @@ export type LineaAPedir = {
 	tallas: TallaPedida[];
 	/** Los lados que llevan arte. De aquí salen los archivos a subir. */
 	lados: string[];
+	/**
+	 * Lo que mide de verdad el archivo de cada lado.
+	 *
+	 * Va desde aquí porque sólo el navegador lo sabe: el tamaño sale del área
+	 * del lienzo, y esa proporción no tiene por qué coincidir con los
+	 * centímetros que declaró el taller. Es descriptivo —no decide precio ni
+	 * destinatario— así que puede venir del cliente.
+	 */
+	archivos?: { lado: string; anchoPx: number; altoPx: number; dpi: number }[];
 	/** El diseño editable, por si hay que reabrirlo o corregirlo. */
 	diseno?: unknown;
 };
@@ -29,13 +38,39 @@ export type Comprador = {
 	notas?: string;
 };
 
+export type Direccion = {
+	calle: string;
+	numero: string;
+	interior?: string;
+	colonia: string;
+	ciudad: string;
+	estado: string;
+	cp: string;
+	referencias?: string;
+};
+
+/**
+ * Cómo se entrega. Con `recoger` no viaja dirección: el taller queda de verse
+ * con el cliente, y pedirle una dirección que nadie va a usar sobra.
+ */
+export type Entrega =
+	| { metodo: "envio"; direccion: Direccion }
+	| { metodo: "recoger" };
+
 export type PedidoCreado = {
 	id: string;
 	folio: string;
 	/** Sólo se ve UNA vez: es la llave del enlace de seguimiento. */
 	token: string;
 	total: number;
-	subidas: { lineaId: string; lado: string; ruta: string; uploadUrl: string }[];
+	/** Dos por lado: el arte de producción y la referencia de colocación. */
+	subidas: {
+		lineaId: string;
+		lado: string;
+		tipo: "arte" | "colocacion";
+		ruta: string;
+		uploadUrl: string;
+	}[];
 };
 
 export type PedidoEnSeguimiento = {
@@ -43,6 +78,12 @@ export type PedidoEnSeguimiento = {
 	folio: string;
 	estado: "nuevo" | "produccion" | "listo" | "entregado" | "cancelado";
 	comprador: { nombre: string; email: string; whatsapp: string | null };
+	entrega?: {
+		metodo: "envio" | "recoger";
+		direccion:
+			| (Direccion & { interior: string | null; referencias: string | null })
+			| null;
+	} | null;
 	lineas: {
 		id: string;
 		producto: string;
@@ -76,6 +117,7 @@ async function publico<T>(ruta: string, opciones?: RequestInit): Promise<T> {
 
 export function crearPedido(datos: {
 	comprador: Comprador;
+	entrega: Entrega;
 	lineas: LineaAPedir[];
 }) {
 	return publico<PedidoCreado>("/publico/pedidos", {
@@ -91,45 +133,66 @@ export function seguirPedido(id: string, token: string) {
 }
 
 /**
- * Sube el arte a las URLs que devolvió el pedido.
+ * Sube los archivos a las URLs que devolvió el pedido.
  *
  * Va después de crear el pedido y no antes: así el permiso de escritura está
  * atado a un pedido que ya existe, en vez de haber un firmador abierto que
  * cualquiera podría usar para llenar el bucket.
  *
  * Si una subida falla, el pedido ya está hecho y el taller lo verá sin ese
- * archivo. Vale más avisar de eso que fingir que el pedido no ocurrió.
+ * archivo. Vale más avisar de eso que fingir que el pedido no ocurrió. Se
+ * reportan por separado el arte y la colocación porque no pesan lo mismo:
+ * sin arte no se puede producir, sin colocación sólo se pierde la referencia.
  */
-export async function subirArte(
+export async function subirArchivos(
 	pedido: PedidoCreado,
-	artes: ArteDeLado[],
-): Promise<{ subidos: number; fallidos: string[] }> {
-	const fallidos: string[] = [];
-	let subidos = 0;
+	lados: ArchivoDeLado[],
+): Promise<{ faltaArte: string[]; faltaColocacion: string[] }> {
+	const faltaArte: string[] = [];
+	const faltaColocacion: string[] = [];
 
-	for (const arte of artes) {
-		const destino = pedido.subidas.find((s) => s.lado === arte.lado);
-		if (!destino) {
-			fallidos.push(arte.lado);
-			continue;
+	const subir = async (destinoUrl: string, cuerpo: Blob) => {
+		const res = await fetch(destinoUrl, {
+			method: "PUT",
+			// Exactamente el tipo que se firmó, o S3 rechaza la firma.
+			headers: { "Content-Type": "image/png" },
+			body: cuerpo,
+		});
+
+		if (!res.ok) throw new Error(String(res.status));
+	};
+
+	for (const lado of lados) {
+		const destinoArte = pedido.subidas.find(
+			(s) => s.lado === lado.lado && s.tipo === "arte",
+		);
+
+		if (!destinoArte) {
+			faltaArte.push(lado.lado);
+		} else {
+			try {
+				await subir(destinoArte.uploadUrl, lado.arte);
+			} catch {
+				faltaArte.push(lado.lado);
+			}
 		}
 
-		try {
-			const res = await fetch(destino.uploadUrl, {
-				method: "PUT",
-				// Exactamente el tipo que se firmó, o S3 rechaza la firma.
-				headers: { "Content-Type": "image/png" },
-				body: arte.blob,
-			});
+		const destinoColocacion = pedido.subidas.find(
+			(s) => s.lado === lado.lado && s.tipo === "colocacion",
+		);
 
-			if (!res.ok) throw new Error(String(res.status));
-			subidos++;
-		} catch {
-			fallidos.push(arte.lado);
+		if (!lado.colocacion || !destinoColocacion) {
+			faltaColocacion.push(lado.lado);
+		} else {
+			try {
+				await subir(destinoColocacion.uploadUrl, lado.colocacion);
+			} catch {
+				faltaColocacion.push(lado.lado);
+			}
 		}
 	}
 
-	return { subidos, fallidos };
+	return { faltaArte, faltaColocacion };
 }
 
 /** El enlace que se le da al comprador. El token va en la URL, no en la sesión. */

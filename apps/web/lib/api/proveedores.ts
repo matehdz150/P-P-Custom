@@ -56,6 +56,14 @@ async function pedir<T>(ruta: string, opciones?: RequestInit): Promise<T> {
   return res.json();
 }
 
+/**
+ * El mismo `pedir`, para los módulos del panel que viven en otro archivo
+ * (hoy `pedidos.ts`). Se exporta la función y no se duplica el `fetch` para
+ * que el manejo del token muerto —limpiar la sesión en un 401— siga estando
+ * en un solo sitio.
+ */
+export const pedirComoProveedor = pedir;
+
 export type Proveedor = {
   id: string;
   email: string;

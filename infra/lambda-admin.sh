@@ -38,6 +38,14 @@ else
   EXISTE=0
 fi
 
+# El canal en vivo, si ya se creó. Ver infra/websocket.sh.
+if [ -f infra/.websocket ]; then
+  source infra/.websocket
+  # El archivo lo escribe websocket.sh con el prefijo KUSTTO_; dentro de este
+  # script la variable se llama WS_ENDPOINT.
+  WS_ENDPOINT="${KUSTTO_WS_ENDPOINT:-}"
+fi
+
 # ── La llave y el pool ─────────────────────────────────────────────────────
 #
 # En una máquina recién clonada no existen services/admin/.clave-admin ni
@@ -50,10 +58,11 @@ fi
 # aporta lo que falte.
 if [ "$EXISTE" = "1" ]; then
   VIVAS=$(aws_ lambda get-function-configuration --function-name "$FUNCION" \
-    --query "[Environment.Variables.KUSTTO_CLAVE_ADMIN, Environment.Variables.KUSTTO_POOL_ID]" \
+    --query "[Environment.Variables.KUSTTO_CLAVE_ADMIN, Environment.Variables.KUSTTO_POOL_ID, Environment.Variables.KUSTTO_WS_ENDPOINT]" \
     --output text)
   CLAVE_VIVA=$(echo "$VIVAS" | cut -f1)
   POOL_VIVO=$(echo "$VIVAS" | cut -f2)
+  WS_VIVO=$(echo "$VIVAS" | cut -f3)
 
   if [ -n "$CLAVE_VIVA" ] && [ "$CLAVE_VIVA" != "None" ]; then
     if [ -f "$ARCHIVO_CLAVE" ] && [ "$(cat "$ARCHIVO_CLAVE")" != "$CLAVE_VIVA" ]; then
@@ -64,6 +73,13 @@ if [ "$EXISTE" = "1" ]; then
 
   if [ -z "$POOL_ID" ] && [ -n "$POOL_VIVO" ] && [ "$POOL_VIVO" != "None" ]; then
     POOL_ID="$POOL_VIVO"
+  fi
+
+  # Mismo motivo que el pool: update-function-configuration sustituye el
+  # entorno ENTERO. Sin conservarlo, cada despliegue del admin dejaría a la
+  # función sin endpoint y los avisos en vivo se apagarían sin decir nada.
+  if [ -z "${WS_ENDPOINT:-}" ] && [ -n "$WS_VIVO" ] && [ "$WS_VIVO" != "None" ]; then
+    WS_ENDPOINT="$WS_VIVO"
   fi
 fi
 
@@ -152,6 +168,9 @@ if [ -n "$POOL_ID" ]; then
   PARES="$PARES,KUSTTO_POOL_ID=$POOL_ID"
 else
   echo "Aviso: sin KUSTTO_POOL_ID. Corre infra/cognito.sh o el alta de proveedores no funcionará."
+fi
+if [ -n "${WS_ENDPOINT:-}" ]; then
+  PARES="$PARES,KUSTTO_WS_ENDPOINT=$WS_ENDPOINT"
 fi
 VARIABLES="Variables={$PARES}"
 

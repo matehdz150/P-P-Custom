@@ -23,6 +23,7 @@ bash infra/cors.sh               # CORS del bucket público
 bash infra/cognito.sh            # el pool de proveedores
 bash infra/lambda-admin.sh       # la Lambda de admin + la API Gateway
 bash infra/lambda-proveedores.sh # la Lambda de proveedores + el autorizador
+bash infra/websocket.sh          # el canal en vivo del panel del taller
 ```
 
 `lambda-proveedores.sh` **depende** de que la API ya exista, porque cuelga de
@@ -47,6 +48,9 @@ En el día a día sólo se corren los dos últimos, que además de crear
 | Autorizador JWT | `cognito-proveedores` |
 | Cognito User Pool | `kustto-proveedores` → `us-east-1_qxIsXIrrV` |
 | Cliente del pool | `kustto-proveedores-web` → `6avvk9sa6sv4dpclbprdk4uned` |
+| Lambda eventos | `kustto-eventos` (rol `kustto-eventos-rol`) |
+| API WebSocket | `kustto-eventos-ws` → `wss://1mdi47dyv4.execute-api.us-east-1.amazonaws.com/prod` |
+| Autorizador WS | `cognito-ws` (REQUEST, token en la query string) |
 
 **Una sola API Gateway para las dos Lambdas.** No hacía falta una segunda:
 una API enruta por camino hacia funciones distintas. Dos serían dos
@@ -80,7 +84,18 @@ PROVIDER_EMAIL#<mail> LOCK            candado de unicidad de correo
 ORDER#<id>            META            el pedido con sus líneas y su bitácora
 ORDER_FOLIO#<folio>   LOCK            candado del folio corto (#2418)
 SLUG#<slug>           LOCK            candado de unicidad de slug
+CONN#<connectionId>   META            una conexión viva del panel del taller
 ```
+
+La tabla tiene **TTL activado** sobre el atributo `expiraEn`. Hoy sólo lo usan
+las conexiones; lo activa `websocket.sh` si no estaba.
+
+**Una línea del pedido congela lo que hace falta para producir.** No se lee del
+producto al mirarla: el taller puede cambiar su ficha mañana y un pedido de
+hace un mes se imprimiría al tamaño de hoy. Por eso la línea copia, además del
+precio, el `sku`, el color con su hex, y por cada lado el área declarada
+(`anchoCm`/`altoCm`/`dpi`) **y la medida real del archivo**
+(`anchoPx`/`altoPx`/`anchoRealCm`/`altoRealCm`), que no siempre coinciden.
 
 **El reparto del espacio de llaves vive en un solo archivo**
 (`services/*/src/lib/dynamo.ts`, el objeto `llaves`) a propósito: es la
@@ -211,6 +226,66 @@ volverla a crear a mano no pase desapercibido.
 
 ---
 
+## El canal en vivo
+
+Un pedido nuevo aparece en el panel del taller sin recargar. Lo empuja una
+API **WebSocket** aparte, `kustto-eventos-ws`.
+
+**Por qué es una segunda API.** Las de API Gateway son de un protocolo o del
+otro: una HTTP no admite rutas WebSocket. Al contrario que la de proveedores
+—que cuelga de la de admin— aquí no había elección.
+
+```
+$connect     -> kustto-eventos, con autorizador (apunta la conexión)
+$disconnect  -> kustto-eventos                  (borra el apunte)
+$default     -> kustto-eventos                  (hoy no hace nada)
+```
+
+**El token viaja en la query string, y no es un descuido.** `new WebSocket(url)`
+no deja poner cabeceras, así que no hay `Authorization` posible. Por eso el
+autorizador es de tipo `REQUEST` sobre `route.request.querystring.token`, y
+por eso la Lambda valida el JWT contra el pool **a mano**: las APIs WebSocket
+no tienen autorizador JWT de fábrica como las HTTP. Se comprueban firma,
+emisor, audiencia, caducidad y `token_use`; saltarse cualquiera convierte la
+comprobación en teatro. El costo conocido: la URL con el token puede acabar
+en los registros de acceso. Se compensa con que son tokens de una hora y con
+que por ahí no sale un solo dato.
+
+**El autorizador sólo puede ir en `$connect`.** Es la única ruta donde API
+Gateway lo admite; una vez aceptada la conexión el permiso ya está dado. Del
+autorizador sale el `proveedorId` por el `context`, y **es la única fuente**:
+si viniera del cliente, cualquiera escucharía los pedidos de otro.
+
+**Qué se manda: un aviso, no el pedido.** El navegador recibe
+`{"tipo":"pedido-nuevo",…}` y recarga su lista por la API de siempre. Mandar
+los datos por aquí duplicaría en un segundo camino las reglas de qué ve cada
+taller, y dos caminos con las mismas reglas es como acaban divergiendo.
+
+**Las conexiones viven en la tabla**, un ítem por conexión:
+
+```
+CONN#<connectionId>   META    la conexión, con su taller en gsi1
+```
+
+Se guarda así por las dos direcciones que hacen falta: al desconectar sólo
+llega el `connectionId` y la llave primaria basta para borrarlo; al publicar
+hay que ir del taller a sus conexiones, y eso es el Query de `gsi1`. Lleva
+`expiraEn` con **TTL activado** en la tabla: si una Lambda muere sin procesar
+el `$disconnect`, el ítem se va solo en vez de quedarse haciendo que se le
+escriba a un fantasma. Un 410 al publicar también lo borra en el momento.
+
+**Las APIs WebSocket no tienen `--auto-deploy`**: `websocket.sh` corre
+`create-deployment` en cada ejecución. Si cambias rutas y no ves el efecto,
+es que faltó desplegar.
+
+**El endpoint se le mete a `kustto-admin` como `KUSTTO_WS_ENDPOINT`**, y
+`lambda-admin.sh` lo conserva leyéndolo de la función igual que hace con la
+llave y el pool: `update-function-configuration` sustituye el entorno entero,
+así que sin conservarlo cada despliegue del admin apagaría los avisos sin
+decir nada.
+
+---
+
 ## Permisos
 
 Cada rol ve lo mínimo:
@@ -266,6 +341,7 @@ inmediato falla con un error que parece de permisos y no lo es.
 |---|---|
 | `services/admin/.clave-admin` | `bash infra/lambda-admin.sh` lo rehace con la llave que ya tiene la función |
 | `infra/.cognito` | `bash infra/cognito.sh` — idempotente, no crea nada nuevo |
+| `infra/.websocket` | `bash infra/websocket.sh` — idempotente; los ids no son secretos |
 | `services/*/dist/`, `*.zip` | se regeneran al desplegar |
 
 Los ids de `.cognito` **no son secretos** (viajan al navegador por diseño);
@@ -274,6 +350,11 @@ está fuera del repo sólo porque es un archivo generado.
 ---
 
 ## Cómo comprobar que todo respira
+
+> **Comprueba siempre contra la API, no contra `localhost:3000`.** Las
+> respuestas de `/mockups/*` y `/medios/*` llevan `cache-control: immutable`, y
+> el servidor de desarrollo las cachea: un archivo que ya no existe puede
+> seguir devolviendo 200 por ahí durante horas. Ya tapó un 404 real.
 
 ```bash
 # El admin exige llave
@@ -294,6 +375,11 @@ curl -s -o /dev/null -w "%{http_code}\n" -X OPTIONS \
   -H "Access-Control-Request-Headers: authorization" \
   https://kd8ydpp2c6.execute-api.us-east-1.amazonaws.com/proveedores/yo
 # -> 204
+
+# El canal en vivo rechaza sin token (y con uno inventado)
+#   Con un token bueno la conexión abre; ver abajo cómo sacarlo.
+node -e "const w=new WebSocket('wss://1mdi47dyv4.execute-api.us-east-1.amazonaws.com/prod');w.onopen=()=>console.log('ABIERTA');w.onerror=()=>console.log('rechazada');setTimeout(()=>process.exit(0),5000)"
+# -> rechazada
 
 # El bucket está cerrado
 curl -s -o /dev/null -w "%{http_code}\n" https://kustto-publico-prod.s3.amazonaws.com/mockups/

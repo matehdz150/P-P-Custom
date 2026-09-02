@@ -5,15 +5,25 @@ import { useDesigner } from "@/Contexts/DesignerContext";
 import type { DesignerProductTemplate } from "@/lib/api/products";
 import { loadProductTemplate } from "@/lib/products/loadProductsTemplate";
 import type { ProductTemplate } from "@/lib/products/types";
+import AvisoDeSalida from "./AvisoDeSalida";
 import DesktopDesignerShell from "./DesktopDesignerShell";
+import { useAvisoDeSalida } from "./hooks/useAvisoDeSalida";
+import { useHayDiseno } from "./hooks/useHayDiseno";
 import { useIsMobile } from "./hooks/useIsMobile";
 import Loading from "./Loading";
 import MobileDesignerShell from "./MobileDesignerShell";
-import PanelPedido from "./PanelPedido";
+import SalidaAPedir from "./SalidaAPedir";
 
 export default function ProductDesigner({ productId }: { productId: string }) {
 	const isMobile = useIsMobile();
-	const { setConfig, setColores, pidiendo, setPidiendo } = useDesigner();
+	const { setConfig, setColores, pidiendo, setPidiendo, sides } = useDesigner();
+
+	/* Mientras haya algo dibujado y no se haya pedido, salir de aquí pierde el
+	   diseño: sólo vive dentro del lienzo. */
+	const hayDiseno = useHayDiseno(sides);
+	const { preguntando, salir, quedarse } = useAvisoDeSalida(
+		hayDiseno && !pidiendo,
+	);
 	const [product, setProduct] = useState<ProductTemplate | null>(null);
 	/** La misma plantilla sin recortar: el pedido necesita tallas y medidas. */
 	const [ficha, setFicha] = useState<DesignerProductTemplate | null>(null);
@@ -29,8 +39,7 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 					allowText: tpl.customizationRules?.allowText ?? true,
 					allowImages: tpl.customizationRules?.allowImages ?? true,
 					maxDesigns: tpl.customizationRules?.maxDesigns,
-					maxColorsPerDesign:
-						tpl.customizationRules?.maxColorsPerDesign,
+					maxColorsPerDesign: tpl.customizationRules?.maxColorsPerDesign,
 				},
 				pricing: {
 					basePrice: tpl.pricing?.basePrice ?? 0,
@@ -53,12 +62,14 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 				<DesktopDesignerShell product={product} />
 			)}
 
-			{/* El panel se monta aquí y lo abren los botones de cada shell — la
-			    barra de abajo en escritorio, la cabecera en móvil — a través del
-			    contexto. Un botón flotante propio quedaba debajo de la barra,
-			    que es z-70. */}
+			{preguntando && <AvisoDeSalida onSalir={salir} onQuedarse={quedarse} />}
+
+			{/* Lo disparan los botones de cada shell — la barra de abajo en
+			    escritorio, la cabecera en móvil — a través del contexto. No es
+			    un formulario: exporta el arte y se va a `/pedir`, porque el
+			    lienzo deja de existir en cuanto se navega. */}
 			{pidiendo && ficha && (
-				<PanelPedido producto={ficha} onCerrar={() => setPidiendo(false)} />
+				<SalidaAPedir producto={ficha} onCancelar={() => setPidiendo(false)} />
 			)}
 		</>
 	);

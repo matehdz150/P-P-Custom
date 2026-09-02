@@ -32,8 +32,10 @@ primero admin, luego proveedores, después catálogo y pedidos.
 | Paquetes | NestJS + Postgres | **pendiente** |
 | Pedidos (API) | Lambdas + DynamoDB + S3 | migrado |
 | Pedir desde el editor | Lambdas + DynamoDB + S3 | migrado |
+| Panel de pedidos del taller | Lambda `kustto-proveedores` | migrado |
+| Avisos en vivo al panel | API WebSocket `kustto-eventos-ws` | migrado |
 | Carrito de varios productos | no existe | **lo que sigue** |
-| Aviso por correo al taller | SES, en sandbox | **falta verificar el dominio** |
+| Aviso por correo | SES, en sandbox | **faltan los DKIM en el DNS** |
 | Cuentas de comprador | NestJS + Postgres | **pendiente** |
 | Pasarela de pago | no existe | aplazado a propósito, hasta el final |
 
@@ -106,6 +108,13 @@ si el pool ya existe no crea nada, sólo lo busca y reescribe el archivo.
 bash infra/cognito.sh
 ```
 
+**`infra/.websocket`** — los identificadores del canal en vivo. Igual de
+idempotente: si la API ya existe no crea otra.
+
+```bash
+bash infra/websocket.sh
+```
+
 **`apps/web/.env.local`** — la configuración del front. Se arma con lo
 anterior:
 
@@ -121,6 +130,10 @@ KUSTTO_CLAVE_ADMIN=<el contenido de services/admin/.clave-admin>
 NEXT_PUBLIC_KUSTTO_API=https://kd8ydpp2c6.execute-api.us-east-1.amazonaws.com
 NEXT_PUBLIC_COGNITO_REGION=us-east-1
 NEXT_PUBLIC_COGNITO_CLIENTE=<KUSTTO_POOL_CLIENTE de infra/.cognito>
+
+# El canal en vivo del panel del taller. Tampoco es secreto: la conexión la
+# autoriza el token de Cognito, no esta URL.
+NEXT_PUBLIC_KUSTTO_WS=<KUSTTO_WS_URL de infra/.websocket>
 ```
 
 > Copia el id del cliente **entero** (son 26 caracteres). Cortado, Cognito
@@ -176,8 +189,9 @@ apps/
   web/                 Next.js 16 + React 19 + Tailwind v4. El front entero.
   api/                 NestJS + Drizzle + Postgres. Lo que falta por migrar.
 services/              Las Lambdas. Un paquete de pnpm por función.
-  admin/               Plantillas, categorías, alta de proveedores, mockups.
+  admin/               Plantillas, categorías, proveedores, catálogo, pedidos.
   proveedores/         El panel del taller, detrás del autorizador JWT.
+  eventos/             Las conexiones WebSocket del panel. Ver infra/README.md
 infra/                 Scripts de bash idempotentes que CREAN el AWS. Ver infra/README.md
 packages/db/           Esquema de Drizzle y el seed de Postgres.
 .design/               Los lienzos de diseño. Ver .design/README.md
@@ -222,6 +236,24 @@ desde otro origen el canvas queda contaminado, el navegador lanza
 
 Cloudinary queda descartado para mockups por esta misma razón.
 
+**El diseño viaja del editor al checkout por IndexedDB**
+(`lib/pedido/borrador.ts`). El lienzo de Fabric no sobrevive a la navegación,
+así que al pulsar "Pedir" se exporta el arte ANTES de salir y se guarda. No es
+`sessionStorage` a propósito: lo que se lleva son PNG de producción a 300 DPI
+—megabytes— y ahí sólo caben cadenas.
+
+**Al PNG exportado hay que escribirle la resolución a mano**
+(`lib/designer/dpi.ts`). `canvas.toDataURL()` no escribe el chunk `pHYs`, y sin
+él el archivo se abre asumiendo 72 DPI: un arte de 28 cm se interpreta como
+116. Es un fallo mudo —el archivo abre bien y se ve bien— y sólo se descubre
+cuando sale la prenda.
+
+**Cuidado con `clearTimeout` en la limpieza de un efecto que corre una sola
+vez.** En modo estricto React monta, limpia y vuelve a montar; si hay un
+guardia en una ref que impide el segundo arranque, la limpieza del primero deja
+la acción sin ejecutarse **nunca**. Está comentado en
+`components/Designer/SalidaAPedir.tsx`, donde ya pasó.
+
 **Las animaciones de entrada son CSS, no framer-motion**
 (`components/Catalogo/Aparece.tsx`). El estado base es *visible* y la
 animación va *desde* opacidad 0, así que el peor caso es que no haya
@@ -252,24 +284,25 @@ que es lo que uno espera.
 
 ## Lo que sigue
 
-En orden, de lo más útil a lo más lejano:
+En orden, de lo más útil a lo más lejano. El detalle y el porqué están en
+`ESTADO.md`, que es lo que hay que leer antes de empezar.
 
-1. **Login de admin.** Hoy el admin es una llave compartida y un proxy que la
-   pone. Es lo único que impide desplegar el front público.
-2. **Migrar catálogo** (productos, categorías públicas, paquetes) a DynamoDB
-   y al catálogo materializado en S3.
-3. **CloudFront + OAC** para servir `/mockups/*` sin pasar por Lambda, y el
-   front estático detrás.
-4. **Pedidos.**
-5. **Pasarela de pago** — aplazada a propósito hasta el final.
+1. **SES.** Nadie se entera de un pedido con el panel cerrado, y el comprador
+   pierde su enlace de seguimiento si cierra la pestaña. Necesita un trámite de
+   días (verificar el dominio y salir del sandbox): arráncalo antes que nada.
+2. **Rechazar un pedido y mover con nota** desde el panel del taller. La API ya
+   acepta las dos cosas; falta la interfaz.
+3. **Contraseña del taller**: no hay forma de cambiarla ni de restablecerla.
+4. **El panel del taller en móvil**, que hoy no funciona.
+5. **Fotos de mockup de verdad.** Sin ellas no hay previsualización realista, y
+   la plantilla actual es un dibujo de línea con las guías incrustadas.
+6. **Login de admin.** El proxy `/api/admin/*` es una puerta abierta y es lo
+   único que impide desplegar el front público.
+7. **CloudFront + OAC** para servir `/mockups/*` y `/medios/*` sin pasar por
+   Lambda, con el front estático detrás.
+8. **Carrito** de varios productos, con el aviso al mezclar talleres.
+9. **Migrar paquetes y cuentas de comprador**, lo último que queda en Nest.
+10. **Pasarela de pago** — aplazada a propósito hasta el final.
 
-Pendientes chicos anotados:
-
-- La landing de proveedores vive en `/proveedores`, pero `/proveedor` es el
-  panel autenticado. Los dos nombres a un carácter de distancia van a doler;
-  conviene renombrar antes de que haya enlaces afuera.
-- Hay datos con acentos estropeados en DynamoDB (`Detr?s` en los
-  `sideLabels` de la plantilla tshirt) de cuando se escribieron con `curl`
-  desde Git Bash. Se limpian cuando se toque esa plantilla.
-- Proveedores de prueba vivos en Cognito: `taller@bordadostapatios.mx` y
-  `prueba.login@kustto.mx`. Bórralos antes de que esto sea real.
+La lista de limpieza —plantillas rotas, acentos, código muerto, cuentas de
+prueba— vive en `ESTADO.md` para no duplicarla aquí.

@@ -87,6 +87,29 @@ export const llaves = {
     gsi3sk: `${creadoEn}#${id}`,
   }),
 
+  /* ─── Conexiones en vivo ──────────────────────────────────────────────
+     El panel del taller se entera de un pedido nuevo por WebSocket, y hay
+     que saber a qué conexiones escribirle. Se guarda UN ítem por conexión,
+     con el taller en gsi1:
+
+       - al desconectar sólo llega el connectionId, y la llave primaria basta
+         para borrarlo sin buscar nada;
+       - al publicar hace falta ir del taller a sus conexiones, y eso es el
+         Query del índice.
+
+     Lleva `expiraEn` (TTL): si una Lambda muere sin procesar el $disconnect,
+     el ítem se va solo en vez de quedarse escribiéndole a un fantasma. */
+
+  conexion: (connectionId: string) => ({
+    pk: `CONN#${connectionId}`,
+    sk: "META",
+  }),
+
+  conexionesDeProveedor: (proveedorId: string, connectionId: string) => ({
+    gsi1pk: `PROVIDER_CONNS#${proveedorId}`,
+    gsi1sk: connectionId,
+  }),
+
   /** El folio corto que ve la gente (#2418). Único, con su candado. */
   folioDePedido: (folio: string) => ({ pk: `ORDER_FOLIO#${folio}`, sk: "LOCK" }),
 };

@@ -9,9 +9,11 @@ import {
 	Rect,
 	Textbox,
 	Triangle,
+	util,
 } from "fabric";
 import { useEffect, useRef } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
+import { leerBorrador } from "@/lib/pedido/borrador";
 import type {
 	EditableShape,
 	ProductSide,
@@ -119,6 +121,38 @@ export function useFabricCanvas(
 		setEditableAreas(side, areas);
 		registerCanvas(side, c);
 
+		/* ---- volver del checkout con el diseño puesto ----
+
+		   Si hay un borrador de ESTE producto, sus objetos se reponen encima de
+		   las guías que se acaban de crear. Sin esto, el enlace "volver a editar"
+		   de la pantalla de pedido devolvería un lienzo en blanco y habría que
+		   rehacer el diseño entero para cambiar una talla.
+
+		   Se guardan sólo los objetos del cliente, no el lienzo completo, así que
+		   aquí no hay que filtrar nada ni se duplican las guías. */
+		let cancelado = false;
+
+		leerBorrador()
+			.then(async (borrador) => {
+				if (cancelado || !borrador) return;
+				if (borrador.productoId !== product.id) return;
+
+				const guardados = borrador.diseno?.[side];
+				if (!guardados?.length) return;
+
+				const vivos = await util.enlivenObjects<FabricObject>(guardados);
+
+				// El lienzo pudo desmontarse mientras Fabric cargaba las imágenes
+				// del diseño: añadirlos ahí reventaría sobre un canvas ya dispuesto.
+				if (cancelado) return;
+
+				for (const objeto of vivos) c.add(objeto);
+				c.requestRenderAll();
+			})
+			.catch(() => {
+				// Un borrador ilegible no puede impedir diseñar desde cero.
+			});
+
 		// ---- selection ----
 		const onSel = () => setActiveObject(c.getActiveObject() ?? null);
 		const onClear = () => setActiveObject(null);
@@ -144,6 +178,8 @@ export function useFabricCanvas(
 		c.on("selection:cleared", onClear);
 
 		return () => {
+			cancelado = true;
+
 			c.off("selection:created", onSel);
 			c.off("selection:updated", onSel);
 			c.off("selection:cleared", onClear);

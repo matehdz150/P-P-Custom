@@ -11,6 +11,7 @@ import {
   TABLA,
   type EstadoPedido,
 } from "../lib/dynamo.js";
+import { avisarAlTaller } from "../lib/eventos.js";
 import { conflicto, malaPeticion, noAutorizado, noEncontrado } from "../lib/http.js";
 
 /**
@@ -29,6 +30,8 @@ const BUCKET_PUBLICO =
 /** Lo que se firma para el arte. Sólo PNG: es lo que exporta el editor. */
 const VIGENCIA_SUBIDA = 900;
 const CORREO = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+/** Código postal mexicano: cinco dígitos, ni uno más. */
+const CP = /^\d{5}$/;
 
 type Cuerpo = Record<string, any>;
 
@@ -46,6 +49,8 @@ export async function crear(cuerpo: unknown) {
   if (!CORREO.test(comprador.email)) {
     throw malaPeticion("Hace falta un correo válido: ahí llega el seguimiento");
   }
+
+  const entrega = leerEntrega(c.entrega);
 
   const lineas = Array.isArray(c.lineas) ? c.lineas : [];
   if (lineas.length === 0) throw malaPeticion("El pedido va vacío");
@@ -85,6 +90,12 @@ export async function crear(cuerpo: unknown) {
     ...llaves.pedidoDeComprador(comprador.email, id, ahora),
     id,
     comprador,
+    /**
+     * A dónde va. Se guarda tal como se capturó y no se vuelve a tocar: es lo
+     * que el taller lee para mandar el paquete, y "corregirle" el formato a
+     * una dirección mexicana es como se pierden los envíos.
+     */
+    entrega,
     /** Se llena el día que haya cuentas; hoy el pedido vive por su correo. */
     compradorId: null,
     proveedorId,
@@ -99,6 +110,10 @@ export async function crear(cuerpo: unknown) {
   };
 
   const folio = await escribirConFolio(pedido, id);
+
+  // Después de escribir y sin poder fallar: el pedido ya existe, y el aviso es
+  // una comodidad. `avisarAlTaller` se traga sus propios errores.
+  await avisarAlTaller(proveedorId, { tipo: "pedido-nuevo", pedidoId: id, folio });
 
   return {
     id,
@@ -140,6 +155,62 @@ export async function seguimiento(id: string, token: string | undefined) {
 }
 
 /* ─── Lo que sostiene todo lo de arriba ─────────────────────────────────── */
+
+/**
+ * A dónde y cómo se entrega.
+ *
+ * Hay dos formas y cambian qué es obligatorio: si el taller se lo entrega en
+ * mano no hay nada que capturar, y exigir una dirección para recogerla sería
+ * pedir datos que nadie va a usar. Por eso la dirección se valida sólo cuando
+ * de verdad hay que enviar algo.
+ *
+ * Los campos van en lista blanca: el cuerpo es público y sin sesión, así que
+ * lo que no esté aquí no entra a la tabla.
+ */
+function leerEntrega(e: unknown) {
+  const d = (e ?? {}) as Cuerpo;
+  const metodo = d.metodo === "recoger" ? "recoger" : "envio";
+
+  if (metodo === "recoger") {
+    return { metodo, direccion: null };
+  }
+
+  const dir = (d.direccion ?? {}) as Cuerpo;
+  const texto = (v: unknown) => String(v ?? "").trim();
+
+  const direccion = {
+    calle: texto(dir.calle),
+    numero: texto(dir.numero),
+    interior: texto(dir.interior) || null,
+    colonia: texto(dir.colonia),
+    ciudad: texto(dir.ciudad),
+    estado: texto(dir.estado),
+    cp: texto(dir.cp),
+    referencias: texto(dir.referencias) || null,
+  };
+
+  // Uno por uno y con el nombre del campo: "faltan datos" obliga a quien
+  // captura a adivinar cuál, y esta pantalla ya es larga de por sí.
+  const obligatorios: [keyof typeof direccion, string][] = [
+    ["calle", "la calle"],
+    ["numero", "el número"],
+    ["colonia", "la colonia"],
+    ["ciudad", "la ciudad o municipio"],
+    ["estado", "el estado"],
+  ];
+
+  for (const [campo, comoSeLlama] of obligatorios) {
+    if (!direccion[campo]) {
+      throw malaPeticion(`Falta ${comoSeLlama} de la dirección de entrega`);
+    }
+  }
+
+  if (!CP.test(direccion.cp)) {
+    throw malaPeticion("El código postal va a cinco dígitos");
+  }
+
+  return { metodo, direccion };
+}
 
 async function leerProductoPublicado(productoId: string) {
   if (!productoId) throw malaPeticion("Una línea del pedido no dice qué producto es");
@@ -188,13 +259,27 @@ function aLinea(l: Cuerpo, producto: Cuerpo, pedidoId: string) {
 
   const lineaId = randomUUID();
 
+  /**
+   * El color de la prenda, con su referencia.
+   *
+   * El nombre solo no basta para comprar el blanco ni para decidir la subbase:
+   * "Negro" no le dice a nadie qué tono. Se copia el hex del producto.
+   */
+  const nombreColor = String(l.colorPrenda ?? "").trim() || null;
+  const colores = (producto.colors ?? []) as { name?: string; hex?: string }[];
+  const colorHex =
+    colores.find((c) => c.name === nombreColor)?.hex ?? null;
+
   return {
     id: lineaId,
     productoId: String(producto.id),
     producto: String(producto.name),
     imagen: (producto.images as { url: string }[] | undefined)?.[0]?.url ?? null,
     templateId: String(producto.templateId ?? ""),
-    colorPrenda: String(l.colorPrenda ?? "").trim() || null,
+    /** Para comprar el blanco hace falta el código del taller, no el nombre. */
+    sku: String(producto.sku ?? "") || null,
+    colorPrenda: nombreColor,
+    colorPrendaHex: colorHex,
     lados,
     tallas,
     piezas,
@@ -202,22 +287,106 @@ function aLinea(l: Cuerpo, producto: Cuerpo, pedidoId: string) {
     /** El diseño editable, para poder reabrirlo o corregirlo. */
     diseno: l.diseno ?? null,
     /**
-     * Dónde quedará el archivo listo para máquina de cada lado. Se apunta
-     * antes de que exista: el navegador lo sube enseguida con la URL firmada,
-     * y así el taller siempre sabe dónde mirar.
+     * Lo que hace falta para producir cada lado.
+     *
+     * LAS MEDIDAS SE CONGELAN AQUÍ, igual que el precio. Viven en el producto
+     * (`printSides`), y el taller puede editarlas mañana: si la ficha del
+     * pedido las leyera de allí, un pedido de hace un mes se imprimiría al
+     * tamaño de hoy y nadie se enteraría hasta ver la prenda. El pedido es un
+     * documento de lo que se acordó, no una vista del catálogo actual.
+     *
+     * Las rutas se apuntan antes de que los archivos existan: el navegador los
+     * sube enseguida con las URLs firmadas, y así el taller siempre sabe dónde
+     * mirar.
      */
-    arte: lados.map((lado: string) => ({
-      lado,
-      ruta: `/medios/pedidos/${pedidoId}/${lineaId}-${lado}.png`,
-    })),
+    arte: lados.map((lado: string) => {
+      const medidas = medidasDeLado(producto, lado);
+      const real = medidaRealDelArchivo(l, lado, medidas.dpi);
+
+      return {
+        lado,
+        /** El archivo que va a máquina: recortado, transparente, a los DPI. */
+        ruta: `/medios/pedidos/${pedidoId}/${lineaId}-${lado}.png`,
+        /**
+         * La prenda con el diseño encima. No se imprime: es la referencia de
+         * COLOCACIÓN, para que el taller compruebe dónde va antes de planchar.
+         * El archivo de producción va recortado al área y no dice nada de en
+         * qué parte de la playera cae.
+         */
+        colocacion: `/medios/pedidos/${pedidoId}/${lineaId}-${lado}-colocacion.png`,
+        ...medidas,
+        ...real,
+      };
+    }),
+  };
+}
+
+/**
+ * El área imprimible de un lado, en centímetros, tal como está hoy.
+ *
+ * Los valores llegan de DynamoDB como cadenas ("28"), así que se convierten;
+ * si el taller no declaró el lado se usan los mismos valores por defecto que
+ * el editor, para que el archivo y la ficha digan lo mismo.
+ */
+function medidasDeLado(producto: Cuerpo, lado: string) {
+  const lados = (producto.printSides ?? []) as Cuerpo[];
+  const suyo = lados.find((s) => String(s.sideKey) === lado);
+
+  return {
+    anchoCm: Number(suyo?.widthCm ?? 28),
+    altoCm: Number(suyo?.heightCm ?? 35),
+    dpi: Number(suyo?.dpi ?? 300),
+  };
+}
+
+/**
+ * Lo que mide de verdad el archivo que se va a subir.
+ *
+ * Lo reporta el navegador porque es el único que lo sabe: el tamaño sale del
+ * área del lienzo, y esa proporción no tiene por qué coincidir con los
+ * centímetros que declaró el taller —de hecho no coincidía, y la ficha decía
+ * 35 cm mientras el archivo medía 36.3—. Es descriptivo, no decide precio ni
+ * destinatario, así que puede venir del cliente; lo que sí se hace es no
+ * creerse cualquier cosa: sin números buenos, no se guarda nada.
+ */
+function medidaRealDelArchivo(l: Cuerpo, lado: string, dpi: number) {
+  const archivos = Array.isArray(l.archivos) ? (l.archivos as Cuerpo[]) : [];
+  const suyo = archivos.find((a) => String(a.lado) === lado);
+
+  const anchoPx = Math.trunc(Number(suyo?.anchoPx ?? 0));
+  const altoPx = Math.trunc(Number(suyo?.altoPx ?? 0));
+
+  if (!(anchoPx > 0 && altoPx > 0)) return {};
+
+  const aCm = (px: number) => Math.round((px / dpi) * 2.54 * 10) / 10;
+
+  return {
+    anchoPx,
+    altoPx,
+    /** Lo que va a medir impreso. Es lo que el taller tiene que comprobar. */
+    anchoRealCm: aCm(anchoPx),
+    altoRealCm: aCm(altoPx),
   };
 }
 
 type Linea = ReturnType<typeof aLinea>;
 
+/**
+ * Firma la subida de los dos archivos de cada lado: el de producción y el de
+ * colocación. Cada uno lleva su `tipo` para que el navegador sepa cuál sube a
+ * dónde sin adivinarlo por la ruta.
+ */
 async function firmarArte(pedidoId: string, lineas: Linea[]) {
   const piezas = lineas.flatMap((l) =>
-    l.arte.map((a) => ({ lineaId: l.id, lado: a.lado, ruta: a.ruta })),
+    l.arte.flatMap((a) => [
+      { lineaId: l.id, lado: a.lado, tipo: "arte" as const, ruta: a.ruta },
+      {
+        lineaId: l.id,
+        lado: a.lado,
+        tipo: "colocacion" as const,
+        ruta: a.colocacion,
+      },
+    ]),
   );
 
   return Promise.all(
