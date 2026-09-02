@@ -22,10 +22,13 @@ primero admin, luego proveedores, después catálogo y pedidos.
 | Categorías (admin) | Lambda `kustto-admin` + DynamoDB | migrado |
 | Alta de proveedores | Lambda `kustto-admin` + Cognito + DynamoDB | migrado |
 | Subida de mockups | S3 con URL prefirmada | migrado |
+| Imágenes de categorías | S3 con URL prefirmada (`/medios/...`) | migrado |
 | Login de proveedores | Cognito, directo desde el navegador | migrado |
 | Panel del proveedor (perfil) | Lambda `kustto-proveedores` | migrado |
 | Categorías (público) | NestJS + Postgres | **pendiente** |
-| Productos y paquetes | NestJS + Postgres | **pendiente** |
+| Alta de productos del taller | Lambda `kustto-proveedores` + DynamoDB + S3 | migrado |
+| Revisión de productos (admin) | Lambda `kustto-admin` + DynamoDB | migrado |
+| Catálogo público y paquetes | NestJS + Postgres | **pendiente** |
 | Pedidos | NestJS + Postgres | **pendiente** |
 | Cuentas de comprador | NestJS + Postgres | **pendiente** |
 | Pasarela de pago | no existe | aplazado a propósito, hasta el final |
@@ -78,8 +81,15 @@ Debe responder con la cuenta `218897024535`.
 Tres archivos están en `.gitignore` y hay que recuperarlos. **Ninguno hay que
 inventarlo: los tres se recuperan de AWS.**
 
-**`services/admin/.clave-admin`** — la llave compartida del admin. Está
-guardada como variable de entorno de la Lambda:
+**`services/admin/.clave-admin`** — la llave compartida del admin. Vive como
+variable de entorno de la Lambda, y desplegar la recupera sola: si la función
+ya existe, su llave gana y el archivo se reescribe con ella.
+
+```bash
+bash infra/lambda-admin.sh
+```
+
+Si prefieres sólo leerla, sin desplegar nada:
 
 ```bash
 aws lambda get-function-configuration --function-name kustto-admin --profile kustto-admin --region us-east-1 --query "Environment.Variables.KUSTTO_CLAVE_ADMIN" --output text > services/admin/.clave-admin
@@ -108,6 +118,12 @@ NEXT_PUBLIC_KUSTTO_API=https://kd8ydpp2c6.execute-api.us-east-1.amazonaws.com
 NEXT_PUBLIC_COGNITO_REGION=us-east-1
 NEXT_PUBLIC_COGNITO_CLIENTE=<KUSTTO_POOL_CLIENTE de infra/.cognito>
 ```
+
+> Copia el id del cliente **entero** (son 26 caracteres). Cortado, Cognito
+> responde `ResourceNotFoundException` con un 400 que parece un problema de
+> credenciales o de red, y se pierde un buen rato buscando en el lugar
+> equivocado. Si el login de proveedores falla, compara ese valor con
+> `infra/.cognito` antes que nada.
 
 ### 4. Levantar
 

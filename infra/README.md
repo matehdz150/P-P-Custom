@@ -97,9 +97,17 @@ Dos cosas que no son obvias:
   `attribute_not_exists(pk)`. Si el candado ya está, la transacción entera
   falla y no queda nada a medias.
 
-Los productos **no** se listan desde la tabla: eso lo resolverá el catálogo
-materializado en S3. Por eso no hay índice para filtrar por técnica, color ni
-días de producción.
+Los productos se listan por dos caminos, y ninguno recorre la tabla:
+
+- `gsi1` con `PROVIDER_PRODUCTS#<sub>` — "mis productos" en el panel del
+  taller, del más nuevo al más viejo porque la fecha va en la llave de orden.
+- `gsi2` con `PRODUCT_ESTADO#<estado>` — la bandeja de revisión del admin. El
+  ítem se reindexa en cada cambio de estado; si un `UpdateExpression` se
+  olvida de reescribir `gsi2sk`, el producto se queda en la bandeja vieja.
+
+Lo que sigue sin índice es el **catálogo público** filtrado por técnica,
+color o días de producción: eso lo resolverá el catálogo materializado en S3,
+y es la decisión que sigue abierta.
 
 ---
 
@@ -121,6 +129,14 @@ Cómo entra y sale un mockup:
 `cors.sh` abre `PUT`/`GET`/`HEAD` desde `http://localhost:3000` en el bucket
 público, y sólo eso: sin ese CORS el `PUT` del paso 3 no sale del navegador.
 Cuando haya dominio real hay que agregarlo ahí.
+
+Las imágenes del catálogo que **no** son mockups (la foto de una categoría,
+por ejemplo) usan el mismo camino por `POST /uploads/imagen-url`, pero caen
+en `medios/<carpeta>/` y se leen por `/medios/...`. Están separadas de
+`mockups/` a propósito: no son el mismo caso de caché el día que entre
+CloudFront, y así una subida de catálogo no puede sobrescribir el mockup de
+una plantilla en uso. La carpeta llega del navegador, así que la Lambda la
+valida contra una lista blanca (`categorias`, `paquetes`, `productos`).
 
 ---
 
@@ -197,8 +213,24 @@ Cada rol ve lo mínimo:
   `Query`/`TransactWriteItems` sobre `kustto-prod` y sus índices;
   `PutObject`/`GetObject` sobre `kustto-publico-prod/*`; `AdminCreateUser` y
   `AdminSetUserPassword` en Cognito.
-- **`kustto-proveedores-rol`**: `GetItem`/`UpdateItem`/`Query` sobre la misma
-  tabla. Sin borrar, sin transacciones, sin S3, sin Cognito.
+- **`kustto-proveedores-rol`**: `GetItem`/`PutItem`/`UpdateItem`/`Query`/
+  `TransactWriteItems` sobre la misma tabla, y `PutObject` **sólo** bajo
+  `kustto-publico-prod/medios/productos/*`. Sin borrar, sin Cognito.
+
+  Creció cuando el taller pasó a dar de alta productos: `PutItem` y la
+  transacción son para escribir el producto junto a su candado de slug.
+
+  **Lo que IAM no puede hacer aquí:** la política es de la función, no del
+  taller, así que autoriza escribir en la carpeta de cualquiera. Lo único
+  que separa a un taller de otro es que la Lambda arma la ruta con el `sub`
+  del token (`services/proveedores/src/rutas/subidas.ts`). Si esa carpeta
+  llegara a salir del cuerpo de la petición, la separación desaparece sin
+  que ningún permiso proteste.
+
+Las políticas de los dos roles se escriben en **cada** ejecución del script,
+no sólo al crear el rol. Estaban dentro del `if` de creación, y así ampliar
+una no surtía efecto justo donde el rol ya existía: se descubría con un
+`AccessDenied` en producción.
 
 Al crear un rol los scripts esperan 12 segundos antes de seguir. No es
 supersticioso: IAM es eventualmente consistente y crear la Lambda de
@@ -226,7 +258,7 @@ inmediato falla con un error que parece de permisos y no lo es.
 
 | Archivo | Cómo se recupera |
 |---|---|
-| `services/admin/.clave-admin` | está en las variables de entorno de la Lambda (ver el README raíz) |
+| `services/admin/.clave-admin` | `bash infra/lambda-admin.sh` lo rehace con la llave que ya tiene la función |
 | `infra/.cognito` | `bash infra/cognito.sh` — idempotente, no crea nada nuevo |
 | `services/*/dist/`, `*.zip` | se regeneran al desplegar |
 
