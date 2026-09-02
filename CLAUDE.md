@@ -1,7 +1,9 @@
 # Notas para Claude
 
-Lee `README.md` primero: ahí está el estado de la migración y la puesta en
-marcha. Esto son las reglas de trabajo que no se deducen del código.
+Lee `ESTADO.md` primero: es el traspaso entre sesiones — dónde nos quedamos,
+qué sigue y qué decisión está abierta. Después `README.md`, que tiene el mapa
+del proyecto y la puesta en marcha. Esto de aquí son las reglas de trabajo que
+no se deducen del código.
 
 ## Idioma
 
