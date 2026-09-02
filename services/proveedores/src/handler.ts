@@ -1,6 +1,7 @@
 import { GetCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 import * as catalogo from "./rutas/catalogo.js";
+import * as pedidos from "./rutas/pedidos.js";
 import * as productos from "./rutas/productos.js";
 import * as subidas from "./rutas/subidas.js";
 import { dynamo, llaves, sinLlaves, TABLA } from "./lib/dynamo.js";
@@ -121,6 +122,16 @@ router.get("/proveedores/productos/:id", (p) =>
 );
 router.patch("/proveedores/productos/:id", (p) =>
   productos.actualizar(quien(p), p.params.id, p.cuerpo),
+);
+
+/* Los pedidos los escribe el cliente por la ruta pública; el taller sólo ve
+   los suyos y los mueve de estado. */
+router.get("/proveedores/pedidos", (p) => pedidos.listar(quien(p)));
+router.get("/proveedores/pedidos/:id", (p) =>
+  pedidos.obtener(quien(p), p.params.id),
+);
+router.patch("/proveedores/pedidos/:id/estado", (p) =>
+  pedidos.cambiarEstado(quien(p), p.params.id, p.cuerpo),
 );
 
 export async function handler(evento: any) {

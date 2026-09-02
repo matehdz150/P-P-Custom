@@ -59,7 +59,54 @@ export const llaves = {
   }),
 
   slugDeProducto: (slug: string) => ({ pk: `SLUG#${slug}`, sk: "LOCK" }),
+
+  /* ─── Pedidos ─────────────────────────────────────────────────────────
+     Un pedido es de UN taller: puede llevar varios productos con diseños
+     distintos, pero todos suyos. Mezclar talleres obligaría a partirlo, y
+     entonces "el pedido" dejaría de ser lo que el cliente cree que mandó. */
+
+  pedido: (id: string) => ({ pk: `ORDER#${id}`, sk: "META" }),
+
+  /** La bandeja del taller: sus pedidos, del más nuevo al más viejo. */
+  pedidoDeProveedor: (proveedorId: string, id: string, creadoEn: string) => ({
+    gsi1pk: `PROVIDER_ORDERS#${proveedorId}`,
+    gsi1sk: `${creadoEn}#${id}`,
+  }),
+
+  pedidoPorEstado: (estado: string, actualizadoEn: string) => ({
+    gsi2pk: `ORDER_ESTADO#${estado}`,
+    gsi2sk: actualizadoEn,
+  }),
+
+  /**
+   * Los pedidos de un correo, para que quien pida sin cuenta pueda verlos
+   * todos y para poder atarlos a una cuenta el día que exista.
+   */
+  pedidoDeComprador: (correo: string, id: string, creadoEn: string) => ({
+    gsi3pk: `BUYER#${correo.toLowerCase()}`,
+    gsi3sk: `${creadoEn}#${id}`,
+  }),
+
+  /** El folio corto que ve la gente (#2418). Único, con su candado. */
+  folioDePedido: (folio: string) => ({ pk: `ORDER_FOLIO#${folio}`, sk: "LOCK" }),
 };
+
+/**
+ * Por dónde pasa un pedido.
+ *
+ * Son los estados que el panel del taller ya sabía pintar. `pagado` no está
+ * todavía: cuando entre la pasarela será uno más entre `nuevo` y
+ * `produccion`, no un rediseño de esto.
+ */
+export const ESTADOS_PEDIDO = [
+  "nuevo",
+  "produccion",
+  "listo",
+  "entregado",
+  "cancelado",
+] as const;
+
+export type EstadoPedido = (typeof ESTADOS_PEDIDO)[number];
 
 /**
  * Los estados por los que pasa un producto.

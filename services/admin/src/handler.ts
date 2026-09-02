@@ -1,5 +1,6 @@
 import * as catalogo from "./rutas/catalogo.js";
 import * as categorias from "./rutas/categorias.js";
+import * as pedidos from "./rutas/pedidos.js";
 import * as plantillas from "./rutas/plantillas.js";
 import * as productos from "./rutas/productos.js";
 import * as proveedores from "./rutas/proveedores.js";
@@ -41,6 +42,14 @@ router.get("/publico/catalogo", () => catalogo.listar());
 router.get("/publico/catalogo/:id", (p) => catalogo.obtener(p.params.id));
 router.get("/publico/categorias", () => categorias.listar());
 
+/* Pedir no exige cuenta: la cuenta es opcional a propósito. El seguimiento
+   se abre con el token que se le manda al comprador por correo, no con una
+   sesión. */
+router.post("/publico/pedidos", (p) => pedidos.crear(p.cuerpo));
+router.get("/publico/pedidos/:id", (p) =>
+  pedidos.seguimiento(p.params.id, p.query.token),
+);
+
 /**
  * Rutas que NO piden la llave de admin.
  *
@@ -48,7 +57,14 @@ router.get("/publico/categorias", () => categorias.listar());
  * cualquiera que abra el editor— y en producción ni siquiera pasa por aquí,
  * lo sirve CloudFront.
  */
-const ABIERTAS = [/^GET \/publico\//];
+const ABIERTAS = [
+  /^GET \/publico\//,
+  // La única escritura sin llave del sistema. Va enumerada aparte y no como
+  // `POST /publico/` a secas: abrir el prefijo entero significaría que
+  // cualquier ruta que alguien cuelgue ahí mañana nace abierta sin que nadie
+  // lo decida.
+  /^POST \/publico\/pedidos$/,
+];
 
 export async function handler(evento: any) {
   const metodo: string =
