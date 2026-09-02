@@ -32,7 +32,42 @@ if [ -f infra/.cognito ]; then
 fi
 POOL_ID="${KUSTTO_POOL_ID:-}"
 
-# ── La llave ───────────────────────────────────────────────────────────────
+if aws_ lambda get-function --function-name "$FUNCION" >/dev/null 2>&1; then
+  EXISTE=1
+else
+  EXISTE=0
+fi
+
+# ── La llave y el pool ─────────────────────────────────────────────────────
+#
+# En una máquina recién clonada no existen services/admin/.clave-admin ni
+# infra/.cognito, y rehacerlos a ciegas rompe cosas en silencio: una llave
+# nueva deja al front hablándole a la Lambda con la vieja, y un pool vacío
+# BORRA KUSTTO_POOL_ID de la función —update-function-configuration sustituye
+# el entorno entero, no lo mezcla— y el alta de proveedores deja de funcionar.
+#
+# Por eso, si la función ya existe, lo que tiene puesto manda: el repo sólo
+# aporta lo que falte.
+if [ "$EXISTE" = "1" ]; then
+  VIVAS=$(aws_ lambda get-function-configuration --function-name "$FUNCION" \
+    --query "[Environment.Variables.KUSTTO_CLAVE_ADMIN, Environment.Variables.KUSTTO_POOL_ID]" \
+    --output text)
+  CLAVE_VIVA=$(echo "$VIVAS" | cut -f1)
+  POOL_VIVO=$(echo "$VIVAS" | cut -f2)
+
+  if [ -n "$CLAVE_VIVA" ] && [ "$CLAVE_VIVA" != "None" ]; then
+    if [ -f "$ARCHIVO_CLAVE" ] && [ "$(cat "$ARCHIVO_CLAVE")" != "$CLAVE_VIVA" ]; then
+      echo "Aviso: $ARCHIVO_CLAVE no coincidía con la llave de la función. Gana la de la función."
+    fi
+    printf '%s' "$CLAVE_VIVA" > "$ARCHIVO_CLAVE"
+  fi
+
+  if [ -z "$POOL_ID" ] && [ -n "$POOL_VIVO" ] && [ "$POOL_VIVO" != "None" ]; then
+    POOL_ID="$POOL_VIVO"
+  fi
+fi
+
+# Sólo se inventa una llave cuando no hay ninguna en ningún lado.
 if [ ! -f "$ARCHIVO_CLAVE" ]; then
   head -c 32 /dev/urandom | base64 | tr -d '/+=' | head -c 40 > "$ARCHIVO_CLAVE"
   echo "Llave de admin generada en $ARCHIVO_CLAVE (no se sube al repo)."
@@ -55,16 +90,26 @@ if ! aws_ iam get-role --role-name "$ROL" >/dev/null 2>&1; then
   aws_ iam attach-role-policy --role-name "$ROL" \
     --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
-  # Permisos mínimos: esta tabla y este bucket, nada más.
-  aws_ iam put-role-policy --role-name "$ROL" --policy-name datos \
-    --policy-document "{
+  echo "Esperando a que IAM propague el rol…"
+  sleep 12
+fi
+
+# La política se escribe SIEMPRE, no sólo al crear el rol: dentro del `if`,
+# ampliarla no surtía efecto donde el rol ya existe —justo donde hace falta—
+# y el fallo aparecía como un AccessDenied en producción. `put-role-policy`
+# reemplaza la política entera, así que repetirlo no hace daño.
+#
+# Permisos mínimos: esta tabla y este bucket, nada más.
+aws_ iam put-role-policy --role-name "$ROL" --policy-name datos \
+  --policy-document "{
       \"Version\": \"2012-10-17\",
       \"Statement\": [
         {
           \"Effect\": \"Allow\",
           \"Action\": [
-            \"dynamodb:GetItem\", \"dynamodb:PutItem\", \"dynamodb:UpdateItem\",
-            \"dynamodb:DeleteItem\", \"dynamodb:Query\", \"dynamodb:TransactWriteItems\"
+            \"dynamodb:GetItem\", \"dynamodb:BatchGetItem\", \"dynamodb:PutItem\",
+            \"dynamodb:UpdateItem\", \"dynamodb:DeleteItem\", \"dynamodb:Query\",
+            \"dynamodb:TransactWriteItems\"
           ],
           \"Resource\": [
             \"arn:aws:dynamodb:${REGION}:${CUENTA}:table/${TABLA}\",
@@ -87,10 +132,6 @@ if ! aws_ iam get-role --role-name "$ROL" >/dev/null 2>&1; then
       ]
     }"
 
-  echo "Esperando a que IAM propague el rol…"
-  sleep 12
-fi
-
 ROL_ARN=$(aws_ iam get-role --role-name "$ROL" --query "Role.Arn" --output text)
 
 # ── El paquete ─────────────────────────────────────────────────────────────
@@ -104,10 +145,18 @@ else
   powershell.exe -NoProfile -Command "Compress-Archive -Path services\admin\dist\handler.mjs -DestinationPath services\admin\admin.zip -Force" >/dev/null
 fi
 
-VARIABLES="Variables={KUSTTO_TABLA=$TABLA,KUSTTO_BUCKET_PUBLICO=$PUBLICO,KUSTTO_CLAVE_ADMIN=$CLAVE,KUSTTO_ORIGEN=$ORIGEN,KUSTTO_POOL_ID=$POOL_ID}"
+# Una variable vacía al final rompe el parser del CLI ("Expected: ',',
+# received: 'EOF'"), así que las que no tienen valor no se mandan.
+PARES="KUSTTO_TABLA=$TABLA,KUSTTO_BUCKET_PUBLICO=$PUBLICO,KUSTTO_CLAVE_ADMIN=$CLAVE,KUSTTO_ORIGEN=$ORIGEN"
+if [ -n "$POOL_ID" ]; then
+  PARES="$PARES,KUSTTO_POOL_ID=$POOL_ID"
+else
+  echo "Aviso: sin KUSTTO_POOL_ID. Corre infra/cognito.sh o el alta de proveedores no funcionará."
+fi
+VARIABLES="Variables={$PARES}"
 
 # ── La función ─────────────────────────────────────────────────────────────
-if aws_ lambda get-function --function-name "$FUNCION" >/dev/null 2>&1; then
+if [ "$EXISTE" = "1" ]; then
   echo "Actualizando código…"
   aws_ lambda update-function-code --function-name "$FUNCION" \
     --zip-file fileb://services/admin/admin.zip >/dev/null

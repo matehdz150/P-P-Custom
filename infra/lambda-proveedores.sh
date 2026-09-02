@@ -25,6 +25,7 @@ FUNCION="${KUSTTO_LAMBDA_PROVEEDORES:-kustto-proveedores}"
 ROL="${FUNCION}-rol"
 API_NOMBRE="${KUSTTO_API:-kustto-admin-api}"
 TABLA="${KUSTTO_TABLA:-kustto-prod}"
+PUBLICO="${KUSTTO_BUCKET_PUBLICO:-kustto-publico-prod}"
 ORIGEN="${KUSTTO_ORIGEN:-http://localhost:3000}"
 
 CUENTA=$(aws_ sts get-caller-identity --query Account --output text)
@@ -45,23 +46,45 @@ if ! aws_ iam get-role --role-name "$ROL" >/dev/null 2>&1; then
   aws_ iam attach-role-policy --role-name "$ROL" \
     --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
-  # Más estrecho que el de admin: lee y actualiza, no borra ni transacciona.
-  aws_ iam put-role-policy --role-name "$ROL" --policy-name datos \
-    --policy-document "{
-      \"Version\": \"2012-10-17\",
-      \"Statement\": [{
+  echo "Esperando a que IAM propague el rol…"
+  sleep 12
+fi
+
+# La política se escribe SIEMPRE, no sólo al crear el rol: si vive dentro del
+# `if`, ampliarla no surte efecto donde el rol ya existe —justo donde hace
+# falta— y se descubre con un AccessDenied en producción. `put-role-policy`
+# reemplaza la política entera, así que correrlo de más no hace daño.
+#
+# Más estrecho que el de admin: puede crear y actualizar productos, pero no
+# borrar nada ni tocar Cognito.
+#
+# Ojo con el S3: el permiso alcanza TODO `medios/productos/*`, porque una
+# política de IAM es de la función y no sabe qué taller hizo la petición. Lo
+# que separa a un taller de otro es que la Lambda arma la ruta con el `sub`
+# del token (services/proveedores/src/rutas/subidas.ts). Si esa ruta llegara
+# a salir del cuerpo de la petición, esta política ya no defendería nada.
+aws_ iam put-role-policy --role-name "$ROL" --policy-name datos \
+  --policy-document "{
+    \"Version\": \"2012-10-17\",
+    \"Statement\": [
+      {
         \"Effect\": \"Allow\",
-        \"Action\": [\"dynamodb:GetItem\", \"dynamodb:UpdateItem\", \"dynamodb:Query\"],
+        \"Action\": [
+          \"dynamodb:GetItem\", \"dynamodb:PutItem\", \"dynamodb:UpdateItem\",
+          \"dynamodb:Query\", \"dynamodb:TransactWriteItems\"
+        ],
         \"Resource\": [
           \"arn:aws:dynamodb:${REGION}:${CUENTA}:table/${TABLA}\",
           \"arn:aws:dynamodb:${REGION}:${CUENTA}:table/${TABLA}/index/*\"
         ]
-      }]
-    }"
-
-  echo "Esperando a que IAM propague el rol…"
-  sleep 12
-fi
+      },
+      {
+        \"Effect\": \"Allow\",
+        \"Action\": [\"s3:PutObject\"],
+        \"Resource\": \"arn:aws:s3:::${PUBLICO}/medios/productos/*\"
+      }
+    ]
+  }"
 
 ROL_ARN=$(aws_ iam get-role --role-name "$ROL" --query "Role.Arn" --output text)
 
@@ -75,7 +98,7 @@ else
   powershell.exe -NoProfile -Command "Compress-Archive -Path services\proveedores\dist\handler.mjs -DestinationPath services\proveedores\proveedores.zip -Force" >/dev/null
 fi
 
-VARIABLES="Variables={KUSTTO_TABLA=$TABLA,KUSTTO_ORIGEN=$ORIGEN}"
+VARIABLES="Variables={KUSTTO_TABLA=$TABLA,KUSTTO_BUCKET_PUBLICO=$PUBLICO,KUSTTO_ORIGEN=$ORIGEN}"
 
 if aws_ lambda get-function --function-name "$FUNCION" >/dev/null 2>&1; then
   echo "Actualizando código…"
