@@ -10,23 +10,22 @@ import { Header } from "@/components/Header/Header";
 import AppBreadcrumb from "@/components/shared/AppBreadCrumb";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-    return (
-        <SearchProvider>
-            <Header />
-            <CatalogLayoutContent>{children}</CatalogLayoutContent>
-        </SearchProvider>
-    );
+	return (
+		<SearchProvider>
+			<Header />
+			<CatalogLayoutContent>{children}</CatalogLayoutContent>
+		</SearchProvider>
+	);
 }
 
 function CatalogLayoutContent({ children }: { children: React.ReactNode }) {
-
-    return (
-        <div className="mt-4 w-full px-4 sm:px-6 md:px-10 lg:px-20 xl:px-32">
-            <main className="mt-4">{children}</main>
-        </div>
-    );
+	return (
+		<div className="mt-4 w-full px-4 sm:px-6 md:px-10 lg:px-20 xl:px-32">
+			<main className="mt-4">{children}</main>
+		</div>
+	);
 }
 
 function capitalize(str: string) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+	return str.charAt(0).toUpperCase() + str.slice(1);
 }

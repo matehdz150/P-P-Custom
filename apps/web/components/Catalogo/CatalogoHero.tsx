@@ -5,7 +5,6 @@ import Aparece from "./Aparece";
 import BuscadorCatalogo from "./BuscadorCatalogo";
 import { ORDENES, type Orden } from "./ordenar";
 
-
 type Props = {
 	categorias: Category[];
 	categoriaActiva: string;
@@ -52,7 +51,8 @@ export default function CatalogoHero({
 			{/* Filtros. En móvil se recorren de lado. */}
 			<Aparece
 				indice={2}
-				className="-mr-5 mt-[18px] flex items-center gap-2 overflow-x-auto pr-5 md:mr-0 md:mt-[22px] md:gap-2.5 md:overflow-visible md:pr-0">
+				className="-mr-5 mt-[18px] flex items-center gap-2 overflow-x-auto pr-5 md:mr-0 md:mt-[22px] md:gap-2.5 md:overflow-visible md:pr-0"
+			>
 				<Chip
 					activo={categoriaActiva === "todo"}
 					onClick={() => onCategoria("todo")}

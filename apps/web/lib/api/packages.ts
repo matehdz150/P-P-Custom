@@ -7,50 +7,50 @@ import { apiFetch } from "./api";
 /* ===== Backend raw types ===== */
 
 type PackageApiResponse = {
-  id: string;
-  name: string;
-  description?: string | null;
-  status: "draft" | "active" | "archived";
-  image?: string | null;
-  createdAt: string;
+	id: string;
+	name: string;
+	description?: string | null;
+	status: "draft" | "active" | "archived";
+	image?: string | null;
+	createdAt: string;
 
-  items?: PackageItem[];
-  pricing?: PackagePricing;
+	items?: PackageItem[];
+	pricing?: PackagePricing;
 };
 
 /* ===== Frontend types ===== */
 
 export type PackageItemProduct = {
-  id: string;
-  name: string;
-  pricing?: {
-    basePrice: number;
-  };
+	id: string;
+	name: string;
+	pricing?: {
+		basePrice: number;
+	};
 };
 
 export type PackageItem = {
-  id: string;
-  productId: string;
-  quantity: number;
-  designRequired: boolean;
+	id: string;
+	productId: string;
+	quantity: number;
+	designRequired: boolean;
 
-  product?: PackageItemProduct;
+	product?: PackageItemProduct;
 };
 
 export type PackagePricing = {
-  basePrice: number;
+	basePrice: number;
 };
 
 export type Package = {
-  id: string;
-  name: string;
-  description?: string | null;
-  status: "draft" | "active" | "archived";
-  image?: string | null;
-  createdAt: string;
+	id: string;
+	name: string;
+	description?: string | null;
+	status: "draft" | "active" | "archived";
+	image?: string | null;
+	createdAt: string;
 
-  items?: PackageItem[];
-  pricing?: PackagePricing;
+	items?: PackageItem[];
+	pricing?: PackagePricing;
 };
 
 /* =========================
@@ -58,24 +58,24 @@ export type Package = {
 ========================= */
 
 export type CreatePackageInput = {
-  name: string;
-  description?: string;
+	name: string;
+	description?: string;
 
-  // ⚠️ esto es solo para enviar IDs al backend
-  categories?: string[];
+	// ⚠️ esto es solo para enviar IDs al backend
+	categories?: string[];
 
-  items: {
-    productId: string;
-    quantity: number;
-  }[];
+	items: {
+		productId: string;
+		quantity: number;
+	}[];
 
-  pricing: {
-    basePrice: number;
-  };
+	pricing: {
+		basePrice: number;
+	};
 };
 
 export type UpdatePackageInput = Partial<CreatePackageInput> & {
-  status?: "draft" | "active" | "archived";
+	status?: "draft" | "active" | "archived";
 };
 
 /* =========================
@@ -83,59 +83,58 @@ export type UpdatePackageInput = Partial<CreatePackageInput> & {
 ========================= */
 
 export type GetPackagesParams = {
-  packageCategoryId?: string;
-  categoryName?: string;
-  limit?: number;
+	packageCategoryId?: string;
+	categoryName?: string;
+	limit?: number;
 };
 
 export async function getPackages(
-  params?: GetPackagesParams
+	params?: GetPackagesParams,
 ): Promise<Package[]> {
-  const search = new URLSearchParams();
+	const search = new URLSearchParams();
 
-  if (params?.categoryName) {
-    search.set("categoryName", params.categoryName);
-  }
+	if (params?.categoryName) {
+		search.set("categoryName", params.categoryName);
+	}
 
-  if (params?.packageCategoryId) {
-    search.set("packageCategoryId", params.packageCategoryId);
-  }
+	if (params?.packageCategoryId) {
+		search.set("packageCategoryId", params.packageCategoryId);
+	}
 
-  if (params?.limit) {
-    search.set("limit", String(params.limit));
-  }
+	if (params?.limit) {
+		search.set("limit", String(params.limit));
+	}
 
-  const query = search.toString();
-  const url = query ? `/packages?${query}` : "/packages";
+	const query = search.toString();
+	const url = query ? `/packages?${query}` : "/packages";
 
-  return apiFetch<Package[]>(url);
+	return apiFetch<Package[]>(url);
 }
 
 export async function getPackage(id: string): Promise<Package> {
-  const pkg = await apiFetch<PackageApiResponse>(`/packages/${id}`);
+	const pkg = await apiFetch<PackageApiResponse>(`/packages/${id}`);
 
-  return {
-    ...pkg,
-  };
+	return {
+		...pkg,
+	};
 }
 
 export function createPackage(data: CreatePackageInput) {
-  return apiFetch<{ id: string }>("/packages", {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
+	return apiFetch<{ id: string }>("/packages", {
+		method: "POST",
+		body: JSON.stringify(data),
+	});
 }
 
 export function updatePackage(id: string, data: UpdatePackageInput) {
-  return apiFetch<{ ok: true }>(`/packages/${id}`, {
-    method: "PATCH",
-    body: JSON.stringify(data),
-  });
+	return apiFetch<{ ok: true }>(`/packages/${id}`, {
+		method: "PATCH",
+		body: JSON.stringify(data),
+	});
 }
 
 export function deletePackage(id: string) {
-  return apiFetch<{ ok: true }>(`/packages/${id}`, {
-    method: "DELETE",
-  });
+	return apiFetch<{ ok: true }>(`/packages/${id}`, {
+		method: "DELETE",
+	});
 }
-

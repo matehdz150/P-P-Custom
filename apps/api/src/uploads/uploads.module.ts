@@ -5,8 +5,8 @@ import { UploadsService } from "./uploads.service";
 import { ConfigModule } from "@nestjs/config";
 
 @Module({
-  imports: [ConfigModule],
-  controllers: [UploadController],
-  providers: [CloudinaryService, UploadsService],
+	imports: [ConfigModule],
+	controllers: [UploadController],
+	providers: [CloudinaryService, UploadsService],
 })
 export class UploadsModule {}

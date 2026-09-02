@@ -98,7 +98,27 @@ else
   powershell.exe -NoProfile -Command "Compress-Archive -Path services\proveedores\dist\handler.mjs -DestinationPath services\proveedores\proveedores.zip -Force" >/dev/null
 fi
 
-VARIABLES="Variables={KUSTTO_TABLA=$TABLA,KUSTTO_BUCKET_PUBLICO=$PUBLICO,KUSTTO_ORIGEN=$ORIGEN}"
+# 29 segundos, no 15.
+#
+# Comprar una guía son cuatro llamadas encadenadas a Skydropx: recotizar,
+# esperar a que las paqueterías contesten (lo más lento, unos 5 s), crear el
+# envío y esperar la etiqueta. Con 15 s la función moría a media compra, y eso
+# es peor que un error: el envío puede haberse pagado y el pedido no enterarse.
+# 29 es el techo — API Gateway corta a los 30.
+TIEMPO=29
+
+PARES="KUSTTO_TABLA=$TABLA,KUSTTO_BUCKET_PUBLICO=$PUBLICO,KUSTTO_ORIGEN=$ORIGEN"
+
+# Skydropx: aquí se usa para RECOTIZAR con el peso real y comprar la guía. Sin
+# credenciales todo lo demás sigue andando; sólo no se pueden generar guías.
+if [ -f infra/.skydropx ]; then
+  source infra/.skydropx
+  PARES="$PARES,SKYDROPX_HOST=$SKYDROPX_HOST,SKYDROPX_CLIENT_ID=$SKYDROPX_CLIENT_ID,SKYDROPX_CLIENT_SECRET=$SKYDROPX_CLIENT_SECRET"
+else
+  echo "Aviso: sin credenciales de Skydropx. No se podrán generar guías."
+fi
+
+VARIABLES="Variables={$PARES}"
 
 if aws_ lambda get-function --function-name "$FUNCION" >/dev/null 2>&1; then
   echo "Actualizando código…"
@@ -106,14 +126,14 @@ if aws_ lambda get-function --function-name "$FUNCION" >/dev/null 2>&1; then
     --zip-file fileb://services/proveedores/proveedores.zip >/dev/null
   aws_ lambda wait function-updated --function-name "$FUNCION"
   aws_ lambda update-function-configuration --function-name "$FUNCION" \
-    --environment "$VARIABLES" >/dev/null
+    --timeout "$TIEMPO" --environment "$VARIABLES" >/dev/null
   aws_ lambda wait function-updated --function-name "$FUNCION"
 else
   echo "Creando función $FUNCION…"
   aws_ lambda create-function --function-name "$FUNCION" \
     --runtime nodejs20.x --role "$ROL_ARN" --handler handler.handler \
     --zip-file fileb://services/proveedores/proveedores.zip \
-    --timeout 15 --memory-size 512 --environment "$VARIABLES" >/dev/null
+    --timeout "$TIEMPO" --memory-size 512 --environment "$VARIABLES" >/dev/null
   aws_ lambda wait function-active --function-name "$FUNCION"
 fi
 

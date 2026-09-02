@@ -20,8 +20,6 @@ export default function ProductoVista({
 }) {
 	return (
 		<>
-
-
 			<Escaparate product={product} vistas={vistasDe(product)} />
 
 			<div className="pt-12 md:pt-0">

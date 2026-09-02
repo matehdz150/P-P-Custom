@@ -116,7 +116,9 @@ export default function FiltrosProductos({
 					<Opcion
 						key={e.clave}
 						activo={filtros.entregas.includes(e.clave)}
-						onClick={() => set({ entregas: alternar(filtros.entregas, e.clave) })}
+						onClick={() =>
+							set({ entregas: alternar(filtros.entregas, e.clave) })
+						}
 					>
 						{e.label}
 					</Opcion>

@@ -76,9 +76,7 @@ export default function DesignerCanvasSide({ side, product }: Props) {
 			{isVisible && !isLoading && !noticeHidden && (
 				<div className="absolute top-4 left-1/2 -translate-x-1/2 z-50">
 					<div className="flex items-center gap-2 bg-white/95 backdrop-blur border border-gray-200 shadow-md rounded-full pl-4 pr-1.5 py-1.5">
-						<span className="text-xs text-gray-600">
-							¿No ves el producto?
-						</span>
+						<span className="text-xs text-gray-600">¿No ves el producto?</span>
 						<button
 							type="button"
 							onClick={() => reload()}

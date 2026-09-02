@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Logotipo } from "./Marca";
+import MenuCuenta from "./MenuCuenta";
 
 const NAV = [
 	{ label: "Catálogo", href: "/catalogo" },
@@ -45,12 +46,7 @@ export default function Header({
 			>
 				Soy proveedor
 			</Link>
-			<Link
-				href="/login"
-				className="hidden text-base font-semibold text-tinta hover:text-lima-oscuro md:inline"
-			>
-				Iniciar sesión
-			</Link>
+			<MenuCuenta />
 			<Link
 				href="/catalogo"
 				className="inline-flex h-11 items-center rounded-full bg-lima px-4 text-[15px] font-semibold text-tinta md:h-[46px] md:px-[22px] md:text-base"
@@ -144,13 +140,7 @@ export default function Header({
 							{item.label}
 						</Link>
 					))}
-					<Link
-						href="/login"
-						onClick={() => setAbierto(false)}
-						className="py-3 text-base font-semibold text-tinta"
-					>
-						Iniciar sesión
-					</Link>
+					<MenuCuenta enMenuMovil />
 				</nav>
 			)}
 		</header>

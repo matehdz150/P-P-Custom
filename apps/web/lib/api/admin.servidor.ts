@@ -15,29 +15,31 @@ const API = process.env.KUSTTO_ADMIN_API;
 const CLAVE = process.env.KUSTTO_CLAVE_ADMIN;
 
 export async function adminFetchServidor<T>(
-  ruta: string,
-  opciones?: RequestInit,
+	ruta: string,
+	opciones?: RequestInit,
 ): Promise<T> {
-  if (!API || !CLAVE) {
-    throw new Error(
-      "Falta KUSTTO_ADMIN_API o KUSTTO_CLAVE_ADMIN en el entorno del servidor",
-    );
-  }
+	if (!API || !CLAVE) {
+		throw new Error(
+			"Falta KUSTTO_ADMIN_API o KUSTTO_CLAVE_ADMIN en el entorno del servidor",
+		);
+	}
 
-  const res = await fetch(`${API}${ruta}`, {
-    headers: {
-      "content-type": "application/json",
-      "x-clave-admin": CLAVE,
-    },
-    // El admin siempre quiere el estado de ahora, no uno cacheado.
-    cache: "no-store",
-    ...opciones,
-  });
+	const res = await fetch(`${API}${ruta}`, {
+		headers: {
+			"content-type": "application/json",
+			"x-clave-admin": CLAVE,
+		},
+		// El admin siempre quiere el estado de ahora, no uno cacheado.
+		cache: "no-store",
+		...opciones,
+	});
 
-  if (!res.ok) {
-    const cuerpo = await res.json().catch(() => null);
-    throw new Error(cuerpo?.message ?? `La API de admin respondió ${res.status}`);
-  }
+	if (!res.ok) {
+		const cuerpo = await res.json().catch(() => null);
+		throw new Error(
+			cuerpo?.message ?? `La API de admin respondió ${res.status}`,
+		);
+	}
 
-  return res.json();
+	return res.json();
 }

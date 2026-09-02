@@ -6,11 +6,11 @@ import { adminFetch } from "./admin";
 ========================= */
 
 export type Category = {
-  id: string;
-  name: string;
-  description?: string | null;
-  image?: string; // 👈 opcional para soportar package categories
-  createdAt: string;
+	id: string;
+	name: string;
+	description?: string | null;
+	image?: string; // 👈 opcional para soportar package categories
+	createdAt: string;
 };
 
 /* =========================
@@ -19,23 +19,23 @@ export type Category = {
 
 // PRODUCT CATEGORIES
 export type CreateCategoryInput = {
-  name: string;
-  description?: string;
-  image: string;
+	name: string;
+	description?: string;
+	image: string;
 };
 
 export type UpdateCategoryInput = Partial<CreateCategoryInput>;
 
 // PACKAGE CATEGORIES
 export type CreatePackageCategoryInput = {
-  name: string;
-  description?: string;
+	name: string;
+	description?: string;
 };
 
 export type GetPackagesParams = {
-  packageCategoryId?: string;
-  categoryName?: string;
-  limit?: number;
+	packageCategoryId?: string;
+	categoryName?: string;
+	limit?: number;
 };
 
 /* =========================
@@ -44,40 +44,40 @@ export type GetPackagesParams = {
 
 /** Obtener todas las categorías de productos */
 export async function getCategories(): Promise<Category[]> {
-  return apiFetch<Category[]>("/categories");
+	return apiFetch<Category[]>("/categories");
 }
 
 /** Obtener una categoría de producto por ID */
 export async function getCategory(id: string): Promise<Category> {
-  return apiFetch<Category>(`/categories/${id}`);
+	return apiFetch<Category>(`/categories/${id}`);
 }
 
 /** Crear categoría de producto */
 export async function createCategory(
-  data: CreateCategoryInput
+	data: CreateCategoryInput,
 ): Promise<Category> {
-  return apiFetch<Category>("/categories", {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
+	return apiFetch<Category>("/categories", {
+		method: "POST",
+		body: JSON.stringify(data),
+	});
 }
 
 /** Actualizar categoría de producto */
 export async function updateCategory(
-  id: string,
-  data: UpdateCategoryInput
+	id: string,
+	data: UpdateCategoryInput,
 ): Promise<Category> {
-  return apiFetch<Category>(`/categories/${id}`, {
-    method: "PATCH",
-    body: JSON.stringify(data),
-  });
+	return apiFetch<Category>(`/categories/${id}`, {
+		method: "PATCH",
+		body: JSON.stringify(data),
+	});
 }
 
 /** Eliminar categoría de producto */
 export async function deleteCategory(id: string): Promise<{ ok: true }> {
-  return apiFetch<{ ok: true }>(`/categories/${id}`, {
-    method: "DELETE",
-  });
+	return apiFetch<{ ok: true }>(`/categories/${id}`, {
+		method: "DELETE",
+	});
 }
 
 /* =========================
@@ -86,53 +86,53 @@ export async function deleteCategory(id: string): Promise<{ ok: true }> {
 
 /** Obtener todas las categorías de paquetes */
 export async function getPackageCategories(): Promise<Category[]> {
-  return apiFetch<Category[]>("/package-categories");
+	return apiFetch<Category[]>("/package-categories");
 }
 
 /** Obtener una categoría de paquete por ID */
 export async function getPackageCategory(id: string): Promise<Category> {
-  return apiFetch<Category>(`/package-categories/${id}`);
+	return apiFetch<Category>(`/package-categories/${id}`);
 }
 
 /** Crear categoría de paquete */
 export async function createPackageCategory(
-  data: CreatePackageCategoryInput
+	data: CreatePackageCategoryInput,
 ): Promise<Category> {
-  return apiFetch<Category>("/package-categories", {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
+	return apiFetch<Category>("/package-categories", {
+		method: "POST",
+		body: JSON.stringify(data),
+	});
 }
 
 export async function deletePackageCategory(id: string) {
-  return apiFetch<{ ok: true }>(`/package-categories/${id}`, {
-    method: "DELETE",
-  });
+	return apiFetch<{ ok: true }>(`/package-categories/${id}`, {
+		method: "DELETE",
+	});
 }
 
 export type PackageFromCategory = {
-  basePrice: number;
-  id: string;
-  name: string;
-  description?: string | null;
-  status: "draft" | "active" | "archived";
-  image?: string | null;
-  createdAt: string;
+	basePrice: number;
+	id: string;
+	name: string;
+	description?: string | null;
+	status: "draft" | "active" | "archived";
+	image?: string | null;
+	createdAt: string;
 };
 
 export type PackageCategoryWithPackages = {
-  id: string;
-  name: string;
-  description?: string | null;
-  packages: PackageFromCategory[];
+	id: string;
+	name: string;
+	description?: string | null;
+	packages: PackageFromCategory[];
 };
 
 export async function getPackageCategoryWithPackagesByName(
-  name: string
+	name: string,
 ): Promise<PackageCategoryWithPackages> {
-  return apiFetch<PackageCategoryWithPackages>(
-    `/package-categories/by-name/${encodeURIComponent(name)}`
-  );
+	return apiFetch<PackageCategoryWithPackages>(
+		`/package-categories/by-name/${encodeURIComponent(name)}`,
+	);
 }
 
 /* =========================
@@ -146,30 +146,30 @@ export async function getPackageCategoryWithPackagesByName(
    Cuando migren los productos, estas se quedan y las de arriba se van. */
 
 export function getCategoriasAdmin(): Promise<Category[]> {
-  return adminFetch<Category[]>("/categories");
+	return adminFetch<Category[]>("/categories");
 }
 
 export function crearCategoria(data: {
-  name: string;
-  description?: string;
-  image: string;
+	name: string;
+	description?: string;
+	image: string;
 }): Promise<Category> {
-  return adminFetch<Category>("/categories", {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
+	return adminFetch<Category>("/categories", {
+		method: "POST",
+		body: JSON.stringify(data),
+	});
 }
 
 export function actualizarCategoria(
-  id: string,
-  data: Partial<{ name: string; description: string; image: string }>,
+	id: string,
+	data: Partial<{ name: string; description: string; image: string }>,
 ): Promise<{ ok: true }> {
-  return adminFetch<{ ok: true }>(`/categories/${id}`, {
-    method: "PATCH",
-    body: JSON.stringify(data),
-  });
+	return adminFetch<{ ok: true }>(`/categories/${id}`, {
+		method: "PATCH",
+		body: JSON.stringify(data),
+	});
 }
 
 export function borrarCategoria(id: string): Promise<{ ok: true }> {
-  return adminFetch<{ ok: true }>(`/categories/${id}`, { method: "DELETE" });
+	return adminFetch<{ ok: true }>(`/categories/${id}`, { method: "DELETE" });
 }

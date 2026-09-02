@@ -115,9 +115,7 @@ export default function RegisterPage() {
 							className="w-full border rounded-[0.2rem] px-3 py-3 bg-white outline-none focus:border-[#fe6241]"
 						/>
 
-						{error && (
-							<p className="text-sm text-red-600">{error}</p>
-						)}
+						{error && <p className="text-sm text-red-600">{error}</p>}
 
 						<button
 							type="submit"
@@ -139,8 +137,7 @@ export default function RegisterPage() {
 					</p>
 
 					<p className="text-xs text-gray-500 text-center">
-						Al continuar aceptas nuestros Términos y Política de
-						Privacidad
+						Al continuar aceptas nuestros Términos y Política de Privacidad
 					</p>
 				</div>
 			</div>

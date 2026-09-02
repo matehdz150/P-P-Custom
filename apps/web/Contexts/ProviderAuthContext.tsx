@@ -60,7 +60,9 @@ export function ProviderAuthProvider({ children }: { children: ReactNode }) {
 	}, [load]);
 
 	return (
-		<ProviderAuthContext.Provider value={{ provider, loading, refresh: load, salir }}>
+		<ProviderAuthContext.Provider
+			value={{ provider, loading, refresh: load, salir }}
+		>
 			{children}
 		</ProviderAuthContext.Provider>
 	);

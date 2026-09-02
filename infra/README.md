@@ -17,13 +17,15 @@ y encuentra el binario aunque no esté en el PATH de Git Bash.
 Desde cero, en una cuenta vacía:
 
 ```bash
-bash infra/tabla.sh              # DynamoDB
-bash infra/buckets.sh            # S3
-bash infra/cors.sh               # CORS del bucket público
-bash infra/cognito.sh            # el pool de proveedores
-bash infra/lambda-admin.sh       # la Lambda de admin + la API Gateway
-bash infra/lambda-proveedores.sh # la Lambda de proveedores + el autorizador
-bash infra/websocket.sh          # el canal en vivo del panel del taller
+bash infra/tabla.sh                 # DynamoDB
+bash infra/buckets.sh               # S3
+bash infra/cors.sh                  # CORS del bucket público
+bash infra/cognito.sh               # el pool de proveedores
+bash infra/cognito-compradores.sh   # el pool de compradores + Google
+bash infra/lambda-admin.sh          # la Lambda de admin + la API Gateway
+bash infra/lambda-proveedores.sh    # la Lambda de proveedores + el autorizador
+bash infra/lambda-compradores.sh    # la Lambda de la cuenta + su autorizador
+bash infra/websocket.sh             # el canal en vivo del panel del taller
 ```
 
 `lambda-proveedores.sh` **depende** de que la API ya exista, porque cuelga de
@@ -45,27 +47,38 @@ En el día a día sólo se corren los dos últimos, que además de crear
 | Lambda admin | `kustto-admin` (rol `kustto-admin-rol`) |
 | Lambda proveedores | `kustto-proveedores` (rol `kustto-proveedores-rol`) |
 | API Gateway (HTTP) | `kustto-admin-api` → `https://kd8ydpp2c6.execute-api.us-east-1.amazonaws.com` |
+| Lambda compradores | `kustto-compradores` (rol `kustto-compradores-rol`) |
 | Autorizador JWT | `cognito-proveedores` |
+| Autorizador JWT | `cognito-compradores` |
 | Cognito User Pool | `kustto-proveedores` → `us-east-1_qxIsXIrrV` |
 | Cliente del pool | `kustto-proveedores-web` → `6avvk9sa6sv4dpclbprdk4uned` |
+| Pool de compradores | `kustto-compradores` → `us-east-1_UPmxJntO3` |
+| Cliente del pool | `kustto-compradores-web` → `5qdkohf21epp1e9c6j76vqnc9v` |
+| Interfaz alojada | `https://kustto-cuentas.auth.us-east-1.amazoncognito.com` |
 | Lambda eventos | `kustto-eventos` (rol `kustto-eventos-rol`) |
 | API WebSocket | `kustto-eventos-ws` → `wss://1mdi47dyv4.execute-api.us-east-1.amazonaws.com/prod` |
 | Autorizador WS | `cognito-ws` (REQUEST, token en la query string) |
 
-**Una sola API Gateway para las dos Lambdas.** No hacía falta una segunda:
-una API enruta por camino hacia funciones distintas. Dos serían dos
-dominios, dos configuraciones de CORS y después dos comportamientos de
-CloudFront.
+**Una sola API Gateway para las tres Lambdas.** No hacía falta otra: una API
+enruta por camino hacia funciones distintas. Dos serían dos dominios, dos
+configuraciones de CORS y después dos comportamientos de CloudFront.
 
 El reparto:
 
 ```
-GET|POST|PATCH|DELETE /proveedores/{proxy+}  ->  kustto-proveedores, con token de Cognito
+GET|POST|PATCH|DELETE /proveedores/{proxy+}  ->  kustto-proveedores, token del pool de TALLERES
+GET|POST|PATCH|DELETE /cuenta/{proxy+}       ->  kustto-compradores, token del pool de COMPRADORES
 $default                                      ->  kustto-admin, con la llave compartida
 ```
 
 Las rutas explícitas ganan sobre `$default`, así que no hay que tocar la de
 admin para que esto funcione.
+
+**Y son DOS autorizadores, no uno compartido.** El de API Gateway valida
+emisor y audiencia, no grupos: con uno solo, un token de taller abriría
+`/cuenta/*` y al revés. Cada prefijo apunta al autorizador de su pool, así que
+la separación la hace cumplir la plataforma antes de invocar código nuestro —
+no depende de que ningún handler se acuerde de comprobarla.
 
 ---
 
@@ -82,7 +95,8 @@ PRODUCT#<id>          META            el producto completo, en un solo ítem
 PROVIDER#<id>         META            el perfil del taller
 PROVIDER_EMAIL#<mail> LOCK            candado de unicidad de correo
 ORDER#<id>            META            el pedido con sus líneas y su bitácora
-ORDER_FOLIO#<folio>   LOCK            candado del folio corto (#2418)
+CUSTOMER#<sub>        META            la cuenta del comprador y su dirección
+ORDER_FOLIO#<folio>   LOCK            candado del folio corto (#481902)
 SLUG#<slug>           LOCK            candado de unicidad de slug
 CONN#<connectionId>   META            una conexión viva del panel del taller
 ```
@@ -102,6 +116,60 @@ hace un mes se imprimiría al tamaño de hoy. Por eso la línea copia, además d
 precio, el `sku`, el color con su hex, y por cada lado el área declarada
 (`anchoCm`/`altoCm`/`dpi`) **y la medida real del archivo**
 (`anchoPx`/`altoPx`/`anchoRealCm`/`altoRealCm`), que no siempre coinciden.
+
+**Lo del envío también vive dentro de los ítems que ya existen**, sin llaves
+nuevas:
+
+- En el **producto**: `pesoPorTalla` (gramos enteros, indexado por talla —el
+  color no cambia el peso) y `caja` (largo/ancho/alto de una pieza).
+- En el **proveedor**: `recoleccion` (de dónde sale el paquete; su CP decide el
+  precio y la dirección se imprime en la guía), `whatsapp` (la paquetería lo
+  exige para recoger), y las cuentas pendientes: `saldoEnvios` acumulado más
+  `cargosEnvio`, la lista con pedido, monto y fecha.
+- En el **pedido**: `envio` con lo que eligió y pagó el comprador —congelado—,
+  `envio.real` con lo que se midió y costó de verdad, y `guia` con el id del
+  envío, el rastreo y la URL de la etiqueta.
+
+**`saldoEnvios` es dinero que se debe, no un contador.** Positivo = el taller
+debe esa diferencia; negativo = sobró a favor de Kustto. No se cobra todavía
+porque no existen pagos al taller: se acumula para poder liquidarlo cuando los
+haya, y por eso el desglose por pedido importa tanto como el total.
+
+**Las existencias viven DENTRO del producto**, en un mapa `existencias` con la
+llave `color|talla` (o sólo la talla si el producto no tiene colores). Un mapa
+de 10 colores × 6 tallas son 60 entradas: nada al lado del límite de 400 KB, y
+siendo el mismo ítem el descuento es atómico sin transacción. **Lo lleva todo
+producto**: hubo un `controlarStock` opcional y se quitó, porque apagado —que
+era el valor por defecto— el aviso de "+N días" no se disparaba nunca. Lo
+opcional ahora es `diasExtraSinStock`, que arranca en 0; el porqué está en
+`ESTADO.md`.
+
+El mapa **tiene que existir** en el ítem: un `SET existencias.#v = ...` sobre
+un producto sin ese atributo revienta con `ValidationException`, y eso pasa
+dentro de la transacción del pedido —o sea, checkout caído, no contador mal—.
+El alta lo escribe siempre, y el descuento se salta con un grito al log el
+producto que no lo tenga.
+
+**Pueden quedar negativas y es información, no un fallo.** Se decidió que se
+puede comprar sin blancos —al cliente se le avisan más días y el taller los
+compra—, así que el descuento no lleva `ConditionExpression`. Un `-2` significa
+"compra 2 para sacar lo que ya vendiste". Ponerle condición devolvería una
+trampa: `escribirConFolio` reintenta seis veces cualquier
+`TransactionCanceledException`, y se quedaría reintentando algo que nunca va a
+funcionar para acabar culpando al folio.
+
+**El folio es de SEIS dígitos, y el número importa.** Empezó con cuatro —9 000
+valores, que no se liberan nunca— y eso era un techo para la vida del negocio:
+a los 6 000 pedidos fallaba uno de cada once, y a los 9 000 no entraba ninguno.
+Con 900 000 el problema desaparece. Los folios viejos de cuatro conviven sin
+problema, que son cadenas.
+
+**Ninguna consulta puede ir sin paginar.** DynamoDB corta toda respuesta de
+`Query` en 1 MB y devuelve `LastEvaluatedKey`; quien no lo lee recibe filas de
+menos **sin error de por medio**. Por eso todas pasan por `consultarTodo`
+(`services/*/src/lib/dynamo.ts`), que sigue las páginas y avisa en el log si
+corta por su tope. Se comprobó con 40 ítems de 30 KB: una sola página devolvía
+35.
 
 **El reparto del espacio de llaves vive en un solo archivo**
 (`services/*/src/lib/dynamo.ts`, el objeto `llaves`) a propósito: es la
@@ -126,6 +194,14 @@ Los productos se listan por dos caminos, y ninguno recorre la tabla:
 - `gsi2` con `PRODUCT_ESTADO#<estado>` — la bandeja de revisión del admin. El
   ítem se reindexa en cada cambio de estado; si un `UpdateExpression` se
   olvida de reescribir `gsi2sk`, el producto se queda en la bandeja vieja.
+
+**`CUSTOMER#` y `BUYER#` son la misma persona y NO son el mismo prefijo.**
+`BUYER#` vive en `gsi3` y va por **correo**; `CUSTOMER#` es llave primaria y va
+por el **`sub`** de Cognito. Están separados a propósito: si compartieran
+prefijo, alguien acabaría escribiendo uno donde va el otro. Y el correo es el
+que ata los pedidos justamente porque se puede pedir sin cuenta — quien se
+registra después con ese correo se encuentra su historial ya puesto, sin
+migrar nada.
 
 Los pedidos usan los tres índices, y por eso son los que agotan el juego:
 `gsi1` los del taller, `gsi2` la cola por estado, `gsi3` los de un correo —lo
@@ -195,6 +271,47 @@ además obliga a cambiarla en el primer ingreso: `AdminCreateUser` con
 `MessageAction: "SUPPRESS"` genera una temporal que la API devuelve **una
 sola vez**, para que el admin se la pase al taller a mano. No queda guardada
 en ningún lado.
+
+### Los compradores van en OTRO pool
+
+`cognito-compradores.sh` crea `kustto-compradores`, y que sea un pool aparte
+es la decisión importante, no un detalle de orden.
+
+**El autorizador JWT de `/proveedores/*` valida emisor y audiencia, no
+grupos.** Si los compradores sacaran su token del pool de talleres, ese token
+pasaría el autorizador y lo único que separaría a un comprador de un taller
+serían comprobaciones dentro del handler — la misma clase de separación
+frágil que ya está señalada abajo, en Permisos. Con dos pools el emisor no
+coincide y no hay nada que recordar comprobar.
+
+Las tres diferencias con el pool de talleres, todas a propósito:
+
+- **Con autoregistro** (`AllowAdminCreateUserOnly=false`). Al taller lo damos
+  de alta nosotros; el comprador se registra solo.
+- **Sin `USER_PASSWORD_AUTH`.** La contraseña del comprador nunca se teclea en
+  una página nuestra: Google y el correo van los dos por la interfaz alojada
+  de Cognito, que es una redirección con PKCE. Así no existe un formulario
+  nuestro que pueda filtrar una contraseña.
+- **Con dominio de interfaz alojada**, que el de talleres no necesita. La URI
+  de redirección que Google exige cuelga de él:
+  `…/oauth2/idpresponse`.
+
+El script corre en dos fases. Sin `infra/.google` crea el pool, el dominio y
+el cliente, e imprime la URI que hay que pegar en la consola de Google; con el
+archivo, además engancha Google y lo añade al cliente. El secreto **no se
+imprime nunca** y no se recupera de AWS: lo guarda Google y sólo se enseña al
+crear el cliente. Si se pierde, se rota allá y se vuelve a correr el script.
+
+Un mapeo que parece cosmético y no lo es: **`email_verified` se mapea desde
+Google**. Sin él el usuario federado entra como no verificado, y el correo
+verificado es lo que ata un pedido a su dueño (`gsi3` es `BUYER#<correo>`).
+Confiar en un correo sin comprobar deja que alguien se registre con el de otro
+y le lea los pedidos.
+
+**Cognito va a duplicar al usuario que entre por los dos caminos.** El mismo
+correo por Google y por contraseña son dos usuarios con `sub` distinto; se unen
+a mano con `AdminLinkProviderForUser`. Mientras eso no exista, el historial se
+lee por el correo verificado y no se parte.
 
 ---
 
@@ -314,7 +431,18 @@ Cada rol ve lo mínimo:
   llegara a salir del cuerpo de la petición, la separación desaparece sin
   que ningún permiso proteste.
 
-Las políticas de los dos roles se escriben en **cada** ejecución del script,
+- **`kustto-compradores-rol`**: el más estrecho de los tres.
+  `GetItem`/`PutItem`/`Query` sobre la tabla y sus índices, y nada más. Sin
+  borrar, sin S3, sin Cognito, sin transacciones — un comprador no crea nada
+  que otro tenga que ver.
+
+  **Lo que IAM tampoco puede hacer aquí:** la política deja leer cualquier
+  ítem de la tabla. Lo único que impide que un comprador lea los pedidos de
+  otro es que el handler arma la consulta con el correo del token *y* exige
+  que venga con `email_verified`. Sin esa comprobación, registrarse con el
+  correo ajeno bastaría para leerle los pedidos con su dirección dentro.
+
+Las políticas de los roles se escriben en **cada** ejecución del script,
 no sólo al crear el rol. Estaban dentro del `if` de creación, y así ampliar
 una no surtía efecto justo donde el rol ya existía: se descubría con un
 `AccessDenied` en producción.
@@ -348,7 +476,33 @@ inmediato falla con un error que parece de permisos y no lo es.
 | `services/admin/.clave-admin` | `bash infra/lambda-admin.sh` lo rehace con la llave que ya tiene la función |
 | `infra/.cognito` | `bash infra/cognito.sh` — idempotente, no crea nada nuevo |
 | `infra/.websocket` | `bash infra/websocket.sh` — idempotente; los ids no son secretos |
+| `infra/.cognito-compradores` | `bash infra/cognito-compradores.sh` — idempotente; tampoco son secretos |
+| `infra/.google` | **De AWS no se recupera.** Lo guarda Google y sólo lo enseña al crear el cliente de OAuth: si se pierde, se rota en su consola |
+| `infra/.skydropx` | **De AWS tampoco.** Se sacan del panel de Skydropx, en Conexiones → API. Ver abajo |
 | `services/*/dist/`, `*.zip` | se regeneran al desplegar |
+
+### Las credenciales de Skydropx
+
+`infra/.skydropx` lleva cuatro líneas y lo leen **dos** scripts:
+`lambda-admin.sh` (cotizar) y `lambda-proveedores.sh` (comprar guías).
+
+```
+SKYDROPX_ENTORNO=sandbox
+SKYDROPX_HOST=https://sb-pro.skydropx.com
+SKYDROPX_CLIENT_ID=…
+SKYDROPX_CLIENT_SECRET=…
+```
+
+**El host del sandbox es `sb-pro.skydropx.com`.** La documentación oficial dice
+que las llamadas van a `api-pro.skydropx.com` en los dos entornos: es falso, y
+con ése responde `invalid_client`, que parece un problema de credenciales.
+
+Las de sandbox y las de producción son **cuentas distintas** con su propio
+panel y su propio saldo. El sandbox arranca con $1,000 MXN de mentira y las
+guías que se compran ahí se descuentan de ese saldo (`payment_status: "paid"`).
+
+Sin este archivo las funciones arrancan igual: no se puede cotizar ni comprar
+guías, y el checkout se queda con "recoger con el taller".
 
 Los ids de `.cognito` **no son secretos** (viajan al navegador por diseño);
 está fuera del repo sólo porque es un archivo generado.

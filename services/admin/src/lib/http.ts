@@ -7,58 +7,60 @@
  */
 
 export type Peticion = {
-  metodo: string;
-  ruta: string;
-  /** Los segmentos capturados por el patrón de la ruta. */
-  params: Record<string, string>;
-  query: Record<string, string | undefined>;
-  cuerpo: unknown;
-  headers: Record<string, string | undefined>;
+	metodo: string;
+	ruta: string;
+	/** Los segmentos capturados por el patrón de la ruta. */
+	params: Record<string, string>;
+	query: Record<string, string | undefined>;
+	cuerpo: unknown;
+	headers: Record<string, string | undefined>;
 };
 
 export type Respuesta = {
-  statusCode: number;
-  headers: Record<string, string>;
-  body: string;
+	statusCode: number;
+	headers: Record<string, string>;
+	body: string;
 };
 
 /** Error con código HTTP, para no tener que devolver objetos a mano. */
 export class ErrorHttp extends Error {
-  constructor(
-    readonly status: number,
-    mensaje: string,
-  ) {
-    super(mensaje);
-  }
+	constructor(
+		readonly status: number,
+		mensaje: string,
+	) {
+		super(mensaje);
+	}
 }
 
 export const noEncontrado = (m = "No encontrado") => new ErrorHttp(404, m);
 export const malaPeticion = (m: string) => new ErrorHttp(400, m);
 export const conflicto = (m: string) => new ErrorHttp(409, m);
 export const noAutorizado = (m = "No autorizado") => new ErrorHttp(401, m);
+/** Vuelve a intentar. NO es un fallo: un 500 haría que el cliente se rinda. */
+export const muyRapido = (m: string) => new ErrorHttp(429, m);
 
 const CORS = {
-  "access-control-allow-origin": process.env.KUSTTO_ORIGEN ?? "*",
-  "access-control-allow-headers": "content-type,x-clave-admin",
-  "access-control-allow-methods": "GET,POST,PATCH,DELETE,OPTIONS",
+	"access-control-allow-origin": process.env.KUSTTO_ORIGEN ?? "*",
+	"access-control-allow-headers": "content-type,x-clave-admin",
+	"access-control-allow-methods": "GET,POST,PATCH,DELETE,OPTIONS",
 };
 
 export function json(status: number, dato: unknown): Respuesta {
-  return {
-    statusCode: status,
-    headers: { "content-type": "application/json; charset=utf-8", ...CORS },
-    body: JSON.stringify(dato),
-  };
+	return {
+		statusCode: status,
+		headers: { "content-type": "application/json; charset=utf-8", ...CORS },
+		body: JSON.stringify(dato),
+	};
 }
 
 export function respuestaDeError(error: unknown): Respuesta {
-  if (error instanceof ErrorHttp) {
-    return json(error.status, { message: error.message });
-  }
+	if (error instanceof ErrorHttp) {
+		return json(error.status, { message: error.message });
+	}
 
-  // Nada de detalles internos hacia afuera; al log sí, completo.
-  console.error("error no manejado:", error);
-  return json(500, { message: "Error interno" });
+	// Nada de detalles internos hacia afuera; al log sí, completo.
+	console.error("error no manejado:", error);
+	return json(500, { message: "Error interno" });
 }
 
 /* ─── Router ────────────────────────────────────────────────────────────── */
@@ -67,65 +69,64 @@ type Manejador = (p: Peticion) => Promise<unknown>;
 type Ruta = { metodo: string; patron: string[]; manejador: Manejador };
 
 export function crearRouter() {
-  const rutas: Ruta[] = [];
+	const rutas: Ruta[] = [];
 
-  const registrar =
-    (metodo: string) =>
-    (patron: string, manejador: Manejador) => {
-      rutas.push({
-        metodo,
-        patron: patron.split("/").filter(Boolean),
-        manejador,
-      });
-    };
+	const registrar =
+		(metodo: string) => (patron: string, manejador: Manejador) => {
+			rutas.push({
+				metodo,
+				patron: patron.split("/").filter(Boolean),
+				manejador,
+			});
+		};
 
-  return {
-    get: registrar("GET"),
-    post: registrar("POST"),
-    patch: registrar("PATCH"),
-    delete: registrar("DELETE"),
+	return {
+		get: registrar("GET"),
+		post: registrar("POST"),
+		patch: registrar("PATCH"),
+		delete: registrar("DELETE"),
 
-    async resolver(p: Omit<Peticion, "params">): Promise<Respuesta> {
-      const partes = p.ruta.split("/").filter(Boolean);
+		async resolver(p: Omit<Peticion, "params">): Promise<Respuesta> {
+			const partes = p.ruta.split("/").filter(Boolean);
 
-      for (const ruta of rutas) {
-        if (ruta.metodo !== p.metodo) continue;
+			for (const ruta of rutas) {
+				if (ruta.metodo !== p.metodo) continue;
 
-        // `*` al final captura el resto de la ruta en params.resto.
-        const comodin = ruta.patron.at(-1) === "*";
-        if (!comodin && ruta.patron.length !== partes.length) continue;
-        if (comodin && partes.length < ruta.patron.length - 1) continue;
+				// `*` al final captura el resto de la ruta en params.resto.
+				const comodin = ruta.patron.at(-1) === "*";
+				if (!comodin && ruta.patron.length !== partes.length) continue;
+				if (comodin && partes.length < ruta.patron.length - 1) continue;
 
-        const params: Record<string, string> = {};
-        let calza = true;
+				const params: Record<string, string> = {};
+				let calza = true;
 
-        for (let i = 0; i < ruta.patron.length; i++) {
-          const esperado = ruta.patron[i];
-          if (esperado === "*") {
-            params.resto = partes.slice(i).join("/");
-            break;
-          }
-          if (esperado.startsWith(":")) {
-            params[esperado.slice(1)] = decodeURIComponent(partes[i]);
-            continue;
-          }
-          if (esperado !== partes[i]) {
-            calza = false;
-            break;
-          }
-        }
+				for (let i = 0; i < ruta.patron.length; i++) {
+					const esperado = ruta.patron[i];
+					if (esperado === "*") {
+						params.resto = partes.slice(i).join("/");
+						break;
+					}
+					if (esperado.startsWith(":")) {
+						params[esperado.slice(1)] = decodeURIComponent(partes[i]);
+						continue;
+					}
+					if (esperado !== partes[i]) {
+						calza = false;
+						break;
+					}
+				}
 
-        if (!calza) continue;
+				if (!calza) continue;
 
-        try {
-          const dato = await ruta.manejador({ ...p, params });
-          return json(p.metodo === "POST" ? 201 : 200, dato);
-        } catch (error) {
-          return respuestaDeError(error);
-        }
-      }
+				try {
+					const dato = await ruta.manejador({ ...p, params });
+					return json(p.metodo === "POST" ? 201 : 200, dato);
+				} catch (error) {
+					return respuestaDeError(error);
+				}
+			}
 
-      return json(404, { message: `Sin ruta para ${p.metodo} ${p.ruta}` });
-    },
-  };
+			return json(404, { message: `Sin ruta para ${p.metodo} ${p.ruta}` });
+		},
+	};
 }

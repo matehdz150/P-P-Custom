@@ -64,9 +64,7 @@ export function SideMockupUploader({
 				}}
 			/>
 
-			{uploading && (
-				<p className="text-xs text-muted-foreground">Subiendo…</p>
-			)}
+			{uploading && <p className="text-xs text-muted-foreground">Subiendo…</p>}
 
 			{error && <p className="text-xs text-red-600">{error}</p>}
 		</div>

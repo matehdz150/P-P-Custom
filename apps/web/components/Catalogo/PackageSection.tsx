@@ -87,39 +87,39 @@ export default function PackagesSection({
 			<div className="grid grid-cols-1 gap-[26px] pt-[26px] md:grid-cols-2 md:gap-14 md:pt-10">
 				{paquetes.map((p, i) => (
 					<Aparece key={p.id} indice={i}>
-					<Link
-						href={`/package/${p.id}`}
-						className="flex flex-col gap-3.5 md:gap-[22px]"
-					>
-						<div className="relative h-[280px] w-full overflow-hidden rounded-[24px] bg-lavanda md:h-[420px] md:rounded-[28px]">
-							{p.imagen && (
-								<Image
-									src={p.imagen}
-									alt={p.nombre}
-									fill
-									className="object-cover"
-								/>
-							)}
-						</div>
+						<Link
+							href={`/package/${p.id}`}
+							className="flex flex-col gap-3.5 md:gap-[22px]"
+						>
+							<div className="relative h-[280px] w-full overflow-hidden rounded-[24px] bg-lavanda md:h-[420px] md:rounded-[28px]">
+								{p.imagen && (
+									<Image
+										src={p.imagen}
+										alt={p.nombre}
+										fill
+										className="object-cover"
+									/>
+								)}
+							</div>
 
-						<div className="flex flex-col gap-1.5">
-							<div className="flex items-baseline justify-between gap-3 md:gap-5">
-								<span className="text-[21px] font-semibold tracking-[-0.5px] text-tinta md:text-2xl md:tracking-[-0.6px]">
-									{p.nombre}
-								</span>
-								{p.precioDesde != null && (
-									<span className="whitespace-nowrap text-[15px] text-tinta/70 md:text-base">
-										desde ${p.precioDesde.toLocaleString("es-MX")}
+							<div className="flex flex-col gap-1.5">
+								<div className="flex items-baseline justify-between gap-3 md:gap-5">
+									<span className="text-[21px] font-semibold tracking-[-0.5px] text-tinta md:text-2xl md:tracking-[-0.6px]">
+										{p.nombre}
+									</span>
+									{p.precioDesde != null && (
+										<span className="whitespace-nowrap text-[15px] text-tinta/70 md:text-base">
+											desde ${p.precioDesde.toLocaleString("es-MX")}
+										</span>
+									)}
+								</div>
+								{p.descripcion && (
+									<span className="text-sm leading-[23px] text-tinta/55 md:text-[15px]">
+										{p.descripcion}
 									</span>
 								)}
 							</div>
-							{p.descripcion && (
-								<span className="text-sm leading-[23px] text-tinta/55 md:text-[15px]">
-									{p.descripcion}
-								</span>
-							)}
-						</div>
-					</Link>
+						</Link>
 					</Aparece>
 				))}
 			</div>

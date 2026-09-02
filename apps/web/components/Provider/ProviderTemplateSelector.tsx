@@ -64,9 +64,7 @@ export function ProviderTemplateSelector({
 								)}
 							</div>
 							<div className="p-2.5">
-								<p className="text-sm font-medium truncate">
-									{tpl.name}
-								</p>
+								<p className="text-sm font-medium truncate">{tpl.name}</p>
 								<p className="text-xs text-muted-foreground">
 									{tpl.data.sides.length} lado(s)
 								</p>

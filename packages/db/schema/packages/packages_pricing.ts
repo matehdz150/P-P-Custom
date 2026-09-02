@@ -3,17 +3,17 @@ import { pgTable, uuid, integer, timestamp } from "drizzle-orm/pg-core";
 import { packages } from "./packages";
 
 export const packagePricing = pgTable("package_pricing", {
-  id: uuid("id").primaryKey().defaultRandom(),
+	id: uuid("id").primaryKey().defaultRandom(),
 
-  packageId: uuid("package_id")
-    .notNull()
-    .references(() => packages.id, { onDelete: "cascade" }),
+	packageId: uuid("package_id")
+		.notNull()
+		.references(() => packages.id, { onDelete: "cascade" }),
 
-  basePrice: integer("base_price").notNull(),
-  // precio total del paquete
+	basePrice: integer("base_price").notNull(),
+	// precio total del paquete
 
-  discountPercentage: integer("discount_percentage"),
-  // opcional: ej 10 = 10%
+	discountPercentage: integer("discount_percentage"),
+	// opcional: ej 10 = 10%
 
-  createdAt: timestamp("created_at").defaultNow(),
+	createdAt: timestamp("created_at").defaultNow(),
 });

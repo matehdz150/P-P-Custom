@@ -7,12 +7,9 @@ import { AuthService } from "./auth.service";
 import { GoogleStrategy } from "./strategies/google.strategy";
 
 @Module({
-  imports: [
-    ConfigModule,
-    PassportModule.register({ session: false }),
-  ],
-  controllers: [AuthController],
-  providers: [AuthService, GoogleStrategy],
-  exports: [AuthService],
+	imports: [ConfigModule, PassportModule.register({ session: false })],
+	controllers: [AuthController],
+	providers: [AuthService, GoogleStrategy],
+	exports: [AuthService],
 })
 export class AuthModule {}

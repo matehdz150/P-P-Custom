@@ -45,7 +45,6 @@ export default function TextControls({ obj }: { obj: TextLike }) {
 
 	return (
 		<div className="pl-4 pr-4 pb-5 mt-4 space-y-4 flex flex-col gap-2">
-
 			{/* ── CURVED TEXT CONTROLS ─────────────────────────────────── */}
 			{isCurved && (
 				<>
@@ -65,7 +64,7 @@ export default function TextControls({ obj }: { obj: TextLike }) {
 						</div>
 					</div>
 
-							{/* Curvature slider -100 → 0 → +100 */}
+					{/* Curvature slider -100 → 0 → +100 */}
 					<div className="flex flex-col gap-2">
 						<div className="flex items-center justify-between">
 							<label className="text-sm font-medium" htmlFor={radiusId}>
@@ -197,7 +196,11 @@ export default function TextControls({ obj }: { obj: TextLike }) {
 							value={obj.angle ?? 0}
 							onChange={(e) =>
 								execute(
-									new ChangePropertyCommand(obj, "angle", Number(e.target.value)),
+									new ChangePropertyCommand(
+										obj,
+										"angle",
+										Number(e.target.value),
+									),
 								)
 							}
 						/>

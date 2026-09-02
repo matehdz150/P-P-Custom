@@ -33,9 +33,7 @@ export function ProductDecorationSelector({ value, onChange }: Props) {
 									: "border-gray-200 hover:border-gray-300"
 							}`}
 						>
-							<p className="text-sm font-bold text-[#1a1a17]">
-								{opt.label}
-							</p>
+							<p className="text-sm font-bold text-[#1a1a17]">{opt.label}</p>
 							<p className="text-xs text-gray-500">{opt.hint}</p>
 						</button>
 					);

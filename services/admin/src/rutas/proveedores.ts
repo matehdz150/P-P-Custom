@@ -1,12 +1,18 @@
 import { randomBytes } from "node:crypto";
 import {
-  AdminCreateUserCommand,
-  AdminSetUserPasswordCommand,
-  CognitoIdentityProviderClient,
+	AdminCreateUserCommand,
+	AdminSetUserPasswordCommand,
+	CognitoIdentityProviderClient,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { QueryCommand, TransactWriteCommand } from "@aws-sdk/lib-dynamodb";
 
-import { dynamo, esConflicto, llaves, TABLA } from "../lib/dynamo.js";
+import {
+	consultarTodo,
+	dynamo,
+	esConflicto,
+	llaves,
+	TABLA,
+} from "../lib/dynamo.js";
 import { conflicto, malaPeticion } from "../lib/http.js";
 
 const cognito = new CognitoIdentityProviderClient({});
@@ -21,34 +27,32 @@ const POOL = process.env.KUSTTO_POOL_ID;
  * un campo sensible que aparezca mañana en la tabla tampoco se escapa.
  */
 const CAMPOS_PUBLICOS = [
-  "id",
-  "email",
-  "name",
-  "slug",
-  "displayName",
-  "bio",
-  "avatarUrl",
-  "bannerUrl",
-  "createdAt",
+	"id",
+	"email",
+	"name",
+	"slug",
+	"displayName",
+	"bio",
+	"avatarUrl",
+	"bannerUrl",
+	"createdAt",
 ] as const;
 
 function comoProveedor(item: Record<string, unknown>) {
-  const salida: Record<string, unknown> = {};
-  for (const campo of CAMPOS_PUBLICOS) salida[campo] = item[campo] ?? null;
-  return salida;
+	const salida: Record<string, unknown> = {};
+	for (const campo of CAMPOS_PUBLICOS) salida[campo] = item[campo] ?? null;
+	return salida;
 }
 
 export async function listar() {
-  const { Items } = await dynamo.send(
-    new QueryCommand({
-      TableName: TABLA,
-      IndexName: "gsi1",
-      KeyConditionExpression: "gsi1pk = :pk",
-      ExpressionAttributeValues: { ":pk": "PROVIDER" },
-    }),
-  );
+	const items = await consultarTodo({
+		TableName: TABLA,
+		IndexName: "gsi1",
+		KeyConditionExpression: "gsi1pk = :pk",
+		ExpressionAttributeValues: { ":pk": "PROVIDER" },
+	});
 
-  return (Items ?? []).map(comoProveedor);
+	return items.map(comoProveedor);
 }
 
 /**
@@ -72,120 +76,124 @@ export async function listar() {
  * Cognito, la tabla no se corrompe.
  */
 export async function crear(cuerpo: unknown) {
-  if (!POOL) {
-    throw new Error("Falta KUSTTO_POOL_ID: no se puede dar de alta sin Cognito");
-  }
+	if (!POOL) {
+		throw new Error(
+			"Falta KUSTTO_POOL_ID: no se puede dar de alta sin Cognito",
+		);
+	}
 
-  const c = (cuerpo ?? {}) as Record<string, unknown>;
+	const c = (cuerpo ?? {}) as Record<string, unknown>;
 
-  const email = String(c.email ?? "").trim().toLowerCase();
-  const name = String(c.name ?? "").trim();
+	const email = String(c.email ?? "")
+		.trim()
+		.toLowerCase();
+	const name = String(c.name ?? "").trim();
 
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-    throw malaPeticion("Correo inválido");
-  }
-  if (!name) throw malaPeticion("Falta el nombre del taller");
+	if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+		throw malaPeticion("Correo inválido");
+	}
+	if (!name) throw malaPeticion("Falta el nombre del taller");
 
-  // Contraseña temporal. Cognito la marca como "hay que cambiarla" y en el
-  // primer login lanza el reto NEW_PASSWORD_REQUIRED.
-  const temporal = contrasenaTemporal();
+	// Contraseña temporal. Cognito la marca como "hay que cambiarla" y en el
+	// primer login lanza el reto NEW_PASSWORD_REQUIRED.
+	const temporal = contrasenaTemporal();
 
-  let sub: string;
-  try {
-    const { User } = await cognito.send(
-      new AdminCreateUserCommand({
-        UserPoolId: POOL,
-        Username: email,
-        TemporaryPassword: temporal,
-        // Sin correo automático por ahora: la contraseña se entrega a mano.
-        MessageAction: "SUPPRESS",
-        UserAttributes: [
-          { Name: "email", Value: email },
-          { Name: "email_verified", Value: "true" },
-          { Name: "name", Value: name },
-        ],
-      }),
-    );
+	let sub: string;
+	try {
+		const { User } = await cognito.send(
+			new AdminCreateUserCommand({
+				UserPoolId: POOL,
+				Username: email,
+				TemporaryPassword: temporal,
+				// Sin correo automático por ahora: la contraseña se entrega a mano.
+				MessageAction: "SUPPRESS",
+				UserAttributes: [
+					{ Name: "email", Value: email },
+					{ Name: "email_verified", Value: "true" },
+					{ Name: "name", Value: name },
+				],
+			}),
+		);
 
-    sub = User?.Attributes?.find((a) => a.Name === "sub")?.Value ?? "";
-    if (!sub) throw new Error("Cognito no devolvió el sub del usuario");
-  } catch (error) {
-    if ((error as { name?: string }).name === "UsernameExistsException") {
-      throw conflicto(`Ya hay un proveedor con el correo ${email}`);
-    }
-    throw error;
-  }
+		sub = User?.Attributes?.find((a) => a.Name === "sub")?.Value ?? "";
+		if (!sub) throw new Error("Cognito no devolvió el sub del usuario");
+	} catch (error) {
+		if ((error as { name?: string }).name === "UsernameExistsException") {
+			throw conflicto(`Ya hay un proveedor con el correo ${email}`);
+		}
+		throw error;
+	}
 
-  const ahora = new Date().toISOString();
+	const ahora = new Date().toISOString();
 
-  try {
-    await dynamo.send(
-      new TransactWriteCommand({
-        TransactItems: [
-          {
-            Put: {
-              TableName: TABLA,
-              Item: {
-                ...llaves.proveedor(sub),
-                ...llaves.proveedorEnIndice(sub),
-                id: sub,
-                email,
-                name,
-                slug: aSlug(name),
-                displayName: name,
-                bio: null,
-                avatarUrl: null,
-                bannerUrl: null,
-                createdAt: ahora,
-              },
-              ConditionExpression: "attribute_not_exists(pk)",
-            },
-          },
-          {
-            Put: {
-              TableName: TABLA,
-              Item: { ...llaves.correoDeProveedor(email), providerId: sub },
-              ConditionExpression: "attribute_not_exists(pk)",
-            },
-          },
-        ],
-      }),
-    );
-  } catch (error) {
-    // Cognito ya creó al usuario: si la tabla falla, queda huérfano. Se
-    // borra para que reintentar el alta no choque con "ya existe".
-    await cognito
-      .send(
-        new AdminSetUserPasswordCommand({
-          UserPoolId: POOL,
-          Username: email,
-          Password: contrasenaTemporal(),
-          Permanent: false,
-        }),
-      )
-      .catch(() => {});
+	try {
+		await dynamo.send(
+			new TransactWriteCommand({
+				TransactItems: [
+					{
+						Put: {
+							TableName: TABLA,
+							Item: {
+								...llaves.proveedor(sub),
+								...llaves.proveedorEnIndice(sub),
+								id: sub,
+								email,
+								name,
+								slug: aSlug(name),
+								displayName: name,
+								bio: null,
+								avatarUrl: null,
+								bannerUrl: null,
+								createdAt: ahora,
+							},
+							ConditionExpression: "attribute_not_exists(pk)",
+						},
+					},
+					{
+						Put: {
+							TableName: TABLA,
+							Item: { ...llaves.correoDeProveedor(email), providerId: sub },
+							ConditionExpression: "attribute_not_exists(pk)",
+						},
+					},
+				],
+			}),
+		);
+	} catch (error) {
+		// Cognito ya creó al usuario: si la tabla falla, queda huérfano. Se
+		// borra para que reintentar el alta no choque con "ya existe".
+		await cognito
+			.send(
+				new AdminSetUserPasswordCommand({
+					UserPoolId: POOL,
+					Username: email,
+					Password: contrasenaTemporal(),
+					Permanent: false,
+				}),
+			)
+			.catch(() => {});
 
-    if (esConflicto(error)) {
-      throw conflicto(`Ya hay un proveedor con el correo ${email}`);
-    }
-    throw error;
-  }
+		if (esConflicto(error)) {
+			throw conflicto(`Ya hay un proveedor con el correo ${email}`);
+		}
+		throw error;
+	}
 
-  // La temporal se devuelve UNA vez, para que el admin se la pase al
-  // taller. No queda guardada en ningún lado.
-  return {
-    id: sub,
-    email,
-    name,
-    slug: aSlug(name),
-    createdAt: ahora,
-    contrasenaTemporal: temporal,
-  };
+	// La temporal se devuelve UNA vez, para que el admin se la pase al
+	// taller. No queda guardada en ningún lado.
+	return {
+		id: sub,
+		email,
+		name,
+		slug: aSlug(name),
+		createdAt: ahora,
+		contrasenaTemporal: temporal,
+	};
 }
 
 /** Cumple la política del pool: 10+, minúscula y número. */
 function contrasenaTemporal() {
-  return `Kt${randomBytes(9).toString("base64url")}7a`;
+	return `Kt${randomBytes(9).toString("base64url")}7a`;
 }
 
 /**
@@ -194,14 +202,14 @@ function contrasenaTemporal() {
  * con que se guarde el archivo, y si se estropean el slug sale mal sin que
  * nadie se entere.
  */
-const DIACRITICOS = new RegExp("[\\u0300-\\u036f]", "g");
+const DIACRITICOS = /[\u0300-\u036f]/g;
 
 function aSlug(s: string) {
-  return s
-    .normalize("NFD")
-    .replace(DIACRITICOS, "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+	return s
+		.normalize("NFD")
+		.replace(DIACRITICOS, "")
+		.toLowerCase()
+		.trim()
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/^-+|-+$/g, "");
 }

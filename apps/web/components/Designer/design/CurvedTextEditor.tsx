@@ -37,8 +37,7 @@ export default function CurvedTextEditor() {
 			const vy = center.y * vpt[3] + vpt[5];
 
 			// media altura del objeto en pantalla → para subir el input
-			const halfH =
-				(obj.height * (obj.scaleY ?? 1) * Math.abs(vpt[3])) / 2;
+			const halfH = (obj.height * (obj.scaleY ?? 1) * Math.abs(vpt[3])) / 2;
 
 			const rect = el.getBoundingClientRect();
 			return {

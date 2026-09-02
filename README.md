@@ -34,9 +34,13 @@ primero admin, luego proveedores, después catálogo y pedidos.
 | Pedir desde el editor | Lambdas + DynamoDB + S3 | migrado |
 | Panel de pedidos del taller | Lambda `kustto-proveedores` | migrado |
 | Avisos en vivo al panel | API WebSocket `kustto-eventos-ws` | migrado |
+| Cuentas de comprador | Cognito (pool aparte) + Lambda `kustto-compradores` | migrado |
+| Panel del comprador (`/cuenta`) | Lambda `kustto-compradores` | migrado |
+| Existencias del taller | DynamoDB, dentro del producto | obligatorias; falta el aviso al comprador |
 | Carrito de varios productos | no existe | **lo que sigue** |
 | Aviso por correo | SES, en sandbox | **faltan los DKIM en el DNS** |
-| Cuentas de comprador | NestJS + Postgres | **pendiente** |
+| Cotización de envío (Skydropx) | Lambda `kustto-admin` + sandbox | migrado |
+| Compra de guía y tracking | no existe | **lo que sigue** |
 | Pasarela de pago | no existe | aplazado a propósito, hasta el final |
 
 **Reglas de la casa mientras dure esto:**
@@ -191,6 +195,7 @@ apps/
 services/              Las Lambdas. Un paquete de pnpm por función.
   admin/               Plantillas, categorías, proveedores, catálogo, pedidos.
   proveedores/         El panel del taller, detrás del autorizador JWT.
+  compradores/         La cuenta del comprador, detrás de OTRO autorizador.
   eventos/             Las conexiones WebSocket del panel. Ver infra/README.md
 infra/                 Scripts de bash idempotentes que CREAN el AWS. Ver infra/README.md
 packages/db/           Esquema de Drizzle y el seed de Postgres.
@@ -214,6 +219,33 @@ migrations/            SQL generado por drizzle-kit.
 - `proveedores.ts` → la Lambda de proveedores, directo a API Gateway. Aquí
   sí va directo porque el permiso lo lleva el token del propio proveedor, no
   un secreto nuestro.
+- `cuenta.ts` → la Lambda de compradores, también directo y por la misma
+  razón. Es OTRO pool de Cognito que el de proveedores: los dos tokens no se
+  cruzan porque cada prefijo tiene su propio autorizador.
+
+**Nada que decida cuánto se cobra puede venir del navegador.** Ni el precio del
+producto, ni el peso, ni el costo del envío. El checkout manda qué se pide y a
+dónde; el peso sale del producto y el precio del envío se le pregunta a
+Skydropx con el id de la cotización. Está comprobado que el cuerpo se puede
+falsificar: se mandó `"precio": 1` y se guardó el real.
+
+**Los toasts son de `sonner`, vestidos con los tokens de la marca**
+(`components/ui/sonner.tsx`). `richColors` va apagado a propósito: enciende
+verdes y rojos propios que chocan con lima y con el rojo de los avisos. El
+acento lo pone el icono.
+
+**El inventario NO se edita en línea.** Cada variante se ajusta desde su botón,
+que abre un diálogo donde hay que elegir qué pasó —llegó, se fue, o lo conté—,
+escribir cuánto y confirmar viendo el resultado. Antes eran casillas sueltas
+con un "Guardar" al final y se podía salir creyendo que había quedado. El
+número del toast sale de la RESPUESTA del servidor, no de lo que el navegador
+calculó: si un pedido descontó mientras tanto, lo que vale es lo que quedó.
+
+**Nunca hagas un `Query` a DynamoDB sin `consultarTodo`**
+(`services/*/src/lib/dynamo.ts`). DynamoDB corta toda respuesta en 1 MB y
+devuelve `LastEvaluatedKey`; quien no lo lee recibe una respuesta a medias
+**sin error de por medio**. Ya pasó: el catálogo y las bandejas perdían filas
+en silencio. El helper sigue las páginas y avisa en el log si corta.
 
 **`apps/web/app/api/admin/[...ruta]/route.ts`** — ese puente es **una puerta
 abierta mientras no haya login de admin**. Reenvía cualquier petición con la
@@ -286,22 +318,37 @@ que es lo que uno espera.
 En orden, de lo más útil a lo más lejano. El detalle y el porqué están en
 `ESTADO.md`, que es lo que hay que leer antes de empezar.
 
-1. **SES.** Nadie se entera de un pedido con el panel cerrado, y el comprador
-   pierde su enlace de seguimiento si cierra la pestaña. Necesita un trámite de
-   días (verificar el dominio y salir del sandbox): arráncalo antes que nada.
-2. **Rechazar un pedido y mover con nota** desde el panel del taller. La API ya
+1. **Cerrar los envíos.** Los pasos 1-9 funcionan contra el sandbox, pero al
+   taller le faltan **dos pantallas**: capturar el peso real y descargar la
+   etiqueta. Sin ellas la guía sólo se puede pedir por API, así que el flujo
+   está hecho y no se puede usar. Es lo más cerca de terminado que hay.
+2. **SES: salir del sandbox.** El dominio ya está verificado y el buzón recibe.
+   Falta el trámite para poder escribirle a cualquiera — hoy sólo a direcciones
+   verificadas. Sin eso, el comprador pierde su enlace de seguimiento si cierra
+   la pestaña, y el taller no se entera de un pedido con el panel cerrado.
+3. **Cerrar las existencias.** El backend está y verificado; falta el aviso de
+   "+N días" al comprador, las alertas de bajas y la capacidad semanal. Ojo: el
+   aviso sólo tiene sentido si el producto tiene `diasExtraSinStock > 0`.
+4. **Rechazar un pedido y mover con nota** desde el panel del taller. La API ya
    acepta las dos cosas; falta la interfaz.
-3. **Contraseña del taller**: no hay forma de cambiarla ni de restablecerla.
-4. **El panel del taller en móvil**, que hoy no funciona.
-5. **Fotos de mockup de verdad.** Sin ellas no hay previsualización realista, y
+5. **Contraseña del taller**: no hay forma de cambiarla ni de restablecerla.
+6. **El panel del taller en móvil**, que hoy no funciona.
+7. **Tracking** (paso 12): el webhook de Skydropx, con verificación de firma.
+   Con él, `entregado` lo pone la paquetería en vez de una persona.
+8. **Fotos de mockup de verdad.** Sin ellas no hay previsualización realista, y
    la plantilla actual es un dibujo de línea con las guías incrustadas.
-6. **Login de admin.** El proxy `/api/admin/*` es una puerta abierta y es lo
+9. **Login de admin.** El proxy `/api/admin/*` es una puerta abierta y es lo
    único que impide desplegar el front público.
-7. **CloudFront + OAC** para servir `/mockups/*` y `/medios/*` sin pasar por
-   Lambda, con el front estático detrás.
-8. **Carrito** de varios productos, con el aviso al mezclar talleres.
-9. **Migrar paquetes y cuentas de comprador**, lo último que queda en Nest.
-10. **Pasarela de pago** — aplazada a propósito hasta el final.
+10. **CloudFront + OAC** para servir `/mockups/*` y `/medios/*` sin pasar por
+    Lambda, con el front estático detrás. El certificado de `kustto.com.mx` ya
+    está **emitido**. También destapa la partición caliente de
+    `PRODUCT_ESTADO#activo`, que satura a unas 20 peticiones por segundo.
+11. **Carrito** de varios productos, con el aviso al mezclar talleres. Hoy todo
+    el flujo de envío asume **un paquete por pedido**.
+12. **Migrar paquetes**, lo último que queda en Nest.
+13. **Pagos**: Stripe (paso 5) y, por separado, **liquidaciones al taller** —
+    que es lo que falta para poder cobrar de verdad los cargos de envío que ya
+    se están registrando en `saldoEnvios`.
 
 La lista de limpieza —plantillas rotas, acentos, código muerto, cuentas de
 prueba— vive en `ESTADO.md` para no duplicarla aquí.

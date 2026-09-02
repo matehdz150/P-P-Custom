@@ -51,7 +51,8 @@ export function useFabricMockup(
 				prendaRef.current = { url: mockupUrl, canvas: recortarPrenda(htmlImg) };
 			}
 			const prenda = colorHex ? prendaRef.current?.canvas : null;
-			const fuente = prenda && colorHex ? tenirPrenda(prenda, colorHex) : htmlImg;
+			const fuente =
+				prenda && colorHex ? tenirPrenda(prenda, colorHex) : htmlImg;
 			// FabricImage desde un elemento YA cargado → 100% síncrono,
 			// sin fetch interno ni promesas que se queden colgadas.
 			const fImg = new FabricImage(fuente, {
@@ -79,10 +80,7 @@ export function useFabricMockup(
 			if (cancelled || !htmlImg) return;
 			const canvas = getCanvasRef.current();
 			if (!canvas) return;
-			if (
-				canvas !== appliedCanvas ||
-				!canvas.backgroundImage
-			) {
+			if (canvas !== appliedCanvas || !canvas.backgroundImage) {
 				place(canvas);
 			}
 		};

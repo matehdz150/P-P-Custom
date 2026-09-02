@@ -23,6 +23,7 @@ export function Campo({
 	autoComplete,
 	inputMode,
 	maxLength,
+	bloqueado = false,
 	className = "",
 }: {
 	id: string;
@@ -36,6 +37,12 @@ export function Campo({
 	autoComplete?: string;
 	inputMode?: "text" | "numeric" | "tel" | "email";
 	maxLength?: number;
+	/**
+	 * Se enseña pero no se edita. `readOnly` y no `disabled` a propósito: un
+	 * campo deshabilitado no recibe foco, no lo lee un lector de pantalla al
+	 * tabular, y su valor no se manda en un envío nativo del formulario.
+	 */
+	bloqueado?: boolean;
 	className?: string;
 }) {
 	const idError = `${id}-error`;
@@ -52,12 +59,15 @@ export function Campo({
 					autoComplete={autoComplete}
 					inputMode={inputMode}
 					maxLength={maxLength}
+					readOnly={bloqueado}
 					placeholder=" "
 					aria-invalid={error ? true : undefined}
 					aria-describedby={error ? idError : ayuda ? idAyuda : undefined}
-					className={`peer h-14 w-full rounded-lg border-[1.5px] bg-white px-3.5 pt-4 text-[15px] text-tinta outline-none transition-colors placeholder:text-transparent focus:border-tinta ${
-						error ? "border-[#c0392b]" : "border-tinta/20"
-					}`}
+					className={`peer h-14 w-full rounded-lg border-[1.5px] px-3.5 pt-4 text-[15px] outline-none transition-colors placeholder:text-transparent focus:border-tinta ${
+						bloqueado
+							? "border-tinta/12 bg-gris text-tinta/60"
+							: "bg-white text-tinta"
+					} ${error ? "border-[#c0392b]" : bloqueado ? "" : "border-tinta/20"}`}
 				/>
 				<label
 					htmlFor={id}

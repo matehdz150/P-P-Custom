@@ -166,8 +166,8 @@ export default function AltaProducto({
 
 				{editando?.yaPublicado && (
 					<div className="rounded-lg border border-tinta/20 bg-gris p-4 text-sm leading-[22px] text-tinta/80">
-						Este producto está publicado. Al guardar cambios vuelve a revisión
-						y deja de aparecer en el catálogo hasta que lo aprobemos otra vez.
+						Este producto está publicado. Al guardar cambios vuelve a revisión y
+						deja de aparecer en el catálogo hasta que lo aprobemos otra vez.
 					</div>
 				)}
 

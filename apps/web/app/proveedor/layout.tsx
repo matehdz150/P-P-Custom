@@ -77,6 +77,11 @@ function Shell({ children }: { children: React.ReactNode }) {
 							icon={<IconoProductos />}
 						/>
 						<NavLink
+							href="/proveedor/inventario"
+							label="Inventario"
+							icon={<IconoInventario />}
+						/>
+						<NavLink
 							href="/proveedor/perfil"
 							label="Perfil"
 							icon={<IconoPerfil />}
@@ -186,6 +191,27 @@ function IconoProductos() {
 		>
 			<path
 				d="M12 3.4l7.6 4.2-7.6 4.2-7.6-4.2L12 3.4zM4.4 12l7.6 4.2 7.6-4.2M4.4 16.2l7.6 4.2 7.6-4.2"
+				stroke="currentColor"
+				strokeWidth="1.5"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	);
+}
+
+/** Cajas apiladas: lo que hay en la bodega, no lo que se vende. */
+function IconoInventario() {
+	return (
+		<svg
+			width="19"
+			height="19"
+			viewBox="0 0 24 24"
+			fill="none"
+			aria-hidden="true"
+		>
+			<path
+				d="M3.6 8.4h16.8v11.2H3.6V8.4zM3.6 8.4l2-4h12.8l2 4M12 8.4v11.2M9.4 12.2h5.2"
 				stroke="currentColor"
 				strokeWidth="1.5"
 				strokeLinecap="round"

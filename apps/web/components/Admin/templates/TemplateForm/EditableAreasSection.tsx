@@ -17,11 +17,7 @@ type Props = {
 	mockup?: string;
 };
 
-export function EditableAreasSection({
-	value = [],
-	onChange,
-	mockup,
-}: Props) {
+export function EditableAreasSection({ value = [], onChange, mockup }: Props) {
 	const [id, setId] = useState("");
 	const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -97,8 +93,8 @@ export function EditableAreasSection({
 			<h5 className="font-medium">Áreas editables</h5>
 
 			<p className="text-xs text-muted-foreground">
-				Arrastra el recuadro naranja sobre el mockup y usa los tiradores
-				para ajustar el área imprimible. Los números se actualizan solos.
+				Arrastra el recuadro naranja sobre el mockup y usa los tiradores para
+				ajustar el área imprimible. Los números se actualizan solos.
 			</p>
 
 			{/* EDITOR VISUAL */}
@@ -216,23 +212,21 @@ export function EditableAreasSection({
 						</div>
 
 						<div className="grid grid-cols-4 gap-2">
-							{(["left", "top", "width", "height"] as const).map(
-								(field) => (
-									<label key={field} className="flex flex-col gap-1">
-										<span className="text-[10px] uppercase text-gray-500">
-											{field}
-										</span>
-										<Input
-											type="number"
-											value={a[field]}
-											onClick={(e) => e.stopPropagation()}
-											onChange={(e) =>
-												update(a.id, field, Number(e.target.value))
-											}
-										/>
-									</label>
-								),
-							)}
+							{(["left", "top", "width", "height"] as const).map((field) => (
+								<label key={field} className="flex flex-col gap-1">
+									<span className="text-[10px] uppercase text-gray-500">
+										{field}
+									</span>
+									<Input
+										type="number"
+										value={a[field]}
+										onClick={(e) => e.stopPropagation()}
+										onChange={(e) =>
+											update(a.id, field, Number(e.target.value))
+										}
+									/>
+								</label>
+							))}
 						</div>
 					</div>
 				);

@@ -1,6 +1,16 @@
-import { BatchGetCommand, GetCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import {
+	BatchGetCommand,
+	GetCommand,
+	QueryCommand,
+} from "@aws-sdk/lib-dynamodb";
 
-import { dynamo, llaves, sinLlaves, TABLA } from "../lib/dynamo.js";
+import {
+	consultarTodo,
+	dynamo,
+	llaves,
+	sinLlaves,
+	TABLA,
+} from "../lib/dynamo.js";
 import { noEncontrado } from "../lib/http.js";
 
 /**
@@ -37,45 +47,43 @@ import { noEncontrado } from "../lib/http.js";
  * dejando la clave fuera.
  */
 type Ficha = {
-  id: string;
-  slug: string;
-  name: string;
-  description?: string;
-  images: { url: string; order: number }[];
-  basePrice?: number;
-  categoryIds: string[];
-  provider?: string;
-  /**
-   * La técnica todavía no se pregunta en el alta, así que hoy siempre va
-   * vacía. El filtro del catálogo se esconde solo cuando no hay ninguna, así
-   * que no estorba hasta que el asistente la capture.
-   */
-  technique?: string;
-  productionDays?: number;
-  colors: { name: string; hex?: string | null }[];
-  sizes: { size: string; widthIn: number; lengthIn: number }[];
-  printSides: { sideKey: string; widthCm: number; heightCm: number }[];
-  templateId: string;
+	id: string;
+	slug: string;
+	name: string;
+	description?: string;
+	images: { url: string; order: number }[];
+	basePrice?: number;
+	categoryIds: string[];
+	provider?: string;
+	/**
+	 * La técnica todavía no se pregunta en el alta, así que hoy siempre va
+	 * vacía. El filtro del catálogo se esconde solo cuando no hay ninguna, así
+	 * que no estorba hasta que el asistente la capture.
+	 */
+	technique?: string;
+	productionDays?: number;
+	colors: { name: string; hex?: string | null }[];
+	sizes: { size: string; widthIn: number; lengthIn: number }[];
+	printSides: { sideKey: string; widthCm: number; heightCm: number }[];
+	templateId: string;
 };
 
 export async function listar() {
-  const { Items } = await dynamo.send(
-    new QueryCommand({
-      TableName: TABLA,
-      IndexName: "gsi2",
-      KeyConditionExpression: "gsi2pk = :pk",
-      ExpressionAttributeValues: {
-        ":pk": llaves.productoPorEstado("activo", "").gsi2pk,
-      },
-      // Lo último aprobado primero: es lo que se ve arriba del catálogo.
-      ScanIndexForward: false,
-    }),
-  );
+	const items = await consultarTodo({
+		TableName: TABLA,
+		IndexName: "gsi2",
+		KeyConditionExpression: "gsi2pk = :pk",
+		ExpressionAttributeValues: {
+			":pk": llaves.productoPorEstado("activo", "").gsi2pk,
+		},
+		// Lo último aprobado primero: es lo que se ve arriba del catálogo.
+		ScanIndexForward: false,
+	});
 
-  const productos = (Items ?? []).map(sinLlaves);
-  const talleres = await talleresDe(productos);
+	const productos = items.map(sinLlaves);
+	const talleres = await talleresDe(productos);
 
-  return productos.map((p) => aFicha(p, talleres));
+	return productos.map((p) => aFicha(p, talleres));
 }
 
 /**
@@ -86,75 +94,80 @@ export async function listar() {
  * que un taller todavía está armando.
  */
 export async function obtener(id: string) {
-  const { Item } = await dynamo.send(
-    new GetCommand({ TableName: TABLA, Key: llaves.producto(id) }),
-  );
+	const { Item } = await dynamo.send(
+		new GetCommand({ TableName: TABLA, Key: llaves.producto(id) }),
+	);
 
-  if (!Item || Item.estado !== "activo") {
-    throw noEncontrado("Producto no encontrado");
-  }
+	if (!Item || Item.estado !== "activo") {
+		throw noEncontrado("Producto no encontrado");
+	}
 
-  const producto = sinLlaves(Item);
+	const producto = sinLlaves(Item);
 
-  // La plantilla y el taller se resuelven aquí y no en el navegador: son dos
-  // lecturas más que el front tendría que encadenar antes de pintar nada, y
-  // el editor no puede montar el lienzo sin la plantilla.
-  const [talleres, plantilla] = await Promise.all([
-    talleresDe([producto]),
-    plantillaDe(String(producto.templateId ?? "")),
-  ]);
+	// La plantilla y el taller se resuelven aquí y no en el navegador: son dos
+	// lecturas más que el front tendría que encadenar antes de pintar nada, y
+	// el editor no puede montar el lienzo sin la plantilla.
+	const [talleres, plantilla] = await Promise.all([
+		talleresDe([producto]),
+		plantillaDe(String(producto.templateId ?? "")),
+	]);
 
-  const taller = talleres.get(String(producto.proveedorId ?? ""));
+	const taller = talleres.get(String(producto.proveedorId ?? ""));
 
-  return {
-    ...aFicha(producto, talleres),
-    customizationRules: producto.customizationRules ?? {},
-    templateSides: producto.templateSides ?? [],
-    pricing: producto.pricing ?? {},
-    production: producto.production ?? {},
-    plantilla,
-    taller: taller ?? null,
-  };
+	return {
+		...aFicha(producto, talleres),
+		customizationRules: producto.customizationRules ?? {},
+		templateSides: producto.templateSides ?? [],
+		pricing: producto.pricing ?? {},
+		production: producto.production ?? {},
+		plantilla,
+		taller: taller ?? null,
+	};
 }
 
 async function plantillaDe(templateId: string) {
-  if (!templateId) return null;
+	if (!templateId) return null;
 
-  const { Item } = await dynamo.send(
-    new GetCommand({ TableName: TABLA, Key: llaves.plantilla(templateId) }),
-  );
+	const { Item } = await dynamo.send(
+		new GetCommand({ TableName: TABLA, Key: llaves.plantilla(templateId) }),
+	);
 
-  return Item ? sinLlaves(Item) : null;
+	return Item ? sinLlaves(Item) : null;
 }
 
 type Taller = {
-  id: string;
-  name: string | null;
-  displayName: string | null;
-  slug: string | null;
-  avatarUrl: string | null;
+	id: string;
+	name: string | null;
+	displayName: string | null;
+	slug: string | null;
+	avatarUrl: string | null;
 };
 
-function aFicha(p: Record<string, unknown>, talleres: Map<string, Taller>): Ficha {
-  const taller = talleres.get(String(p.proveedorId ?? ""));
-  const pricing = (p.pricing ?? {}) as Record<string, number | undefined>;
-  const production = (p.production ?? {}) as { meta?: { diasProduccion?: number } };
+function aFicha(
+	p: Record<string, unknown>,
+	talleres: Map<string, Taller>,
+): Ficha {
+	const taller = talleres.get(String(p.proveedorId ?? ""));
+	const pricing = (p.pricing ?? {}) as Record<string, number | undefined>;
+	const production = (p.production ?? {}) as {
+		meta?: { diasProduccion?: number };
+	};
 
-  return {
-    id: String(p.id),
-    slug: String(p.slug ?? ""),
-    name: String(p.name ?? ""),
-    description: (p.description as string | undefined) ?? undefined,
-    images: (p.images as Ficha["images"]) ?? [],
-    basePrice: pricing.basePrice,
-    categoryIds: (p.categoryIds as string[]) ?? [],
-    provider: taller?.displayName ?? taller?.name ?? undefined,
-    productionDays: production.meta?.diasProduccion,
-    colors: (p.colors as Ficha["colors"]) ?? [],
-    sizes: (p.sizes as Ficha["sizes"]) ?? [],
-    printSides: (p.printSides as Ficha["printSides"]) ?? [],
-    templateId: String(p.templateId ?? ""),
-  };
+	return {
+		id: String(p.id),
+		slug: String(p.slug ?? ""),
+		name: String(p.name ?? ""),
+		description: (p.description as string | undefined) ?? undefined,
+		images: (p.images as Ficha["images"]) ?? [],
+		basePrice: pricing.basePrice,
+		categoryIds: (p.categoryIds as string[]) ?? [],
+		provider: taller?.displayName ?? taller?.name ?? undefined,
+		productionDays: production.meta?.diasProduccion,
+		colors: (p.colors as Ficha["colors"]) ?? [],
+		sizes: (p.sizes as Ficha["sizes"]) ?? [],
+		printSides: (p.printSides as Ficha["printSides"]) ?? [],
+		templateId: String(p.templateId ?? ""),
+	};
 }
 
 /**
@@ -162,40 +175,40 @@ function aFicha(p: Record<string, unknown>, talleres: Map<string, Taller>): Fich
  * el taller puede cambiárselo y el catálogo acabaría enseñando el viejo.
  */
 async function talleresDe(productos: Record<string, unknown>[]) {
-  const ids = [
-    ...new Set(
-      productos
-        .map((p) => String(p.proveedorId ?? ""))
-        .filter((id) => id.length > 0),
-    ),
-  ];
+	const ids = [
+		...new Set(
+			productos
+				.map((p) => String(p.proveedorId ?? ""))
+				.filter((id) => id.length > 0),
+		),
+	];
 
-  if (ids.length === 0) return new Map<string, Taller>();
+	if (ids.length === 0) return new Map<string, Taller>();
 
-  const { Responses } = await dynamo.send(
-    new BatchGetCommand({
-      RequestItems: {
-        [TABLA]: {
-          Keys: ids.map((id) => llaves.proveedor(id)),
-          // Sólo lo que la ficha enseña del taller. El correo no sale al
-          // público aunque esté en el mismo ítem.
-          ProjectionExpression: "id, #nombre, displayName, slug, avatarUrl",
-          ExpressionAttributeNames: { "#nombre": "name" },
-        },
-      },
-    }),
-  );
+	const { Responses } = await dynamo.send(
+		new BatchGetCommand({
+			RequestItems: {
+				[TABLA]: {
+					Keys: ids.map((id) => llaves.proveedor(id)),
+					// Sólo lo que la ficha enseña del taller. El correo no sale al
+					// público aunque esté en el mismo ítem.
+					ProjectionExpression: "id, #nombre, displayName, slug, avatarUrl",
+					ExpressionAttributeNames: { "#nombre": "name" },
+				},
+			},
+		}),
+	);
 
-  return new Map<string, Taller>(
-    (Responses?.[TABLA] ?? []).map((t) => [
-      String(t.id),
-      {
-        id: String(t.id),
-        name: (t.name as string | null) ?? null,
-        displayName: (t.displayName as string | null) ?? null,
-        slug: (t.slug as string | null) ?? null,
-        avatarUrl: (t.avatarUrl as string | null) ?? null,
-      },
-    ]),
-  );
+	return new Map<string, Taller>(
+		(Responses?.[TABLA] ?? []).map((t) => [
+			String(t.id),
+			{
+				id: String(t.id),
+				name: (t.name as string | null) ?? null,
+				displayName: (t.displayName as string | null) ?? null,
+				slug: (t.slug as string | null) ?? null,
+				avatarUrl: (t.avatarUrl as string | null) ?? null,
+			},
+		]),
+	);
 }

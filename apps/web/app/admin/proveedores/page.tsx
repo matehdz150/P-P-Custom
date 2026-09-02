@@ -29,7 +29,9 @@ export default function AdminProvidersPage() {
 			setError(null);
 		} catch (e) {
 			setError(
-				e instanceof Error ? e.message : "No se pudieron cargar los proveedores",
+				e instanceof Error
+					? e.message
+					: "No se pudieron cargar los proveedores",
 			);
 		} finally {
 			setLoading(false);
@@ -64,7 +66,9 @@ export default function AdminProvidersPage() {
 		} catch (e) {
 			// La Lambda contesta con el motivo ("Ya hay un proveedor con el
 			// correo…"); enseñarlo evita adivinar por qué falló.
-			setError(e instanceof Error ? e.message : "No se pudo crear el proveedor");
+			setError(
+				e instanceof Error ? e.message : "No se pudo crear el proveedor",
+			);
 		} finally {
 			setSaving(false);
 		}
@@ -134,7 +138,9 @@ export default function AdminProvidersPage() {
 				{loading ? (
 					<p className="text-sm text-muted-foreground">Cargando…</p>
 				) : providers.length === 0 ? (
-					<p className="text-sm text-muted-foreground">Aún no hay proveedores.</p>
+					<p className="text-sm text-muted-foreground">
+						Aún no hay proveedores.
+					</p>
 				) : (
 					<div className="border rounded-lg divide-y">
 						{providers.map((p) => (

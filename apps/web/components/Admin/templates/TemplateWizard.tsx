@@ -10,10 +10,7 @@ import type {
 	ProductTemplate,
 } from "@/lib/api/templates";
 import { EditableAreasSection } from "./TemplateForm/EditableAreasSection";
-import {
-	CANVAS_H,
-	CANVAS_W,
-} from "./TemplateForm/MockupAreaEditor";
+import { CANVAS_H, CANVAS_W } from "./TemplateForm/MockupAreaEditor";
 import { SideMockupUploader } from "./TemplateForm/SideMockupUploader";
 
 type SideDef = { key: string; label: string };
@@ -90,13 +87,11 @@ export function TemplateWizard({ onCancel, onSubmit, initial }: Props) {
 		if (isIdentity) return id.trim().length > 0 && name.trim().length > 0;
 		if (isSides)
 			return (
-				sides.length > 0 &&
-				sides.every((s) => s.key.trim() && s.label.trim())
+				sides.length > 0 && sides.every((s) => s.key.trim() && s.label.trim())
 			);
 		if (currentSide)
 			return (
-				!!mockups[currentSide.key] &&
-				(areas[currentSide.key]?.length ?? 0) > 0
+				!!mockups[currentSide.key] && (areas[currentSide.key]?.length ?? 0) > 0
 			);
 		return true;
 	}, [isIdentity, isSides, currentSide, id, name, sides, mockups, areas]);
@@ -106,8 +101,7 @@ export function TemplateWizard({ onCancel, onSubmit, initial }: Props) {
 		if (isReview) return submit();
 		const next = step + 1;
 		// al pasar a un step de lado, garantiza área por defecto
-		const nextSideIdx =
-			next >= 2 && next < 2 + sides.length ? next - 2 : -1;
+		const nextSideIdx = next >= 2 && next < 2 + sides.length ? next - 2 : -1;
 		if (nextSideIdx >= 0) ensureDefaultArea(sides[nextSideIdx].key);
 		setStep(next);
 	}
@@ -202,11 +196,7 @@ export function TemplateWizard({ onCancel, onSubmit, initial }: Props) {
 					{isIdentity && (
 						<Section
 							label="Configuración del mockup"
-							title={
-								isEdit
-									? "Editar mockup"
-									: "¿Cómo se llama este mockup?"
-							}
+							title={isEdit ? "Editar mockup" : "¿Cómo se llama este mockup?"}
 							desc="El ID se usa internamente (ej. lentes-01). El nombre es el que verás en el listado."
 						>
 							<Field label="ID del mockup">
@@ -331,10 +321,7 @@ export function TemplateWizard({ onCancel, onSubmit, initial }: Props) {
 							<div className="rounded-lg border divide-y text-sm">
 								<Row k="ID" v={slugify(id)} />
 								<Row k="Nombre" v={name} />
-								<Row
-									k="Lados"
-									v={sides.map((s) => s.label).join(", ")}
-								/>
+								<Row k="Lados" v={sides.map((s) => s.label).join(", ")} />
 								{sides.map((s) => (
 									<Row
 										key={s.key}

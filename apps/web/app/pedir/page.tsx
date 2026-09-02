@@ -2,11 +2,20 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useComprador } from "@/Contexts/CompradorContext";
 import { Campo } from "@/components/Pedir/Campo";
+import { Envio } from "@/components/Pedir/Envio";
 import { Paso } from "@/components/Pedir/Paso";
 import { Resumen } from "@/components/Pedir/Resumen";
 import { getFichaDeProducto } from "@/lib/api/catalogo";
+import {
+	cotizarEnvio,
+	destacadas,
+	SinEnvio,
+	type Tarifa,
+} from "@/lib/api/envios";
+import { getMiPerfil } from "@/lib/api/cuenta";
 import {
 	crearPedido,
 	type Direccion,
@@ -14,6 +23,7 @@ import {
 	subirArchivos,
 } from "@/lib/api/pedir";
 import type { DesignerProductTemplate } from "@/lib/api/products";
+import { ESTADOS_MX } from "@/lib/mexico";
 import {
 	type BorradorPedido,
 	borrarBorrador,
@@ -35,45 +45,27 @@ import { loadProductTemplate } from "@/lib/products/loadProductsTemplate";
  * pedir, y eso se dice en vez de enseñar un formulario que no va a funcionar.
  */
 
-const ESTADOS_MX = [
-	"Aguascalientes",
-	"Baja California",
-	"Baja California Sur",
-	"Campeche",
-	"Chiapas",
-	"Chihuahua",
-	"Ciudad de México",
-	"Coahuila",
-	"Colima",
-	"Durango",
-	"Estado de México",
-	"Guanajuato",
-	"Guerrero",
-	"Hidalgo",
-	"Jalisco",
-	"Michoacán",
-	"Morelos",
-	"Nayarit",
-	"Nuevo León",
-	"Oaxaca",
-	"Puebla",
-	"Querétaro",
-	"Quintana Roo",
-	"San Luis Potosí",
-	"Sinaloa",
-	"Sonora",
-	"Tabasco",
-	"Tamaulipas",
-	"Tlaxcala",
-	"Veracruz",
-	"Yucatán",
-	"Zacatecas",
-];
-
 const CORREO = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 type Contacto = { nombre: string; email: string; whatsapp: string };
 type MetodoEntrega = "envio" | "recoger";
+
+type EstadoEnvio = {
+	estado: "inactivo" | "cotizando" | "listo" | "sin-envio" | "error";
+	tarifas: Tarifa[];
+	elegida: Tarifa | null;
+	/** El id de la cotizacion de Skydropx: viaja al pedido para verificar precio. */
+	cotizacionId: string | null;
+};
+
+/** Las piezas por talla, en una cadena estable para comparar destinos. */
+function piezasPorTalla(cantidades: Record<string, number>) {
+	return Object.entries(cantidades)
+		.filter(([, n]) => n > 0)
+		.sort(([a], [b]) => a.localeCompare(b))
+		.map(([t, n]) => `${t}:${n}`)
+		.join(",");
+}
 
 const DIRECCION_VACIA: Direccion = {
 	calle: "",
@@ -85,6 +77,19 @@ const DIRECCION_VACIA: Direccion = {
 	cp: "",
 	referencias: "",
 };
+
+/**
+ * La dirección del perfil, lista para meter en el formulario.
+ *
+ * El perfil guarda `null` en lo opcional y aquí los campos son cadenas: un
+ * `null` en un input lo vuelve no controlado y React se queja en consola.
+ */
+function limpiar(d: Record<string, string | null> | null): Partial<Direccion> {
+	if (!d) return {};
+	return Object.fromEntries(
+		Object.entries(d).map(([k, v]) => [k, v ?? ""]),
+	) as Partial<Direccion>;
+}
 
 export default function PedirPage() {
 	const router = useRouter();
@@ -107,8 +112,54 @@ export default function PedirPage() {
 		whatsapp: "",
 	});
 	const [metodo, setMetodo] = useState<MetodoEntrega>("envio");
+	const [envio, setEnvio] = useState<EstadoEnvio>({
+		estado: "inactivo",
+		tarifas: [],
+		elegida: null,
+		cotizacionId: null,
+	});
+	const [verTodasLasTarifas, setVerTodasLasTarifas] = useState(false);
 	const [direccion, setDireccion] = useState<Direccion>(DIRECCION_VACIA);
 	const [notas, setNotas] = useState("");
+
+	/* ─── Lo que ya sabemos de quien entró ─────────────────────────────────
+	   Con sesión, el checkout no vuelve a preguntar lo que ya está guardado.
+	   Se rellena UNA vez y sólo lo que esté vacío: si el perfil llega tarde
+	   —es una petición a la API— no puede pisar lo que la persona ya tecleó. */
+	const { comprador } = useComprador();
+	const [perfilPuesto, setPerfilPuesto] = useState(false);
+	const yaRellene = useRef(false);
+
+	useEffect(() => {
+		if (!comprador || yaRellene.current) return;
+		yaRellene.current = true;
+
+		// El nombre y el correo salen del token, así que están de inmediato.
+		setContacto((c) => ({
+			...c,
+			nombre: c.nombre || (comprador.nombre ?? ""),
+			email: c.email || comprador.email,
+		}));
+
+		getMiPerfil()
+			.then((perfil) => {
+				setContacto((c) => ({
+					...c,
+					nombre: c.nombre || (perfil.nombre ?? ""),
+					whatsapp: c.whatsapp || (perfil.whatsapp ?? ""),
+				}));
+
+				if (!perfil.direccion) return;
+
+				setDireccion((d) =>
+					d.calle.trim() ? d : { ...d, ...limpiar(perfil.direccion) },
+				);
+				setPerfilPuesto(true);
+			})
+			// Sin perfil guardado se sigue con lo del token: no tener dirección
+			// no es un fallo, es alguien que pide por primera vez.
+			.catch(() => {});
+	}, [comprador]);
 
 	const [errores, setErrores] = useState<Record<string, string>>({});
 	const [enviando, setEnviando] = useState(false);
@@ -157,13 +208,111 @@ export default function PedirPage() {
 	const lados = borrador?.lados.map((l) => l.lado) ?? [];
 	const piezas = Object.values(cantidades).reduce((n, v) => n + (v || 0), 0);
 
-	const total = useMemo(() => {
+	const subtotal = useMemo(() => {
 		if (!producto) return 0;
 		const base = producto.pricing?.basePrice ?? 0;
 		const porLado = producto.pricing?.perSidePrice ?? 0;
 		const extra = Math.max(0, lados.length - 1) * porLado;
 		return (base + extra) * piezas;
 	}, [producto, lados.length, piezas]);
+
+	const total = subtotal + (metodo === "envio" ? (envio.elegida?.precio ?? 0) : 0);
+
+	/* ─── El envío ───────────────────────────────────────────────────────
+	   Se cotiza cuando la dirección está COMPLETA, nunca mientras se teclea:
+	   Skydropx admite 2 peticiones por segundo y una persona escribiendo su
+	   código postal la revienta sola. El efecto depende de los campos ya
+	   normalizados, así que sólo se dispara al cambiar de verdad el destino. */
+	const destinoListo =
+		metodo === "envio" &&
+		/^\d{5}$/.test(direccion.cp.trim()) &&
+		direccion.colonia.trim() !== "" &&
+		direccion.ciudad.trim() !== "" &&
+		direccion.estado !== "";
+
+	// Una cadena y no un objeto: con un objeto el efecto se relanzaría en cada
+	// render aunque el destino sea el mismo, y cada relanzamiento es una
+	// cotización más contra la cuota.
+	const claveDestino = destinoListo
+		? [
+				direccion.cp.trim(),
+				direccion.colonia.trim(),
+				direccion.ciudad.trim(),
+				direccion.estado,
+				piezasPorTalla(cantidades),
+			].join("|")
+		: "";
+
+	useEffect(() => {
+		if (!claveDestino || !borrador?.productoId) {
+			setEnvio({ estado: "inactivo", tarifas: [], elegida: null, cotizacionId: null });
+			return;
+		}
+
+		const control = new AbortController();
+		setEnvio({ estado: "cotizando", tarifas: [], elegida: null, cotizacionId: null });
+
+		const productoId = borrador.productoId;
+		const tallas = Object.entries(cantidades)
+			.filter(([, n]) => n > 0)
+			.map(([size, piezas]) => ({ size, piezas }));
+
+		const destino = {
+			cp: direccion.cp.trim(),
+			estado: direccion.estado,
+			ciudad: direccion.ciudad.trim(),
+			colonia: direccion.colonia.trim(),
+		};
+
+		/* Se espera a que la persona deje de tocar antes de cotizar.
+		 *
+		 * Sin esto, cada clic en "+1" dispara una cotización: siete clics
+		 * seguidos son siete peticiones en medio segundo, y Skydropx responde
+		 * 429 a todas —su límite es de 2 por segundo, medido por cuenta—. Pasó
+		 * de verdad. El código postal ya estaba a salvo porque sólo cuenta
+		 * completo; las cantidades no, porque cualquier valor es válido. */
+		const espera = setTimeout(() => {
+			cotizarEnvio([{ productoId, tallas }], destino, {
+				senal: control.signal,
+				// Se pinta lo que va llegando: cinco segundos en blanco se sienten
+				// rotos, y con dos opciones ya puestas se sienten rápidos.
+				onParcial: (tarifas) =>
+					setEnvio((e) =>
+						e.estado === "cotizando"
+							? { ...e, tarifas, elegida: e.elegida ?? destacadas(tarifas)[0] }
+							: e,
+					),
+			})
+				.then(({ cotizacionId, tarifas }) => {
+					if (control.signal.aborted) return;
+					setEnvio((e) => ({
+						estado: tarifas.length > 0 ? "listo" : "error",
+						tarifas,
+						// Se preselecciona la más barata para que el total no quede en
+						// blanco, pero se puede cambiar.
+						elegida: e.elegida ?? destacadas(tarifas)[0] ?? null,
+						cotizacionId,
+					}));
+				})
+				.catch((error) => {
+					if (control.signal.aborted) return;
+					setEnvio({
+						estado: error instanceof SinEnvio ? "sin-envio" : "error",
+						tarifas: [],
+						elegida: null,
+						cotizacionId: null,
+					});
+				});
+		}, 700);
+
+		return () => {
+			clearTimeout(espera);
+			control.abort();
+		};
+		// `cantidades` y `direccion` entran por `claveDestino`, que es lo que de
+		// verdad decide si hay que volver a cotizar.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [claveDestino, borrador?.productoId]);
 
 	/* ─── Validación, paso por paso ─────────────────────────────────────── */
 
@@ -254,6 +403,16 @@ export default function PedirPage() {
 								},
 							}
 						: { metodo: "recoger" },
+				/* Sólo el id de la cotización y cuál se eligió. El precio NO se
+				   manda: lo lee la Lambda de Skydropx, porque nada que pase por
+				   el navegador puede decidir cuánto se cobra. */
+				envio:
+					metodo === "envio" && envio.elegida && envio.cotizacionId
+						? {
+								cotizacionId: envio.cotizacionId,
+								tarifaId: envio.elegida.id,
+							}
+						: undefined,
 				lineas: [
 					{
 						productoId: borrador.productoId,
@@ -427,6 +586,11 @@ export default function PedirPage() {
 								error={errores.nombre}
 								onChange={(v) => setContacto((c) => ({ ...c, nombre: v }))}
 							/>
+							{/* Con sesión el correo NO se edita.
+							    Los pedidos se encuentran por correo: si alguien pone
+							    aquí uno distinto del de su cuenta, el pedido es válido
+							    pero no vuelve a aparecerle en "Mis pedidos" y no hay
+							    forma de devolvérselo. */}
 							<Campo
 								id="email"
 								etiqueta="Correo electrónico"
@@ -434,7 +598,12 @@ export default function PedirPage() {
 								inputMode="email"
 								requerido
 								autoComplete="email"
-								ayuda="Aquí te mandamos el enlace para seguir tu pedido."
+								bloqueado={Boolean(comprador)}
+								ayuda={
+									comprador
+										? "El de tu cuenta. Aquí te llega el enlace para seguir tu pedido."
+										: "Aquí te mandamos el enlace para seguir tu pedido."
+								}
 								valor={contacto.email}
 								error={errores.email}
 								onChange={(v) => setContacto((c) => ({ ...c, email: v }))}
@@ -478,7 +647,7 @@ export default function PedirPage() {
 							<OpcionEntrega
 								activa={metodo === "envio"}
 								titulo="Envío a domicilio"
-								detalle="El taller cotiza el envío al confirmar."
+								detalle="Te cotizamos la paquetería con tu código postal."
 								onClick={() => setMetodo("envio")}
 							/>
 							<OpcionEntrega
@@ -491,6 +660,16 @@ export default function PedirPage() {
 
 						{metodo === "envio" && (
 							<div className="grid gap-3.5">
+								{perfilPuesto && (
+									// Se dice que viene de la cuenta y se puede editar aquí
+									// mismo: cambiarla en este pedido NO toca la guardada, y
+									// callárselo haría que alguien la "corrigiera" creyendo
+									// que arregla su perfil.
+									<p className="rounded-lg bg-gris px-3.5 py-3 text-[13px] leading-[21px] text-tinta/70">
+										Pusimos la dirección de tu cuenta. Si este pedido va a otro
+										lado, cámbiala aquí — tu cuenta se queda como está.
+									</p>
+								)}
 								<div className="grid gap-3.5 sm:grid-cols-[2fr_1fr_1fr]">
 									<Campo
 										id="calle"
@@ -609,6 +788,17 @@ export default function PedirPage() {
 										setDireccion((d) => ({ ...d, referencias: v }))
 									}
 								/>
+
+								{/* Debajo de la dirección y no arriba: no hay nada que
+								    cotizar hasta que el código postal esté completo. */}
+								<Envio
+									estado={envio.estado}
+									tarifas={envio.tarifas}
+									elegida={envio.elegida}
+									onElegir={(t) => setEnvio((e) => ({ ...e, elegida: t }))}
+									verTodas={verTodasLasTarifas}
+									onVerTodas={() => setVerTodasLasTarifas(true)}
+								/>
 							</div>
 						)}
 
@@ -675,6 +865,8 @@ export default function PedirPage() {
 					cantidades={cantidades}
 					piezas={piezas}
 					total={total}
+					envio={metodo === "recoger" ? "recoger" : envio.elegida}
+					cotizando={envio.estado === "cotizando"}
 				/>
 			</div>
 		</div>

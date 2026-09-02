@@ -2,11 +2,34 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { useProviderAuth } from "@/Contexts/ProviderAuthContext";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { actualizarMiPerfil } from "@/lib/api/proveedores";
 import { uploadImage } from "@/lib/api/uploads";
+import { ESTADOS_MX } from "@/lib/mexico";
+
+const DIRECCION_VACIA = {
+	calle: "",
+	numero: "",
+	interior: "",
+	colonia: "",
+	ciudad: "",
+	estado: "",
+	cp: "",
+	referencias: "",
+};
+
+/** Los que la paquetería necesita sí o sí. Interior y referencias, no. */
+const OBLIGATORIOS = [
+	"calle",
+	"numero",
+	"colonia",
+	"ciudad",
+	"estado",
+	"cp",
+] as const;
 
 export default function ProviderProfilePage() {
 	const { provider, loading, refresh } = useProviderAuth();
@@ -21,6 +44,11 @@ export default function ProviderProfilePage() {
 	const [saving, setSaving] = useState(false);
 	const [msg, setMsg] = useState<string | null>(null);
 
+	/** Todo en cadenas: el formulario edita texto, la API recibe la dirección. */
+	const [dir, setDir] = useState(DIRECCION_VACIA);
+	const ponDir = (campo: keyof typeof DIRECCION_VACIA, valor: string) =>
+		setDir((d) => ({ ...d, [campo]: valor }));
+
 	useEffect(() => {
 		if (provider) {
 			setDisplayName(provider.displayName ?? provider.name ?? "");
@@ -28,6 +56,22 @@ export default function ProviderProfilePage() {
 			setBio(provider.bio ?? "");
 			setAvatarUrl(provider.avatarUrl ?? null);
 			setBannerUrl(provider.bannerUrl ?? null);
+
+			const r = provider.recoleccion;
+			setDir(
+				r
+					? {
+							calle: r.calle ?? "",
+							numero: r.numero ?? "",
+							interior: r.interior ?? "",
+							colonia: r.colonia ?? "",
+							ciudad: r.ciudad ?? "",
+							estado: r.estado ?? "",
+							cp: r.cp ?? "",
+							referencias: r.referencias ?? "",
+						}
+					: DIRECCION_VACIA,
+			);
 		}
 	}, [provider]);
 
@@ -40,16 +84,52 @@ export default function ProviderProfilePage() {
 		setSaving(true);
 		setMsg(null);
 		try {
+			// La dirección se manda ENTERA o no se manda. A medias, la API la
+			// rechaza y con ella el resto del perfil; y una dirección incompleta
+			// no sirve para cotizar, así que guardarla no aportaría nada.
+			const completa = OBLIGATORIOS.every((c) => dir[c].trim() !== "");
+			const vacia = OBLIGATORIOS.every((c) => dir[c].trim() === "");
+
+			if (!completa && !vacia) {
+				setMsg(
+					"Completa toda la dirección de recolección, o déjala en blanco.",
+				);
+				setSaving(false);
+				return;
+			}
+
 			await actualizarMiPerfil({
 				displayName: displayName.trim(),
 				bio: bio.trim(),
 				avatarUrl: avatarUrl ?? undefined,
 				bannerUrl: bannerUrl ?? undefined,
+				recoleccion: completa
+					? {
+							calle: dir.calle.trim(),
+							numero: dir.numero.trim(),
+							interior: dir.interior.trim() || null,
+							colonia: dir.colonia.trim(),
+							ciudad: dir.ciudad.trim(),
+							estado: dir.estado.trim(),
+							cp: dir.cp.trim(),
+							referencias: dir.referencias.trim() || null,
+						}
+					: null,
 			});
 			await refresh();
-			setMsg("Perfil guardado");
-		} catch {
-			setMsg("No se pudo guardar");
+			toast.success("Perfil guardado", {
+				description: completa
+					? "Ya podemos cotizar envíos desde tu dirección."
+					: undefined,
+			});
+			setMsg(null);
+		} catch (error) {
+			// El mensaje de la API dice qué campo falta; repetirlo es más útil
+			// que un "no se pudo" genérico.
+			toast.error("No se pudo guardar", {
+				description:
+					error instanceof Error ? error.message : "Inténtalo otra vez.",
+			});
 		} finally {
 			setSaving(false);
 		}
@@ -152,6 +232,108 @@ export default function ProviderProfilePage() {
 						placeholder="Cuéntale a tus clientes sobre tu marca…"
 						rows={4}
 					/>
+				</div>
+			</section>
+
+			{/* La dirección va en su propia sección, separada del perfil público,
+			    porque no es lo mismo: lo de arriba lo ve cualquiera que entre a
+			    tu página; esto se imprime en la guía. */}
+			<section className="mt-8 flex flex-col gap-4 rounded-xl border border-tinta/12 p-6">
+				<div className="flex flex-col gap-1">
+					<h2 className="font-display text-[18px] font-semibold tracking-[-0.028em] text-tinta">
+						Dirección de recolección
+					</h2>
+					<p className="text-[13px] leading-[20px] text-tinta/65">
+						De aquí sale el paquete. Sin ella no podemos cotizar envíos de tus
+						productos, así que sólo se podrían recoger contigo. Se imprime en la
+						guía, o sea que la ve el comprador.
+					</p>
+				</div>
+
+				<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+					<div className="md:col-span-2">
+						<label className="text-sm font-semibold">Calle</label>
+						<Input
+							value={dir.calle}
+							onChange={(e) => ponDir("calle", e.target.value)}
+							placeholder="Av. Chapultepec"
+						/>
+					</div>
+					<div>
+						<label className="text-sm font-semibold">Número</label>
+						<Input
+							value={dir.numero}
+							onChange={(e) => ponDir("numero", e.target.value)}
+							placeholder="120"
+						/>
+					</div>
+					<div>
+						<label className="text-sm font-semibold">
+							Interior <span className="font-normal text-tinta/50">(opcional)</span>
+						</label>
+						<Input
+							value={dir.interior}
+							onChange={(e) => ponDir("interior", e.target.value)}
+							placeholder="Local 3"
+						/>
+					</div>
+					<div>
+						<label className="text-sm font-semibold">Colonia</label>
+						<Input
+							value={dir.colonia}
+							onChange={(e) => ponDir("colonia", e.target.value)}
+							placeholder="Americana"
+						/>
+					</div>
+					<div>
+						<label className="text-sm font-semibold">Código postal</label>
+						<Input
+							value={dir.cp}
+							inputMode="numeric"
+							maxLength={5}
+							onChange={(e) =>
+								ponDir("cp", e.target.value.replace(/\D/g, "").slice(0, 5))
+							}
+							placeholder="44160"
+						/>
+					</div>
+					<div>
+						<label className="text-sm font-semibold">Ciudad</label>
+						<Input
+							value={dir.ciudad}
+							onChange={(e) => ponDir("ciudad", e.target.value)}
+							placeholder="Guadalajara"
+						/>
+					</div>
+					<div>
+						<label className="text-sm font-semibold">Estado</label>
+						{/* Lista cerrada y no texto libre: la paquetería no acepta
+						    "Jal." ni "CDMX", y un estado mal escrito tumba la
+						    cotización con un error que no dice qué pasó. */}
+						<select
+							value={dir.estado}
+							onChange={(e) => ponDir("estado", e.target.value)}
+							className="mt-1 h-9 w-full rounded-md border border-tinta/20 bg-white px-3 text-sm text-tinta outline-none focus:border-tinta"
+						>
+							<option value="">Elige…</option>
+							{ESTADOS_MX.map((e) => (
+								<option key={e} value={e}>
+									{e}
+								</option>
+							))}
+						</select>
+					</div>
+					<div className="md:col-span-2">
+						<label className="text-sm font-semibold">
+							Referencias{" "}
+							<span className="font-normal text-tinta/50">(opcional)</span>
+						</label>
+						<Input
+							value={dir.referencias}
+							onChange={(e) => ponDir("referencias", e.target.value)}
+							placeholder="Portón negro, entre Libertad y Morelos"
+						/>
+					</div>
 				</div>
 			</section>
 

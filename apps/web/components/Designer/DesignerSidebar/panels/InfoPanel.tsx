@@ -80,13 +80,9 @@ export default function InfoPanel({ close }: { close: () => void }) {
 							>
 								<div className="flex flex-col">
 									<span className="text-[#3b3b2f]">{l.label}</span>
-									<span className="text-xs text-[#8a8a76]">
-										{l.detail}
-									</span>
+									<span className="text-xs text-[#8a8a76]">{l.detail}</span>
 								</div>
-								<span className="font-medium">
-									{money(l.amount)}
-								</span>
+								<span className="font-medium">{money(l.amount)}</span>
 							</div>
 						))}
 					</div>
@@ -95,15 +91,12 @@ export default function InfoPanel({ close }: { close: () => void }) {
 
 					<div className="flex justify-between items-center">
 						<span className="font-bold text-tinta">Total</span>
-						<span className="font-bold text-lg text-tinta">
-							{money(total)}
-						</span>
+						<span className="font-bold text-lg text-tinta">{money(total)}</span>
 					</div>
 
 					<p className="text-xs text-[#8a8a76]">
-						El precio se actualiza según tu diseño: {sidesEdited}{" "}
-						lado(s) · {designElements} elemento(s) · {colorsUsed}{" "}
-						color(es).
+						El precio se actualiza según tu diseño: {sidesEdited} lado(s) ·{" "}
+						{designElements} elemento(s) · {colorsUsed} color(es).
 					</p>
 				</div>
 			</div>

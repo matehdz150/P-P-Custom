@@ -6,8 +6,8 @@ import { useState } from "react";
 import { useProviderAuth } from "@/Contexts/ProviderAuthContext";
 import {
 	CambioDeContrasena,
-	entrar,
 	ErrorCognito,
+	entrar,
 	establecerContrasena,
 } from "@/lib/auth/cognito";
 
@@ -103,7 +103,9 @@ export default function ProviderLoginPage() {
 				// El tipo de Cognito, a la consola: sin él, un 400 de
 				// configuración se ve idéntico a uno de contraseña mal y se
 				// busca el problema donde no está.
-				console.error(`Cognito rechazó el login (${error.tipo}): ${error.message}`);
+				console.error(
+					`Cognito rechazó el login (${error.tipo}): ${error.message}`,
+				);
 
 				setFallo(
 					error.tipo === "InvalidPasswordException"

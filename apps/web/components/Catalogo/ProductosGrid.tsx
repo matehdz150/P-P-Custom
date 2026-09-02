@@ -95,7 +95,10 @@ function Pieza({ producto }: { producto: ProductFromCategory }) {
 	const imagen = producto.images?.[0]?.url;
 
 	return (
-		<Link href={`/product/${producto.id}`} className="flex flex-col gap-3 md:gap-[15px]">
+		<Link
+			href={`/product/${producto.id}`}
+			className="flex flex-col gap-3 md:gap-[15px]"
+		>
 			<div className="flex h-[158px] items-center justify-center md:h-[236px]">
 				{imagen ? (
 					<Image

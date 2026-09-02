@@ -1,18 +1,19 @@
 import { randomBytes, randomUUID } from "node:crypto";
 import {
-  GetCommand,
-  QueryCommand,
-  TransactWriteCommand,
-  UpdateCommand,
+	GetCommand,
+	QueryCommand,
+	TransactWriteCommand,
+	UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 
 import {
-  dynamo,
-  esConflicto,
-  llaves,
-  sinLlaves,
-  TABLA,
-  type Estado,
+	consultarTodo,
+	dynamo,
+	type Estado,
+	esConflicto,
+	llaves,
+	sinLlaves,
+	TABLA,
 } from "../lib/dynamo.js";
 import { conflicto, malaPeticion, noEncontrado } from "../lib/http.js";
 
@@ -27,74 +28,85 @@ import { conflicto, malaPeticion, noEncontrado } from "../lib/http.js";
 
 /** Lo que el taller puede guardar. Todo lo que no esté aquí se ignora. */
 const CAMPOS = [
-  "name",
-  "internalName",
-  "sku",
-  "description",
-  "categoryIds",
-  "templateId",
-  "isCustomizable",
-  "images",
-  "printSides",
-  "templateSides",
-  "customizationRules",
-  "sizes",
-  "colors",
-  "pricing",
-  "production",
+	"name",
+	"internalName",
+	"sku",
+	"description",
+	"categoryIds",
+	"templateId",
+	"isCustomizable",
+	"images",
+	"printSides",
+	"templateSides",
+	"customizationRules",
+	"sizes",
+	"colors",
+	"pricing",
+	"production",
+	/* ─── Existencias ───────────────────────────────────────────────────────
+	   Todo producto lleva cuenta. El que compra el blanco por trabajo también:
+	   sus existencias son cero y `faltantes` es su lista de compras. Lo que ese
+	   taller no tiene son días extra, y para eso está `diasExtraSinStock`. */
+	"existencias",
+	"minimoAlerta",
+	"diasExtraSinStock",
+	/* ─── Envío ─────────────────────────────────────────────────────────────
+	   Lo que hace falta para cotizar con la paquetería. El peso va POR TALLA
+	   y no por variante: el color no cambia lo que pesa una prenda, la talla
+	   sí. Por variante serían sesenta casillas para obtener el mismo dato. */
+	"pesoPorTalla",
+	"caja",
 ] as const;
 
 type Cuerpo = Record<string, unknown>;
 
 export async function listar(proveedorId: string) {
-  const { Items } = await dynamo.send(
-    new QueryCommand({
-      TableName: TABLA,
-      IndexName: "gsi1",
-      KeyConditionExpression: "gsi1pk = :pk",
-      ExpressionAttributeValues: {
-        ":pk": llaves.productoDeProveedor(proveedorId, "", "").gsi1pk,
-      },
-      // Del más nuevo al más viejo: la fecha va en la llave de orden.
-      ScanIndexForward: false,
-    }),
-  );
+	const items = await consultarTodo({
+		TableName: TABLA,
+		IndexName: "gsi1",
+		KeyConditionExpression: "gsi1pk = :pk",
+		ExpressionAttributeValues: {
+			":pk": llaves.productoDeProveedor(proveedorId, "", "").gsi1pk,
+		},
+		// Del más nuevo al más viejo: la fecha va en la llave de orden.
+		ScanIndexForward: false,
+	});
 
-  return (Items ?? []).map(sinLlaves);
+	return items.map(sinLlaves);
 }
 
 export async function obtener(proveedorId: string, id: string) {
-  return sinLlaves(await suyoOFalla(proveedorId, id));
+	return sinLlaves(await suyoOFalla(proveedorId, id));
 }
 
 export async function crear(proveedorId: string, cuerpo: unknown) {
-  const c = (cuerpo ?? {}) as Cuerpo;
-  const datos = validar(c);
+	const c = (cuerpo ?? {}) as Cuerpo;
+	const datos = validar(c);
 
-  const id = randomUUID();
-  const ahora = new Date().toISOString();
+	const id = randomUUID();
+	const ahora = new Date().toISOString();
 
-  // El taller decide si lo manda a revisar o lo deja a medias; lo que no
-  // puede es publicarlo. `activo` sólo lo pone el admin.
-  const estado: Estado = c.enviar === true ? "en_revision" : "borrador";
+	// El taller decide si lo manda a revisar o lo deja a medias; lo que no
+	// puede es publicarlo. `activo` sólo lo pone el admin.
+	const estado: Estado = c.enviar === true ? "en_revision" : "borrador";
 
-  const item = {
-    ...llaves.producto(id),
-    ...llaves.productoDeProveedor(proveedorId, id, ahora),
-    ...llaves.productoPorEstado(estado, ahora),
-    id,
-    ...datos,
-    slug: "", // lo pone escribirConSlug, que es quien sabe cuál quedó libre
-    estado,
-    notaRevision: null,
-    proveedorId,
-    createdAt: ahora,
-    updatedAt: ahora,
-  };
+	const item = {
+		...llaves.producto(id),
+		...llaves.productoDeProveedor(proveedorId, id, ahora),
+		...llaves.productoPorEstado(estado, ahora),
+		id,
+		...datos,
+		slug: "", // lo pone escribirConSlug, que es quien sabe cuál quedó libre
+		estado,
+		notaRevision: null,
+		proveedorId,
+		createdAt: ahora,
+		updatedAt: ahora,
+	};
 
-  const slug = await escribirConSlug(item, aSlug(String(datos.name)), id);
+	const slug = await escribirConSlug(item, aSlug(String(datos.name)), id);
 
-  return { id, slug, estado };
+	return { id, slug, estado };
 }
 
 /**
@@ -108,58 +120,58 @@ export async function crear(proveedorId: string, cuerpo: unknown) {
  * mueve, los enlaces que ya circulan dejan de existir.
  */
 export async function actualizar(
-  proveedorId: string,
-  id: string,
-  cuerpo: unknown,
+	proveedorId: string,
+	id: string,
+	cuerpo: unknown,
 ) {
-  const previo = await suyoOFalla(proveedorId, id);
-  const c = (cuerpo ?? {}) as Cuerpo;
+	const previo = await suyoOFalla(proveedorId, id);
+	const c = (cuerpo ?? {}) as Cuerpo;
 
-  const datos = validar({ ...previo, ...c });
-  const ahora = new Date().toISOString();
+	const datos = validar({ ...previo, ...c });
+	const ahora = new Date().toISOString();
 
-  const estado: Estado =
-    previo.estado === "activo" || c.enviar === true
-      ? "en_revision"
-      : (previo.estado as Estado);
+	const estado: Estado =
+		previo.estado === "activo" || c.enviar === true
+			? "en_revision"
+			: (previo.estado as Estado);
 
-  const asigna: string[] = ["#updatedAt = :updatedAt", "#estado = :estado"];
-  const nombres: Record<string, string> = {
-    "#updatedAt": "updatedAt",
-    "#estado": "estado",
-  };
-  const valores: Record<string, unknown> = {
-    ":updatedAt": ahora,
-    ":estado": estado,
-  };
+	const asigna: string[] = ["#updatedAt = :updatedAt", "#estado = :estado"];
+	const nombres: Record<string, string> = {
+		"#updatedAt": "updatedAt",
+		"#estado": "estado",
+	};
+	const valores: Record<string, unknown> = {
+		":updatedAt": ahora,
+		":estado": estado,
+	};
 
-  for (const campo of CAMPOS) {
-    if (datos[campo] === undefined) continue;
-    asigna.push(`#${campo} = :${campo}`);
-    nombres[`#${campo}`] = campo;
-    valores[`:${campo}`] = datos[campo];
-  }
+	for (const campo of CAMPOS) {
+		if (datos[campo] === undefined) continue;
+		asigna.push(`#${campo} = :${campo}`);
+		nombres[`#${campo}`] = campo;
+		valores[`:${campo}`] = datos[campo];
+	}
 
-  // El índice de estados vive en el ítem: si no se reescribe, la bandeja del
-  // admin sigue enseñando el producto en el estado viejo.
-  const indice = llaves.productoPorEstado(estado, ahora);
-  asigna.push("gsi2pk = :gsi2pk", "gsi2sk = :gsi2sk");
-  valores[":gsi2pk"] = indice.gsi2pk;
-  valores[":gsi2sk"] = indice.gsi2sk;
+	// El índice de estados vive en el ítem: si no se reescribe, la bandeja del
+	// admin sigue enseñando el producto en el estado viejo.
+	const indice = llaves.productoPorEstado(estado, ahora);
+	asigna.push("gsi2pk = :gsi2pk", "gsi2sk = :gsi2sk");
+	valores[":gsi2pk"] = indice.gsi2pk;
+	valores[":gsi2sk"] = indice.gsi2sk;
 
-  const { Attributes } = await dynamo.send(
-    new UpdateCommand({
-      TableName: TABLA,
-      Key: llaves.producto(id),
-      UpdateExpression: `SET ${asigna.join(", ")}`,
-      ExpressionAttributeNames: nombres,
-      ExpressionAttributeValues: valores,
-      ConditionExpression: "attribute_exists(pk)",
-      ReturnValues: "ALL_NEW",
-    }),
-  );
+	const { Attributes } = await dynamo.send(
+		new UpdateCommand({
+			TableName: TABLA,
+			Key: llaves.producto(id),
+			UpdateExpression: `SET ${asigna.join(", ")}`,
+			ExpressionAttributeNames: nombres,
+			ExpressionAttributeValues: valores,
+			ConditionExpression: "attribute_exists(pk)",
+			ReturnValues: "ALL_NEW",
+		}),
+	);
 
-  return sinLlaves(Attributes ?? {});
+	return sinLlaves(Attributes ?? {});
 }
 
 /* ─── Lo que sostiene todo lo de arriba ─────────────────────────────────── */
@@ -170,16 +182,103 @@ export async function actualizar(
  * Responde 404 y no 403 a propósito: un 403 le confirmaría a un taller que
  * cierto id existe y es de otro.
  */
+/**
+ * Mueve las existencias de UNA variante. Nada más.
+ *
+ * Endpoint aparte de `actualizar` por dos razones, y las dos importan:
+ *
+ * 1. `actualizar` devuelve a `en_revision` cualquier producto activo. Es
+ *    correcto para el contenido —si no, se publica algo inocuo, se espera el
+ *    visto bueno y luego se cambia—, pero un blanco más en la bodega no es
+ *    contenido: nadie tiene que aprobar cuántas playeras negras hay. Pasando
+ *    el inventario por ahí, el taller se despublica al corregir su conteo.
+ *
+ * 2. El delta lo aplica DynamoDB, no el navegador. Si el cliente leyera,
+ *    sumara y reescribiera el mapa entero, un pedido que descuente en ese
+ *    hueco se pierde: el mapa que llega pisa el descuento. Aquí la suma es
+ *    atómica sobre la hoja, así que el pedido y el ajuste se respetan pase lo
+ *    que pase con el orden.
+ *
+ * `corregir` sí es una escritura absoluta, y ahí la carrera es inevitable:
+ * es lo que significa "cuéntalos otra vez, hay 14". El último que cuenta
+ * manda, que es justo lo que espera quien acaba de contar.
+ */
+export async function moverExistencias(
+	proveedorId: string,
+	id: string,
+	cuerpo: unknown,
+) {
+	const previo = await suyoOFalla(proveedorId, id);
+	const c = (cuerpo ?? {}) as Cuerpo;
+
+	const clave = String(c.clave ?? "").trim();
+	if (!clave) throw malaPeticion("Falta la variante");
+
+	// Sólo variantes que existen hoy. Sin esto, un color borrado ayer podría
+	// resucitar como entrada suelta del mapa que nadie ve ni vuelve a tocar.
+	if (!(clave in ((previo.existencias ?? {}) as Record<string, unknown>))) {
+		throw noEncontrado(`La variante "${clave}" no está en este producto`);
+	}
+
+	const operacion = String(c.operacion ?? "");
+	if (!["agregar", "quitar", "corregir"].includes(operacion)) {
+		throw malaPeticion("La operación tiene que ser agregar, quitar o corregir");
+	}
+
+	const cantidad = Math.trunc(Number(c.cantidad));
+	if (!Number.isFinite(cantidad)) {
+		throw malaPeticion("La cantidad no es un número");
+	}
+	// Agregar y quitar llevan el signo en la operación: un "agregar -5" sería
+	// un "quitar 5" disfrazado, y el toast diría lo contrario de lo que pasó.
+	if (operacion !== "corregir" && cantidad <= 0) {
+		throw malaPeticion("La cantidad tiene que ser mayor que cero");
+	}
+
+	const absoluta = operacion === "corregir";
+
+	const expresion = absoluta
+		? "SET existencias.#v = :n, #updatedAt = :updatedAt"
+		: "SET existencias.#v = if_not_exists(existencias.#v, :cero) + :n, #updatedAt = :updatedAt";
+
+	// `:cero` sólo se declara si la expresión lo usa: DynamoDB rechaza con un
+	// 400 cualquier valor declarado que no aparezca, y desde fuera eso se ve
+	// como un 500 sin pista.
+	const valores: Record<string, unknown> = {
+		":n": operacion === "quitar" ? -cantidad : cantidad,
+		":updatedAt": new Date().toISOString(),
+	};
+	if (!absoluta) valores[":cero"] = 0;
+
+	const { Attributes } = await dynamo.send(
+		new UpdateCommand({
+			TableName: TABLA,
+			Key: llaves.producto(id),
+			UpdateExpression: expresion,
+			ExpressionAttributeNames: { "#v": clave, "#updatedAt": "updatedAt" },
+			ExpressionAttributeValues: valores,
+			// El mapa tiene que existir: escribir dentro de uno que no está
+			// revienta con ValidationException.
+			ConditionExpression: "attribute_exists(existencias)",
+			ReturnValues: "ALL_NEW",
+		}),
+	);
+
+	// Se devuelve el producto entero para que la pantalla repinte con lo que
+	// quedó de verdad, no con lo que el navegador creía que iba a quedar.
+	return sinLlaves(Attributes ?? {});
+}
+
 async function suyoOFalla(proveedorId: string, id: string) {
-  const { Item } = await dynamo.send(
-    new GetCommand({ TableName: TABLA, Key: llaves.producto(id) }),
-  );
+	const { Item } = await dynamo.send(
+		new GetCommand({ TableName: TABLA, Key: llaves.producto(id) }),
+	);
 
-  if (!Item || Item.proveedorId !== proveedorId) {
-    throw noEncontrado("Ese producto no existe o no es tuyo");
-  }
+	if (!Item || Item.proveedorId !== proveedorId) {
+		throw noEncontrado("Ese producto no existe o no es tuyo");
+	}
 
-  return Item;
+	return Item;
 }
 
 /**
@@ -190,46 +289,46 @@ async function suyoOFalla(proveedorId: string, id: string) {
  * corto. Sólo si también choca —que ya es mala suerte— se rinde.
  */
 async function escribirConSlug(
-  item: Record<string, unknown>,
-  base: string,
-  id: string,
+	item: Record<string, unknown>,
+	base: string,
+	id: string,
 ) {
-  const candidatos = [
-    base,
-    `${base}-${randomBytes(2).toString("hex")}`,
-    `${base}-${randomBytes(3).toString("hex")}`,
-  ];
+	const candidatos = [
+		base,
+		`${base}-${randomBytes(2).toString("hex")}`,
+		`${base}-${randomBytes(3).toString("hex")}`,
+	];
 
-  for (const slug of candidatos) {
-    try {
-      await dynamo.send(
-        new TransactWriteCommand({
-          TransactItems: [
-            {
-              Put: {
-                TableName: TABLA,
-                Item: { ...item, slug },
-                ConditionExpression: "attribute_not_exists(pk)",
-              },
-            },
-            {
-              Put: {
-                TableName: TABLA,
-                Item: { ...llaves.slugDeProducto(slug), productId: id },
-                ConditionExpression: "attribute_not_exists(pk)",
-              },
-            },
-          ],
-        }),
-      );
+	for (const slug of candidatos) {
+		try {
+			await dynamo.send(
+				new TransactWriteCommand({
+					TransactItems: [
+						{
+							Put: {
+								TableName: TABLA,
+								Item: { ...item, slug },
+								ConditionExpression: "attribute_not_exists(pk)",
+							},
+						},
+						{
+							Put: {
+								TableName: TABLA,
+								Item: { ...llaves.slugDeProducto(slug), productId: id },
+								ConditionExpression: "attribute_not_exists(pk)",
+							},
+						},
+					],
+				}),
+			);
 
-      return slug;
-    } catch (error) {
-      if (!esConflicto(error)) throw error;
-    }
-  }
+			return slug;
+		} catch (error) {
+			if (!esConflicto(error)) throw error;
+		}
+	}
 
-  throw conflicto("No pudimos generarle una dirección única a este producto");
+	throw conflicto("No pudimos generarle una dirección única a este producto");
 }
 
 /**
@@ -239,47 +338,166 @@ async function escribirConSlug(
  * taller, no seguridad: aquí llega lo que llegue.
  */
 function validar(c: Cuerpo) {
-  const datos: Cuerpo = {};
-  for (const campo of CAMPOS) {
-    if (c[campo] !== undefined) datos[campo] = c[campo];
-  }
+	const datos: Cuerpo = {};
+	for (const campo of CAMPOS) {
+		if (c[campo] !== undefined) datos[campo] = c[campo];
+	}
 
-  const name = String(datos.name ?? "").trim();
-  if (!name) throw malaPeticion("Falta el nombre del producto");
-  datos.name = name;
+	const name = String(datos.name ?? "").trim();
+	if (!name) throw malaPeticion("Falta el nombre del producto");
+	datos.name = name;
 
-  if (!String(datos.templateId ?? "").trim()) {
-    throw malaPeticion("Falta la plantilla: de ahí salen los lados imprimibles");
-  }
+	if (!String(datos.templateId ?? "").trim()) {
+		throw malaPeticion(
+			"Falta la plantilla: de ahí salen los lados imprimibles",
+		);
+	}
 
-  const precio = Number((datos.pricing as Cuerpo | undefined)?.basePrice ?? 0);
-  if (!(precio > 0)) throw malaPeticion("El precio base tiene que ser mayor a 0");
+	const precio = Number((datos.pricing as Cuerpo | undefined)?.basePrice ?? 0);
+	if (!(precio > 0))
+		throw malaPeticion("El precio base tiene que ser mayor a 0");
 
-  // Sin lados no hay nada que personalizar, y el editor se queda sin lienzo.
-  if (!Array.isArray(datos.printSides) || datos.printSides.length === 0) {
-    throw malaPeticion("Marca al menos un lado que puedas imprimir");
-  }
+	// Sin lados no hay nada que personalizar, y el editor se queda sin lienzo.
+	if (!Array.isArray(datos.printSides) || datos.printSides.length === 0) {
+		throw malaPeticion("Marca al menos un lado que puedas imprimir");
+	}
 
-  return datos;
+	validarExistencias(datos);
+	validarEnvio(datos);
+
+	return datos;
 }
 
 /**
- * El rango de diacríticos se construye desde una cadena ASCII a propósito:
- * escrito con caracteres literales depende de cómo se guarde el archivo, y
- * si se estropea el slug sale mal sin que nadie se entere.
+ * Lo que hace falta para cotizar el envío.
+ *
+ * EL PESO VA POR TALLA, NO POR VARIANTE. El color no cambia lo que pesa una
+ * prenda; la talla sí. Por variante serían diez colores × seis tallas para
+ * obtener seis números distintos, y lo que se consigue pidiendo sesenta
+ * casillas es que se rellenen a ojo.
+ *
+ * EN GRAMOS, enteros. Una playera pesa 150 g, no 0.15 kg: pedirlo en kilos
+ * invita a decimales mal puestos, y un 1.5 donde iba 0.15 multiplica por diez
+ * el costo del envío sin que nadie lo note hasta la factura. A Skydropx se le
+ * manda en kilos, que es lo que espera, pero la conversión la hacemos
+ * nosotros.
+ *
+ * LA CAJA ES LA DE UNA PIEZA. Sirve para cotizar antes de que el paquete
+ * exista; el taller confirma las medidas reales al terminar, y ésas son las
+ * que se usan para comprar la guía.
  */
-const DIACRITICOS = new RegExp("[\\u0300-\\u036f]", "g");
+function validarEnvio(datos: Cuerpo) {
+	if (datos.pesoPorTalla !== undefined) {
+		const crudo = (datos.pesoPorTalla ?? {}) as Record<string, unknown>;
+		const limpio: Record<string, number> = {};
+
+		for (const [talla, valor] of Object.entries(crudo)) {
+			const g = Math.trunc(Number(valor));
+			if (!Number.isFinite(g) || g <= 0) {
+				throw malaPeticion(`El peso de la talla "${talla}" no es válido`);
+			}
+			// Treinta kilos es más que cualquier prenda y menos que el límite de
+			// las paqueterías: quien escriba 15000 quiso decir 1500.
+			if (g > 30000) {
+				throw malaPeticion(
+					`El peso de la talla "${talla}" parece equivocado: ${g} gramos`,
+				);
+			}
+			limpio[talla] = g;
+		}
+
+		datos.pesoPorTalla = limpio;
+	}
+
+	if (datos.caja !== undefined && datos.caja !== null) {
+		const c = (datos.caja ?? {}) as Record<string, unknown>;
+		const medidas: Record<string, number> = {};
+
+		for (const lado of ["largo", "ancho", "alto"] as const) {
+			const cm = Number(c[lado]);
+			if (!Number.isFinite(cm) || cm <= 0) {
+				throw malaPeticion(`Falta el ${lado} de tu caja, en centímetros`);
+			}
+			if (cm > 200) {
+				throw malaPeticion(`El ${lado} de la caja parece equivocado: ${cm} cm`);
+			}
+			medidas[lado] = cm;
+		}
+
+		datos.caja = medidas;
+	}
+}
+
+/**
+ * Las existencias. Todo producto las lleva — no hay interruptor.
+ *
+ * Antes era opcional, con la idea de que el taller que compra el blanco por
+ * trabajo "no tiene nada que contar". Es falso: sí cuenta, siempre es cero, y
+ * entonces `faltantes` le sale como lista de compras. Lo que ese taller no
+ * tiene son DÍAS EXTRA, porque sus días de producción ya incluyen ir a
+ * comprar. Por eso lo configurable es `diasExtraSinStock` —que arranca en 0—
+ * y no el conteo: al revés se le cotizaría al cliente la compra dos veces.
+ *
+ * `existencias` SIEMPRE queda escrito, aunque sea vacío. DynamoDB no puede
+ * escribir dentro de un mapa que no existe: un `SET existencias.#v = ...`
+ * sobre un producto sin ese atributo revienta con `ValidationException`, y eso
+ * pasaría en mitad de un pedido, no aquí.
+ */
+function validarExistencias(datos: Cuerpo) {
+	const crudas = (datos.existencias ?? {}) as Record<string, unknown>;
+	const limpias: Record<string, number> = {};
+
+	for (const [clave, valor] of Object.entries(crudas)) {
+		const n = Math.trunc(Number(valor));
+		// Se admite negativo: es lo que el taller debe comprar para cumplir lo
+		// que ya vendió. Lo que no se admite es basura.
+		if (!Number.isFinite(n)) {
+			throw malaPeticion(`La cantidad de "${clave}" no es un número`);
+		}
+		limpias[clave] = n;
+	}
+
+	datos.existencias = limpias;
+
+	// El aviso de existencias bajas sí sigue siendo opcional, y 0 lo apaga.
+	// Con el conteo universal hace falta: un producto que siempre está en cero
+	// —el del taller que compra por trabajo— dispararía la alerta en cada
+	// carga del panel, y una alerta que salta siempre no es una alerta.
+	const minimo = Math.trunc(Number(datos.minimoAlerta ?? 0));
+	if (!Number.isFinite(minimo) || minimo < 0) {
+		throw malaPeticion("El mínimo para avisarte no puede ser negativo");
+	}
+	datos.minimoAlerta = minimo;
+
+	const extra = Math.trunc(Number(datos.diasExtraSinStock ?? 0));
+	if (!Number.isFinite(extra) || extra < 0) {
+		throw malaPeticion(
+			"Los días extra sin existencias no pueden ser negativos",
+		);
+	}
+	datos.diasExtraSinStock = extra;
+}
+
+/**
+ * El rango de diacríticos va con secuencias de escape y NUNCA con los
+ * caracteres dentro: escritos ahí, la línea deja de ser ASCII y el slug pasa a
+ * depender de cómo se guarde el archivo. Si se estropea, sale mal y nadie se
+ * entera. Cuidado al editarlo: hay herramientas que convierten la secuencia de
+ * escape en el carácter sin avisar. Si dudas, copia la forma de
+ * `apps/web/lib/texto.ts`, que lo arma en tiempo de ejecución justo por esto.
+ */
+const DIACRITICOS = /[\u0300-\u036f]/g;
 
 function aSlug(s: string) {
-  const limpio = s
-    .normalize("NFD")
-    .replace(DIACRITICOS, "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 60);
+	const limpio = s
+		.normalize("NFD")
+		.replace(DIACRITICOS, "")
+		.toLowerCase()
+		.trim()
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/^-+|-+$/g, "")
+		.slice(0, 60);
 
-  // Un nombre entero de emojis dejaría el slug vacío y el candado sería `SLUG#`.
-  return limpio || "producto";
+	// Un nombre entero de emojis dejaría el slug vacío y el candado sería `SLUG#`.
+	return limpio || "producto";
 }

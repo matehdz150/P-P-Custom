@@ -8,16 +8,7 @@ export const CANVAS_W = 1445;
 export const CANVAS_H = 825;
 export const MOCKUP_W = 700;
 
-type Handle =
-	| "move"
-	| "nw"
-	| "ne"
-	| "sw"
-	| "se"
-	| "n"
-	| "s"
-	| "e"
-	| "w";
+type Handle = "move" | "nw" | "ne" | "sw" | "se" | "n" | "s" | "e" | "w";
 
 type Props = {
 	mockup?: string;
@@ -212,8 +203,7 @@ export function MockupAreaEditor({
 							top: px(a.top, "y"),
 							width: px(a.width, "x"),
 							height: px(a.height, "y"),
-							borderRadius:
-								a.type === "ellipse" ? "50%" : undefined,
+							borderRadius: a.type === "ellipse" ? "50%" : undefined,
 							clipPath:
 								a.type === "triangle"
 									? "polygon(50% 0%, 100% 100%, 0% 100%)"

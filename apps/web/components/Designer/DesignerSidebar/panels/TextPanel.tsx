@@ -98,56 +98,59 @@ export default function SidebarTextPanel({ close }: { close: () => void }) {
 							Este producto no permite texto
 						</p>
 						<p className="text-sm">
-							El proveedor configuró este producto para
-							personalizarse solo con imágenes.
+							El proveedor configuró este producto para personalizarse solo con
+							imágenes.
 						</p>
 					</div>
 				</div>
 			) : (
-			/* CONTENT (scrollable) */
-			<div className="flex-1 overflow-y-auto p-6">
-				{/* Search */}
-				<div className="mb-4">
-					<input
-						type="text"
-						placeholder="Buscar fuentes"
-						value={search}
-						onChange={(e) => setSearch(e.target.value)}
-						className="w-full px-4 py-2 rounded-[0.2rem] border text-sm bg-[#faf9f5] placeholder:text-gray-500"
-					/>
-				</div>
+				/* CONTENT (scrollable) */
+				<div className="flex-1 overflow-y-auto p-6">
+					{/* Search */}
+					<div className="mb-4">
+						<input
+							type="text"
+							placeholder="Buscar fuentes"
+							value={search}
+							onChange={(e) => setSearch(e.target.value)}
+							className="w-full px-4 py-2 rounded-[0.2rem] border text-sm bg-[#faf9f5] placeholder:text-gray-500"
+						/>
+					</div>
 
-				{/* Preset designs */}
-				<TextPresets />
+					{/* Preset designs */}
+					<TextPresets />
 
-				{/* Fonts Section */}
-				<h3 className="mt-8 mb-2 text-md font-semibold">Fuentes</h3>
+					{/* Fonts Section */}
+					<h3 className="mt-8 mb-2 text-md font-semibold">Fuentes</h3>
 
-				<div className="space-y-1 pb-10">
-					{filteredFonts.length === 0 && (
-						<p className="text-sm text-gray-500">No fonts found.</p>
-					)}
+					<div className="space-y-1 pb-10">
+						{filteredFonts.length === 0 && (
+							<p className="text-sm text-gray-500">No fonts found.</p>
+						)}
 
-					{filteredFonts.map((font) => (
-						<button
-							key={font.family}
-							type="button"
-							onClick={() => addTextWithFont(font.family)}
-							className="
+						{filteredFonts.map((font) => (
+							<button
+								key={font.family}
+								type="button"
+								onClick={() => addTextWithFont(font.family)}
+								className="
               w-full flex justify-between items-center
               px-3 py-3 rounded-[0.2rem] hover:bg-neutral-100 transition
               text-left
             "
-						>
-							<span style={{ fontFamily: font.family }} className="text-[15px]">
-								{font.label}
-							</span>
+							>
+								<span
+									style={{ fontFamily: font.family }}
+									className="text-[15px]"
+								>
+									{font.label}
+								</span>
 
-							<ChevronDown size={18} className="text-gray-500" />
-						</button>
-					))}
+								<ChevronDown size={18} className="text-gray-500" />
+							</button>
+						))}
+					</div>
 				</div>
-			</div>
 			)}
 		</div>
 	);

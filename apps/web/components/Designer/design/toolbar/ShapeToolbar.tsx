@@ -19,10 +19,8 @@ export default function ShapeToolbar() {
 	if (!canvas || !(activeObject instanceof Path)) return null;
 
 	const shape = activeObject as Path;
-	const fill =
-		typeof shape.fill === "string" ? shape.fill : "#000000";
-	const stroke =
-		typeof shape.stroke === "string" ? shape.stroke : "#000000";
+	const fill = typeof shape.fill === "string" ? shape.fill : "#000000";
+	const stroke = typeof shape.stroke === "string" ? shape.stroke : "#000000";
 
 	const setFill = (color: string) =>
 		execute(new ChangePropertyCommand(shape, "fill", color));
@@ -56,9 +54,7 @@ export default function ShapeToolbar() {
 				onClick={() => fillRef.current?.click()}
 				title="Color de relleno"
 			>
-				<span className="text-xs font-medium text-gray-700">
-					Relleno
-				</span>
+				<span className="text-xs font-medium text-gray-700">Relleno</span>
 				<div
 					className="w-8 h-3 rounded mt-1 border"
 					style={{ backgroundColor: fill }}

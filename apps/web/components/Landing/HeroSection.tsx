@@ -9,15 +9,13 @@ const sora = Sora({
 	display: "swap",
 });
 
-const CHECKS = [
-	"Diseña online",
-	"Más de 50 productos",
-	"Producción y entrega",
-];
+const CHECKS = ["Diseña online", "Más de 50 productos", "Producción y entrega"];
 
 export default function HeroSection() {
 	return (
-		<section className={`${sora.className} bg-white pt-16 pb-0 overflow-hidden`}>
+		<section
+			className={`${sora.className} bg-white pt-16 pb-0 overflow-hidden`}
+		>
 			{/* ─── TEXT BLOCK ─── */}
 			<div className="flex flex-col items-center text-center px-6 max-w-4xl mx-auto">
 				<h1 className="text-5xl sm:text-6xl md:text-7xl font-black tracking-tight leading-[1.05] text-[#1a1a17] uppercase">

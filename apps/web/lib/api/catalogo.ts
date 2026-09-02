@@ -9,6 +9,7 @@
  * absoluta, así que un componente de servidor puede llamarlo igual.
  */
 
+import { sinAcentos } from "@/lib/texto";
 import type { Category } from "./categories";
 import type { CatalogProduct, Product, ProductTemplateData } from "./products";
 
@@ -144,14 +145,6 @@ export async function buscarEnCatalogo(
 			image: p.images?.[0]?.url ?? null,
 			price: p.basePrice ?? null,
 		}));
-}
-
-/** El rango de diacríticos se arma desde ASCII: escrito literal depende de
-    con qué codificación se guarde el archivo. */
-const DIACRITICOS = new RegExp("[\\u0300-\\u036f]", "g");
-
-function sinAcentos(s: string) {
-	return s.normalize("NFD").replace(DIACRITICOS, "").toLowerCase().trim();
 }
 
 /* ─── Puente con la ficha vieja ──────────────────────────────────────────

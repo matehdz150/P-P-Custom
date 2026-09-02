@@ -18,7 +18,15 @@ import { ProvidersModule } from "./providers/providers.module";
 		ConfigModule.forRoot({
 			isGlobal: true,
 		}),
-		DbModule, AuthModule, ProductsModule, UploadsModule, PackagesModule, TemplatesModule, CategoriesModule, SearchModule, ProvidersModule
+		DbModule,
+		AuthModule,
+		ProductsModule,
+		UploadsModule,
+		PackagesModule,
+		TemplatesModule,
+		CategoriesModule,
+		SearchModule,
+		ProvidersModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

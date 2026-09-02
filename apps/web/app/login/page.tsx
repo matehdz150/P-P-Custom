@@ -77,8 +77,7 @@ export default function LoginPage() {
 							type="button"
 							className="w-full flex items-center justify-center gap-3 border rounded-[0.2rem] py-3 font-medium bg-white hover:bg-gray-50 cursor-pointer"
 							onClick={() => {
-								window.location.href =
-									"http://localhost:8000/auth/google";
+								window.location.href = "http://localhost:8000/auth/google";
 							}}
 						>
 							<img
@@ -122,9 +121,7 @@ export default function LoginPage() {
 							className="w-full border rounded-[0.2rem] px-3 py-3 bg-white outline-none focus:border-[#fe6241]"
 						/>
 
-						{error && (
-							<p className="text-sm text-red-600">{error}</p>
-						)}
+						{error && <p className="text-sm text-red-600">{error}</p>}
 
 						<button
 							type="submit"
@@ -146,8 +143,7 @@ export default function LoginPage() {
 					</p>
 
 					<p className="text-xs text-gray-500 text-center">
-						Al continuar aceptas nuestros Términos y Política de
-						Privacidad
+						Al continuar aceptas nuestros Términos y Política de Privacidad
 					</p>
 				</div>
 			</div>

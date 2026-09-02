@@ -1,11 +1,38 @@
 {
-  "artboards": [
-    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 900, "title": "Editor — diseñando" },
-    { "file": "Vacio.dc.html", "x": 1600, "y": 0, "w": 1440, "h": 900, "title": "Editor — al abrirlo" },
-    { "file": "Movil.dc.html", "x": 3200, "y": 0, "w": 390, "h": 844, "title": "Editor — móvil" }
-  ],
-  "annotations": [
-    { "id": "los-tres-cambios", "x": 0, "y": -260, "w": 940, "text": "Tres cosas cambian de fondo, no solo de color:\n1. El precio sube a la barra y se ve siempre — hoy está escondido en el panel de info.\n2. Los límites del proveedor son contadores en vivo (2 de 2 elementos), no un párrafo que hay que abrir.\n3. La barra inferior blanca desaparece: zoom y lados flotan sobre el lienzo, que gana toda la altura." }
-  ],
-  "launch": { "view": "canvas" }
+	"artboards": [
+		{
+			"file": "Main.dc.html",
+			"x": 0,
+			"y": 0,
+			"w": 1440,
+			"h": 900,
+			"title": "Editor — diseñando"
+		},
+		{
+			"file": "Vacio.dc.html",
+			"x": 1600,
+			"y": 0,
+			"w": 1440,
+			"h": 900,
+			"title": "Editor — al abrirlo"
+		},
+		{
+			"file": "Movil.dc.html",
+			"x": 3200,
+			"y": 0,
+			"w": 390,
+			"h": 844,
+			"title": "Editor — móvil"
+		}
+	],
+	"annotations": [
+		{
+			"id": "los-tres-cambios",
+			"x": 0,
+			"y": -260,
+			"w": 940,
+			"text": "Tres cosas cambian de fondo, no solo de color:\n1. El precio sube a la barra y se ve siempre — hoy está escondido en el panel de info.\n2. Los límites del proveedor son contadores en vivo (2 de 2 elementos), no un párrafo que hay que abrir.\n3. La barra inferior blanca desaparece: zoom y lados flotan sobre el lienzo, que gana toda la altura."
+		}
+	],
+	"launch": { "view": "canvas" }
 }

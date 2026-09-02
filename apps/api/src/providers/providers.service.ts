@@ -123,8 +123,7 @@ export class ProvidersService {
 		},
 	) {
 		const patch: Record<string, unknown> = {};
-		if (data.displayName !== undefined)
-			patch.displayName = data.displayName;
+		if (data.displayName !== undefined) patch.displayName = data.displayName;
 		if (data.bio !== undefined) patch.bio = data.bio;
 		if (data.avatarUrl !== undefined) patch.avatarUrl = data.avatarUrl;
 		if (data.bannerUrl !== undefined) patch.bannerUrl = data.bannerUrl;
@@ -192,10 +191,7 @@ export class ProvidersService {
 		}
 
 		const token = crypto.randomUUID();
-		const tokenHash = crypto
-			.createHash("sha256")
-			.update(token)
-			.digest("hex");
+		const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
 
 		const expires = new Date();
 		expires.setDate(expires.getDate() + 7);
@@ -210,10 +206,7 @@ export class ProvidersService {
 	}
 
 	async logout(token: string) {
-		const tokenHash = crypto
-			.createHash("sha256")
-			.update(token)
-			.digest("hex");
+		const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
 		await db
 			.update(providerSessions)
 			.set({ revokedAt: new Date() })
@@ -224,20 +217,13 @@ export class ProvidersService {
 	async resolveFromToken(token?: string) {
 		if (!token) throw new UnauthorizedException();
 
-		const tokenHash = crypto
-			.createHash("sha256")
-			.update(token)
-			.digest("hex");
+		const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
 
 		const session = await db.query.providerSessions.findFirst({
 			where: eq(providerSessions.refreshTokenHash, tokenHash),
 		});
 
-		if (
-			!session ||
-			session.revokedAt ||
-			session.expiresAt < new Date()
-		) {
+		if (!session || session.revokedAt || session.expiresAt < new Date()) {
 			throw new UnauthorizedException();
 		}
 

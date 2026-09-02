@@ -13,8 +13,7 @@ export default function ShapeControls({ obj }: { obj: Path }) {
 	const strokeWidthId = useId();
 
 	const fill = typeof obj.fill === "string" ? obj.fill : "#000000";
-	const stroke =
-		typeof obj.stroke === "string" ? obj.stroke : "#000000";
+	const stroke = typeof obj.stroke === "string" ? obj.stroke : "#000000";
 	const strokeWidth = obj.strokeWidth ?? 0;
 
 	return (
@@ -24,9 +23,7 @@ export default function ShapeControls({ obj }: { obj: Path }) {
 				<span className="text-sm font-medium">Color de relleno</span>
 				<ColorPickerHex
 					value={fill}
-					onChange={(c) =>
-						execute(new ChangePropertyCommand(obj, "fill", c))
-					}
+					onChange={(c) => execute(new ChangePropertyCommand(obj, "fill", c))}
 				/>
 			</div>
 
@@ -35,9 +32,7 @@ export default function ShapeControls({ obj }: { obj: Path }) {
 				<span className="text-sm font-medium">Color de borde</span>
 				<ColorPickerHex
 					value={stroke}
-					onChange={(c) =>
-						execute(new ChangePropertyCommand(obj, "stroke", c))
-					}
+					onChange={(c) => execute(new ChangePropertyCommand(obj, "stroke", c))}
 				/>
 			</div>
 
@@ -93,9 +88,7 @@ export default function ShapeControls({ obj }: { obj: Path }) {
 			{/* OPACIDAD */}
 			<OpacityControl
 				value={obj.opacity ?? 1}
-				onChange={(v) =>
-					execute(new ChangePropertyCommand(obj, "opacity", v))
-				}
+				onChange={(v) => execute(new ChangePropertyCommand(obj, "opacity", v))}
 			/>
 
 			{/* ROTAR */}

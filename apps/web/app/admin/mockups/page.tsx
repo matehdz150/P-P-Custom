@@ -49,10 +49,7 @@ export default function AdminTemplatesPage() {
 
 	if (creating) {
 		return (
-			<TemplateWizard
-				onCancel={() => setCreating(false)}
-				onSubmit={onCreate}
-			/>
+			<TemplateWizard onCancel={() => setCreating(false)} onSubmit={onCreate} />
 		);
 	}
 

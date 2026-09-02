@@ -4,7 +4,7 @@ import { SearchController } from "./catalog.controller";
 import { SearchService } from "./catalogo.service";
 
 @Module({
-  controllers: [SearchController],
-  providers: [SearchService],
+	controllers: [SearchController],
+	providers: [SearchService],
 })
 export class SearchModule {}

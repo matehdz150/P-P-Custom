@@ -9,11 +9,21 @@ pnpm-lock.yaml
 # Copias de seguridad sueltas
 *.bak
 
-# Los secretos nunca van al repo. Los tres se recuperan de AWS:
+# Los secretos nunca van al repo. Se recuperan de AWS:
 # ver README.md, "Los secretos que NO viajan en el repo".
 services/admin/.clave-admin
 infra/.cognito
+infra/.cognito-compradores
+infra/.websocket
+
+# Este SÍ es un secreto de verdad, y no se recupera de AWS: el secreto del
+# cliente de OAuth lo guarda Google y sólo se enseña al crearlo. Si se pierde,
+# se rota en la consola de Google y se vuelve a enganchar.
+infra/.google
 
 # Artefactos de despliegue: se regeneran al correr los scripts de infra/
 services/*/dist/
 services/*/*.zip
+
+# Credenciales de Skydropx. El sandbox tambien es un secreto.
+infra/.skydropx

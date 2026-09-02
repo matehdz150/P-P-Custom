@@ -1,0 +1,3 @@
+KUSTTO_DOMINIO=kustto.com.mx
+KUSTTO_BUCKET_CORREO=kustto-correo-prod
+KUSTTO_PREFIJO_CORREO=entrada/

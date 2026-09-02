@@ -33,7 +33,10 @@ export default async function ProductPage({
 	);
 
 	return (
-		<ProductoVista product={aProductoViejo(ficha)} recomendados={recomendados} />
+		<ProductoVista
+			product={aProductoViejo(ficha)}
+			recomendados={recomendados}
+		/>
 	);
 }
 

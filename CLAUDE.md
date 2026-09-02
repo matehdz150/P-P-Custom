@@ -36,6 +36,15 @@ El proyecto se desarrolla en Windows con Git Bash y PowerShell.
   las comillas**. Para editar archivos usa las herramientas de edición, no
   `sed`/`cat` con contenido acentuado. Para mandar JSON con acentos, escribe
   un archivo y usa `--data-binary @archivo.json`.
+- **`perl -0pi -e` sobre archivos del repo falla callando**, porque muchos
+  tienen CRLF y el patrón no calza. Peor: si calza a medias, parte un tipo por
+  la mitad y el error sale en otro sitio. Ya pasó. Usa las herramientas de
+  edición para cualquier cosa que no sea un reemplazo trivial de una línea.
+- **Git Bash convierte `/aws/lambda/...` en ruta de Windows** y el CLI rechaza
+  el nombre del grupo de logs con un error de validación que no menciona
+  rutas. Se desactiva con `export MSYS_NO_PATHCONV=1`.
+- **El CLI de AWS es un binario de Windows**: `--change-batch file://...` y
+  `--cli-input-json` quieren rutas `C:/...`, no `/c/Users/...`.
 - `zip` no existe en Git Bash. Usa `Compress-Archive` de PowerShell.
 - El front se levanta **en el host** (`pnpm --filter web dev`), no en Docker.
 
@@ -63,3 +72,12 @@ Antes de cambiar código por una hipótesis, comprueba la hipótesis.
 - **No vuelvas a crear una ruta `ANY`** en la API Gateway de proveedores.
 - **No inviertas en migrar los productos de Postgres.** Son de prueba y se
   vuelven a sembrar.
+- **No aceptes del navegador nada que decida cuánto se cobra.** Ni el precio
+  del producto, ni el peso, ni el costo del envío. El checkout manda qué se
+  pide y a dónde; los números salen de la tabla o del proveedor externo. Está
+  comprobado que se puede falsificar el cuerpo: se probó y se ignoró.
+- **No pongas a una Lambda a esperar a un tercero.** Cotizar tarda ~5 s y una
+  etiqueta puede tardar minutos. Se devuelve un id y se consulta después. Una
+  función que muere por timeout DESPUÉS de pagar algo es peor que un error.
+- **No dispares una petición a un proveedor externo por cada tecla o clic.**
+  Skydropx admite 2 por segundo. Siete clics en "+1" tumbaron el checkout.

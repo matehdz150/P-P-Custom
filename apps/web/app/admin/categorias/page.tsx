@@ -6,84 +6,77 @@ import { Plus } from "lucide-react";
 import { CategoryFormDialog } from "@/components/Admin/categorias/CategoryFormDialog";
 
 export default async function CategoriesAdminPage() {
-  // Las de producto ya viven en DynamoDB; las de paquete siguen en la API
-  // vieja hasta que migren los paquetes.
-  //
-  // Van por separado a propósito: con Promise.all, la API de Nest apagada
-  // —que es lo normal mientras dure la migración— tumbaba la página entera
-  // y las categorías de DynamoDB, que sí responden, nunca se pintaban.
-  const productCategories =
-    await adminFetchServidor<Category[]>("/categories");
+	// Las de producto ya viven en DynamoDB; las de paquete siguen en la API
+	// vieja hasta que migren los paquetes.
+	//
+	// Van por separado a propósito: con Promise.all, la API de Nest apagada
+	// —que es lo normal mientras dure la migración— tumbaba la página entera
+	// y las categorías de DynamoDB, que sí responden, nunca se pintaban.
+	const productCategories = await adminFetchServidor<Category[]>("/categories");
 
-  const packageCategories = await getPackageCategories().catch(() => null);
+	const packageCategories = await getPackageCategories().catch(() => null);
 
-  return (
-    <main className="px-6 py-10 space-y-12">
-      {/* ================= PRODUCT CATEGORIES ================= */}
-      <section className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">
-              Categorías de productos
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Administra las categorías de productos
-            </p>
-          </div>
+	return (
+		<main className="px-6 py-10 space-y-12">
+			{/* ================= PRODUCT CATEGORIES ================= */}
+			<section className="space-y-6">
+				<div className="flex items-center justify-between">
+					<div>
+						<h1 className="text-3xl font-bold tracking-tight">
+							Categorías de productos
+						</h1>
+						<p className="text-sm text-muted-foreground">
+							Administra las categorías de productos
+						</p>
+					</div>
 
-          <CategoryFormDialog
-            defaultType="product"
-            trigger={
-              <Button className="flex items-center gap-2">
-                <Plus size={18} />
-                Nueva categoría
-              </Button>
-            }
-          />
-        </div>
+					<CategoryFormDialog
+						defaultType="product"
+						trigger={
+							<Button className="flex items-center gap-2">
+								<Plus size={18} />
+								Nueva categoría
+							</Button>
+						}
+					/>
+				</div>
 
-        <CategoriesTable
-          categories={productCategories}
-          type="product"
-        />
-      </section>
+				<CategoriesTable categories={productCategories} type="product" />
+			</section>
 
-      {/* ================= PACKAGE CATEGORIES ================= */}
-      <section className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight">
-              Categorías de paquetes
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Administra las categorías de paquetes
-            </p>
-          </div>
+			{/* ================= PACKAGE CATEGORIES ================= */}
+			<section className="space-y-6">
+				<div className="flex items-center justify-between">
+					<div>
+						<h2 className="text-2xl font-bold tracking-tight">
+							Categorías de paquetes
+						</h2>
+						<p className="text-sm text-muted-foreground">
+							Administra las categorías de paquetes
+						</p>
+					</div>
 
-          <CategoryFormDialog
-            defaultType="package"
-            trigger={
-              <Button className="flex items-center gap-2">
-                <Plus size={18} />
-                Nueva categoría
-              </Button>
-            }
-          />
-        </div>
+					<CategoryFormDialog
+						defaultType="package"
+						trigger={
+							<Button className="flex items-center gap-2">
+								<Plus size={18} />
+								Nueva categoría
+							</Button>
+						}
+					/>
+				</div>
 
-        {packageCategories ? (
-          <CategoriesTable
-            categories={packageCategories}
-            type="package"
-          />
-        ) : (
-          <p className="text-sm text-muted-foreground border rounded-lg p-4">
-            No se pudo hablar con la API de Nest, que es donde siguen viviendo
-            los paquetes. Si estás trabajando en local, levántala con{" "}
-            <code>docker compose up -d postgres api</code>.
-          </p>
-        )}
-      </section>
-    </main>
-  );
+				{packageCategories ? (
+					<CategoriesTable categories={packageCategories} type="package" />
+				) : (
+					<p className="text-sm text-muted-foreground border rounded-lg p-4">
+						No se pudo hablar con la API de Nest, que es donde siguen viviendo
+						los paquetes. Si estás trabajando en local, levántala con{" "}
+						<code>docker compose up -d postgres api</code>.
+					</p>
+				)}
+			</section>
+		</main>
+	);
 }

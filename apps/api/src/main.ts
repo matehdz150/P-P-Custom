@@ -7,21 +7,20 @@ import { AppModule } from "./app.module";
 import cookieParser from "cookie-parser";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+	const app = await NestFactory.create(AppModule);
 
-  app.use(cookieParser());
+	app.use(cookieParser());
 
-  app.enableCors({
-    origin: "http://localhost:3000",
-    credentials: true,
-  });
+	app.enableCors({
+		origin: "http://localhost:3000",
+		credentials: true,
+	});
 
-  const config = app.get(ConfigService);
-  const port = config.get<number>("PORT") ?? 8000;
+	const config = app.get(ConfigService);
+	const port = config.get<number>("PORT") ?? 8000;
 
-  await app.listen(port);
-  console.log(`🚀 API running on http://localhost:${port}`);
+	await app.listen(port);
+	console.log(`🚀 API running on http://localhost:${port}`);
 }
 
 bootstrap();
-

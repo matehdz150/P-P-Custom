@@ -1,10 +1,10 @@
 import {
-  ApiGatewayManagementApiClient,
-  PostToConnectionCommand,
+	ApiGatewayManagementApiClient,
+	PostToConnectionCommand,
 } from "@aws-sdk/client-apigatewaymanagementapi";
 import { DeleteCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 
-import { dynamo, llaves, TABLA } from "./dynamo.js";
+import { consultarTodo, dynamo, llaves, TABLA } from "./dynamo.js";
 
 /**
  * Avisar al panel del taller de que pasó algo.
@@ -23,12 +23,12 @@ const ENDPOINT = process.env.KUSTTO_WS_ENDPOINT ?? "";
  * funcionando igual.
  */
 const api = ENDPOINT
-  ? new ApiGatewayManagementApiClient({ endpoint: ENDPOINT })
-  : null;
+	? new ApiGatewayManagementApiClient({ endpoint: ENDPOINT })
+	: null;
 
 export type AvisoAlTaller =
-  | { tipo: "pedido-nuevo"; pedidoId: string; folio: string }
-  | { tipo: "pedido-movido"; pedidoId: string; estado: string };
+	| { tipo: "pedido-nuevo"; pedidoId: string; folio: string }
+	| { tipo: "pedido-movido"; pedidoId: string; estado: string };
 
 /**
  * NUNCA lanza.
@@ -40,62 +40,62 @@ export type AvisoAlTaller =
  * notificación sería cambiar algo que importa por algo que no.
  */
 export async function avisarAlTaller(
-  proveedorId: string,
-  aviso: AvisoAlTaller,
+	proveedorId: string,
+	aviso: AvisoAlTaller,
 ): Promise<void> {
-  if (!api) return;
+	if (!api) return;
 
-  try {
-    const { Items } = await dynamo.send(
-      new QueryCommand({
-        TableName: TABLA,
-        IndexName: "gsi1",
-        KeyConditionExpression: "gsi1pk = :pk",
-        ExpressionAttributeValues: {
-          ":pk": llaves.conexionesDeProveedor(proveedorId, "").gsi1pk,
-        },
-      }),
-    );
+	try {
+		// Un taller con muchas pestañas y móviles abiertos cabe de sobra en una
+		// página, pero se pagina igual: una conexión que se quede fuera es un
+		// panel que no se entera de un pedido, y eso no se ve por ningún lado.
+		const conexiones = await consultarTodo({
+			TableName: TABLA,
+			IndexName: "gsi1",
+			KeyConditionExpression: "gsi1pk = :pk",
+			ExpressionAttributeValues: {
+				":pk": llaves.conexionesDeProveedor(proveedorId, "").gsi1pk,
+			},
+		});
 
-    const conexiones = Items ?? [];
-    if (conexiones.length === 0) return;
+		if (conexiones.length === 0) return;
 
-    const cuerpo = Buffer.from(JSON.stringify(aviso));
+		const cuerpo = Buffer.from(JSON.stringify(aviso));
 
-    // En paralelo y sin cortar: que una conexión muerta no impida avisarle a
-    // las demás, que es justo el caso con varias pestañas abiertas.
-    await Promise.all(
-      conexiones.map(async (conexion) => {
-        const connectionId = String(conexion.connectionId ?? "");
-        if (!connectionId) return;
+		// En paralelo y sin cortar: que una conexión muerta no impida avisarle a
+		// las demás, que es justo el caso con varias pestañas abiertas.
+		await Promise.all(
+			conexiones.map(async (conexion) => {
+				const connectionId = String(conexion.connectionId ?? "");
+				if (!connectionId) return;
 
-        try {
-          await api.send(
-            new PostToConnectionCommand({
-              ConnectionId: connectionId,
-              Data: cuerpo,
-            }),
-          );
-        } catch (error) {
-          // 410 Gone: el navegador se fue sin que llegara el $disconnect. Es
-          // el momento de limpiar el apunte, no dejarlo hasta que expire.
-          const status = (error as { $metadata?: { httpStatusCode?: number } })
-            ?.$metadata?.httpStatusCode;
+				try {
+					await api.send(
+						new PostToConnectionCommand({
+							ConnectionId: connectionId,
+							Data: cuerpo,
+						}),
+					);
+				} catch (error) {
+					// 410 Gone: el navegador se fue sin que llegara el $disconnect. Es
+					// el momento de limpiar el apunte, no dejarlo hasta que expire.
+					const status = (error as { $metadata?: { httpStatusCode?: number } })
+						?.$metadata?.httpStatusCode;
 
-          if (status === 410) {
-            await dynamo
-              .send(
-                new DeleteCommand({
-                  TableName: TABLA,
-                  Key: llaves.conexion(connectionId),
-                }),
-              )
-              .catch(() => {});
-          }
-        }
-      }),
-    );
-  } catch (error) {
-    console.error("No pudimos avisar al taller:", error);
-  }
+					if (status === 410) {
+						await dynamo
+							.send(
+								new DeleteCommand({
+									TableName: TABLA,
+									Key: llaves.conexion(connectionId),
+								}),
+							)
+							.catch(() => {});
+					}
+				}
+			}),
+		);
+	} catch (error) {
+		console.error("No pudimos avisar al taller:", error);
+	}
 }

@@ -51,7 +51,10 @@ export default function Page() {
 		const max = filtros.precioMax ? Number(filtros.precioMax) : null;
 
 		const lista = productos.filter((p) => {
-			if (filtros.tecnicas.length && !filtros.tecnicas.includes(p.technique ?? ""))
+			if (
+				filtros.tecnicas.length &&
+				!filtros.tecnicas.includes(p.technique ?? "")
+			)
 				return false;
 
 			if (filtros.entregas.length) {

@@ -53,7 +53,14 @@ function ArcIcon({ size = 22 }: { size?: number }) {
 			strokeLinecap="round"
 		>
 			<path d="M4 16 Q12 6 20 16" />
-			<text x="12" y="14" textAnchor="middle" fontSize="6" stroke="none" fill="currentColor">
+			<text
+				x="12"
+				y="14"
+				textAnchor="middle"
+				fontSize="6"
+				stroke="none"
+				fill="currentColor"
+			>
 				Aa
 			</text>
 		</svg>
@@ -72,8 +79,7 @@ export default function TextToolbar() {
 
 	const safeFont = obj.fontFamily ?? AVAILABLE_FONTS[0].family;
 	const safeFontSize = (obj.fontSize as number) ?? 16;
-	const safeFill =
-		typeof obj.fill === "string" ? obj.fill : "#000000";
+	const safeFill = typeof obj.fill === "string" ? obj.fill : "#000000";
 
 	// ── font / size / style ──────────────────────────────────────────────────
 	const changeFont = (family: string) =>

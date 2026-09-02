@@ -1,7 +1,6 @@
 import { DeleteCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
-
-import { dynamo, llaves, TABLA } from "./lib/dynamo.js";
 import { proveedorDelToken } from "./lib/cognito.js";
+import { dynamo, llaves, TABLA } from "./lib/dynamo.js";
 
 /**
  * Las conexiones en vivo del panel del taller.

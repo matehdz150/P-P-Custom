@@ -141,9 +141,7 @@ export default function SidebarLayersPanel({ close }: { close: () => void }) {
 					<h2 className="text-sm font-semibold text-[#3b3b2f]">
 						Variants and layers
 					</h2>
-					<p className="text-xs text-gray-500">
-						Arrastra para reordenar
-					</p>
+					<p className="text-xs text-gray-500">Arrastra para reordenar</p>
 				</div>
 				<button
 					type="button"

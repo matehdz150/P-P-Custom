@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { usePedidos } from "@/Contexts/PedidosContext";
 import { PedidoSheet } from "@/components/Proveedor/PedidoSheet";
 import {
@@ -11,6 +11,7 @@ import {
 	type Pedido,
 	SIGUIENTE_ESTADO,
 } from "@/lib/api/pedidos";
+import { sinAcentos } from "@/lib/texto";
 
 const FILTROS: { valor: EstadoPedido | "todos"; label: string }[] = [
 	{ valor: "todos", label: "Todos" },
@@ -41,9 +42,36 @@ export default function PedidosPage() {
 	/** Cuál está abierto en la ficha. Se guarda el id y no el pedido: así, al
 	    recargar la lista, la ficha enseña lo recién traído y no una copia vieja. */
 	const [abiertoId, setAbiertoId] = useState<string | null>(null);
+	const [busqueda, setBusqueda] = useState("");
 
-	const visibles =
-		filtro === "todos" ? pedidos : pedidos.filter((p) => p.estado === filtro);
+	/**
+	 * La búsqueda es del lado del navegador, sobre la lista que ya está
+	 * cargada.
+	 *
+	 * DynamoDB no busca texto: para hacerlo en el servidor haría falta
+	 * OpenSearch, cuyo mínimo son cientos de dólares al mes. Un taller maneja
+	 * decenas o cientos de pedidos y ya los tiene todos aquí, así que filtrar
+	 * en memoria es instantáneo y no cuesta una llamada. El día que un taller
+	 * pase de unos miles, esto necesita un buscador de verdad — no un `LIKE`.
+	 */
+	const visibles = useMemo(() => {
+		const termino = sinAcentos(busqueda);
+
+		return pedidos.filter((p) => {
+			if (filtro !== "todos" && p.estado !== filtro) return false;
+			if (!termino) return true;
+
+			// El folio se compara aparte y sin normalizar: son dígitos, y quien
+			// lo teclea suele venir de una llamada con el número delante.
+			if (p.folio.includes(termino)) return true;
+
+			return [
+				p.comprador.nombre,
+				p.comprador.email,
+				...p.lineas.map((l) => l.producto),
+			].some((campo) => sinAcentos(campo ?? "").includes(termino));
+		});
+	}, [pedidos, filtro, busqueda]);
 
 	return (
 		<div className="flex flex-col">
@@ -71,7 +99,42 @@ export default function PedidosPage() {
 			)}
 
 			{pedidos.length > 0 && (
-				<div className="flex items-center gap-2 pt-[22px]">
+				<div className="relative pt-[22px]">
+					<svg
+						className="pointer-events-none absolute left-3.5 top-[calc(22px+16px)] text-tinta/40"
+						width="17"
+						height="17"
+						viewBox="0 0 24 24"
+						fill="none"
+						aria-hidden="true"
+					>
+						<circle
+							cx="11"
+							cy="11"
+							r="7"
+							stroke="currentColor"
+							strokeWidth="1.8"
+						/>
+						<path
+							d="m16.5 16.5 4 4"
+							stroke="currentColor"
+							strokeWidth="1.8"
+							strokeLinecap="round"
+						/>
+					</svg>
+					<input
+						type="search"
+						value={busqueda}
+						onChange={(e) => setBusqueda(e.target.value)}
+						placeholder="Busca por folio, cliente o producto"
+						aria-label="Buscar pedidos"
+						className="h-11 w-full rounded-lg border-[1.5px] border-tinta/15 bg-white pl-10 pr-3.5 text-[15px] text-tinta outline-none placeholder:text-tinta/45 focus:border-tinta focus:shadow-[0_0_0_3px_rgba(174,255,110,0.55)] md:max-w-[380px]"
+					/>
+				</div>
+			)}
+
+			{pedidos.length > 0 && (
+				<div className="flex flex-wrap items-center gap-2 pt-3.5">
 					{FILTROS.map((f) => (
 						<button
 							key={f.valor}
@@ -96,6 +159,12 @@ export default function PedidosPage() {
 				<NoCargo mensaje={fallo} onReintentar={refresh} />
 			) : pedidos.length === 0 ? (
 				<SinPedidos />
+			) : visibles.length === 0 ? (
+				<SinCoincidencias
+					busqueda={busqueda}
+					filtrando={filtro !== "todos"}
+					onQuitarFiltro={() => setFiltro("todos")}
+				/>
 			) : (
 				<Tabla
 					pedidos={visibles}
@@ -308,6 +377,48 @@ function NoCargo({
 			>
 				Reintentar
 			</button>
+		</div>
+	);
+}
+
+/**
+ * Hay pedidos, pero ninguno pasa el filtro o la búsqueda.
+ *
+ * Antes esto pintaba una tabla con sólo los encabezados, que se lee como si el
+ * panel se hubiera roto. Y si el estorbo es la pestaña de estado y no lo que
+ * se escribió, se dice y se ofrece quitarla: buscar un folio dentro de
+ * "Entregados" y no encontrarlo es justo el caso confuso.
+ */
+function SinCoincidencias({
+	busqueda,
+	filtrando,
+	onQuitarFiltro,
+}: {
+	busqueda: string;
+	filtrando: boolean;
+	onQuitarFiltro: () => void;
+}) {
+	return (
+		<div className="mt-8 flex flex-col items-start gap-3 rounded-xl border border-tinta/12 bg-hueso px-8 py-12">
+			<h2 className="font-display text-[22px] font-semibold leading-7 tracking-[-0.032em] text-tinta">
+				{busqueda.trim()
+					? `Nada coincide con "${busqueda.trim()}"`
+					: "Nada en esta pestaña"}
+			</h2>
+			<p className="max-w-[520px] text-[15px] leading-[26px] text-tinta/70">
+				{busqueda.trim()
+					? "Puedes buscar por folio, por el nombre o correo del cliente, o por el producto."
+					: "No tienes pedidos en este estado."}
+			</p>
+			{filtrando && (
+				<button
+					type="button"
+					onClick={onQuitarFiltro}
+					className="mt-1 h-10 rounded-lg border-[1.5px] border-tinta px-4 text-sm font-semibold text-tinta"
+				>
+					Buscar en todos los estados
+				</button>
+			)}
 		</div>
 	);
 }

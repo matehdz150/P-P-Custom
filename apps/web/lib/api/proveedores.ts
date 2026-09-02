@@ -14,46 +14,46 @@ import type { ProductTemplate } from "./templates";
 const API = process.env.NEXT_PUBLIC_KUSTTO_API ?? "";
 
 export class ErrorProveedor extends Error {
-  constructor(
-    readonly status: number,
-    mensaje: string,
-  ) {
-    super(mensaje);
-    this.name = "ErrorProveedor";
-  }
+	constructor(
+		readonly status: number,
+		mensaje: string,
+	) {
+		super(mensaje);
+		this.name = "ErrorProveedor";
+	}
 
-  /** No hay sesión, o ya no sirve. Quien lo cache debe mandar al login. */
-  get sinSesion() {
-    return this.status === 401 || this.status === 403;
-  }
+	/** No hay sesión, o ya no sirve. Quien lo cache debe mandar al login. */
+	get sinSesion() {
+		return this.status === 401 || this.status === 403;
+	}
 }
 
 async function pedir<T>(ruta: string, opciones?: RequestInit): Promise<T> {
-  const token = await tokenVigente();
-  if (!token) throw new ErrorProveedor(401, "No hay sesión");
+	const token = await tokenVigente();
+	if (!token) throw new ErrorProveedor(401, "No hay sesión");
 
-  const res = await fetch(`${API}${ruta}`, {
-    ...opciones,
-    headers: {
-      "content-type": "application/json",
-      authorization: `Bearer ${token}`,
-      ...opciones?.headers,
-    },
-  });
+	const res = await fetch(`${API}${ruta}`, {
+		...opciones,
+		headers: {
+			"content-type": "application/json",
+			authorization: `Bearer ${token}`,
+			...opciones?.headers,
+		},
+	});
 
-  if (!res.ok) {
-    // Un 401 desde el autorizador significa token muerto: se limpia para no
-    // dejar al panel en el limbo de "hay sesión pero nada carga".
-    if (res.status === 401) borrarSesion();
+	if (!res.ok) {
+		// Un 401 desde el autorizador significa token muerto: se limpia para no
+		// dejar al panel en el limbo de "hay sesión pero nada carga".
+		if (res.status === 401) borrarSesion();
 
-    const cuerpo = await res.json().catch(() => null);
-    throw new ErrorProveedor(
-      res.status,
-      cuerpo?.message ?? `La API respondió ${res.status}`,
-    );
-  }
+		const cuerpo = await res.json().catch(() => null);
+		throw new ErrorProveedor(
+			res.status,
+			cuerpo?.message ?? `La API respondió ${res.status}`,
+		);
+	}
 
-  return res.json();
+	return res.json();
 }
 
 /**
@@ -64,33 +64,54 @@ async function pedir<T>(ruta: string, opciones?: RequestInit): Promise<T> {
  */
 export const pedirComoProveedor = pedir;
 
+/**
+ * De dónde sale el paquete.
+ *
+ * No es perfil público: el CP decide el precio del envío y la dirección
+ * entera se imprime en la guía que ve el comprador. `null` significa que el
+ * taller no ha puesto ninguna, y entonces sus productos no se pueden cotizar.
+ */
+export type Recoleccion = {
+	calle: string;
+	numero: string;
+	interior: string | null;
+	colonia: string;
+	ciudad: string;
+	estado: string;
+	cp: string;
+	referencias: string | null;
+};
+
 export type Proveedor = {
-  id: string;
-  email: string;
-  name: string | null;
-  slug: string | null;
-  displayName: string | null;
-  bio: string | null;
-  avatarUrl: string | null;
-  bannerUrl: string | null;
-  createdAt: string;
+	id: string;
+	email: string;
+	name: string | null;
+	slug: string | null;
+	displayName: string | null;
+	bio: string | null;
+	avatarUrl: string | null;
+	bannerUrl: string | null;
+	recoleccion?: Recoleccion | null;
+	createdAt: string;
 };
 
 /** El perfil del proveedor que trae el token. Nunca el de otro. */
 export function miPerfil() {
-  return pedir<Proveedor>("/proveedores/yo");
+	return pedir<Proveedor>("/proveedores/yo");
 }
 
 export function actualizarMiPerfil(datos: {
-  displayName?: string;
-  bio?: string;
-  avatarUrl?: string;
-  bannerUrl?: string;
+	displayName?: string;
+	bio?: string;
+	avatarUrl?: string;
+	bannerUrl?: string;
+	/** `null` la borra: un taller puede dejar de ofrecer envío. */
+	recoleccion?: Recoleccion | null;
 }) {
-  return pedir<Proveedor>("/proveedores/yo", {
-    method: "PATCH",
-    body: JSON.stringify(datos),
-  });
+	return pedir<Proveedor>("/proveedores/yo", {
+		method: "PATCH",
+		body: JSON.stringify(datos),
+	});
 }
 
 /* ─── El catálogo que necesita el asistente de alta ──────────────────────
@@ -100,11 +121,11 @@ export function actualizarMiPerfil(datos: {
    exige sesión, y se rompería en cuanto el admin tenga login. */
 
 export function plantillasParaAlta() {
-  return pedir<ProductTemplate[]>("/proveedores/plantillas");
+	return pedir<ProductTemplate[]>("/proveedores/plantillas");
 }
 
 export function categoriasParaAlta() {
-  return pedir<Category[]>("/proveedores/categorias");
+	return pedir<Category[]>("/proveedores/categorias");
 }
 
 /* ─── Los productos del taller ──────────────────────────────────────────── */
@@ -117,46 +138,54 @@ export function categoriasParaAlta() {
  * de vuelta a revisión: la aprobación es del producto, no del momento.
  */
 export type EstadoProducto =
-  | "borrador"
-  | "en_revision"
-  | "activo"
-  | "rechazado"
-  | "archivado";
+	| "borrador"
+	| "en_revision"
+	| "activo"
+	| "rechazado"
+	| "archivado";
 
 export const ETIQUETA_ESTADO_PRODUCTO: Record<EstadoProducto, string> = {
-  borrador: "Borrador",
-  en_revision: "En revisión",
-  activo: "Publicado",
-  rechazado: "Necesita cambios",
-  archivado: "Archivado",
+	borrador: "Borrador",
+	en_revision: "En revisión",
+	activo: "Publicado",
+	rechazado: "Necesita cambios",
+	archivado: "Archivado",
 };
 
 export type ProductoDeTaller = {
-  id: string;
-  slug: string;
-  name: string;
-  description?: string | null;
-  sku?: string;
-  templateId: string;
-  categoryIds?: string[];
-  images: { url: string; order: number }[];
-  printSides: { sideKey: string; widthCm: number; heightCm: number }[];
-  sizes: { size: string; widthIn: number; lengthIn: number }[];
-  colors: { name: string; hex: string }[];
-  pricing: { basePrice: number; [k: string]: number | undefined };
-  estado: EstadoProducto;
-  /** Por qué el admin lo regresó. Lo escribe él al rechazar. */
-  notaRevision: string | null;
-  createdAt: string;
-  updatedAt: string;
+	id: string;
+	slug: string;
+	name: string;
+	description?: string | null;
+	sku?: string;
+	templateId: string;
+	categoryIds?: string[];
+	images: { url: string; order: number }[];
+	printSides: { sideKey: string; widthCm: number; heightCm: number }[];
+	sizes: { size: string; widthIn: number; lengthIn: number }[];
+	colors: { name: string; hex: string }[];
+	pricing: { basePrice: number; [k: string]: number | undefined };
+	estado: EstadoProducto;
+	/** Por qué el admin lo regresó. Lo escribe él al rechazar. */
+	notaRevision: string | null;
+	/* ─── Existencias ────────────────────────────────────────────────────────
+	   Las lleva todo producto. `existencias` va con la llave `color|talla`, o
+	   sólo la talla si el producto no tiene colores capturados. Sigue siendo
+	   opcional en el tipo porque los productos anteriores a esa regla pueden no
+	   tener el mapa; los nuevos siempre lo escriben. */
+	existencias?: Record<string, number>;
+	minimoAlerta?: number;
+	diasExtraSinStock?: number;
+	createdAt: string;
+	updatedAt: string;
 };
 
 export function misProductos() {
-  return pedir<ProductoDeTaller[]>("/proveedores/productos");
+	return pedir<ProductoDeTaller[]>("/proveedores/productos");
 }
 
 export function miProducto(id: string) {
-  return pedir<ProductoDeTaller>(`/proveedores/productos/${id}`);
+	return pedir<ProductoDeTaller>(`/proveedores/productos/${id}`);
 }
 
 /**
@@ -164,17 +193,50 @@ export function miProducto(id: string) {
  * borrador; publicar no está en manos del taller.
  */
 export function crearMiProducto(datos: Record<string, unknown>) {
-  return pedir<{ id: string; slug: string; estado: EstadoProducto }>(
-    "/proveedores/productos",
-    { method: "POST", body: JSON.stringify(datos) },
-  );
+	return pedir<{ id: string; slug: string; estado: EstadoProducto }>(
+		"/proveedores/productos",
+		{ method: "POST", body: JSON.stringify(datos) },
+	);
 }
 
-export function actualizarMiProducto(id: string, datos: Record<string, unknown>) {
-  return pedir<ProductoDeTaller>(`/proveedores/productos/${id}`, {
-    method: "PATCH",
-    body: JSON.stringify(datos),
-  });
+export function actualizarMiProducto(
+	id: string,
+	datos: Record<string, unknown>,
+) {
+	return pedir<ProductoDeTaller>(`/proveedores/productos/${id}`, {
+		method: "PATCH",
+		body: JSON.stringify(datos),
+	});
+}
+
+export type OperacionExistencias = "agregar" | "quitar" | "corregir";
+
+/**
+ * Mueve las existencias de UNA variante.
+ *
+ * Va por su propia ruta y NO por `actualizarMiProducto`, por dos razones que
+ * conviene no deshacer:
+ *
+ * - Ese PATCH devuelve a revisión cualquier producto activo, así que corregir
+ *   un conteo despublicaría el producto. Las existencias no son contenido.
+ * - El delta lo aplica DynamoDB. Mandando el mapa entero desde aquí, un pedido
+ *   que descuente entre que leemos y escribimos se pierde sin dejar rastro.
+ *
+ * Devuelve el producto ya actualizado: la pantalla repinta con lo que quedó de
+ * verdad, no con lo que creía que iba a quedar.
+ */
+export function moverExistencias(
+	id: string,
+	movimiento: {
+		clave: string;
+		operacion: OperacionExistencias;
+		cantidad: number;
+	},
+) {
+	return pedir<ProductoDeTaller>(
+		`/proveedores/productos/${id}/existencias`,
+		{ method: "PATCH", body: JSON.stringify(movimiento) },
+	);
 }
 
 /**
@@ -185,19 +247,19 @@ export function actualizarMiProducto(id: string, datos: Record<string, unknown>)
  * bajo la suya. Devuelve la RUTA (`/medios/...`), que es lo que se guarda.
  */
 export async function subirFotoDeProducto(file: File): Promise<string> {
-  const permiso = await pedir<{ uploadUrl: string; path: string }>(
-    "/proveedores/subidas/foto",
-    { method: "POST", body: JSON.stringify({ contentType: file.type }) },
-  );
+	const permiso = await pedir<{ uploadUrl: string; path: string }>(
+		"/proveedores/subidas/foto",
+		{ method: "POST", body: JSON.stringify({ contentType: file.type }) },
+	);
 
-  const res = await fetch(permiso.uploadUrl, {
-    method: "PUT",
-    // Exactamente el tipo que se firmó, o S3 rechaza la firma.
-    headers: { "Content-Type": file.type },
-    body: file,
-  });
+	const res = await fetch(permiso.uploadUrl, {
+		method: "PUT",
+		// Exactamente el tipo que se firmó, o S3 rechaza la firma.
+		headers: { "Content-Type": file.type },
+		body: file,
+	});
 
-  if (!res.ok) throw new Error(`S3 rechazó la subida (${res.status})`);
+	if (!res.ok) throw new Error(`S3 rechazó la subida (${res.status})`);
 
-  return permiso.path;
+	return permiso.path;
 }

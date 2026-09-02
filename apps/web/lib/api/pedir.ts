@@ -101,7 +101,12 @@ export type PedidoEnSeguimiento = {
 		tallas: TallaPedida[];
 		piezas: number;
 		importe: number;
-		arte: { lado: string; ruta: string }[];
+		/**
+		 * `ruta` es el arte que va a máquina —recortado y transparente—, y
+		 * `colocacion` la prenda con el diseño encima. Para enseñárselo a quien
+		 * compró sirve la segunda: el arte suelto no se reconoce en pequeño.
+		 */
+		arte: { lado: string; ruta: string; colocacion: string }[];
 	}[];
 	total: number;
 	piezas: number;
@@ -126,6 +131,14 @@ async function publico<T>(ruta: string, opciones?: RequestInit): Promise<T> {
 export function crearPedido(datos: {
 	comprador: Comprador;
 	entrega: Entrega;
+	/**
+	 * Qué paquetería eligió, sin el precio.
+	 *
+	 * Sólo la cotización y la tarifa: el precio lo lee la Lambda de Skydropx.
+	 * Mandarlo desde aquí sería dejar que el navegador decida cuánto se cobra
+	 * de envío, igual que mandar el precio del producto.
+	 */
+	envio?: { cotizacionId: string; tarifaId: string };
 	lineas: LineaAPedir[];
 }) {
 	return publico<PedidoCreado>("/publico/pedidos", {

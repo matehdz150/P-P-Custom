@@ -166,7 +166,7 @@ export class CurvedText extends FabricObject {
 			// arch-down es el reflejo vertical de arch-up: mismo glifo, NO se
 			// voltea. s controla el lado del arco y el signo del ángulo.
 			ctx.save();
-			ctx.rotate(s * charAngle);   // rotar sistema de coordenadas
+			ctx.rotate(s * charAngle); // rotar sistema de coordenadas
 			ctx.translate(0, -s * absR); // moverse al borde del arco
 			ctx.fillText(chars[i], 0, 0);
 			ctx.restore();

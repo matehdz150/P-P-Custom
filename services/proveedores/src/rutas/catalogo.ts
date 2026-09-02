@@ -1,6 +1,12 @@
 import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 
-import { dynamo, llaves, sinLlaves, TABLA } from "../lib/dynamo.js";
+import {
+	consultarTodo,
+	dynamo,
+	llaves,
+	sinLlaves,
+	TABLA,
+} from "../lib/dynamo.js";
 
 /**
  * Lo que el taller necesita LEER para dar de alta un producto: las prendas
@@ -16,25 +22,21 @@ import { dynamo, llaves, sinLlaves, TABLA } from "../lib/dynamo.js";
  */
 
 export async function plantillas() {
-  const { Items } = await dynamo.send(
-    new QueryCommand({
-      TableName: TABLA,
-      KeyConditionExpression: "pk = :pk",
-      ExpressionAttributeValues: { ":pk": llaves.plantillas },
-    }),
-  );
+	const items = await consultarTodo({
+		TableName: TABLA,
+		KeyConditionExpression: "pk = :pk",
+		ExpressionAttributeValues: { ":pk": llaves.plantillas },
+	});
 
-  return (Items ?? []).map(sinLlaves);
+	return items.map(sinLlaves);
 }
 
 export async function categorias() {
-  const { Items } = await dynamo.send(
-    new QueryCommand({
-      TableName: TABLA,
-      KeyConditionExpression: "pk = :pk",
-      ExpressionAttributeValues: { ":pk": llaves.categorias },
-    }),
-  );
+	const items = await consultarTodo({
+		TableName: TABLA,
+		KeyConditionExpression: "pk = :pk",
+		ExpressionAttributeValues: { ":pk": llaves.categorias },
+	});
 
-  return (Items ?? []).map(sinLlaves);
+	return items.map(sinLlaves);
 }

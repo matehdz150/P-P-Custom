@@ -32,9 +32,7 @@ export function ProductInfo({ product, onStartDesign }: Props) {
 
 	const base = product.pricing?.basePrice ?? 0;
 	const extra =
-		decoration === "embroidery"
-			? (product.pricing?.embroideryExtra ?? 0)
-			: 0;
+		decoration === "embroidery" ? (product.pricing?.embroideryExtra ?? 0) : 0;
 	const price = base + extra;
 	const linkedProvider = product.provider ?? null;
 	const provider =
@@ -94,9 +92,7 @@ export function ProductInfo({ product, onStartDesign }: Props) {
 					{product.name}
 				</h1>
 				{product.category && (
-					<p className="text-sm text-gray-500 mt-1">
-						{product.category}
-					</p>
+					<p className="text-sm text-gray-500 mt-1">{product.category}</p>
 				)}
 			</div>
 
@@ -117,10 +113,7 @@ export function ProductInfo({ product, onStartDesign }: Props) {
 			<div className="h-px bg-gray-100" />
 
 			{/* DECORATION */}
-			<ProductDecorationSelector
-				value={decoration}
-				onChange={setDecoration}
-			/>
+			<ProductDecorationSelector value={decoration} onChange={setDecoration} />
 
 			{/* COLOR */}
 			{product.colors && product.colors.length > 0 && (
@@ -150,9 +143,7 @@ export function ProductInfo({ product, onStartDesign }: Props) {
 			{/* SIZE */}
 			{product.sizes && product.sizes.length > 0 && (
 				<div className="flex flex-col gap-2">
-					<span className="text-sm font-semibold text-[#1a1a17]">
-						Talla
-					</span>
+					<span className="text-sm font-semibold text-[#1a1a17]">Talla</span>
 					<div className="flex gap-2 flex-wrap">
 						{product.sizes.map((s) => (
 							<button

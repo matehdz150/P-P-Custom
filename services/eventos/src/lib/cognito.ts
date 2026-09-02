@@ -55,7 +55,8 @@ async function llavePara(kid: string): Promise<JWK> {
 		llave = llaves.get(kid);
 	}
 
-	if (!llave) throw new Error("El token viene firmado con una llave que no es del pool");
+	if (!llave)
+		throw new Error("El token viene firmado con una llave que no es del pool");
 	return llave;
 }
 
@@ -77,7 +78,8 @@ export async function proveedorDelToken(token: string): Promise<string> {
 	const [cabeceraB64, cuerpoB64, firmaB64] = partes;
 
 	const cabecera = JSON.parse(deBase64Url(cabeceraB64).toString("utf8"));
-	if (cabecera.alg !== "RS256") throw new Error("Algoritmo de firma inesperado");
+	if (cabecera.alg !== "RS256")
+		throw new Error("Algoritmo de firma inesperado");
 
 	const jwk = await llavePara(cabecera.kid);
 
@@ -94,7 +96,8 @@ export async function proveedorDelToken(token: string): Promise<string> {
 	const cuerpo = JSON.parse(deBase64Url(cuerpoB64).toString("utf8"));
 
 	if (cuerpo.iss !== EMISOR) throw new Error("El token no es de nuestro pool");
-	if (cuerpo.token_use !== "id") throw new Error("Hace falta el token de identidad");
+	if (cuerpo.token_use !== "id")
+		throw new Error("Hace falta el token de identidad");
 	if (CLIENTE && cuerpo.aud !== CLIENTE) {
 		throw new Error("El token no es para esta aplicación");
 	}

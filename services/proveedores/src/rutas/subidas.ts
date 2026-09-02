@@ -7,12 +7,12 @@ import { malaPeticion } from "../lib/http.js";
 const s3 = new S3Client({});
 
 const BUCKET_PUBLICO =
-  process.env.KUSTTO_BUCKET_PUBLICO ?? "kustto-publico-prod";
+	process.env.KUSTTO_BUCKET_PUBLICO ?? "kustto-publico-prod";
 
 const TIPOS = new Map([
-  ["image/png", "png"],
-  ["image/jpeg", "jpg"],
-  ["image/webp", "webp"],
+	["image/png", "png"],
+	["image/jpeg", "jpg"],
+	["image/webp", "webp"],
 ]);
 
 /** La URL firmada es para subir ahora, no para guardarla. */
@@ -35,25 +35,27 @@ const VIGENCIA = 300;
  * se sirva desde el mismo origen que el sitio.
  */
 export async function urlParaFoto(proveedorId: string, cuerpo: unknown) {
-  const c = (cuerpo ?? {}) as Record<string, unknown>;
+	const c = (cuerpo ?? {}) as Record<string, unknown>;
 
-  const contentType = String(c.contentType ?? "");
-  const ext = TIPOS.get(contentType);
-  if (!ext) {
-    throw malaPeticion(`Tipo no soportado: ${contentType}. Usa PNG, JPG o WebP.`);
-  }
+	const contentType = String(c.contentType ?? "");
+	const ext = TIPOS.get(contentType);
+	if (!ext) {
+		throw malaPeticion(
+			`Tipo no soportado: ${contentType}. Usa PNG, JPG o WebP.`,
+		);
+	}
 
-  const key = `medios/productos/${proveedorId}/${randomBytes(8).toString("hex")}.${ext}`;
+	const key = `medios/productos/${proveedorId}/${randomBytes(8).toString("hex")}.${ext}`;
 
-  const uploadUrl = await getSignedUrl(
-    s3,
-    new PutObjectCommand({
-      Bucket: BUCKET_PUBLICO,
-      Key: key,
-      ContentType: contentType,
-    }),
-    { expiresIn: VIGENCIA },
-  );
+	const uploadUrl = await getSignedUrl(
+		s3,
+		new PutObjectCommand({
+			Bucket: BUCKET_PUBLICO,
+			Key: key,
+			ContentType: contentType,
+		}),
+		{ expiresIn: VIGENCIA },
+	);
 
-  return { uploadUrl, path: `/${key}` };
+	return { uploadUrl, path: `/${key}` };
 }

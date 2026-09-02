@@ -1,19 +1,19 @@
 export type CreatePackageItemDto = {
-  designRequired: boolean;
-  productId: string;
-  quantity: number;
+	designRequired: boolean;
+	productId: string;
+	quantity: number;
 };
 
 export class CreatePackageDto {
-  name!: string;
-  description?: string;
-  categories?: string[];
+	name!: string;
+	description?: string;
+	categories?: string[];
 
-  image?: string;
+	image?: string;
 
-  items!: CreatePackageItemDto[];
+	items!: CreatePackageItemDto[];
 
-  pricing!: {
-    basePrice: number;
-  };
+	pricing!: {
+		basePrice: number;
+	};
 }

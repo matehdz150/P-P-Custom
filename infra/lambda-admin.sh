@@ -32,6 +32,13 @@ if [ -f infra/.cognito ]; then
 fi
 POOL_ID="${KUSTTO_POOL_ID:-}"
 
+# Skydropx, si ya hay credenciales. Sin ellas la función arranca igual y todo
+# sigue andando salvo cotizar, que devuelve "este taller no tiene envíos
+# configurados" y deja al checkout con la opción de recoger.
+if [ -f infra/.skydropx ]; then
+  source infra/.skydropx
+fi
+
 if aws_ lambda get-function --function-name "$FUNCION" >/dev/null 2>&1; then
   EXISTE=1
 else
@@ -171,6 +178,11 @@ else
 fi
 if [ -n "${WS_ENDPOINT:-}" ]; then
   PARES="$PARES,KUSTTO_WS_ENDPOINT=$WS_ENDPOINT"
+fi
+if [ -n "${SKYDROPX_CLIENT_ID:-}" ]; then
+  PARES="$PARES,SKYDROPX_HOST=$SKYDROPX_HOST,SKYDROPX_CLIENT_ID=$SKYDROPX_CLIENT_ID,SKYDROPX_CLIENT_SECRET=$SKYDROPX_CLIENT_SECRET"
+else
+  echo "Aviso: sin credenciales de Skydropx. No se podrán cotizar envíos."
 fi
 VARIABLES="Variables={$PARES}"
 

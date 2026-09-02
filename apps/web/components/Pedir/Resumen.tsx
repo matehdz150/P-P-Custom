@@ -1,6 +1,7 @@
 "use client";
 
 import type { DesignerProductTemplate } from "@/lib/api/products";
+import type { Tarifa } from "@/lib/api/envios";
 import type { ArchivoDeLado } from "@/lib/pedido/borrador";
 
 /**
@@ -23,6 +24,8 @@ export function Resumen({
 	cantidades,
 	piezas,
 	total,
+	envio,
+	cotizando,
 }: {
 	producto: DesignerProductTemplate;
 	/** La foto de catálogo de la prenda, tal como la publicó el taller. */
@@ -34,6 +37,9 @@ export function Resumen({
 	cantidades: Record<string, number>;
 	piezas: number;
 	total: number;
+	/** La tarifa elegida, `"recoger"` si no hay envío, o null si falta cotizar. */
+	envio: Tarifa | "recoger" | null;
+	cotizando: boolean;
 }) {
 	const base = producto.pricing?.basePrice ?? 0;
 	const porLado = producto.pricing?.perSidePrice ?? 0;
@@ -169,7 +175,20 @@ export function Resumen({
 						/>
 					)}
 
-					<Renglon etiqueta="Envío" valor="Lo acuerda el taller" tenue />
+					{envio === "recoger" ? (
+						<Renglon etiqueta="Envío" valor="Recoges con el taller" tenue />
+					) : envio ? (
+						<Renglon
+							etiqueta={`Envío (${envio.paqueteria})`}
+							valor={`$${envio.precio.toLocaleString("es-MX")}`}
+						/>
+					) : (
+						<Renglon
+							etiqueta="Envío"
+							valor={cotizando ? "Cotizando…" : "Falta tu dirección"}
+							tenue
+						/>
+					)}
 				</div>
 
 				<div className="mt-5 flex items-baseline justify-between border-t border-tinta/12 pt-5">
@@ -182,8 +201,9 @@ export function Resumen({
 				</div>
 
 				<p className="pt-2 text-[12px] leading-[18px] text-tinta/50">
-					Precio estimado. El taller lo confirma junto con el envío antes de
-					producir.
+					{envio && envio !== "recoger"
+						? "El envío es el que cotiza la paquetería para tu código postal. El taller confirma el pedido antes de producir."
+						: "Precio estimado. El taller lo confirma antes de producir."}
 				</p>
 			</div>
 		</aside>

@@ -3,7 +3,9 @@ import { Figtree, Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 
 import { AuthProvider } from "@/Contexts/AuthContext";
+import { CompradorProvider } from "@/Contexts/CompradorContext";
 import IOSViewportProvider from "@/components/hooks/IOSViewportProvider"; // 👈 IMPORTANTE
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -48,7 +50,12 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} ${figtree.variable} ${poppins.variable} antialiased`}
 			>
 				<AuthProvider>
-					<IOSViewportProvider>{children}</IOSViewportProvider>
+					<CompradorProvider>
+						<IOSViewportProvider>{children}</IOSViewportProvider>
+					{/* Inerte hasta que alguien llame a `toast()`, así que vive en la
+					    raíz y no en cada panel que lo necesite. */}
+					<Toaster />
+					</CompradorProvider>
 				</AuthProvider>
 			</body>
 		</html>

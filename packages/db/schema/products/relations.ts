@@ -12,27 +12,26 @@ import { productProduction } from "./product_production";
 
 import { productCategories } from "../categories";
 
-
 /* =========================
    PRODUCTS (ROOT)
 ========================= */
 
 export const productsRelations = relations(products, ({ many, one }) => ({
-  images: many(productImages),
-  printSides: many(productPrintSides),
-  sizes: many(productSizes),
-  colors: many(productColors),
+	images: many(productImages),
+	printSides: many(productPrintSides),
+	sizes: many(productSizes),
+	colors: many(productColors),
 
-  pricing: one(productPricing),
-  customizationRules: one(productCustomizationRules),
-  production: one(productProduction),
+	pricing: one(productPricing),
+	customizationRules: one(productCustomizationRules),
+	production: one(productProduction),
 
-  // ✅ TEMPLATE (product → template)
-  template: one(productTemplates, {
-    fields: [products.templateId],
-    references: [productTemplates.id],
-  }),
-  productCategories: many(productCategories),
+	// ✅ TEMPLATE (product → template)
+	template: one(productTemplates, {
+		fields: [products.templateId],
+		references: [productTemplates.id],
+	}),
+	productCategories: many(productCategories),
 }));
 
 /* =========================
@@ -40,10 +39,10 @@ export const productsRelations = relations(products, ({ many, one }) => ({
 ========================= */
 
 export const productImagesRelations = relations(productImages, ({ one }) => ({
-  product: one(products, {
-    fields: [productImages.productId],
-    references: [products.id],
-  }),
+	product: one(products, {
+		fields: [productImages.productId],
+		references: [products.id],
+	}),
 }));
 
 /* =========================
@@ -51,13 +50,13 @@ export const productImagesRelations = relations(productImages, ({ one }) => ({
 ========================= */
 
 export const productPrintSidesRelations = relations(
-  productPrintSides,
-  ({ one }) => ({
-    product: one(products, {
-      fields: [productPrintSides.productId],
-      references: [products.id],
-    }),
-  }),
+	productPrintSides,
+	({ one }) => ({
+		product: one(products, {
+			fields: [productPrintSides.productId],
+			references: [products.id],
+		}),
+	}),
 );
 
 /* =========================
@@ -65,10 +64,10 @@ export const productPrintSidesRelations = relations(
 ========================= */
 
 export const productSizesRelations = relations(productSizes, ({ one }) => ({
-  product: one(products, {
-    fields: [productSizes.productId],
-    references: [products.id],
-  }),
+	product: one(products, {
+		fields: [productSizes.productId],
+		references: [products.id],
+	}),
 }));
 
 /* =========================
@@ -76,38 +75,35 @@ export const productSizesRelations = relations(productSizes, ({ one }) => ({
 ========================= */
 
 export const productColorsRelations = relations(productColors, ({ one }) => ({
-  product: one(products, {
-    fields: [productColors.productId],
-    references: [products.id],
-  }),
+	product: one(products, {
+		fields: [productColors.productId],
+		references: [products.id],
+	}),
 }));
 
 /* =========================
    PRODUCT PRICING (1–1)
 ========================= */
 
-export const productPricingRelations = relations(
-  productPricing,
-  ({ one }) => ({
-    product: one(products, {
-      fields: [productPricing.productId],
-      references: [products.id],
-    }),
-  }),
-);
+export const productPricingRelations = relations(productPricing, ({ one }) => ({
+	product: one(products, {
+		fields: [productPricing.productId],
+		references: [products.id],
+	}),
+}));
 
 /* =========================
    PRODUCT CUSTOMIZATION RULES (1–1)
 ========================= */
 
 export const productCustomizationRulesRelations = relations(
-  productCustomizationRules,
-  ({ one }) => ({
-    product: one(products, {
-      fields: [productCustomizationRules.productId],
-      references: [products.id],
-    }),
-  }),
+	productCustomizationRules,
+	({ one }) => ({
+		product: one(products, {
+			fields: [productCustomizationRules.productId],
+			references: [products.id],
+		}),
+	}),
 );
 
 /* =========================
@@ -115,13 +111,13 @@ export const productCustomizationRulesRelations = relations(
 ========================= */
 
 export const productProductionRelations = relations(
-  productProduction,
-  ({ one }) => ({
-    product: one(products, {
-      fields: [productProduction.productId],
-      references: [products.id],
-    }),
-  }),
+	productProduction,
+	({ one }) => ({
+		product: one(products, {
+			fields: [productProduction.productId],
+			references: [products.id],
+		}),
+	}),
 );
 
 /* =========================
@@ -129,8 +125,8 @@ export const productProductionRelations = relations(
 ========================= */
 
 export const productTemplatesRelations = relations(
-  productTemplates,
-  ({ many }) => ({
-    products: many(products),
-  }),
+	productTemplates,
+	({ many }) => ({
+		products: many(products),
+	}),
 );

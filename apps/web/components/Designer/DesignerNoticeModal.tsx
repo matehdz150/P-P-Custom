@@ -25,9 +25,7 @@ export default function DesignerNoticeModal() {
 					<AlertTriangle className="text-tinta" size={24} />
 				</div>
 
-				<h2 className="text-lg font-bold text-[#2b2812]">
-					{notice.title}
-				</h2>
+				<h2 className="text-lg font-bold text-[#2b2812]">{notice.title}</h2>
 				<p className="text-sm text-gray-500 leading-relaxed">
 					{notice.message}
 				</p>
