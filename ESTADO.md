@@ -219,16 +219,40 @@ transiciones —incluidos los saltos prohibidos—, el pedido de otro taller
 dando 404 al leerlo y al moverlo, y la bitácora completa llegando al
 comprador por su enlace.
 
-**Lo que falta para que esto sea usable por una persona:**
+## La salida del editor
 
-1. **La salida del editor.** Sigue sin haber botón de pedir, ni precio en
-   pantalla, ni exportación. Hay que exportar un PNG por lado —sólo el arte,
-   sin el mockup, con fondo transparente y a los DPI del área— y subirlo con
-   las URLs que devuelve el pedido. Un mockup no sirve para producir.
-2. **El carrito**, con el aviso al mezclar talleres.
-3. **El panel de pedidos del taller**, que hoy sigue leyendo el endpoint
-   inexistente de Nest en `lib/api/pedidos.ts`.
-4. **SES**: la cuenta está en **sandbox** y **no hay ninguna identidad
+El editor ya tiene por dónde salir: un botón "Pedir" que abre el panel con
+tallas, datos y precio, y al mandar exporta el arte, crea el pedido y lleva
+al seguimiento (`/pedido/[id]?token=…`).
+
+Lo delicado está en `lib/designer/exportarArte.ts`, y conviene leerlo antes
+de tocarlo:
+
+- **Todo es síncrono a propósito.** El mockup lo repone un watcher cada
+  200 ms (`useFabricMockup`); si entre quitarlo y exportar hubiera un
+  `await`, el fondo volvería y acabaría dentro del archivo de producción.
+- **La vista se pone en identidad antes de recortar.** El zoom y el
+  desplazamiento son de quien diseña, no del archivo: sin eso, el recorte
+  sale corrido justo cuando alguien exportó con el lienzo movido.
+- **El multiplicador viene de los centímetros y los DPI del lado**, no del
+  tamaño del lienzo: un PNG del tamaño del navegador no imprime nada decente.
+- Se restaura en `finally`, para que un fallo no deje el editor sin prenda y
+  con las guías escondidas.
+
+**Lo que NO está probado todavía:** la exportación en sí. Necesita un
+navegador con canvas de verdad y no se puede comprobar por API, así que
+alguien tiene que dibujar algo, pedirlo, y abrir el PNG que quede en
+`/medios/pedidos/…` para ver que trae el arte solo, transparente y del
+tamaño esperado. Todo lo demás del circuito sí está verificado contra AWS.
+
+**Lo que falta:**
+
+1. **El carrito**, con el aviso al mezclar talleres. Hoy se pide un producto
+   por vez, aunque la API ya acepta varias líneas.
+2. **El panel de pedidos del taller**, que sigue leyendo el endpoint
+   inexistente de Nest en `lib/api/pedidos.ts`. La API del taller ya existe
+   (`/proveedores/pedidos`), sólo falta enchufarla.
+3. **SES**: la cuenta está en **sandbox** y **no hay ninguna identidad
    verificada**. Hay que verificar `kustto.com.mx` con registros DKIM en el
    DNS —eso lo tiene que hacer alguien con acceso al dominio— y pedirle a AWS
    la salida del sandbox, que tarda alrededor de un día. Hasta entonces sólo
