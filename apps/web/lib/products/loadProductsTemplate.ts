@@ -44,5 +44,7 @@ export async function loadProductTemplate(
     },
     pricing: product.pricing,
     colors: product.colors,
+    sizes: product.sizes,
+    printSides: product.printSides,
   };
 }

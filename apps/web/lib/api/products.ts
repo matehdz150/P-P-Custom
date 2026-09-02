@@ -70,6 +70,15 @@ export type DesignerProductTemplate = {
   pricing?: ProductPricing;
   /** Los colores en que se puede pedir la prenda. Tiñen el mockup. */
   colors?: ProductColor[];
+  /** Las tallas que el taller maneja: son las que se piden desde el editor. */
+  sizes?: ProductSize[];
+  /**
+   * El área imprimible de cada lado, en centímetros.
+   *
+   * No es decoración: de aquí sale a qué resolución se exporta el archivo que
+   * el taller manda a máquina. Sin esto habría que adivinar los DPI.
+   */
+  printSides?: ProductPrintSide[];
 };
 
 export type Product = {
