@@ -30,7 +30,9 @@ primero admin, luego proveedores, después catálogo y pedidos.
 | Catálogo público (listado, ficha, editor) | Lambda `kustto-admin` + DynamoDB | migrado |
 | Categorías (público) | Lambda `kustto-admin` + DynamoDB | migrado |
 | Paquetes | NestJS + Postgres | **pendiente** |
-| Pedidos | NestJS + Postgres | **pendiente** |
+| Pedidos (API) | Lambdas + DynamoDB + S3 | migrado |
+| Pedidos (carrito y salida del editor) | no existe | **lo que sigue** |
+| Aviso por correo al taller | SES, en sandbox | **falta verificar el dominio** |
 | Cuentas de comprador | NestJS + Postgres | **pendiente** |
 | Pasarela de pago | no existe | aplazado a propósito, hasta el final |
 

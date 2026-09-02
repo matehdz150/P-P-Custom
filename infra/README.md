@@ -77,7 +77,8 @@ TEMPLATE              TPL#<id>        una plantilla de prenda
 PRODUCT#<id>          META            el producto completo, en un solo ítem
 PROVIDER#<id>         META            el perfil del taller
 PROVIDER_EMAIL#<mail> LOCK            candado de unicidad de correo
-ORDER#<id>            META            el pedido con su diseño y su bitácora
+ORDER#<id>            META            el pedido con sus líneas y su bitácora
+ORDER_FOLIO#<folio>   LOCK            candado del folio corto (#2418)
 SLUG#<slug>           LOCK            candado de unicidad de slug
 ```
 
@@ -104,6 +105,11 @@ Los productos se listan por dos caminos, y ninguno recorre la tabla:
 - `gsi2` con `PRODUCT_ESTADO#<estado>` — la bandeja de revisión del admin. El
   ítem se reindexa en cada cambio de estado; si un `UpdateExpression` se
   olvida de reescribir `gsi2sk`, el producto se queda en la bandeja vieja.
+
+Los pedidos usan los tres índices, y por eso son los que agotan el juego:
+`gsi1` los del taller, `gsi2` la cola por estado, `gsi3` los de un correo —lo
+que permite pedir sin cuenta y aun así ver los propios—. Si hiciera falta un
+cuarto reparto, hay que replantear, no añadir un índice más.
 
 Lo que sigue sin índice es el **catálogo público** filtrado por técnica,
 color o días de producción: eso lo resolverá el catálogo materializado en S3,

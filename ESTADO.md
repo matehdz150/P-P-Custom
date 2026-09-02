@@ -182,6 +182,60 @@ fondo hasta que se vuelvan a subir los mockups desde el admin.
 
 ---
 
+## Pedidos: la API, hecha y probada
+
+Ya se puede pedir. Falta la interfaz —carrito y la salida del editor—, pero
+el circuito entero funciona por API.
+
+**Las decisiones que se tomaron:**
+
+- **Cuenta opcional.** El pedido guarda el correo del comprador y un
+  `compradorId` en null, listo para el día que haya cuentas. El seguimiento
+  va por un enlace con token.
+- **Del token se guarda sólo el hash** (sha256) y se compara en tiempo
+  constante. Si alguien lee la tabla no se lleva los enlaces de nadie, y una
+  comparación normal permitiría adivinarlo midiendo lo que tarda en fallar.
+- **Un pedido es de un solo taller**, aunque lleve varios productos con
+  diseños distintos. Mezclar obligaría a partirlo, y entonces "el pedido"
+  dejaría de ser lo que el cliente cree que mandó.
+- **El precio y el taller salen de la tabla, nunca del cuerpo.** Está
+  probado: un pedido que se dictaba a sí mismo `total: 1` y otro taller se
+  guardó con el precio real y el taller dueño del producto.
+- **Sólo se puede pedir lo que está `activo`.** Un borrador o algo que volvió
+  a revisión no se puede comprar.
+- **El arte se firma al crear el pedido**, no con un firmador abierto: la
+  ruta es pública, y un endpoint que firma subidas a cualquiera es una
+  invitación a llenar el bucket.
+- **Las transiciones de estado están declaradas** (`nuevo → produccion →
+  listo → entregado`, y `cancelado` mientras no se haya entregado). Sin eso,
+  un pedido podría figurar entregado sin haber pasado por producción y la
+  bitácora dejaría de contar lo que pasó. Volver atrás lo tendrá que hacer el
+  admin, y quedará anotado.
+
+Probado de punta a punta contra AWS: pedido creado sin llave con folio corto
+único, seguimiento que exige token (401 sin él y con uno falso), arte subido
+a S3 y leído por su ruta, el taller viéndolo en su panel, las cuatro
+transiciones —incluidos los saltos prohibidos—, el pedido de otro taller
+dando 404 al leerlo y al moverlo, y la bitácora completa llegando al
+comprador por su enlace.
+
+**Lo que falta para que esto sea usable por una persona:**
+
+1. **La salida del editor.** Sigue sin haber botón de pedir, ni precio en
+   pantalla, ni exportación. Hay que exportar un PNG por lado —sólo el arte,
+   sin el mockup, con fondo transparente y a los DPI del área— y subirlo con
+   las URLs que devuelve el pedido. Un mockup no sirve para producir.
+2. **El carrito**, con el aviso al mezclar talleres.
+3. **El panel de pedidos del taller**, que hoy sigue leyendo el endpoint
+   inexistente de Nest en `lib/api/pedidos.ts`.
+4. **SES**: la cuenta está en **sandbox** y **no hay ninguna identidad
+   verificada**. Hay que verificar `kustto.com.mx` con registros DKIM en el
+   DNS —eso lo tiene que hacer alguien con acceso al dominio— y pedirle a AWS
+   la salida del sandbox, que tarda alrededor de un día. Hasta entonces sólo
+   se puede escribir a direcciones verificadas a mano.
+
+---
+
 ## El hallazgo que cambia las prioridades
 
 **No existe el dominio de pedidos. En ningún lado.**
