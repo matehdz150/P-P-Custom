@@ -276,9 +276,8 @@ que es lo que uno espera.
   son treinta líneas. Meter Nest ahí costaría uno a tres segundos de arranque
   en frío a cambio de decoradores que no necesitamos.
 - **Un formateador:** `pnpm format` (Biome). `pnpm lint` para revisar.
-- `pnpm type-check` en la raíz. Ojo: `apps/web` **ya trae errores de tipos
-  previos** en el admin de productos y en algunos formularios; no son tuyos.
-  Filtra por los archivos que tocaste.
+- `pnpm type-check` en la raíz, y **está en cero**: si sale algo, es tuyo.
+  `pnpm --filter web build` tiene que pasar antes de cualquier despliegue.
 
 ---
 

@@ -115,6 +115,60 @@ servidor (el navegador ya tiene el lienzo y los píxeles).
 
 ---
 
+## El despliegue del front: a medias, y dónde exactamente
+
+Se eligió **S3 + CloudFront con export estático** y **URLs bonitas**: cada
+producto es HTML pre-renderizado e indexable. El precio de esa decisión, que
+hay que tener presente: **un producto aprobado no aparece en el sitio hasta que
+se vuelve a construir y subir.** Se automatizará cuando duela.
+
+### Lo que ya está hecho
+
+- **El proyecto vuelve a compilar.** No lo hacía: los restos del dominio de
+  paquetes importaban funciones que no existían. Se borraron
+  (`apps/api/src/package-{designs,orders}`, el esquema, `app/package/*/disenar`
+  y `/resumen`, `app/proveedor/paquetes`, `ProviderProductForm`, `packageMode`)
+  y se arreglaron los 17 errores de tipos que arrastraba el admin.
+  **`pnpm type-check` está en cero y `pnpm build` pasa.**
+- **Las rutas que nunca se pueden pre-renderizar pasaron a query**, porque su
+  contenido se crea después de desplegar:
+  - `/pedido/[id]` → **`/pedido?id=…&token=…`** (`enlaceDeSeguimiento` ya lo
+    genera así).
+  - `/proveedor/productos/[id]/editar` → **`/proveedor/productos/editar?id=…`**.
+  - Las dos van envueltas en `<Suspense>`: sin él, `useSearchParams` revienta
+    el pre-renderizado.
+- **Las públicas conservan su URL** con `generateStaticParams`
+  (`lib/build/parametros.ts`): `/product/[id]`, `/design/[productId]` y
+  `/catalogo/productos/[id]` —cuyo `[id]` es una CATEGORÍA, no un producto—.
+- `/proveedores/[slug]` y `/package/[id]` generan **cero URLs a propósito**:
+  leen de Nest, que no se despliega, y no hay endpoint público que liste
+  talleres. Están partidas en `page.tsx` + `Vista.tsx` porque una página
+  `"use client"` no puede exportar `generateStaticParams`.
+- **Certificado ACM pedido** para `kustto.com.mx` y `www`, con sus dos CNAME de
+  validación ya puestos en Route53. Estaba en `PENDING_VALIDATION`.
+
+### Lo que falta
+
+1. **Sacar el admin del despliegue.** Es lo ÚNICO que queda bloqueando
+   `output: "export"`: quedan tres rutas dinámicas y las tres son suyas
+   (`/admin/categorias`, `/admin/paquetes/[id]`, `/api/admin/[...ruta]`). El
+   proxy con la llave no puede ni debe salir a internet.
+2. **`next.config.ts`**: `output: "export"`, `images.unoptimized: true`, y
+   quitar los `rewrites()` —que no existen en un export— pasándolos a
+   comportamientos de CloudFront para `/mockups/*` y `/medios/*`.
+3. **`infra/frontend.sh`** (idempotente, como los demás): bucket privado,
+   distribución de CloudFront con OAC, los tres comportamientos, y los ALIAS de
+   Route53 para el apex y `www`.
+4. **Comprobar que el certificado se emitió** y engancharlo a la distribución.
+
+### Lo que NO hay que tocar en Route53
+
+La zona ya tiene un **MX y tres CNAME de DKIM que son de un correo en uso**, no
+de SES. Los tres tokens que SES espera son otros y **no están puestos**: por eso
+sigue en `PENDING`. Al añadir registros, sólo añadir.
+
+---
+
 ## Lo que sigue, en orden
 
 1. **SES.** Es lo más grave que queda. Con el panel cerrado nadie se entera de
@@ -134,8 +188,8 @@ servidor (el navegador ya tiene el lienzo y los píxeles).
 4. **El panel en móvil.** La barra lateral es `fixed w-[236px]` con el contenido
    en `ml-[236px]` y **ni un breakpoint**: en un teléfono quedan 154 px útiles.
    Quien produce está en el taller, no en un escritorio.
-5. **Login de admin y despliegue.** El proxy `/api/admin/*` sigue siendo una
-   puerta abierta y hay que cerrarla antes de que el sitio sea público.
+5. **Login de admin.** El proxy `/api/admin/*` sigue siendo una puerta abierta.
+   Mientras no exista, el admin se queda fuera del sitio público (ver arriba).
 
 ---
 
@@ -156,13 +210,6 @@ servidor (el navegador ya tiene el lienzo y los píxeles).
   - `prueba.login@kustto.mx`, contraseña `kustto2026taller`, permanente.
   - `taller@bordadostapatios.mx`, **sin contraseña conocida**: se cambió al
     probar el reto y Cognito no la devuelve.
-- **Restos de un dominio de paquetes que nunca se terminó**, ahora ya
-  versionados: `apps/api/src/package-{designs,orders}/`,
-  `packages/db/schema/packages/` y las páginas `app/package/*` y
-  `app/proveedor/paquetes`. Importan módulos que no existen y **son la mayoría
-  de los 17 errores de `pnpm type-check`**. O se retoman o se borran.
-- **`components/Provider/ProviderProductForm.tsx` es código muerto**: nadie lo
-  importa desde que `AltaProducto` lo reemplazó.
 - **`pnpm-lock.yaml` sigue ignorado y sin versionar.**
 - La landing de proveedores vive en `/proveedores` y el panel autenticado en
   `/proveedor`. Dos nombres a un carácter de distancia van a doler.
