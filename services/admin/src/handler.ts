@@ -21,6 +21,7 @@ router.get("/providers", () => proveedores.listar());
 router.post("/providers", (p) => proveedores.crear(p.cuerpo));
 
 router.post("/uploads/mockup-url", (p) => subidas.urlParaMockup(p.cuerpo));
+router.post("/uploads/imagen-url", (p) => subidas.urlParaImagen(p.cuerpo));
 
 /**
  * Rutas que NO piden la llave de admin.

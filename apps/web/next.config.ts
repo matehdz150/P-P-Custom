@@ -25,6 +25,13 @@ const nextConfig: NextConfig = {
         source: "/mockups/:ruta*",
         destination: `${ADMIN_API}/publico/mockups/:ruta*`,
       },
+      // Las imágenes del catálogo que no son mockups (la foto de una
+      // categoría, por ejemplo). Mismo bucket cerrado, misma razón para
+      // servirlas desde nuestro origen: una sola ruta en dev y en producción.
+      {
+        source: "/medios/:ruta*",
+        destination: `${ADMIN_API}/publico/medios/:ruta*`,
+      },
     ];
   },
 };

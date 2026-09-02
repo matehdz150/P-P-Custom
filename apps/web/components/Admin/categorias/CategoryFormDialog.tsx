@@ -12,12 +12,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import {
-  createCategory,
-  updateCategory,
+  crearCategoria,
+  actualizarCategoria,
   createPackageCategory,
   Category,
 } from "@/lib/api/categories";
-import { uploadImage } from "@/lib/api/uploads";
+import { subirImagen } from "@/lib/api/uploads";
 import Image from "next/image";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -47,8 +47,11 @@ export function CategoryFormDialog({
   async function handleImageUpload(file: File) {
     setUploading(true);
     try {
-      const res = await uploadImage(file);
-      setImageUrl(res.url);
+      // A S3 por la Lambda, no a Cloudinary: lo que se guarda es la ruta
+      // (`/medios/...`), que se sirve desde nuestro mismo origen.
+      setImageUrl(await subirImagen(file, "categorias"));
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "No se pudo subir la imagen");
     } finally {
       setUploading(false);
     }
@@ -60,34 +63,39 @@ export function CategoryFormDialog({
       return;
     }
 
-    // ================= PRODUCT CATEGORY =================
-    if (type === "product") {
-      if (!imageUrl) {
-        alert("La imagen es obligatoria para categorías de producto");
-        return;
+    try {
+      // ========== CATEGORÍAS DE PRODUCTO: ya en DynamoDB ==========
+      if (type === "product") {
+        if (!imageUrl) {
+          alert("La imagen es obligatoria para categorías de producto");
+          return;
+        }
+
+        if (isEdit) {
+          await actualizarCategoria(category!.id, {
+            name,
+            description,
+            image: imageUrl,
+          });
+        } else {
+          await crearCategoria({
+            name,
+            description,
+            image: imageUrl,
+          });
+        }
       }
 
-      if (isEdit) {
-        await updateCategory(category!.id, {
+      // ========== CATEGORÍAS DE PAQUETE: todavía en la API vieja ==========
+      if (type === "package") {
+        await createPackageCategory({
           name,
           description,
-          image: imageUrl,
-        });
-      } else {
-        await createCategory({
-          name,
-          description,
-          image: imageUrl,
         });
       }
-    }
-
-    // ================= PACKAGE CATEGORY =================
-    if (type === "package") {
-      await createPackageCategory({
-        name,
-        description,
-      });
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "No se pudo guardar la categoría");
+      return;
     }
 
     setOpen(false);

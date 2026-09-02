@@ -8,10 +8,14 @@ import { CategoryFormDialog } from "@/components/Admin/categorias/CategoryFormDi
 export default async function CategoriesAdminPage() {
   // Las de producto ya viven en DynamoDB; las de paquete siguen en la API
   // vieja hasta que migren los paquetes.
-  const [productCategories, packageCategories] = await Promise.all([
-    adminFetchServidor<Category[]>("/categories"),
-    getPackageCategories(),
-  ]);
+  //
+  // Van por separado a propósito: con Promise.all, la API de Nest apagada
+  // —que es lo normal mientras dure la migración— tumbaba la página entera
+  // y las categorías de DynamoDB, que sí responden, nunca se pintaban.
+  const productCategories =
+    await adminFetchServidor<Category[]>("/categories");
+
+  const packageCategories = await getPackageCategories().catch(() => null);
 
   return (
     <main className="px-6 py-10 space-y-12">
@@ -67,10 +71,18 @@ export default async function CategoriesAdminPage() {
           />
         </div>
 
-        <CategoriesTable
-          categories={packageCategories}
-          type="package"
-        />
+        {packageCategories ? (
+          <CategoriesTable
+            categories={packageCategories}
+            type="package"
+          />
+        ) : (
+          <p className="text-sm text-muted-foreground border rounded-lg p-4">
+            No se pudo hablar con la API de Nest, que es donde siguen viviendo
+            los paquetes. Si estás trabajando en local, levántala con{" "}
+            <code>docker compose up -d postgres api</code>.
+          </p>
+        )}
       </section>
     </main>
   );

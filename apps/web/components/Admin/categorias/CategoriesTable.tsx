@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash, Pencil } from "lucide-react";
 import {
-  deleteCategory,
+  borrarCategoria,
   deletePackageCategory,
 } from "@/lib/api/categories";
 import { CategoryFormDialog } from "./CategoryFormDialog";
@@ -29,12 +29,19 @@ export function CategoriesTable({ categories, type }: Props) {
   async function handleDelete(id: string) {
     if (!confirm("¿Eliminar esta categoría?")) return;
 
-    if (type === "product") {
-      await deleteCategory(id);
-    }
+    try {
+      // Las de producto viven en DynamoDB; las de paquete siguen en la API
+      // vieja hasta que se migren los paquetes.
+      if (type === "product") {
+        await borrarCategoria(id);
+      }
 
-    if (type === "package") {
-      await deletePackageCategory(id);
+      if (type === "package") {
+        await deletePackageCategory(id);
+      }
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "No se pudo eliminar la categoría");
+      return;
     }
 
     window.location.reload();

@@ -30,17 +30,33 @@ const VIGENCIA = 300;
  * prenda hace getImageData() sobre ellos y desde otro origen el canvas
  * queda contaminado y el teñido se apaga sin avisar.
  */
-export async function urlParaMockup(cuerpo: unknown) {
-  const c = (cuerpo ?? {}) as Record<string, unknown>;
+/** Todo lo que llega del navegador y acaba en una key de S3 pasa por aquí. */
+const limpio = (s: unknown) =>
+  String(s ?? "").replace(/[^a-zA-Z0-9-_]/g, "").slice(0, 60);
 
-  const contentType = String(c.contentType ?? "");
+function extension(contentType: string) {
   const ext = TIPOS.get(contentType);
   if (!ext) {
     throw malaPeticion(`Tipo no soportado: ${contentType}. Usa PNG, JPG o WebP.`);
   }
+  return ext;
+}
 
-  const limpio = (s: unknown) =>
-    String(s ?? "").replace(/[^a-zA-Z0-9-_]/g, "").slice(0, 60);
+async function firmar(key: string, contentType: string) {
+  const uploadUrl = await getSignedUrl(
+    s3,
+    new PutObjectCommand({ Bucket: BUCKET_PUBLICO, Key: key, ContentType: contentType }),
+    { expiresIn: VIGENCIA },
+  );
+
+  return { uploadUrl, path: `/${key}` };
+}
+
+export async function urlParaMockup(cuerpo: unknown) {
+  const c = (cuerpo ?? {}) as Record<string, unknown>;
+
+  const contentType = String(c.contentType ?? "");
+  const ext = extension(contentType);
 
   const templateId = limpio(c.templateId);
   const side = limpio(c.side);
@@ -50,13 +66,43 @@ export async function urlParaMockup(cuerpo: unknown) {
   // en CloudFront, y re-subir un lado no obliga a invalidar nada.
   const key = `mockups/${templateId}/${side}-${randomBytes(6).toString("hex")}.${ext}`;
 
-  const uploadUrl = await getSignedUrl(
-    s3,
-    new PutObjectCommand({ Bucket: BUCKET_PUBLICO, Key: key, ContentType: contentType }),
-    { expiresIn: VIGENCIA },
-  );
+  return firmar(key, contentType);
+}
 
-  return { uploadUrl, path: `/${key}` };
+/**
+ * Las carpetas donde el admin puede escribir imágenes que no son mockups.
+ *
+ * Es lista blanca porque el nombre llega del navegador: sin ella, una
+ * petición podría pedir `carpeta: "mockups/tshirt"` y sobrescribir el mockup
+ * de una plantilla en uso.
+ */
+const CARPETAS = new Set(["categorias", "paquetes", "productos"]);
+
+/**
+ * Permiso para subir una imagen del catálogo (la foto de una categoría, por
+ * ejemplo). Mismo trato que los mockups: el archivo va directo del navegador
+ * a S3 y lo que se guarda en la base es la RUTA, nunca la URL de S3, para
+ * que todo se sirva desde el mismo origen que el sitio.
+ *
+ * Viven bajo `medios/` para que `/mockups/*` siga siendo sólo mockups: son
+ * dos comportamientos distintos de caché el día que entre CloudFront.
+ */
+export async function urlParaImagen(cuerpo: unknown) {
+  const c = (cuerpo ?? {}) as Record<string, unknown>;
+
+  const contentType = String(c.contentType ?? "");
+  const ext = extension(contentType);
+
+  const carpeta = limpio(c.carpeta);
+  if (!CARPETAS.has(carpeta)) {
+    throw malaPeticion(
+      `Carpeta no permitida: ${carpeta || "(vacía)"}. Usa ${[...CARPETAS].join(", ")}.`,
+    );
+  }
+
+  const key = `medios/${carpeta}/${randomBytes(8).toString("hex")}.${ext}`;
+
+  return firmar(key, contentType);
 }
 
 /**

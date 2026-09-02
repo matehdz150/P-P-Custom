@@ -1,3 +1,4 @@
+import { adminFetch } from "./admin";
 import { apiFetch } from "./api";
 
 export type Provider = {
@@ -35,17 +36,31 @@ export type ProviderProduct = {
 	pricing?: { basePrice: number } | null;
 };
 
-/* ---- Admin ---- */
+/* ---- Admin: ya en AWS ----
+
+   Los proveedores viven en DynamoDB y su cuenta en Cognito. Estas dos van
+   por la Lambda de admin; el resto de este archivo todavía le pega a Nest. */
+
 export function getProviders() {
-	return apiFetch<Provider[]>("/providers");
+	return adminFetch<Provider[]>("/providers");
 }
 
-export function createProvider(data: {
-	email: string;
-	password: string;
-	name?: string;
-}) {
-	return apiFetch<Provider>("/providers", {
+/**
+ * Lo que devuelve el alta. La contraseña temporal la genera Cognito y la API
+ * la manda UNA sola vez: no queda guardada de nuestro lado, así que si el
+ * admin no la copia, no hay de dónde volver a sacarla — habría que
+ * restablecerla desde Cognito.
+ */
+export type ProveedorCreado = Provider & { contrasenaTemporal: string };
+
+/**
+ * Alta de un taller.
+ *
+ * Ya no se manda contraseña: la crea Cognito y obliga a cambiarla en el
+ * primer ingreso. `name` es obligatorio porque de ahí sale el slug público.
+ */
+export function createProvider(data: { email: string; name: string }) {
+	return adminFetch<ProveedorCreado>("/providers", {
 		method: "POST",
 		body: JSON.stringify(data),
 	});

@@ -6,17 +6,37 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider";
 import { QueryCommand, TransactWriteCommand } from "@aws-sdk/lib-dynamodb";
 
-import {
-  dynamo,
-  esConflicto,
-  llaves,
-  sinLlaves,
-  TABLA,
-} from "../lib/dynamo.js";
+import { dynamo, esConflicto, llaves, TABLA } from "../lib/dynamo.js";
 import { conflicto, malaPeticion } from "../lib/http.js";
 
 const cognito = new CognitoIdentityProviderClient({});
 const POOL = process.env.KUSTTO_POOL_ID;
+
+/**
+ * Los campos que salen a la API.
+ *
+ * Es lista blanca y no `sinLlaves`: los proveedores sembrados antes de
+ * Cognito todavía traen `passwordHash` en la tabla, y `sinLlaves` sólo quita
+ * pk/sk/gsi*, así que el hash viajaba hasta el navegador. Con lista blanca,
+ * un campo sensible que aparezca mañana en la tabla tampoco se escapa.
+ */
+const CAMPOS_PUBLICOS = [
+  "id",
+  "email",
+  "name",
+  "slug",
+  "displayName",
+  "bio",
+  "avatarUrl",
+  "bannerUrl",
+  "createdAt",
+] as const;
+
+function comoProveedor(item: Record<string, unknown>) {
+  const salida: Record<string, unknown> = {};
+  for (const campo of CAMPOS_PUBLICOS) salida[campo] = item[campo] ?? null;
+  return salida;
+}
 
 export async function listar() {
   const { Items } = await dynamo.send(
@@ -28,7 +48,7 @@ export async function listar() {
     }),
   );
 
-  return (Items ?? []).map(sinLlaves);
+  return (Items ?? []).map(comoProveedor);
 }
 
 /**
