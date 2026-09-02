@@ -284,8 +284,19 @@ function aLinea(l: Cuerpo, producto: Cuerpo, pedidoId: string) {
     tallas,
     piezas,
     importe: (base + extraPorLados) * piezas,
-    /** El diseño editable, para poder reabrirlo o corregirlo. */
-    diseno: l.diseno ?? null,
+    /**
+     * El diseño editable vive en S3, NO en este ítem.
+     *
+     * Un ítem de DynamoDB no puede pasar de 400 KB, y el diseño lleva dentro
+     * las imágenes que subió el cliente como data URL: en cuanto alguien
+     * arrastra una foto de verdad, el pedido entero deja de caber y la
+     * escritura falla con `Item size has exceeded the maximum allowed size`.
+     * Ya pasó, y desde fuera se ve como un 500 al pedir.
+     *
+     * Aquí sólo queda la ruta. El navegador lo sube aparte, con su URL
+     * firmada, igual que el arte.
+     */
+    diseno: `/medios/pedidos/${pedidoId}/${lineaId}-diseno.json`,
     /**
      * Lo que hace falta para producir cada lado.
      *
@@ -372,22 +383,44 @@ function medidaRealDelArchivo(l: Cuerpo, lado: string, dpi: number) {
 type Linea = ReturnType<typeof aLinea>;
 
 /**
- * Firma la subida de los dos archivos de cada lado: el de producción y el de
- * colocación. Cada uno lleva su `tipo` para que el navegador sepa cuál sube a
- * dónde sin adivinarlo por la ruta.
+ * Firma todo lo que el navegador tiene que subir.
+ *
+ * Por cada lado, el arte de producción y la referencia de colocación; por cada
+ * línea, el diseño editable. Cada entrada lleva su `tipo` y su `indice` —la
+ * posición de la línea en lo que se pidió— para que el navegador empareje sin
+ * adivinar: emparejar sólo por `lado` funcionaba de milagro mientras el pedido
+ * llevara un único producto, y se rompía en silencio en cuanto llevara dos con
+ * el mismo lado dibujado.
  */
 async function firmarArte(pedidoId: string, lineas: Linea[]) {
-  const piezas = lineas.flatMap((l) =>
-    l.arte.flatMap((a) => [
-      { lineaId: l.id, lado: a.lado, tipo: "arte" as const, ruta: a.ruta },
+  const piezas = lineas.flatMap((l, indice) => [
+    ...l.arte.flatMap((a) => [
       {
+        indice,
+        lineaId: l.id,
+        lado: a.lado,
+        tipo: "arte" as const,
+        ruta: a.ruta,
+        contentType: "image/png",
+      },
+      {
+        indice,
         lineaId: l.id,
         lado: a.lado,
         tipo: "colocacion" as const,
         ruta: a.colocacion,
+        contentType: "image/png",
       },
     ]),
-  );
+    {
+      indice,
+      lineaId: l.id,
+      lado: "",
+      tipo: "diseno" as const,
+      ruta: l.diseno,
+      contentType: "application/json",
+    },
+  ]);
 
   return Promise.all(
     piezas.map(async (p) => ({
@@ -397,7 +430,7 @@ async function firmarArte(pedidoId: string, lineas: Linea[]) {
         new PutObjectCommand({
           Bucket: BUCKET_PUBLICO,
           Key: p.ruta.slice(1),
-          ContentType: "image/png",
+          ContentType: p.contentType,
         }),
         { expiresIn: VIGENCIA_SUBIDA },
       ),

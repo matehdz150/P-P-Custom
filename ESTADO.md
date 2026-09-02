@@ -54,6 +54,19 @@ Y tres decisiones que conviene no deshacer:
 
 ## Trampas que ya mordieron
 
+**Un ítem de DynamoDB no pasa de 400 KB, y el diseño no cabe.** El diseño
+editable lleva dentro las imágenes que sube el cliente como data URL. Con
+formas y texto cabía; en cuanto alguien arrastra una foto de verdad, el pedido
+entero deja de caber y `escribirConFolio` falla con `Item size has exceeded the
+maximum allowed size`, que desde el navegador se ve como un **500 al pedir**.
+Ahora el diseño va a S3 con su URL firmada, igual que el arte, y en el ítem
+sólo queda la ruta. De paso el cuerpo del POST bajó de **3 MB a 509 bytes**.
+
+**Las subidas se emparejan por `indice`, no por lado.** Cada entrada de
+`subidas` dice a qué línea del pedido pertenece. Emparejar sólo por `lado`
+funcionaba mientras el pedido llevara un único producto y se habría roto en
+silencio con dos que compartieran lado.
+
 **`canvas.toDataURL()` no escribe la resolución.** Un PNG sin chunk `pHYs` se
 abre asumiendo 72 DPI: comprobado con un arte real, 3307 × 4283 px se
 interpretaban como **116 × 151 cm** en vez de 28. El archivo abre bien, se ve

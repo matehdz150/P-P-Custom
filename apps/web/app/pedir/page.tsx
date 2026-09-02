@@ -268,12 +268,15 @@ export default function PedirPage() {
 						tallas: Object.entries(cantidades)
 							.filter(([, n]) => n > 0)
 							.map(([size, n]) => ({ size, piezas: n })),
-						diseno: borrador.diseno,
 					},
 				],
 			});
 
-			const { faltaArte } = await subirArchivos(pedido, borrador.lados);
+			const { faltaArte } = await subirArchivos(
+				pedido,
+				borrador.lados,
+				borrador.diseno,
+			);
 
 			// El borrador se tira aunque alguna subida haya fallado: el pedido ya
 			// existe, y dejarlo permitiría mandarlo otra vez desde esta pantalla.

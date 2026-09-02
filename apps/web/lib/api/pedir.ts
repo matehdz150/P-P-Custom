@@ -27,8 +27,14 @@ export type LineaAPedir = {
 	 * destinatario— así que puede venir del cliente.
 	 */
 	archivos?: { lado: string; anchoPx: number; altoPx: number; dpi: number }[];
-	/** El diseño editable, por si hay que reabrirlo o corregirlo. */
-	diseno?: unknown;
+	/**
+	 * El diseño editable NO va aquí.
+	 *
+	 * Lleva dentro las imágenes que subió el cliente como data URL, y un ítem
+	 * de DynamoDB no pasa de 400 KB: con una foto de verdad el pedido dejaba de
+	 * caber y la escritura fallaba con un 500. Se sube a S3 aparte, con la URL
+	 * firmada que devuelve el pedido, igual que el arte.
+	 */
 };
 
 export type Comprador = {
@@ -65,9 +71,11 @@ export type PedidoCreado = {
 	total: number;
 	/** Dos por lado: el arte de producción y la referencia de colocación. */
 	subidas: {
+		/** La posición de la línea en lo que se pidió. Con esto se empareja. */
+		indice: number;
 		lineaId: string;
 		lado: string;
-		tipo: "arte" | "colocacion";
+		tipo: "arte" | "colocacion" | "diseno";
 		ruta: string;
 		uploadUrl: string;
 	}[];
@@ -147,45 +155,66 @@ export function seguirPedido(id: string, token: string) {
 export async function subirArchivos(
 	pedido: PedidoCreado,
 	lados: ArchivoDeLado[],
+	diseno?: unknown,
+	indice = 0,
 ): Promise<{ faltaArte: string[]; faltaColocacion: string[] }> {
 	const faltaArte: string[] = [];
 	const faltaColocacion: string[] = [];
 
-	const subir = async (destinoUrl: string, cuerpo: Blob) => {
+	const subir = async (destinoUrl: string, cuerpo: Blob, tipo: string) => {
 		const res = await fetch(destinoUrl, {
 			method: "PUT",
 			// Exactamente el tipo que se firmó, o S3 rechaza la firma.
-			headers: { "Content-Type": "image/png" },
+			headers: { "Content-Type": tipo },
 			body: cuerpo,
 		});
 
 		if (!res.ok) throw new Error(String(res.status));
 	};
 
+	// El diseño editable. No bloquea nada: si falla, el pedido se produce igual
+	// y lo único que se pierde es poder reabrirlo tal cual.
+	const destinoDiseno = pedido.subidas.find(
+		(s) => s.indice === indice && s.tipo === "diseno",
+	);
+
+	if (destinoDiseno && diseno !== undefined) {
+		try {
+			await subir(
+				destinoDiseno.uploadUrl,
+				new Blob([JSON.stringify(diseno)], { type: "application/json" }),
+				"application/json",
+			);
+		} catch {
+			// Se sigue: el arte importa, esto no.
+		}
+	}
+
 	for (const lado of lados) {
 		const destinoArte = pedido.subidas.find(
-			(s) => s.lado === lado.lado && s.tipo === "arte",
+			(s) => s.indice === indice && s.lado === lado.lado && s.tipo === "arte",
 		);
 
 		if (!destinoArte) {
 			faltaArte.push(lado.lado);
 		} else {
 			try {
-				await subir(destinoArte.uploadUrl, lado.arte);
+				await subir(destinoArte.uploadUrl, lado.arte, "image/png");
 			} catch {
 				faltaArte.push(lado.lado);
 			}
 		}
 
 		const destinoColocacion = pedido.subidas.find(
-			(s) => s.lado === lado.lado && s.tipo === "colocacion",
+			(s) =>
+				s.indice === indice && s.lado === lado.lado && s.tipo === "colocacion",
 		);
 
 		if (!lado.colocacion || !destinoColocacion) {
 			faltaColocacion.push(lado.lado);
 		} else {
 			try {
-				await subir(destinoColocacion.uploadUrl, lado.colocacion);
+				await subir(destinoColocacion.uploadUrl, lado.colocacion, "image/png");
 			} catch {
 				faltaColocacion.push(lado.lado);
 			}

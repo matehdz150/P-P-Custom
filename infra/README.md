@@ -90,6 +90,12 @@ CONN#<connectionId>   META            una conexión viva del panel del taller
 La tabla tiene **TTL activado** sobre el atributo `expiraEn`. Hoy sólo lo usan
 las conexiones; lo activa `websocket.sh` si no estaba.
 
+**El diseño editable NO va en el ítem.** Un ítem de DynamoDB no pasa de 400 KB
+y el diseño lleva las imágenes del cliente incrustadas: con una foto de verdad
+el pedido dejaba de caber y la escritura fallaba con `Item size has exceeded
+the maximum allowed size`. Vive en S3 (`…-diseno.json`) y en el ítem queda la
+ruta. Vale para cualquier cosa que crezca con lo que suba un cliente.
+
 **Una línea del pedido congela lo que hace falta para producir.** No se lee del
 producto al mirarla: el taller puede cambiar su ficha mañana y un pedido de
 hace un mes se imprimiría al tamaño de hoy. Por eso la línea copia, además del
