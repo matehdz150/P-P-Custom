@@ -2,7 +2,7 @@ import { randomBytes } from "node:crypto";
 import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-import { malaPeticion } from "../lib/http.js";
+import { malaPeticion, noEncontrado } from "../lib/http.js";
 
 const s3 = new S3Client({});
 
@@ -113,9 +113,30 @@ export async function urlParaImagen(cuerpo: unknown) {
  * CloudFront lo sirve directo con OAC y esto no se invoca.
  */
 export async function leerPublico(key: string) {
-  const salida = await s3.send(
-    new GetObjectCommand({ Bucket: BUCKET_PUBLICO, Key: key }),
-  );
+  const salida = await s3
+    .send(new GetObjectCommand({ Bucket: BUCKET_PUBLICO, Key: key }))
+    .catch((error) => {
+      const nombre = (error as { name?: string })?.name;
+
+      // Un archivo que no está es un 404, no un 500: pasa con plantillas
+      // viejas que apuntan a mockups que nunca se subieron, y un 500 manda a
+      // buscar el problema en la Lambda en vez de en el dato.
+      //
+      // `AccessDenied` cuenta como "no existe" AQUÍ, y sólo aquí: el rol
+      // tiene GetObject sobre todo el bucket pero NO ListBucket, y sin
+      // ListBucket S3 contesta 403 en vez de 404 para no revelar qué hay
+      // dentro. Si algún día se le quita GetObject al rol, esto empezará a
+      // enseñar 404 donde en realidad falta un permiso.
+      if (
+        nombre === "NoSuchKey" ||
+        nombre === "NotFound" ||
+        nombre === "AccessDenied"
+      ) {
+        throw noEncontrado(`No hay ningún archivo en ${key}`);
+      }
+
+      throw error;
+    });
 
   const bytes = await salida.Body!.transformToByteArray();
 

@@ -1,13 +1,15 @@
 // lib/products/loadProductTemplate.ts
 // lib/products/loadProductTemplate.ts
 // lib/products/loadProductTemplate.ts
-import { getProduct } from "@/lib/api/products";
+import { aProductoViejo, getFichaDeProducto } from "@/lib/api/catalogo";
 import type { DesignerProductTemplate } from "@/lib/api/products";
 
 export async function loadProductTemplate(
   productId: string,
 ): Promise<DesignerProductTemplate> {
-  const product = await getProduct(productId);
+  // Del catálogo público: el editor lo abre un cliente sin sesión, y la
+  // plantilla ya viene resuelta dentro de la ficha.
+  const product = aProductoViejo(await getFichaDeProducto(productId));
 
   if (!product.productTemplateData) {
     throw new Error(

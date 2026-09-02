@@ -5,7 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { getCategories, type Category } from "@/lib/api/categories";
+import { type Category } from "@/lib/api/categories";
+import { getCategoriasPublicas } from "@/lib/api/catalogo";
 
 /* =========================
    COMPONENT
@@ -17,8 +18,9 @@ export default function ProductGrid() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getCategories()
+    getCategoriasPublicas()
       .then(setCategories)
+      .catch(() => setCategories([]))
       .finally(() => setLoading(false));
   }, []);
 

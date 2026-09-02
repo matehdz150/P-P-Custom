@@ -54,6 +54,12 @@ export default function PackagesSection({
 						precioDesde: pkg.basePrice ?? null,
 					})),
 				);
+			} catch {
+				// Los paquetes son lo último que queda en la API de Nest. Con esa
+				// API apagada —lo normal mientras dure la migración— la sección
+				// simplemente no se pinta; sin este catch, cada visita al catálogo
+				// dejaba un error sin atender en la consola.
+				if (vigente) setPaquetes([]);
 			} finally {
 				if (vigente) setCargando(false);
 			}

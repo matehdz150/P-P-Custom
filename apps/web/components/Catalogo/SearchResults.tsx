@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Sora } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { searchCatalog, SearchResultItem } from "@/lib/api/search";
+import { buscarEnCatalogo, type ResultadoDeBusqueda } from "@/lib/api/catalogo";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const sora = Sora({
@@ -13,7 +13,7 @@ const sora = Sora({
 });
 
 export default function SearchResults({ query }: { query: string }) {
-  const [results, setResults] = useState<SearchResultItem[]>([]);
+  const [results, setResults] = useState<ResultadoDeBusqueda[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
@@ -33,7 +33,7 @@ export default function SearchResults({ query }: { query: string }) {
 
     const timeout = setTimeout(async () => {
       try {
-        const data = await searchCatalog(q);
+        const data = await buscarEnCatalogo(q);
         setResults(data);
       } finally {
         setLoading(false);

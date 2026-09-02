@@ -7,8 +7,7 @@ import { Sora } from "next/font/google";
 
 import { useSearch } from "@/Contexts/SearchContext";
 import SearchResults from "@/components/Catalogo/SearchResults";
-import { getProductsByCategory } from "@/lib/api/search";
-import type { ProductFromCategory } from "@/lib/api/search";
+import { getCatalogo, type ProductoDeCatalogo } from "@/lib/api/catalogo";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 
@@ -21,7 +20,7 @@ export default function ProductsByCategoryPage() {
   const { id } = useParams<{ id: string }>();
   const { query } = useSearch();
 
-  const [products, setProducts] = useState<ProductFromCategory[]>([]);
+  const [products, setProducts] = useState<ProductoDeCatalogo[]>([]);
   const [loading, setLoading] = useState(true);
 
   const isSearching = query.trim().length > 0;
@@ -32,8 +31,11 @@ export default function ProductsByCategoryPage() {
     async function load() {
       setLoading(true);
       try {
-        const data = await getProductsByCategory(id);
-        setProducts(data ?? []);
+        // El catálogo llega entero y la categoría se aplica aquí: son
+        // decenas de productos, y una ruta por categoría obligaría a un
+        // índice más en DynamoDB para no ganar nada.
+        const todos = await getCatalogo().catch(() => []);
+        setProducts(todos.filter((p) => p.categoryIds?.includes(id)));
       } finally {
         setLoading(false);
       }
@@ -79,7 +81,7 @@ export default function ProductsByCategoryPage() {
    PRODUCT CARD (HOVER IMAGE)
 ========================= */
 
-function ProductCard({ product }: { product: ProductFromCategory }) {
+function ProductCard({ product }: { product: ProductoDeCatalogo }) {
   const [hover, setHover] = useState(false);
 
   const firstImage = product.images?.[0]?.url;

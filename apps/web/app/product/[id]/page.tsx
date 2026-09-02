@@ -1,7 +1,11 @@
 import { notFound } from "next/navigation";
 import ProductoVista from "@/components/Producto/ProductoVista";
-import { ApiError } from "@/lib/api/api";
-import { getCatalogProducts, getProduct } from "@/lib/api/products";
+import {
+	aProductoViejo,
+	aTarjetasViejas,
+	getCatalogo,
+	getFichaDeProducto,
+} from "@/lib/api/catalogo";
 
 /** Cuántas piezas asoman en "También se personalizan". */
 const RECOMENDADOS = 4;
@@ -14,19 +18,20 @@ export default async function ProductPage({
 	const { id } = await params;
 
 	// Un id que ya no existe es un 404, no una página rota: pasa cada vez que
-	// se archiva un producto o se vuelve a poblar la base.
-	const product = await getProduct(id).catch((error) => {
-		if (error instanceof ApiError && error.status === 404) notFound();
-		throw error;
-	});
+	// se archiva un producto, y también cuando uno vuelve a revisión — deja de
+	// estar publicado y el catálogo no debe seguir enseñándolo.
+	const ficha = await getFichaDeProducto(id).catch(() => null);
+	if (!ficha) notFound();
 
 	// El catálogo es para las recomendaciones: si falla, la sección no se pinta
 	// pero la ficha sigue en pie.
-	const catalogo = await getCatalogProducts().catch(() => []);
+	const catalogo = await getCatalogo().catch(() => []);
 
-	const recomendados = catalogo
-		.filter((p) => p.id !== product.id)
-		.slice(0, RECOMENDADOS);
+	const recomendados = aTarjetasViejas(
+		catalogo.filter((p) => p.id !== ficha.id).slice(0, RECOMENDADOS),
+	);
 
-	return <ProductoVista product={product} recomendados={recomendados} />;
+	return (
+		<ProductoVista product={aProductoViejo(ficha)} recomendados={recomendados} />
+	);
 }

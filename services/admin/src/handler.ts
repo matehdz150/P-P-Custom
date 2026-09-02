@@ -1,3 +1,4 @@
+import * as catalogo from "./rutas/catalogo.js";
 import * as categorias from "./rutas/categorias.js";
 import * as plantillas from "./rutas/plantillas.js";
 import * as productos from "./rutas/productos.js";
@@ -32,6 +33,14 @@ router.patch("/productos/:id/revision", (p) =>
 router.post("/uploads/mockup-url", (p) => subidas.urlParaMockup(p.cuerpo));
 router.post("/uploads/imagen-url", (p) => subidas.urlParaImagen(p.cuerpo));
 
+/* ─── El catálogo público ───────────────────────────────────────────────
+   Sin llave: lo pide el navegador de cualquiera que abra la tienda. Cuelga
+   de /publico/ porque es el prefijo que ya está abierto, y así no hay dos
+   reglas distintas que recordar. Sólo salen productos aprobados. */
+router.get("/publico/catalogo", () => catalogo.listar());
+router.get("/publico/catalogo/:id", (p) => catalogo.obtener(p.params.id));
+router.get("/publico/categorias", () => categorias.listar());
+
 /**
  * Rutas que NO piden la llave de admin.
  *
@@ -58,9 +67,17 @@ export async function handler(evento: any) {
       ]),
     );
 
-    // El camino de desarrollo para leer mockups; sale antes del router
-    // porque devuelve bytes, no JSON.
-    if (metodo === "GET" && ruta.startsWith("/publico/")) {
+    // El camino de desarrollo para leer archivos del bucket; sale antes del
+    // router porque devuelve bytes, no JSON.
+    //
+    // Se comprueban los DOS prefijos de archivos y no `/publico/` entero:
+    // bajo ese prefijo también cuelga el catálogo, que sí es JSON y sí tiene
+    // que llegar al router. Con el `startsWith` de antes, `/publico/catalogo`
+    // se habría ido a buscar un objeto a S3 y contestado 500.
+    if (
+      metodo === "GET" &&
+      (ruta.startsWith("/publico/mockups/") || ruta.startsWith("/publico/medios/"))
+    ) {
       return await subidas.leerPublico(ruta.slice("/publico/".length));
     }
 

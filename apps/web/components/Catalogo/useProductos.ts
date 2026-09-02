@@ -1,66 +1,54 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { type Category, getCategories } from "@/lib/api/categories";
+import { useEffect, useMemo, useState } from "react";
 import {
-	getProductsByCategory,
-	type ProductFromCategory,
-} from "@/lib/api/search";
+	type CategoriaPublica,
+	getCatalogo,
+	getCategoriasPublicas,
+	type ProductoDeCatalogo,
+} from "@/lib/api/catalogo";
 
 /**
  * Carga las categorías y los productos del catálogo.
  *
- * `categoria` es el id de una categoría o "todo". Como la API expone los
- * productos por categoría, "todo" pide todas en paralelo y las junta sin
- * repetir: un mismo producto puede estar en más de una.
+ * `categoria` es el id de una categoría o "todo". Ahora el catálogo entero
+ * llega en UNA petición y la categoría se aplica aquí: antes se pedían los
+ * productos categoría por categoría —tantas peticiones como categorías— y se
+ * juntaban sin repetir, porque la API vieja sólo sabía servirlos así.
+ *
+ * El catálogo se pide una sola vez y se queda: cambiar de categoría es
+ * filtrar una lista que ya está en memoria, no volver a la red.
  */
 export function useProductos(categoria: string) {
-	const [categorias, setCategorias] = useState<Category[]>([]);
-	const [categoriasListas, setCategoriasListas] = useState(false);
-	const [productos, setProductos] = useState<ProductFromCategory[]>([]);
+	const [categorias, setCategorias] = useState<CategoriaPublica[]>([]);
+	const [todos, setTodos] = useState<ProductoDeCatalogo[]>([]);
 	const [cargando, setCargando] = useState(true);
 
 	useEffect(() => {
-		getCategories()
-			.then(setCategorias)
-			.catch(() => setCategorias([]))
-			.finally(() => setCategoriasListas(true));
-	}, []);
-
-	useEffect(() => {
-		if (!categoriasListas) return;
-
 		let vigente = true;
-		setCargando(true);
 
-		async function cargar() {
-			try {
-				const listas =
-					categoria === "todo"
-						? await Promise.all(
-								categorias.map((c) =>
-									getProductsByCategory(c.id).catch(() => []),
-								),
-							)
-						: [await getProductsByCategory(categoria)];
+		Promise.all([
+			getCatalogo().catch(() => []),
+			getCategoriasPublicas().catch(() => []),
+		]).then(([productos, cats]) => {
+			if (!vigente) return;
+			setTodos(productos);
+			setCategorias(cats);
+			setCargando(false);
+		});
 
-				if (!vigente) return;
-
-				const porId = new Map<string, ProductFromCategory>();
-				for (const p of listas.flat()) porId.set(p.id, p);
-				setProductos([...porId.values()]);
-			} catch {
-				if (vigente) setProductos([]);
-			} finally {
-				if (vigente) setCargando(false);
-			}
-		}
-
-		cargar();
 		return () => {
 			vigente = false;
 		};
-	}, [categoria, categorias, categoriasListas]);
+	}, []);
+
+	const productos = useMemo(
+		() =>
+			categoria === "todo"
+				? todos
+				: todos.filter((p) => p.categoryIds?.includes(categoria)),
+		[todos, categoria],
+	);
 
 	return { categorias, productos, cargando };
 }
