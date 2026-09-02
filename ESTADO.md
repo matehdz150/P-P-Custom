@@ -146,6 +146,42 @@ publicado **salió del catálogo solo**, de vuelta a revisión.
 
 ---
 
+## Fase 3: el catálogo público sale de DynamoDB
+
+Tres rutas nuevas sin llave ni token, bajo el prefijo `/publico/` que ya
+estaba abierto: `/publico/catalogo`, `/publico/catalogo/:id` y
+`/publico/categorias`. Sólo salen productos en `activo`.
+
+Lo que cambió del lado del front:
+
+- El listado pedía los productos **categoría por categoría** y los juntaba
+  en el navegador, porque la API vieja sólo sabía servirlos así. Ahora es
+  una sola petición y la categoría se filtra en memoria.
+- La ficha de producto y **el editor** leen de la misma ruta pública. La
+  plantilla se resuelve en la Lambda: sin ella el editor no tiene lienzo, y
+  encadenar esa lectura en el navegador era una ida y vuelta más antes de
+  pintar nada.
+- La búsqueda ya no tiene endpoint: filtra sobre el catálogo que ya está
+  cargado, sin acentos ni mayúsculas. Un `/search` en Nest para decenas de
+  productos era una pieza más que mantener a cambio de nada.
+- `aProductoViejo` traduce la ficha nueva al tipo `Product` que hablan la
+  página de producto y su docena de componentes. Es un puente a propósito:
+  traducir en un sitio salió mucho más barato que tocar ese árbol, y se
+  borra el día que se refactorice sin que la Lambda se entere.
+
+También salió un 500 que llevaba tiempo escondido: leer un archivo que no
+existe en el bucket devolvía "Error interno". Era `AccessDenied` de S3 —el
+rol tiene `GetObject` pero no `ListBucket`, así que S3 contesta 403 en vez
+de 404 para no revelar qué hay dentro—. Ahora es un 404 con su mensaje.
+
+**Ojo con los datos viejos:** la plantilla `tshirt` apunta a
+`/mockups/tshirtfront.png` y `/mockups/tshirtback.png`, y en el bucket sólo
+está `mockups/tshirt/front-8cdcbb1aa538.png`. La `cap` apunta a
+`/mockups/cap.png`, que tampoco existe. El editor abre pero sin prenda de
+fondo hasta que se vuelvan a subir los mockups desde el admin.
+
+---
+
 ## El hallazgo que cambia las prioridades
 
 **No existe el dominio de pedidos. En ningún lado.**
@@ -182,19 +218,24 @@ y paquetes, que se van con el catálogo.
 
 ---
 
-## Decisión abierta (sin resolver)
+## La decisión que estaba abierta, resuelta: Query directo
 
-**Cómo se leen los listados del catálogo.** Dos caminos y no da igual:
+Se eligió **`Query` directo a DynamoDB**, y el JSON materializado en S3 queda
+para cuando duela. Lo que inclinó la balanza al mirar el código:
 
-- **JSON materializado en S3.** Un stream de DynamoDB —ya están activados en la
-  tabla— reescribe un JSON del catálogo cada vez que cambia un producto. Leer
-  cuesta prácticamente cero: S3 + CloudFront, sin Lambda por visita. Más
-  maquinaria, y los cambios tardan segundos en verse.
-- **Query directo a DynamoDB.** Más simple y siempre fresco, pero exige un
-  índice por cada filtro y se paga Lambda + lectura en cada carga.
+- **El catálogo no filtra en el servidor.** Técnica, color y días se aplican
+  en el navegador sobre la lista completa. O sea que el temor de "un índice
+  por cada filtro" no existía: con `PRODUCT_ESTADO#activo` basta, y ese
+  índice ya estaba hecho para la bandeja de revisión.
+- Son decenas de productos y visitas contadas: un Query por visita se paga
+  en centavos y siempre está fresco.
+- Materializar añade una Lambda, un stream y segundos de retraso entre
+  aprobar un producto y verlo publicado.
 
-El modelo de datos y la escritura son iguales en los dos casos, así que se
-puede empezar por ahí y decidir con el código delante.
+**Cuándo reabrirla:** cuando el catálogo pase de unos cientos de productos
+—la respuesta empieza a pesar y el Query a paginar— o cuando el tráfico haga
+que la Lambda por visita se note. El cambio no toca ni el modelo ni el front:
+la respuesta de `/publico/catalogo` se puede volcar tal cual a un JSON.
 
 ---
 

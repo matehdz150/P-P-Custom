@@ -25,10 +25,11 @@ primero admin, luego proveedores, después catálogo y pedidos.
 | Imágenes de categorías | S3 con URL prefirmada (`/medios/...`) | migrado |
 | Login de proveedores | Cognito, directo desde el navegador | migrado |
 | Panel del proveedor (perfil) | Lambda `kustto-proveedores` | migrado |
-| Categorías (público) | NestJS + Postgres | **pendiente** |
 | Alta de productos del taller | Lambda `kustto-proveedores` + DynamoDB + S3 | migrado |
 | Revisión de productos (admin) | Lambda `kustto-admin` + DynamoDB | migrado |
-| Catálogo público y paquetes | NestJS + Postgres | **pendiente** |
+| Catálogo público (listado, ficha, editor) | Lambda `kustto-admin` + DynamoDB | migrado |
+| Categorías (público) | Lambda `kustto-admin` + DynamoDB | migrado |
+| Paquetes | NestJS + Postgres | **pendiente** |
 | Pedidos | NestJS + Postgres | **pendiente** |
 | Cuentas de comprador | NestJS + Postgres | **pendiente** |
 | Pasarela de pago | no existe | aplazado a propósito, hasta el final |
@@ -182,9 +183,13 @@ migrations/            SQL generado por drizzle-kit.
 
 ### Puntos del front que conviene conocer antes de tocar nada
 
-**`apps/web/lib/api/`** — hay tres clientes y no son intercambiables:
+**`apps/web/lib/api/`** — hay cuatro clientes y no son intercambiables:
 
-- `api.ts` (`apiFetch`) → la API de Nest. Todo lo que aún no se migra.
+- `catalogo.ts` → el catálogo público, directo a API Gateway y **sin
+  credenciales de ningún tipo**: es lo que ve cualquiera que abra la tienda.
+  Sólo devuelve productos aprobados. Si necesitas leer catálogo, es este.
+- `api.ts` (`apiFetch`) → la API de Nest. Sólo quedan ahí los paquetes y las
+  cuentas de comprador.
 - `admin.ts` (`adminFetch`) → la Lambda de admin, **pasando por
   `/api/admin/*`**, un route handler de Next que agrega la llave del lado
   del servidor. Nunca le pegues directo a API Gateway desde el navegador con
