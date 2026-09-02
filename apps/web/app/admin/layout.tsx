@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import {
+  ClipboardCheck,
   LayoutGrid,
   Package,
   SlidersHorizontal,
@@ -22,6 +23,11 @@ const navItems = [
     label: "Paquetes",
     href: "/admin/paquetes",
     icon: Package,
+  },
+  {
+    label: "Revisión",
+    href: "/admin/revision",
+    icon: ClipboardCheck,
   },
   {
     label: "Mockups",

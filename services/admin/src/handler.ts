@@ -1,5 +1,6 @@
 import * as categorias from "./rutas/categorias.js";
 import * as plantillas from "./rutas/plantillas.js";
+import * as productos from "./rutas/productos.js";
 import * as proveedores from "./rutas/proveedores.js";
 import * as subidas from "./rutas/subidas.js";
 import { crearRouter, json, noAutorizado, respuestaDeError } from "./lib/http.js";
@@ -19,6 +20,14 @@ router.delete("/categories/:id", (p) => categorias.borrar(p.params.id));
 
 router.get("/providers", () => proveedores.listar());
 router.post("/providers", (p) => proveedores.crear(p.cuerpo));
+
+/* Los productos los escribe el taller; el admin los revisa. Por defecto la
+   lista trae los que esperan revisión, que es la cola de trabajo. */
+router.get("/productos", (p) => productos.listar(p.query));
+router.get("/productos/:id", (p) => productos.obtener(p.params.id));
+router.patch("/productos/:id/revision", (p) =>
+  productos.revisar(p.params.id, p.cuerpo),
+);
 
 router.post("/uploads/mockup-url", (p) => subidas.urlParaMockup(p.cuerpo));
 router.post("/uploads/imagen-url", (p) => subidas.urlParaImagen(p.cuerpo));
