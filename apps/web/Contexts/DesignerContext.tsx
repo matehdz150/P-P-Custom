@@ -61,6 +61,17 @@ interface DesignerContextType {
 	setColores: (c: PrendaColor[]) => void;
 	colorPrenda: PrendaColor | null;
 	setColorPrenda: (c: PrendaColor | null) => void;
+
+	/**
+	 * Si está abierto el panel para pedir.
+	 *
+	 * Vive aquí y no en cada shell porque el botón que lo abre está en dos
+	 * sitios —la barra de abajo en escritorio, la cabecera en móvil— y el
+	 * panel se monta en uno solo. Pasarlo por props obligaría a hilar el
+	 * callback por toda la jerarquía de cada shell.
+	 */
+	pidiendo: boolean;
+	setPidiendo: (v: boolean) => void;
 }
 
 const DesignerContext = createContext<DesignerContextType>(
@@ -170,6 +181,8 @@ export function DesignerProvider({ children }: { children: ReactNode }) {
 	const getCanvas = () => sides[activeSide]?.canvas ?? null;
 	const getEditableAreas = () => sides[activeSide]?.editableAreas ?? [];
 
+	const [pidiendo, setPidiendo] = useState(false);
+
 	return (
 		<DesignerContext.Provider
 			value={{
@@ -187,6 +200,8 @@ export function DesignerProvider({ children }: { children: ReactNode }) {
 				setColores,
 				colorPrenda,
 				setColorPrenda,
+				pidiendo,
+				setPidiendo,
 				config,
 				setConfig,
 				notice,

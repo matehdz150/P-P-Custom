@@ -2,11 +2,13 @@
 
 import { ArrowLeft, Eye, Info, Pencil } from "lucide-react";
 import { useState } from "react";
+import { useDesigner } from "@/Contexts/DesignerContext";
 import InfoPanelMobile from "./InfoPanelMobile";
 import MobileDrawer from "./MobileDrawer";
 
 export default function DesignerHeaderMobile() {
 	const [mode, setMode] = useState<"edit" | "preview">("edit");
+	const { setPidiendo } = useDesigner();
 
 	return (
 		<div className="relative h-20 w-full border-b flex items-center px-4 bg-white rounded-[0.2rem]">
@@ -51,12 +53,14 @@ export default function DesignerHeaderMobile() {
 				</button>
 			</div>
 
-			{/* 🟧 Botón Guardar alineado a la derecha */}
+			{/* La salida del editor, igual que en escritorio. Antes decía
+			    "Guardar" y no tenía onClick. */}
 			<button
 				type="button"
+				onClick={() => setPidiendo(true)}
 				className="ml-auto px-3 py-1.5 bg-lima text-tinta rounded-[0.2rem] font-medium z-10 font-sora"
 			>
-				Guardar
+				Pedir
 			</button>
 		</div>
 	);

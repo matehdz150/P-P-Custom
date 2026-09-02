@@ -1,5 +1,6 @@
 "use client";
 
+import { useDesigner } from "@/Contexts/DesignerContext";
 import DesignerPanButton from "./DesignerPanButton";
 
 interface Props {
@@ -17,6 +18,8 @@ export default function DesignerBottomBar({
 	isPanning,
 	togglePan,
 }: Props) {
+	const { setPidiendo } = useDesigner();
+
 	return (
 		<div
 			className="
@@ -53,12 +56,14 @@ export default function DesignerBottomBar({
 				<DesignerPanButton isPanning={isPanning} togglePan={togglePan} />
 			</div>
 
-			{/* BOTÓN DE GUARDAR */}
+			{/* La salida del editor. Antes decía "Guardar producto" y no tenía
+			    onClick: era un botón muerto que prometía algo que no ocurría. */}
 			<button
 				type="button"
+				onClick={() => setPidiendo(true)}
 				className="bg-lima hover:bg-lima-oscuro text-tinta font-medium px-6 py-2 rounded font-sora"
 			>
-				Guardar producto
+				Pedir este diseño
 			</button>
 		</div>
 	);

@@ -13,11 +13,10 @@ import PanelPedido from "./PanelPedido";
 
 export default function ProductDesigner({ productId }: { productId: string }) {
 	const isMobile = useIsMobile();
-	const { setConfig, setColores } = useDesigner();
+	const { setConfig, setColores, pidiendo, setPidiendo } = useDesigner();
 	const [product, setProduct] = useState<ProductTemplate | null>(null);
 	/** La misma plantilla sin recortar: el pedido necesita tallas y medidas. */
 	const [ficha, setFicha] = useState<DesignerProductTemplate | null>(null);
-	const [pidiendo, setPidiendo] = useState(false);
 
 	useEffect(() => {
 		loadProductTemplate(productId).then((tpl) => {
@@ -54,17 +53,10 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 				<DesktopDesignerShell product={product} />
 			)}
 
-			{/* La salida del editor. Va flotando encima de los dos shells en vez
-			    de dentro de cada uno: es la misma acción en escritorio y en
-			    móvil, y duplicarla eran dos sitios donde olvidarse de cambiarla. */}
-			<button
-				type="button"
-				onClick={() => setPidiendo(true)}
-				className="fixed bottom-5 right-5 z-40 flex h-12 items-center rounded-full bg-tinta px-6 text-[15px] font-semibold text-lima shadow-lg"
-			>
-				Pedir
-			</button>
-
+			{/* El panel se monta aquí y lo abren los botones de cada shell — la
+			    barra de abajo en escritorio, la cabecera en móvil — a través del
+			    contexto. Un botón flotante propio quedaba debajo de la barra,
+			    que es z-70. */}
 			{pidiendo && ficha && (
 				<PanelPedido producto={ficha} onCerrar={() => setPidiendo(false)} />
 			)}
