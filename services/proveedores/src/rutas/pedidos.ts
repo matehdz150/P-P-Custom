@@ -1,5 +1,5 @@
 import { GetCommand, QueryCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
-
+import { enviar } from "../lib/correo.js";
 import {
 	consultarTodo,
 	dynamo,
@@ -11,6 +11,11 @@ import {
 	variante,
 } from "../lib/dynamo.js";
 import { conflicto, malaPeticion, noEncontrado } from "../lib/http.js";
+import {
+	pedidoEntregado,
+	pedidoEnviado,
+	pedidoListo,
+} from "../lib/plantillas.js";
 
 /**
  * Los pedidos del taller.
@@ -153,6 +158,31 @@ export async function cambiarEstado(
 		// que queda mal es un contador, no el pedido.
 		if (destino === "cancelado") await devolverExistencias(pedido);
 
+		/* "Tu pedido va en camino", con el número de rastreo.
+		 *
+		 * Va dentro del `try` y DESPUÉS del `UpdateItem` con su condición: si
+		 * dos personas del taller le dan a la vez, sólo una pasa de aquí y el
+		 * cliente recibe un solo correo.
+		 *
+		 * El mismo aviso lo manda también el webhook de la paquetería cuando es
+		 * ella quien mueve el pedido — ver `services/admin/src/rutas/rastreo.ts`.
+		 * Los dos caminos existen porque hoy el taller puede marcarlo a mano. */
+		/* Los avisos al comprador viven todos aquí dentro, después del
+		 * `UpdateItem` con su condición: si dos personas del taller mueven el
+		 * pedido a la vez, sólo una pasa de este punto y sale UN correo.
+		 *
+		 * De `produccion` no se avisa a propósito: entre que entra el pedido y
+		 * que está hecho no hay nada que el comprador pueda hacer, y un correo
+		 * que no pide nada enseña a ignorar los que sí importan. */
+		const movido = (Attributes ?? pedido) as Record<string, any>;
+
+		if (destino === "listo") await avisarQueEstaListo(proveedorId, movido);
+		if (destino === "enviado") await avisarQueSalio(movido);
+		/* Sólo llega aquí lo que se recogió en el taller: con envío, `entregado`
+		 * lo pone la paquetería por webhook —`services/admin/src/rutas/rastreo.ts`,
+		 * que manda el mismo correo— y `permitidos()` cierra este camino. */
+		if (destino === "entregado") await avisarQueLlego(movido);
+
 		return sinSecretos(Attributes ?? {});
 	} catch (error) {
 		if (esConflicto(error)) {
@@ -248,4 +278,145 @@ async function suyoOFalla(proveedorId: string, id: string) {
 	}
 
 	return Item;
+}
+
+/** Lo que todos los avisos necesitan del pedido, en un solo sitio. */
+function paraElAviso(pedido: Record<string, any>) {
+	const comprador = (pedido.comprador ?? {}) as Record<string, any>;
+	const primera = ((pedido.lineas ?? []) as Record<string, any>[])[0];
+
+	return {
+		email: String(comprador.email ?? ""),
+		nombre: String(comprador.nombre ?? ""),
+		folio: String(pedido.folio ?? ""),
+		producto: String(primera?.producto ?? "Tu pedido"),
+		piezas: Number(pedido.piezas ?? 0),
+		metodo:
+			pedido.entrega?.metodo === "recoger"
+				? ("recoger" as const)
+				: ("envio" as const),
+	};
+}
+
+/**
+ * "Ya está hecho".
+ *
+ * Con `recoger` es EL correo del pedido: sin él, quien compró no tiene forma
+ * de enterarse de que puede ir por su prenda, porque después de esto ya no hay
+ * más estados que le avisen de nada. Por eso lleva la dirección del taller y
+ * su WhatsApp, y por eso se lee el taller aquí aunque cueste una lectura más.
+ *
+ * Con envío se manda igual, pero es sólo informativo: el que importa es el de
+ * "va en camino", que trae el rastreo.
+ *
+ * Nunca lanza, como todos: el pedido ya se movió.
+ */
+async function avisarQueEstaListo(
+	proveedorId: string,
+	pedido: Record<string, any>,
+) {
+	try {
+		const d = paraElAviso(pedido);
+		if (!d.email) return;
+
+		let taller: string | null = null;
+		let direccion: string | null = null;
+		let whatsapp: string | null = null;
+
+		// Sólo se lee el taller si el cliente va a ir: con envío, su dirección no
+		// pinta nada en el correo y la lectura sobraría.
+		if (d.metodo === "recoger") {
+			const { Item } = await dynamo.send(
+				new GetCommand({
+					TableName: TABLA,
+					Key: llaves.proveedor(proveedorId),
+				}),
+			);
+
+			taller = (Item?.displayName ?? Item?.name ?? null) as string | null;
+			whatsapp = (Item?.whatsapp ?? null) as string | null;
+
+			const r = Item?.recoleccion as Record<string, any> | undefined;
+			if (r?.calle) {
+				direccion = [
+					[r.calle, r.numero].filter(Boolean).join(" "),
+					r.interior ? `int. ${r.interior}` : "",
+					r.colonia,
+					[r.cp, r.ciudad].filter(Boolean).join(" "),
+					r.estado,
+				]
+					.filter(Boolean)
+					.join(", ");
+			}
+		}
+
+		await enviar(
+			pedidoListo({
+				para: d.email,
+				nombre: d.nombre,
+				folio: d.folio,
+				producto: d.producto,
+				piezas: d.piezas,
+				metodo: d.metodo,
+				taller,
+				direccion,
+				whatsapp,
+			}),
+		);
+	} catch (error) {
+		console.error("No pudimos avisar que está listo:", error);
+	}
+}
+
+/** El que cierra: el cliente ya lo recogió. Nunca lanza. */
+async function avisarQueLlego(pedido: Record<string, any>) {
+	try {
+		const d = paraElAviso(pedido);
+		if (!d.email) return;
+
+		await enviar(
+			pedidoEntregado({
+				para: d.email,
+				nombre: d.nombre,
+				folio: d.folio,
+				producto: d.producto,
+				metodo: d.metodo,
+			}),
+		);
+	} catch (error) {
+		console.error("No pudimos avisar que llegó:", error);
+	}
+}
+
+/**
+ * Le dice al comprador que su paquete salió.
+ *
+ * Nunca lanza: el pedido ya se movió y el taller ya lo vio moverse. Si el
+ * correo falla, lo que se pierde es un aviso, no el estado.
+ *
+ * Sin número de rastreo no se manda: un "va en camino" sin nada que rastrear
+ * no le sirve a nadie y quema la confianza en el siguiente.
+ */
+async function avisarQueSalio(pedido: Record<string, any>) {
+	try {
+		const guia = pedido.guia ?? {};
+		const comprador = pedido.comprador ?? {};
+
+		if (!guia.rastreo || !comprador.email) return;
+
+		await enviar(
+			pedidoEnviado({
+				para: String(comprador.email),
+				nombre: String(comprador.nombre ?? ""),
+				folio: String(pedido.folio ?? ""),
+				paqueteria: String(
+					guia.paqueteria ?? pedido.envio?.paqueteria ?? "la paquetería",
+				),
+				rastreo: String(guia.rastreo),
+				rastreoUrl: guia.rastreoUrl ?? null,
+			}),
+		);
+	} catch (error) {
+		console.error("No pudimos avisar que salió:", error);
+	}
 }

@@ -8,7 +8,7 @@ import {
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { GetCommand, TransactWriteCommand } from "@aws-sdk/lib-dynamodb";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-
+import { enviar } from "../lib/correo.js";
 import {
 	dynamo,
 	type EstadoPedido,
@@ -26,6 +26,7 @@ import {
 	noAutorizado,
 	noEncontrado,
 } from "../lib/http.js";
+import { pedidoParaTaller, pedidoRecibido } from "../lib/plantillas.js";
 import * as envios from "./envios.js";
 
 /**
@@ -178,6 +179,45 @@ export async function crear(cuerpo: unknown) {
 		folio,
 	});
 
+	/* Los dos correos. Igual que el aviso en vivo: después de escribir y sin
+	   poder tumbar nada — `enviar` se traga sus propios errores.
+	 *
+	 * El del comprador es el que importa: lleva su enlace de seguimiento, y de
+	 * ese token sólo guardamos la huella. Si no le llega por correo y cierra la
+	 * pestaña, no hay forma de devolvérselo ni por soporte. */
+	const primera = detalladas[0];
+
+	await enviar(
+		pedidoRecibido({
+			para: comprador.email,
+			nombre: comprador.nombre,
+			folio,
+			enlace: `/pedido?id=${encodeURIComponent(id)}&token=${encodeURIComponent(token)}`,
+			total,
+			piezas: pedido.piezas,
+			producto: primera?.producto ?? "Tu pedido",
+			dias: primera?.diasPrometidos ?? null,
+		}),
+	);
+
+	// El del taller necesita su correo, que vive en su ítem. Se lee aquí y no
+	// antes: si el pedido no llega a escribirse, esta lectura sobra.
+	const taller = await leerTaller(proveedorId);
+
+	if (taller?.email) {
+		await enviar(
+			pedidoParaTaller({
+				para: String(taller.email),
+				taller: String(taller.displayName ?? taller.name ?? "Hola"),
+				folio,
+				piezas: pedido.piezas,
+				producto: primera?.producto ?? "Un producto",
+				total: productosTotal,
+				metodo: entrega.metodo,
+			}),
+		);
+	}
+
 	return {
 		id,
 		folio,
@@ -273,6 +313,19 @@ function leerEntrega(e: unknown) {
 	}
 
 	return { metodo, direccion };
+}
+
+/** El taller, para escribirle. Nunca lanza: sin correo no se avisa y ya. */
+async function leerTaller(proveedorId: string) {
+	try {
+		const { Item } = await dynamo.send(
+			new GetCommand({ TableName: TABLA, Key: llaves.proveedor(proveedorId) }),
+		);
+		return Item ?? null;
+	} catch (error) {
+		console.error("No pudimos leer el taller para avisarle:", error);
+		return null;
+	}
 }
 
 async function leerProductoPublicado(productoId: string) {

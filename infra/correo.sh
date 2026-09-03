@@ -19,13 +19,16 @@
 #   Sólo limita el envío. El buzón funciona desde que el dominio se verifica,
 #   sin esperar a que AWS apruebe la salida del sandbox.
 #
-# LOS DKIM
-#   La zona traía tres CNAME de una identidad vieja, borrada y recreada. Los
-#   tokens de ahora son otros y el nombre del registro los lleva dentro, así
-#   que los nuevos se AÑADEN sin pisar los viejos. Los viejos no estorban:
-#   no los usa ninguna identidad de ninguna región. Se pueden barrer aparte.
-#   DKIM es para firmar lo que sale; para recibir no hace falta, pero un
-#   reenvío sin firmar tiene muchas más papeletas de caer en spam.
+# LOS DKIM: HAY DOS JUEGOS Y NINGUNO SOBRA
+#   La zona lleva los de DOS identidades distintas de `kustto.com.mx`:
+#
+#     ui6peram… 6vf7srsa… kfq7qcoy…  -> cuenta ROOT (467685081574), la que
+#                                       ENVÍA. Firma todo lo que sale.
+#     rhwzjikm… 5k3xyapq… pshmhqws…  -> esta cuenta, la que RECIBE.
+#
+#   Aquí sólo se AÑADEN los de esta cuenta; el nombre del registro lleva el
+#   token dentro, así que conviven. **Los otros tres no se borran**: un
+#   comentario anterior decía que estaban muertos y era falso.
 
 set -euo pipefail
 cd "$(dirname "$0")/.."

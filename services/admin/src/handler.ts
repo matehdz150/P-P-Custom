@@ -10,8 +10,8 @@ import * as envios from "./rutas/envios.js";
 import * as pedidos from "./rutas/pedidos.js";
 import * as plantillas from "./rutas/plantillas.js";
 import * as productos from "./rutas/productos.js";
-import * as rastreo from "./rutas/rastreo.js";
 import * as proveedores from "./rutas/proveedores.js";
+import * as rastreo from "./rutas/rastreo.js";
 import * as subidas from "./rutas/subidas.js";
 
 const router = crearRouter();

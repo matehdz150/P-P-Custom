@@ -1,8 +1,9 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { GetCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
-
+import { enviar } from "../lib/correo.js";
 import { dynamo, type EstadoPedido, llaves, TABLA } from "../lib/dynamo.js";
 import { noAutorizado } from "../lib/http.js";
+import { pedidoEntregado, pedidoEnviado } from "../lib/plantillas.js";
 
 /**
  * El rastreo que manda Skydropx.
@@ -275,6 +276,88 @@ async function anotar(
 			ConditionExpression: "attribute_exists(pk) AND #estado = :actual",
 		}),
 	);
+
+	/* El correo de "va en camino", sólo al ENTRAR en `enviado`. Va después del
+	   `UpdateItem` y con su condición puesta, así que si dos avisos llegan a la
+	   vez sólo uno pasa por aquí: el otro falla la condición y no escribe ni
+	   manda nada. Es lo que evita mandar el mismo correo dos veces. */
+	if (destino === "enviado") await avisarQueSalio(pedidoId, Item);
+
+	/* Y el que cierra, cuando la paquetería la da por entregada. Es el único
+	   camino para los pedidos con envío: el taller no puede marcarlos
+	   `entregado` a mano, porque eso lo sabe quien la llevó, no quien la hizo. */
+	if (destino === "entregado") await avisarQueLlego(pedidoId, Item);
+}
+
+/**
+ * "Tu pedido llegó".
+ *
+ * No se relee el pedido —a diferencia de `avisarQueSalio`, que necesita un
+ * rastreo que quizá se acababa de escribir—: aquí sólo hace falta el correo,
+ * el folio y el producto, y eso no cambia.
+ *
+ * Nunca lanza: el pedido ya está en `entregado` y el aviso es lo accesorio.
+ */
+async function avisarQueLlego(pedidoId: string, pedido: Cuerpo) {
+	try {
+		const comprador = (pedido.comprador ?? {}) as Cuerpo;
+		if (!comprador.email) return;
+
+		const primera = ((pedido.lineas ?? []) as Cuerpo[])[0];
+
+		await enviar(
+			pedidoEntregado({
+				para: String(comprador.email),
+				nombre: String(comprador.nombre ?? ""),
+				folio: String(pedido.folio ?? ""),
+				producto: String(primera?.producto ?? "Tu pedido"),
+				// Si llegamos aquí por webhook, hubo envío por definición.
+				metodo: "envio",
+			}),
+		);
+	} catch (error) {
+		console.error(`No pudimos avisar que llegó ${pedidoId}:`, error);
+	}
+}
+
+/**
+ * "Tu pedido va en camino", con el número de rastreo.
+ *
+ * Se relee el pedido en vez de usar el que ya teníamos: el rastreo pudo
+ * escribirse hace un instante, en `rellenarRastreo`, y el de memoria es de
+ * antes. Sin releer, el correo saldría sin número justo la primera vez.
+ */
+async function avisarQueSalio(pedidoId: string, viejo: Cuerpo) {
+	try {
+		const { Item } = await dynamo.send(
+			new GetCommand({ TableName: TABLA, Key: llaves.pedido(pedidoId) }),
+		);
+
+		const pedido = Item ?? viejo;
+		const guia = (pedido.guia ?? {}) as Cuerpo;
+		const comprador = (pedido.comprador ?? {}) as Cuerpo;
+
+		// Sin número que dar, el correo no aporta nada: el taller ya movió el
+		// pedido y el panel lo enseña. Mejor callar que mandar un aviso vacío.
+		if (!guia.rastreo || !comprador.email) return;
+
+		await enviar(
+			pedidoEnviado({
+				para: String(comprador.email),
+				nombre: String(comprador.nombre ?? ""),
+				folio: String(pedido.folio ?? ""),
+				paqueteria: String(
+					guia.paqueteria ??
+						(pedido.envio as Cuerpo)?.paqueteria ??
+						"la paquetería",
+				),
+				rastreo: String(guia.rastreo),
+				rastreoUrl: (guia.rastreoUrl as string | null) ?? null,
+			}),
+		);
+	} catch (error) {
+		console.error("No pudimos avisar que salió:", error);
+	}
 }
 
 /**
