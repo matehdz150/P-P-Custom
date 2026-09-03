@@ -24,8 +24,15 @@ function CatalogLayoutContent({ children }: { children: React.ReactNode }) {
 
 	// La portada y el listado traen su propio encabezado, con título y
 	// buscador incluidos. Las demás subrutas reciben aquí el mismo buscador.
-	const traeSuChrome =
-		pathname === "/catalogo" || pathname === "/catalogo/productos";
+	/* SE COMPARA SIN LA BARRA FINAL, y no es cosmético: `trailingSlash` se
+	   enciende **sólo al exportar** (ver `next.config.ts`), así que en el sitio
+	   publicado `usePathname()` devuelve `/catalogo/` y la comparación fallaba.
+	   El layout creía que estaba en una subruta y le montaba su migaja y su
+	   buscador ENCIMA del hero, que ya trae el suyo: dos buscadores en la misma
+	   pantalla. En desarrollo no salía, porque ahí no hay barra final. */
+	const ruta = pathname.replace(/\/+$/, "") || "/";
+
+	const traeSuChrome = ruta === "/catalogo" || ruta === "/catalogo/productos";
 
 	if (traeSuChrome) {
 		return <main>{children}</main>;
