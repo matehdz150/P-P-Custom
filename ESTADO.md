@@ -872,11 +872,38 @@ Lo que hay que saber para seguir:
   Cada taller manda desde su dirección y eso son varias cotizaciones — es el
   paso 4. Mejor decirlo que cobrar un envío que sólo cubre a uno.
 
+### Paso 2: las subidas del carrito (3 de septiembre)
+
+`POST /publico/carrito/subidas` firma las escrituras, y el arte vive en
+`carritos/<itemId>/` hasta que alguien compra.
+
+- **El destino lo decide el servidor.** El `itemId` se genera en la Lambda: del
+  cuerpo no sale ni un trozo de la ruta. Probado con un `carritoId` de
+  `../../medios/pedidos`: se limpia y no sale de su prefijo.
+- **El tamaño se firma, y S3 lo comprueba.** Se declara cuántos bytes pesa y
+  eso entra en la firma. Verificado: declarando 40 bytes y mandando 26, S3
+  responde **403**. Sin esto, el "límite" sería una promesa que nadie aplica.
+- **`carritos/` caduca a los 30 días**, y también sus versiones antiguas: el
+  bucket tiene versionado, así que sin `NoncurrentVersionExpiration` borrar
+  sólo deja una marca y se sigue pagando lo de abajo.
+- **Al comprar, el arte se COPIA fuera de ese prefijo**, antes de escribir la
+  compra. Si fallara, lo que queda son objetos que nadie referencia; al revés
+  quedaría un pedido sin arte. Si el arte no aparece —lo normal es que el
+  carrito haya caducado— se dice en voz alta y no se crea la compra; la
+  colocación y el diseño editable, en cambio, no la bloquean.
+- Una línea que viene del carrito **no recibe URL de subida**: ya está subida,
+  y devolvérsela haría que el navegador la subiera dos veces.
+
+Verificado de punta a punta contra AWS: subir al carrito, pedir con ese
+`carritoId`, y comprobar que el arte quedó en `medios/pedidos/…` y se sirve por
+el dominio.
+
 ### El orden para construirlo
 
 1. ~~El modelo y la creación~~ — **hecho**.
-2. **Las subidas del carrito**: ruta firmada, prefijo propio, ciclo de vida, y
-   "agregar al carrito" en el editor.
+2. ~~Las subidas del carrito~~ — **el backend, hecho** (3 de septiembre).
+   Falta el botón del editor, que va con el carrito del paso 3: sin carrito no
+   hay dónde guardar lo que devuelve.
 3. **El carrito en el front**: navegador, cuenta, y la fusión al entrar.
 4. **El checkout multi-parte**: cotizar por taller, entrega por parte, y el
    aviso cuando uno no puede cumplir.

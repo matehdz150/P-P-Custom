@@ -5,7 +5,11 @@ import {
 	randomUUID,
 	timingSafeEqual,
 } from "node:crypto";
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+	CopyObjectCommand,
+	PutObjectCommand,
+	S3Client,
+} from "@aws-sdk/client-s3";
 import { GetCommand, TransactWriteCommand } from "@aws-sdk/lib-dynamodb";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { enviar } from "../lib/correo.js";
@@ -49,6 +53,14 @@ const CORREO = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 const CP = /^\d{5}$/;
 /** Sólo los dígitos: la gente escribe espacios, guiones y prefijos. */
 const DIGITOS = (v: string) => v.replace(/\D/g, "");
+
+/**
+ * El id del carrito viene del cuerpo y acaba dentro de una ruta de S3, así que
+ * se limpia igual que cualquier otra cosa que llegue de fuera: sin esto, un
+ * `../` bien puesto leería objetos de otro sitio del bucket.
+ */
+const LIMPIO_ID = (v: unknown) =>
+	String(v ?? "").replace(/[^a-zA-Z0-9-]/g, "").slice(0, 40);
 
 type Cuerpo = Record<string, any>;
 
@@ -224,6 +236,23 @@ export async function crear(cuerpo: unknown) {
 		updatedAt: ahora,
 	};
 
+	/* Lo que venga del carrito ya está subido: se saca de `carritos/` —que
+	 * caduca— y se deja donde vive lo comprado. Va ANTES de escribir: si el
+	 * arte no aparece, mejor no llegar a crear la compra. */
+	for (const parte of partes) {
+		for (const { indice, linea } of parte.detalladas) {
+			const carritoId = LIMPIO_ID(lineas[indice]?.carritoId);
+			if (!carritoId) continue;
+
+			await copiarDelCarrito(
+				carritoId,
+				parte.pedidoId,
+				linea.id,
+				linea.lados as string[],
+			);
+		}
+	}
+
 	const { folio, folios } = await escribirCompra(compra, partes);
 
 	/* Todo lo que sigue va DESPUÉS de escribir y no puede tumbar nada: la
@@ -298,8 +327,81 @@ export async function crear(cuerpo: unknown) {
 		// El arte va directo del navegador a S3, como los mockups: firmar aquí
 		// ata el permiso a una compra que ya existe en vez de dejar un firmador
 		// abierto. El `indice` es el de la línea tal como la mandó el navegador.
-		subidas: await firmarArte(todasConIndice(partes)),
+		/* Sólo lo que aún no existe. Lo que vino del carrito ya está copiado, y
+		   devolverle una URL de subida al navegador le haría subirlo otra vez. */
+		subidas: await firmarArte(
+			todasConIndice(partes).filter(
+				(d) => !LIMPIO_ID(lineas[d.indice]?.carritoId),
+			),
+		),
 	};
+}
+
+/**
+ * Saca el arte del carrito y lo deja donde vive lo comprado.
+ *
+ * `carritos/` CADUCA A LOS 30 DÍAS (regla `carritos-caducan`, en
+ * `infra/buckets.sh`), porque la mayor parte de lo que se sube ahí es de gente
+ * que nunca compró. Si el pedido se quedara apuntando a ese prefijo, la
+ * limpieza se llevaría el arte de un pedido pagado — y nadie se enteraría
+ * hasta que el taller fuera a producirlo, semanas después.
+ *
+ * Se copia ANTES de escribir la compra: si algo falla, lo que queda son unos
+ * objetos que nadie referencia, no un pedido sin arte.
+ *
+ * El arte es obligatorio; la colocación y el diseño editable no. Sin arte no
+ * se puede producir, así que su ausencia se dice en voz alta —normalmente
+ * significa que el carrito caducó— mientras que sin los otros dos se pierde
+ * una referencia y una comodidad.
+ */
+async function copiarDelCarrito(
+	carritoId: string,
+	pedidoId: string,
+	lineaId: string,
+	lados: string[],
+) {
+	const copiar = async (de: string, a: string, obligatorio: boolean) => {
+		try {
+			await s3.send(
+				new CopyObjectCommand({
+					Bucket: BUCKET_PUBLICO,
+					CopySource: `${BUCKET_PUBLICO}/${de}`,
+					Key: a,
+				}),
+			);
+		} catch (error) {
+			const nombre = (error as { name?: string })?.name;
+			const falta = nombre === "NoSuchKey" || nombre === "AccessDenied";
+
+			if (obligatorio && falta) {
+				throw malaPeticion(
+					"El diseño de uno de los productos ya no está disponible. " +
+						"Vuelve a agregarlo al carrito.",
+				);
+			}
+
+			if (!falta) throw error;
+		}
+	};
+
+	for (const lado of lados) {
+		await copiar(
+			`carritos/${carritoId}/${lado}-arte.png`,
+			`medios/pedidos/${pedidoId}/${lineaId}-${lado}.png`,
+			true,
+		);
+		await copiar(
+			`carritos/${carritoId}/${lado}-colocacion.png`,
+			`medios/pedidos/${pedidoId}/${lineaId}-${lado}-colocacion.png`,
+			false,
+		);
+	}
+
+	await copiar(
+		`carritos/${carritoId}/diseno.json`,
+		`medios/pedidos/${pedidoId}/${lineaId}-diseno.json`,
+		false,
+	);
 }
 
 /** Las líneas de todas las partes, con el índice que traían al llegar. */

@@ -4,6 +4,7 @@ import {
 	noAutorizado,
 	respuestaDeError,
 } from "./lib/http.js";
+import * as carrito from "./rutas/carrito.js";
 import * as catalogo from "./rutas/catalogo.js";
 import * as categorias from "./rutas/categorias.js";
 import * as envios from "./rutas/envios.js";
@@ -71,6 +72,10 @@ router.post("/publico/envios/rastreo", (p) =>
 	rastreo.recibir(p.cuerpo, p.cuerpoCrudo, p.headers),
 );
 
+/* El arte se sube al agregar al carrito, no al pagar: si no, no cabría en el
+   navegador. El destino lo decide la Lambda y todo caduca a los 30 días. */
+router.post("/publico/carrito/subidas", (p) => carrito.firmarSubidas(p.cuerpo));
+
 router.post("/publico/pedidos", (p) => pedidos.crear(p.cuerpo));
 router.get("/publico/pedidos/:id", (p) =>
 	pedidos.seguimiento(p.params.id, p.query.token),
@@ -90,6 +95,7 @@ const ABIERTAS = [
 	// cualquier ruta que alguien cuelgue ahí mañana nace abierta sin que nadie
 	// lo decida.
 	/^POST \/publico\/pedidos$/,
+	/^POST \/publico\/carrito\/subidas$/,
 	// El webhook de Skydropx. Abierta al mundo pero cerrada de verdad: exige
 	// la firma HMAC del cuerpo y rechaza si no hay secreto configurado.
 	/^POST \/publico\/envios\/rastreo$/,
