@@ -12,6 +12,27 @@ function resolveApiUrl(): string {
 	return process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 }
 
+/**
+ * Si esta API existe donde se está corriendo.
+ *
+ * Lo que queda en Nest —paquetes y cuentas de comprador— **no se despliega**.
+ * En el sitio publicado, cada llamada acababa en un `ERR_CONNECTION_REFUSED`
+ * contra `localhost:8000`, que no dice nada de lo que pasa: parece que el
+ * servidor se cayó, cuando en realidad esa API nunca estuvo ahí.
+ *
+ * Se comprueba con la página, no con el entorno: quien abra el sitio desde
+ * su propia máquina de desarrollo SÍ tiene Nest al lado y debe seguir
+ * hablándole.
+ */
+function apiAlcanzable(url: string): boolean {
+	if (typeof window === "undefined") return true;
+
+	const local = /^(localhost|127\.0\.0\.1|\[::1\])$/;
+	const apuntaALocal = local.test(new URL(url).hostname);
+
+	return !apuntaALocal || local.test(window.location.hostname);
+}
+
 /** Error de la API con el código a la mano, para poder distinguir un 404. */
 export class ApiError extends Error {
 	constructor(
@@ -28,7 +49,20 @@ export async function apiFetch<T>(
 	path: string,
 	options?: RequestInit,
 ): Promise<T> {
-	const res = await fetch(`${resolveApiUrl()}${path}`, {
+	const base = resolveApiUrl();
+
+	// Falla aquí, y diciendo por qué, en vez de estrellarse contra un puerto
+	// que no existe. Quien llama ya sabe seguir sin esto: las secciones que
+	// dependen de Nest simplemente no se pintan.
+	if (!apiAlcanzable(base)) {
+		throw new ApiError(
+			503,
+			path,
+			"La API de Nest no está desplegada: esto sólo funciona en desarrollo.",
+		);
+	}
+
+	const res = await fetch(`${base}${path}`, {
 		credentials: "include",
 		headers: {
 			"Content-Type": "application/json",
