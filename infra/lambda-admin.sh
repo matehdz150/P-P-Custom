@@ -22,7 +22,35 @@ API="${FUNCION}-api"
 TABLA="${KUSTTO_TABLA:-kustto-prod}"
 PUBLICO="${KUSTTO_BUCKET_PUBLICO:-kustto-publico-prod}"
 ORIGEN="${KUSTTO_ORIGEN:-http://localhost:3000}"
+# Los orígenes que pueden llamar a la API. Son varios desde que el sitio vive
+# en su dominio: el de desarrollo y los dos de produccion. Se manda como JSON
+# y no con la forma corta del CLI porque ahi las comas separan CLAVES, y una
+# lista de origenes se interpretaria como otros campos.
+ORIGENES="${KUSTTO_ORIGENES:-http://localhost:3000,https://kustto.com.mx,https://www.kustto.com.mx}"
+CORS_JSON=$(python3 - "$ORIGENES" <<'PYCORS'
+import json, sys
+print(json.dumps({
+    "AllowOrigins": sys.argv[1].split(","),
+    "AllowMethods": ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    "AllowHeaders": ["content-type", "x-clave-admin", "authorization"],
+    "MaxAge": 300,
+}))
+PYCORS
+)
 ARCHIVO_CLAVE="services/admin/.clave-admin"
+
+# Las paqueterías que se pueden OFRECER en el checkout.
+#
+# Cotizar no es poder despachar: si la credencial de la paquetería no está dada
+# de alta en Skydropx, la guía se compra y muere con "Credential ... was not
+# found in cache", con el pedido ya cobrado. Pasó con ampm y con tresguerras;
+# sólo Paquetexpress generó etiqueta.
+#
+# Vacío = se ofrecen todas. Cuando estén dadas de alta las demás credenciales,
+# esto se vacía y vuelven a salir todas:
+#     KUSTTO_PAQUETERIAS= bash infra/lambda-admin.sh
+SKYDROPX_PAQUETERIAS="${KUSTTO_PAQUETERIAS-paquetexpress}"
+
 
 CUENTA=$(aws_ sts get-caller-identity --query Account --output text)
 
@@ -41,6 +69,13 @@ fi
 
 # El secreto con el que se firma el webhook de rastreo. Vive aparte porque no
 # lo da Skydropx: lo elegimos nosotros y se pega en su panel.
+# El rol de la cuenta root que las Lambdas asumen para enviar correo: es la
+# cuenta que tiene acceso a producción. Sin esto no se manda nada.
+# Lo monta infra/correo-envio.sh.
+if [ -f infra/.correo-envio ]; then
+  source infra/.correo-envio
+fi
+
 if [ -f infra/.skydropx-webhook ]; then
   source infra/.skydropx-webhook
 fi
@@ -212,13 +247,18 @@ fi
 if [ -n "${WS_ENDPOINT:-}" ]; then
   PARES="$PARES,KUSTTO_WS_ENDPOINT=$WS_ENDPOINT"
 fi
+if [ -n "${KUSTTO_CORREO_ROL:-}" ]; then
+  PARES="$PARES,KUSTTO_CORREO_ROL=$KUSTTO_CORREO_ROL,KUSTTO_CORREO_DE=$KUSTTO_CORREO_DE"
+else
+  echo "Aviso: sin KUSTTO_CORREO_ROL. No se mandará ningún correo."
+fi
 if [ -n "${SKYDROPX_WEBHOOK_SECRETO:-}" ]; then
   PARES="$PARES,SKYDROPX_WEBHOOK_SECRETO=$SKYDROPX_WEBHOOK_SECRETO"
 else
   echo "Aviso: sin SKYDROPX_WEBHOOK_SECRETO. El webhook de rastreo rechazará todo."
 fi
 if [ -n "${SKYDROPX_CLIENT_ID:-}" ]; then
-  PARES="$PARES,SKYDROPX_HOST=$SKYDROPX_HOST,SKYDROPX_CLIENT_ID=$SKYDROPX_CLIENT_ID,SKYDROPX_CLIENT_SECRET=$SKYDROPX_CLIENT_SECRET"
+  PARES="$PARES,SKYDROPX_HOST=$SKYDROPX_HOST,SKYDROPX_CLIENT_ID=$SKYDROPX_CLIENT_ID,SKYDROPX_CLIENT_SECRET=$SKYDROPX_CLIENT_SECRET,SKYDROPX_PAQUETERIAS=$SKYDROPX_PAQUETERIAS"
 else
   echo "Aviso: sin credenciales de Skydropx. No se podrán cotizar envíos."
 fi
@@ -256,7 +296,7 @@ if [ "$API_ID" = "None" ] || [ -z "$API_ID" ]; then
     --name "$API" \
     --protocol-type HTTP \
     --target "arn:aws:lambda:${REGION}:${CUENTA}:function:${FUNCION}" \
-    --cors-configuration "AllowOrigins=${ORIGEN},AllowMethods=GET,POST,PATCH,DELETE,OPTIONS,AllowHeaders=content-type,x-clave-admin,authorization,MaxAge=300" \
+    --cors-configuration "$CORS_JSON" \
     --query ApiId --output text)
 
   aws_ lambda add-permission --function-name "$FUNCION" \
@@ -266,7 +306,7 @@ if [ "$API_ID" = "None" ] || [ -z "$API_ID" ]; then
     --source-arn "arn:aws:execute-api:${REGION}:${CUENTA}:${API_ID}/*" >/dev/null
 else
   aws_ apigatewayv2 update-api --api-id "$API_ID" \
-    --cors-configuration "AllowOrigins=${ORIGEN},AllowMethods=GET,POST,PATCH,DELETE,OPTIONS,AllowHeaders=content-type,x-clave-admin,authorization,MaxAge=300" >/dev/null
+    --cors-configuration "$CORS_JSON" >/dev/null
 fi
 
 URL=$(aws_ apigatewayv2 get-api --api-id "$API_ID" --query ApiEndpoint --output text)

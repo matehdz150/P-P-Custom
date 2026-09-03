@@ -18,7 +18,10 @@ cd "$(dirname "$0")/.."
 source infra/aws.sh
 
 PUBLICO="${KUSTTO_BUCKET_PUBLICO:-kustto-publico-prod}"
-ORIGENES="${KUSTTO_ORIGENES:-http://localhost:3000}"
+# El de desarrollo y los dos del sitio publicado. Si falta el de producción,
+# el navegador bloquea la subida del arte al pedir y del alta de productos, y
+# el fallo se ve como "no se pudo subir" sin más pista.
+ORIGENES="${KUSTTO_ORIGENES:-http://localhost:3000,https://kustto.com.mx,https://www.kustto.com.mx}"
 
 # AllowedOrigins acepta varios separados por coma en la variable.
 lista=$(printf '"%s",' ${ORIGENES//,/ } | sed 's/,$//')

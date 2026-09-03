@@ -28,6 +28,19 @@ TABLA="${KUSTTO_TABLA:-kustto-prod}"
 PUBLICO="${KUSTTO_BUCKET_PUBLICO:-kustto-publico-prod}"
 ORIGEN="${KUSTTO_ORIGEN:-http://localhost:3000}"
 
+# Las paqueterías que se pueden OFRECER en el checkout.
+#
+# Cotizar no es poder despachar: si la credencial de la paquetería no está dada
+# de alta en Skydropx, la guía se compra y muere con "Credential ... was not
+# found in cache", con el pedido ya cobrado. Pasó con ampm y con tresguerras;
+# sólo Paquetexpress generó etiqueta.
+#
+# Vacío = se ofrecen todas. Cuando estén dadas de alta las demás credenciales,
+# esto se vacía y vuelven a salir todas:
+#     KUSTTO_PAQUETERIAS= bash infra/lambda-admin.sh
+SKYDROPX_PAQUETERIAS="${KUSTTO_PAQUETERIAS-paquetexpress}"
+
+
 CUENTA=$(aws_ sts get-caller-identity --query Account --output text)
 
 # ── El rol ─────────────────────────────────────────────────────────────────
@@ -111,6 +124,13 @@ PARES="KUSTTO_TABLA=$TABLA,KUSTTO_BUCKET_PUBLICO=$PUBLICO,KUSTTO_ORIGEN=$ORIGEN"
 
 # Skydropx: aquí se usa para RECOTIZAR con el peso real y comprar la guía. Sin
 # credenciales todo lo demás sigue andando; sólo no se pueden generar guías.
+# El rol de la cuenta root que las Lambdas asumen para enviar correo: es la
+# cuenta que tiene acceso a producción. Sin esto no se manda nada.
+# Lo monta infra/correo-envio.sh.
+if [ -f infra/.correo-envio ]; then
+  source infra/.correo-envio
+fi
+
 if [ -f infra/.skydropx ]; then
   source infra/.skydropx
 fi
@@ -133,8 +153,13 @@ if [ -z "${SKYDROPX_CLIENT_ID:-}" ] && \
   fi
 fi
 
+if [ -n "${KUSTTO_CORREO_ROL:-}" ]; then
+  PARES="$PARES,KUSTTO_CORREO_ROL=$KUSTTO_CORREO_ROL,KUSTTO_CORREO_DE=$KUSTTO_CORREO_DE"
+else
+  echo "Aviso: sin KUSTTO_CORREO_ROL. No se mandará ningún correo."
+fi
 if [ -n "${SKYDROPX_CLIENT_ID:-}" ]; then
-  PARES="$PARES,SKYDROPX_HOST=$SKYDROPX_HOST,SKYDROPX_CLIENT_ID=$SKYDROPX_CLIENT_ID,SKYDROPX_CLIENT_SECRET=$SKYDROPX_CLIENT_SECRET"
+  PARES="$PARES,SKYDROPX_HOST=$SKYDROPX_HOST,SKYDROPX_CLIENT_ID=$SKYDROPX_CLIENT_ID,SKYDROPX_CLIENT_SECRET=$SKYDROPX_CLIENT_SECRET,SKYDROPX_PAQUETERIAS=$SKYDROPX_PAQUETERIAS"
 else
   echo "Aviso: sin credenciales de Skydropx. No se podrán generar guías."
 fi
