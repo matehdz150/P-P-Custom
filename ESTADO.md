@@ -556,10 +556,19 @@ da **404** y no un XML de S3.
   generateStaticParams()" —que señala justo lo que sí está—. Ponerles
   `dynamicParams = false` **no** basta. Se apartan al construir, como el admin:
   igualmente leen de Nest, que no se despliega.
-- **El export necesita su propia carpeta de build** (`distDir: ".next-sitio"`).
-  Compartir `.next` con el servidor de desarrollo rompía la compilación: ahí
-  quedan los tipos que Next genera por ruta, incluidos los del admin apartado,
-  y fallaba con un `Cannot find name` señalando un archivo que ya no existe.
+- **`infra/sitio.sh` borra `.next` y `out` antes de construir.** Compartir
+  `.next` con el servidor de desarrollo rompe la compilación: ahí quedan los
+  tipos que Next genera por ruta, incluidos los del admin que el script
+  aparta, y falla con un `Cannot find name` señalando un archivo que ya no
+  existe.
+
+  **Se intentó con `distDir` y salió mucho peor.** Con un `distDir` propio,
+  `output: export` escribe el HTML DENTRO de esa carpeta en vez de en `out/`,
+  así que el script siguió subiendo un `out/` viejo: **dos publicaciones
+  seguidas no publicaron nada**, y el sitio parecía actualizado porque
+  respondía 200. Si tocas esto, **comprueba la fecha de
+  `apps/web/out/index.html` después de construir** — o el número de archivos,
+  que ahí cambió de 508 a 527.
 - **El CORS se configura desde `lambda-admin.sh`, y antes lo reescribía con un
   solo origen en cada despliegue.** Cambiarlo a mano en la consola habría
   durado hasta el siguiente `bash infra/lambda-admin.sh`, y el sitio se habría

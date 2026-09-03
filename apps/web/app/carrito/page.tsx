@@ -99,12 +99,12 @@ export default function CarritoPage() {
 					Vaciar el carrito
 				</button>
 
-				{/* Todavía no: el checkout que sabe cobrar varias partes es el paso
-				    siguiente. Prometer un botón que lleva a un formulario de un solo
-				    producto sería peor que decirlo. */}
-				<span className="rounded-lg bg-tinta/10 px-5 py-3 text-[14px] text-tinta/60">
-					El pago del carrito completo llega en el siguiente paso
-				</span>
+				<Link
+					href="/pedir/carrito"
+					className="flex h-12 items-center rounded-lg bg-tinta px-6 text-[15px] font-semibold text-lima"
+				>
+					Continuar
+				</Link>
 			</div>
 		</main>
 	);

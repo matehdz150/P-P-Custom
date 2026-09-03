@@ -15,16 +15,6 @@ const exportando = process.env.KUSTTO_EXPORT === "1";
 const nextConfig: NextConfig = {
 	...(exportando ? { output: "export" as const } : {}),
 
-	/**
-	 * El export construye en su propia carpeta.
-	 *
-	 * Compartir `.next` con el servidor de desarrollo rompía el build: ahí
-	 * quedan los tipos que Next genera para CADA ruta, incluidas las del admin
-	 * que este build aparta, y la comprobación fallaba con un "Cannot find
-	 * name" señalando un archivo que ya no existe. Separarlos también evita
-	 * que publicar deje al `pnpm dev` recompilando desde cero.
-	 */
-	...(exportando ? { distDir: ".next-sitio" } : {}),
 
 	/**
 	 * Carpeta por ruta (`/catalogo/index.html`) en vez de `/catalogo.html`.

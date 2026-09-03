@@ -156,7 +156,18 @@ async function publico<T>(ruta: string, opciones?: RequestInit): Promise<T> {
 
 export function crearPedido(datos: {
 	comprador: Comprador;
-	entrega: Entrega;
+	/**
+	 * La entrega de toda la compra. Se sigue aceptando para el checkout de un
+	 * solo producto; con carrito se manda `partes`, porque cada taller entrega
+	 * lo suyo a su manera.
+	 */
+	entrega?: Entrega;
+	/** Una por taller: su entrega y, si envía, qué tarifa eligió el cliente. */
+	partes?: {
+		proveedorId: string;
+		entrega: Entrega;
+		envio?: { cotizacionId: string; tarifaId: string };
+	}[];
 	/**
 	 * Qué paquetería eligió, sin el precio.
 	 *
@@ -171,6 +182,47 @@ export function crearPedido(datos: {
 		method: "POST",
 		body: JSON.stringify(datos),
 	});
+}
+
+/**
+ * Cotiza una compra entera: un envío por taller.
+ *
+ * Las llamadas a la paquetería las espacia la Lambda, no esta función: el
+ * límite de Skydropx es global y confiarlo al navegador significaría que dos
+ * pestañas abiertas se lo saltan.
+ *
+ * Una parte puede volver con `error` en vez de cotización —lo normal es que a
+ * ese taller le falte la dirección de recolección— y eso NO invalida las
+ * demás: el checkout enseña esa parte como "sólo para recoger".
+ */
+export function cotizarCompra(datos: {
+	destino: Direccion;
+	lineas: { productoId: string; tallas: TallaPedida[] }[];
+}) {
+	return publico<{
+		partes: {
+			proveedorId: string;
+			taller: string | null;
+			cotizacionId?: string;
+			error?: string;
+		}[];
+	}>("/publico/envios/cotizar-compra", {
+		method: "POST",
+		body: JSON.stringify(datos),
+	});
+}
+
+export function consultarCotizacion(id: string) {
+	return publico<{
+		lista: boolean;
+		tarifas: {
+			id: string;
+			paqueteria: string;
+			servicio: string;
+			precio: number;
+			dias: number | null;
+		}[];
+	}>(`/publico/envios/cotizacion/${encodeURIComponent(id)}`);
 }
 
 export function seguirPedido(id: string, token: string) {

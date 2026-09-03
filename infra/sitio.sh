@@ -69,7 +69,20 @@ for RUTA in "${FUERA[@]}"; do
 done
 
 echo "Construyendo el sitio (sin el admin)…"
-(cd "$WEB" && KUSTTO_EXPORT=1 pnpm build >/dev/null)
+# Se borra la caché del servidor de desarrollo antes de construir.
+#
+# NO es por limpieza: ahí dentro Next deja los tipos que genera POR RUTA,
+# incluidas las del admin que este script aparta, y el build de export falla
+# con un "Cannot find name" señalando un archivo que ya no existe.
+#
+# Se intentó darle al export su propia carpeta con `distDir`, y salió peor:
+# con `distDir`, `output: export` escribe el HTML DENTRO de esa carpeta en vez
+# de en `out/`, así que este script siguió subiendo un `out/` viejo y dos
+# publicaciones no publicaron nada. Si vuelves a tocar esto, comprueba la
+# fecha de `apps/web/out/index.html` después de construir.
+rm -rf "${WEB}/.next" "${WEB}/out"
+
+(cd "$WEB" && KUSTTO_EXPORT=1 pnpm build 2>&1 | tail -20)
 
 restaurar
 trap - EXIT INT TERM
