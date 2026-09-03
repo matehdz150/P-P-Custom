@@ -28,3 +28,8 @@ services/*/*.zip
 # Credenciales de Skydropx. El sandbox tambien es un secreto.
 infra/.skydropx
 infra/.skydropx-webhook
+infra/.correo-envio
+
+# El build del sitio publicado (infra/sitio.sh)
+.next-sitio/
+infra/.frontend

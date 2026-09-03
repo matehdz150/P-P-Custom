@@ -136,3 +136,6 @@ export default async function PackagePage({ params }: Props) {
 export function generateStaticParams() {
 	return [];
 }
+
+/** Misma razón que en `/proveedores/[slug]`: sin cerrarla, el export falla. */
+export const dynamicParams = false;

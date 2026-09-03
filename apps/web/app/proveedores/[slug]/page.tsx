@@ -13,6 +13,14 @@ export function generateStaticParams() {
 	return [];
 }
 
+/**
+ * Sin esto, `output: export` falla con "missing generateStaticParams()"
+ * aunque la función esté ahí: devolver la lista vacía deja la ruta abierta a
+ * parámetros que tendría que resolver un servidor, y en un sitio estático no
+ * hay ninguno. Cerrarla es decir que hoy no existe ninguna de estas URLs.
+ */
+export const dynamicParams = false;
+
 export default function Pagina() {
 	return <VistaDeProveedor />;
 }
