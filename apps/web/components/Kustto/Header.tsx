@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import BotonCarrito from "./BotonCarrito";
 import { Logotipo } from "./Marca";
 import MenuCuenta from "./MenuCuenta";
 
@@ -46,6 +47,10 @@ export default function Header({
 			>
 				Soy proveedor
 			</Link>
+			{/* Sólo sale cuando hay algo dentro: con el carrito vacío, el sitio es
+			    de "Empieza a diseñar". Va antes de la cuenta porque es la acción
+			    que continúa lo que la persona ya empezó. */}
+			<BotonCarrito />
 			<MenuCuenta />
 			<Link
 				href="/catalogo"

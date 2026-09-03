@@ -71,11 +71,21 @@ export function leerLocal(): ArticuloDeCarrito[] {
 	}
 }
 
+/**
+ * Lo que escucha la cabecera para saber cuántos artículos hay.
+ *
+ * `storage` sólo avisa a las OTRAS pestañas, nunca a la que escribió. Sin este
+ * aviso propio, agregar algo desde el editor no movería el contador hasta
+ * recargar — justo en el momento en que la persona espera verlo cambiar.
+ */
+export const EVENTO_CARRITO = "kustto:carrito";
+
 export function guardarLocal(articulos: ArticuloDeCarrito[]): void {
 	if (typeof window === "undefined") return;
 
 	try {
 		localStorage.setItem(LLAVE, JSON.stringify(articulos));
+		window.dispatchEvent(new Event(EVENTO_CARRITO));
 	} catch {
 		/* Se quedó sin espacio. No se puede hacer gran cosa aquí: el artículo ya
 		   está subido a S3 y lo que se pierde es la referencia local. Se avisa en
