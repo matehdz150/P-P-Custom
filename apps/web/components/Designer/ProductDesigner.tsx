@@ -12,11 +12,20 @@ import { useHayDiseno } from "./hooks/useHayDiseno";
 import { useIsMobile } from "./hooks/useIsMobile";
 import Loading from "./Loading";
 import MobileDesignerShell from "./MobileDesignerShell";
+import AgregarAlCarrito from "./AgregarAlCarrito";
 import SalidaAPedir from "./SalidaAPedir";
 
 export default function ProductDesigner({ productId }: { productId: string }) {
 	const isMobile = useIsMobile();
-	const { setConfig, setColores, pidiendo, setPidiendo, sides } = useDesigner();
+	const {
+		setConfig,
+		setColores,
+		pidiendo,
+		setPidiendo,
+		agregando,
+		setAgregando,
+		sides,
+	} = useDesigner();
 
 	/* Mientras haya algo dibujado y no se haya pedido, salir de aquí pierde el
 	   diseño: sólo vive dentro del lienzo. */
@@ -70,6 +79,16 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 			    lienzo deja de existir en cuanto se navega. */}
 			{pidiendo && ficha && (
 				<SalidaAPedir producto={ficha} onCancelar={() => setPidiendo(false)} />
+			)}
+
+			{/* Agregar al carrito NO navega: sube el arte y se queda en el editor,
+			    porque lo normal después de agregar es seguir diseñando. */}
+			{agregando && ficha && (
+				<AgregarAlCarrito
+					producto={ficha}
+					onListo={() => setAgregando(false)}
+					onCancelar={() => setAgregando(false)}
+				/>
 			)}
 		</>
 	);

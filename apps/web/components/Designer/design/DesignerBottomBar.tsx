@@ -18,7 +18,7 @@ export default function DesignerBottomBar({
 	isPanning,
 	togglePan,
 }: Props) {
-	const { setPidiendo } = useDesigner();
+	const { setPidiendo, setAgregando } = useDesigner();
 
 	return (
 		<div
@@ -58,6 +58,15 @@ export default function DesignerBottomBar({
 
 			{/* La salida del editor. Antes decía "Guardar producto" y no tenía
 			    onClick: era un botón muerto que prometía algo que no ocurría. */}
+			<div className="flex items-center gap-2">
+				<button
+					type="button"
+					onClick={() => setAgregando(true)}
+					className="border-[1.5px] border-tinta/25 text-tinta font-medium px-5 py-2 rounded font-sora"
+				>
+					Agregar al carrito
+				</button>
+
 			<button
 				type="button"
 				onClick={() => setPidiendo(true)}
@@ -65,6 +74,7 @@ export default function DesignerBottomBar({
 			>
 				Pedir este diseño
 			</button>
+			</div>
 		</div>
 	);
 }

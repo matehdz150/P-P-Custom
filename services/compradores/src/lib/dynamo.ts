@@ -89,6 +89,18 @@ export const llaves = {
 	 * escribiendo una donde va la otra.
 	 */
 	comprador: (sub: string) => ({ pk: `CUSTOMER#${sub}`, sk: "META" }),
+
+	/**
+	 * El carrito de quien tiene sesión.
+	 *
+	 * Cuelga del mismo `CUSTOMER#` que su perfil pero en otro `sk`: es un dato
+	 * que cambia mucho más y que se lee solo, y meterlo dentro del perfil
+	 * obligaría a reescribir el perfil entero cada vez que alguien agrega algo.
+	 *
+	 * Guarda RUTAS, no archivos: el arte ya está en S3 desde que se agregó
+	 * (ver `carritos/` en infra/buckets.sh).
+	 */
+	carrito: (sub: string) => ({ pk: `CUSTOMER#${sub}`, sk: "CART" }),
 };
 
 /** Las llaves son de la tabla, no del recurso: no salen a la API. */

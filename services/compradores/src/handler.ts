@@ -5,6 +5,7 @@ import {
 	respuestaDeError,
 } from "./lib/http.js";
 import type { Identidad } from "./rutas/pedidos.js";
+import * as carrito from "./rutas/carrito.js";
 import * as pedidos from "./rutas/pedidos.js";
 import * as perfil from "./rutas/perfil.js";
 
@@ -54,6 +55,15 @@ router.get("/cuenta/pedidos/:id", (p) =>
 );
 
 /* ─── Perfil y direcciones ──────────────────────────────────────────────── */
+
+/* El carrito de quien tiene sesión. Sin ella vive en el navegador y no pasa
+   por aquí: son las dos mitades de lo mismo, y al entrar se funden. */
+router.get("/cuenta/carrito", (p) => carrito.obtener(quien(p)));
+/* PATCH y no PUT aunque se guarde entero: la API Gateway declara una ruta por
+   método y PUT no está entre ellos. Añadirlo obligaría a tocar la
+   infraestructura y el CORS para no ganar nada. */
+router.patch("/cuenta/carrito", (p) => carrito.guardar(quien(p), p.cuerpo));
+router.delete("/cuenta/carrito", (p) => carrito.vaciar(quien(p)));
 
 router.get("/cuenta/perfil", (p) => perfil.obtener(quien(p)));
 router.patch("/cuenta/perfil", (p) => perfil.guardar(quien(p), p.cuerpo));

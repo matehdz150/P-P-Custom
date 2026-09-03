@@ -77,6 +77,14 @@ export type DesignerProductTemplate = {
 	 * el taller manda a máquina. Sin esto habría que adivinar los DPI.
 	 */
 	printSides?: ProductPrintSide[];
+	/**
+	 * De qué taller es.
+	 *
+	 * Hace falta en el editor desde que hay carrito: agrupa los artículos y, al
+	 * pedir, es lo que parte la compra en un pedido por taller.
+	 */
+	proveedorId?: string;
+	proveedorNombre?: string | null;
 };
 
 export type Product = {

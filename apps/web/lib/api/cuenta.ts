@@ -1,3 +1,4 @@
+import type { ArticuloDeCarrito } from "@/lib/carrito/almacen";
 import { tokenVigente } from "@/lib/auth/comprador";
 import type { PedidoEnSeguimiento } from "./pedir";
 
@@ -113,6 +114,24 @@ export type PerfilDelComprador = {
 	direccion: Direccion | null;
 	creadoEn: string | null;
 };
+
+/* ─── El carrito de quien tiene sesión ──────────────────────────────────
+   Sin sesión el carrito vive sólo en el navegador; con ella se guarda además
+   aquí para encontrarlo desde otro aparato. Al entrar se funden los dos. */
+
+export const getCarritoDeLaCuenta = () =>
+	pedir<{ articulos: ArticuloDeCarrito[] }>("/cuenta/carrito");
+
+export const guardarCarritoEnLaCuenta = (articulos: ArticuloDeCarrito[]) =>
+	pedir<{ articulos: ArticuloDeCarrito[] }>("/cuenta/carrito", {
+		// PATCH y no PUT: la API Gateway declara una ruta por método y PUT no
+		// está entre los suyos. Se guarda entero igual.
+		metodo: "PATCH",
+		cuerpo: { articulos },
+	});
+
+export const vaciarCarritoDeLaCuenta = () =>
+	pedir<null>("/cuenta/carrito", { metodo: "DELETE" });
 
 export const getMiPerfil = () => pedir<PerfilDelComprador>("/cuenta/perfil");
 

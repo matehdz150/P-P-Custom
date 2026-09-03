@@ -898,13 +898,47 @@ Verificado de punta a punta contra AWS: subir al carrito, pedir con ese
 `carritoId`, y comprobar que el arte quedó en `medios/pedidos/…` y se sirve por
 el dominio.
 
+### Paso 3: el carrito (3 de septiembre)
+
+Se agrega desde el editor —botón junto a "Pedir este diseño"—, se ve en
+`/carrito`, y vive en dos sitios: el navegador siempre, y la cuenta si hay
+sesión.
+
+- **El carrito guarda rutas, no archivos.** Al agregar, el arte se exporta y
+  se sube a `carritos/…` (paso 2); lo que queda en el navegador son rutas,
+  cantidades y una miniatura de 240 px en JPEG. La que sale del editor mide
+  700 px y en base64 llena el cupo de `localStorage` con cuatro artículos.
+- **Al entrar gana la UNIÓN**, no el más nuevo: quien agregó algo sin haber
+  entrado no lo pierde por identificarse, y lo del teléfono tampoco. Se
+  deduplica por `carritoId`, que es lo único de verdad único — dos artículos
+  del mismo producto con diseños distintos son cosas distintas.
+- **La cuenta puede fallar sin consecuencias.** Siempre se escribe primero en
+  el navegador; guardar en la tabla es lo que permite verlo desde otro
+  aparato, no el carrito.
+- **La exportación del lienzo se extrajo** a `lib/designer/exportarParaPedido`
+  porque ahora la usan dos caminos —pedir y agregar—, y es la parte más
+  delicada del editor: quitar el mockup sin dejar rastro, respetar los DPI y
+  escribirle la resolución al PNG. Duplicarla era tener dos versiones de eso.
+- `GET/PATCH/DELETE /cuenta/carrito`, detrás del pool de compradores.
+  **PATCH y no PUT**: la API Gateway declara una ruta por método y PUT no está
+  entre los suyos; añadirlo obligaba a tocar infraestructura y CORS sin ganar
+  nada.
+
+**Lo que falta y no se puede comprobar por API:** agregar de verdad desde el
+editor. Necesita un navegador con lienzo. Verificado sí: que la ruta del
+carrito exige sesión (401 sin token) y que las pantallas cargan.
+
+El botón de pagar del carrito está a la vista pero **deshabilitado a
+propósito**: el checkout que sabe cobrar varias partes es el paso 4, y llevar
+a un formulario de un solo producto sería peor que decirlo.
+
 ### El orden para construirlo
 
 1. ~~El modelo y la creación~~ — **hecho**.
 2. ~~Las subidas del carrito~~ — **el backend, hecho** (3 de septiembre).
    Falta el botón del editor, que va con el carrito del paso 3: sin carrito no
    hay dónde guardar lo que devuelve.
-3. **El carrito en el front**: navegador, cuenta, y la fusión al entrar.
+3. ~~El carrito en el front~~ — **hecho, salvo probarlo en un navegador**.
 4. **El checkout multi-parte**: cotizar por taller, entrega por parte, y el
    aviso cuando uno no puede cumplir.
 5. **Seguimiento y correos** de la compra.

@@ -72,6 +72,10 @@ interface DesignerContextType {
 	 */
 	pidiendo: boolean;
 	setPidiendo: (v: boolean) => void;
+
+	/** Si está en marcha "agregar al carrito". Mismo motivo que `pidiendo`. */
+	agregando: boolean;
+	setAgregando: (v: boolean) => void;
 }
 
 const DesignerContext = createContext<DesignerContextType>(
@@ -182,6 +186,7 @@ export function DesignerProvider({ children }: { children: ReactNode }) {
 	const getEditableAreas = () => sides[activeSide]?.editableAreas ?? [];
 
 	const [pidiendo, setPidiendo] = useState(false);
+	const [agregando, setAgregando] = useState(false);
 
 	return (
 		<DesignerContext.Provider
@@ -202,6 +207,8 @@ export function DesignerProvider({ children }: { children: ReactNode }) {
 				setColorPrenda,
 				pidiendo,
 				setPidiendo,
+				agregando,
+				setAgregando,
 				config,
 				setConfig,
 				notice,

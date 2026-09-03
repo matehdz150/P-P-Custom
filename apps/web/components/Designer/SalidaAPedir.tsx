@@ -4,13 +4,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import type { DesignerProductTemplate } from "@/lib/api/products";
-import { conDpi } from "@/lib/designer/dpi";
-import {
-	exportarArteDeLado,
-	exportarColocacion,
-	exportarMiniaturaDelArte,
-} from "@/lib/designer/exportarArte";
-import { type ArchivoDeLado, guardarBorrador } from "@/lib/pedido/borrador";
+import { exportarParaPedido } from "@/lib/designer/exportarParaPedido";
+import { guardarBorrador } from "@/lib/pedido/borrador";
 
 /**
  * La salida del editor.
@@ -62,77 +57,17 @@ export default function SalidaAPedir({
 
 	async function salir() {
 		try {
-			// Se aplana a { lado, canvas, areas } en vez de quedarse con las
-			// entradas crudas para que `canvas` deje de ser opcional: dentro del
-			// bucle ya está comprobado, pero el tipo no lo sabe.
-			const conDiseno = Object.entries(sides).flatMap(([lado, estado]) => {
-				const canvas = estado.canvas;
-				if (!canvas) return [];
-
-				const hayDiseno = canvas
-					.getObjects()
-					.some((o) => !estado.editableAreas.includes(o));
-
-				return hayDiseno ? [{ lado, canvas, areas: estado.editableAreas }] : [];
-			});
-
-			if (conDiseno.length === 0) {
-				setFallo("Todavía no has puesto nada en la prenda.");
-				return;
-			}
-
-			/* Por cada lado salen DOS archivos y una miniatura de cada uno:
-			   el arte de producción y la referencia de colocación. Se generan
-			   juntos, en el mismo recorrido, para no rendir el lienzo dos veces
-			   por lado. */
-			const archivos: ArchivoDeLado[] = [];
-
-			for (const { lado, canvas, areas } of conDiseno) {
-				const medidas = producto.printSides?.find((s) => s.sideKey === lado);
-
-				const arte = exportarArteDeLado(lado, canvas, areas, {
-					widthCm: medidas?.widthCm ?? 28,
-					heightCm: medidas?.heightCm ?? 35,
-					dpi: medidas?.dpi,
-				});
-
-				if (!arte) continue;
-
-				const colocacion = exportarColocacion(canvas, areas);
-
-				archivos.push({
-					lado,
-					/* Con su resolución escrita dentro. `toDataURL` no la pone, y sin
-					   ella el archivo se abre a 72 dpi: 116 cm en vez de 28. */
-					arte: await conDpi(arte.blob, arte.dpi),
-					colocacion: colocacion?.blob ?? null,
-					miniaturaArte: exportarMiniaturaDelArte(canvas, areas),
-					miniaturaPrenda: colocacion?.dataUrl ?? null,
-					anchoPx: arte.anchoPx,
-					altoPx: arte.altoPx,
-					dpi: arte.dpi,
-				});
-			}
-
-			if (archivos.length === 0) {
-				setFallo("No encontramos nada dibujado que mandar.");
-				return;
-			}
+			// La exportación vive en lib/designer: la comparten esta pantalla y
+			// "agregar al carrito", y es la parte del editor que menos conviene
+			// tener duplicada.
+			const { archivos, diseno } = await exportarParaPedido(sides, producto);
 
 			await guardarBorrador({
 				productoId: producto.id,
 				colorPrenda: colorPrenda?.name ?? null,
 				lados: archivos,
 				// Sólo los objetos del cliente: las guías las repone el editor.
-				diseno: Object.fromEntries(
-					conDiseno.map(({ lado, canvas, areas }) => [
-						lado,
-						canvas
-							.getObjects()
-							.filter((o) => !areas.includes(o))
-							.map((o) => o.toObject()),
-					]),
-				),
+				diseno,
 				creadoEn: Date.now(),
 			});
 
