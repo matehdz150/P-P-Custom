@@ -1,17 +1,22 @@
 # Dónde nos quedamos
 
-_Última actualización: 2 de septiembre de 2026._
+_Última actualización: 3 de septiembre de 2026._
 
 Este archivo es el traspaso entre sesiones: lo que **no** se deduce leyendo el
 código. Para el mapa del proyecto ve a `README.md`; para el AWS, a
 `infra/README.md`. Si algo de aquí ya se hizo, bórralo — este documento sólo
 sirve si se mantiene corto y cierto.
 
-**Lo último que se hizo, por si sólo lees esto:** el sitio ya está publicado
-en **https://kustto.com.mx** (S3 + CloudFront, export estático), con el admin
-deliberadamente fuera. Antes: los envíos con Skydropx, el inventario
-obligatorio, el buzón de `@kustto.com.mx` y los correos de pedido. Todo
-verificado contra AWS, nada en local.
+**Lo último que se hizo, por si sólo lees esto:** el **carrito de varios
+talleres está completo** —se agrega desde el editor, se ve en `/carrito`, y
+`/pedir/carrito` cobra una compra que se parte en un pedido por taller—, y sus
+dos pantallas están rediseñadas. De ese bloque sólo falta el **seguimiento y
+los correos de la COMPRA**: hoy los avisos salen por parte.
+
+Antes: el sitio publicado en **https://kustto.com.mx** (S3 + CloudFront,
+export estático, con el admin deliberadamente fuera), los envíos con Skydropx,
+el inventario obligatorio, el buzón de `@kustto.com.mx` y los correos de
+pedido. Todo verificado contra AWS, nada en local.
 
 ---
 
@@ -918,8 +923,9 @@ sesión.
 
 - **El carrito guarda rutas, no archivos.** Al agregar, el arte se exporta y
   se sube a `carritos/…` (paso 2); lo que queda en el navegador son rutas,
-  cantidades y una miniatura de 240 px en JPEG. La que sale del editor mide
-  700 px y en base64 llena el cupo de `localStorage` con cuatro artículos.
+  cantidades y una miniatura en JPEG. La que sale del editor mide 700 px y en
+  base64 llena el cupo de `localStorage` con cuatro artículos. Esa miniatura
+  mide **480 px desde el 3 de septiembre** — ver "La miniatura" más abajo.
 - **Al entrar gana la UNIÓN**, no el más nuevo: quien agregó algo sin haber
   entrado no lo pierde por identificarse, y lo del teléfono tampoco. Se
   deduplica por `carritoId`, que es lo único de verdad único — dos artículos
@@ -940,9 +946,9 @@ sesión.
 editor. Necesita un navegador con lienzo. Verificado sí: que la ruta del
 carrito exige sesión (401 sin token) y que las pantallas cargan.
 
-El botón de pagar del carrito está a la vista pero **deshabilitado a
-propósito**: el checkout que sabe cobrar varias partes es el paso 4, y llevar
-a un formulario de un solo producto sería peor que decirlo.
+"Continuar" lleva a `/pedir/carrito`, el checkout multi-parte del paso 4.
+Estuvo deshabilitado mientras esa pantalla no existía: llevar a un formulario
+de un solo producto habría sido peor que decirlo.
 
 ### Paso 4: el backend del checkout multi-parte (3 de septiembre)
 
@@ -973,16 +979,107 @@ el peso de esa talla.
 (`809.9300000000001`). Se redondea a centavos AL SUMAR, no al pintar: si sólo
 se arreglara en pantalla, el número guardado seguiría siendo el feo.
 
+### Las pantallas del carrito, rediseñadas (3 de septiembre)
+
+`/carrito` y la cabecera. Lo que cambió es de fondo, no de pintura, y todo
+sale del sistema que ya había —Figtree y Poppins, `tinta`, `lima`, `hueso`,
+radios de 10 px, campos de 1.5 px a `tinta/20`—. El fondo `gris` sobre
+tarjetas `hueso` no es nuevo: es la misma envoltura que ya usaban los correos.
+
+**La lista se AGRUPA POR TALLER, y ésa es la decisión.** La compra ya se parte
+sola en un pedido por taller, y eso se avisaba en un párrafo gris encima de
+todo que nadie leía. Agrupado, cada bloque numerado ES el paquete que va a
+llegar: lo cuenta la estructura. Se agrupa por `proveedorId` y **no por el
+nombre** — dos talleres pueden llamarse igual, y el que parte la compra es el
+id.
+
+**Las tallas son contadores, no `<input type="number">`.** En un carrito se
+sube y baja de uno en uno, y meter el cursor en un campo para cambiar un 2 por
+un 3 es trabajo de más. 44 px de alto en el teléfono, que es el mínimo táctil.
+
+**El resumen va en `tinta`** porque es lo único de la pantalla que decide
+algo, y en una página de tarjetas claras necesitaba ser el ancla. El `lima`
+queda para el total y el botón, así el acento significa "esto es lo siguiente"
+en vez de gastarse en decoración. Pegajoso al lado en pantalla ancha; **fijo
+al borde inferior en el teléfono**, porque con la lista larga un botón al
+final del scroll obliga a recorrer todo el carrito y esconde cuánto llevas.
+
+Dos trampas de CSS que ya mordieron y están comentadas en el código:
+
+- **`/carrito` era la ÚNICA ruta de la tienda sin `layout.tsx`**, así que se
+  abría sin cabecera y sin pie, con el fondo cortado a media pantalla. Ahora
+  tiene el suyo, y es una **columna flex con el centro creciendo**: sin
+  `flex-grow` el gris no llega al pie cuando el carrito trae poco.
+- La barra fija del teléfono se declara con **`max-lg:fixed`**, no con un
+  `fixed` que después se deshaga con `lg:inset-auto`. Ése y `bottom-0` tocan
+  la misma propiedad con la misma especificidad, así que cuál gana dependería
+  del orden en que Tailwind emita las dos reglas.
+
+### La miniatura del carrito: 480 px, y por qué (3 de septiembre)
+
+Se veía sucia. Estaba en **240 px con JPEG 0.7**, un tamaño elegido cuando el
+carrito la enseñaba a 96 px. La pantalla nueva la enseña a 132 px —el diseño
+es lo que la persona reconoce— y en un aparato retina eso son 264 px reales:
+**se estaba ampliando**. Ahora son 480 px a 0.82, con suavizado alto.
+
+Medido pasando un mockup real del proyecto por la misma tubería, con el tope
+de `MAXIMO_ARTICULOS` (30):
+
+| | por artículo | carrito lleno |
+|---|---|---|
+| 240 px · 0.70 | 6.9 KB | 0.20 MB |
+| 480 px · 0.82 | 22.5 KB | 0.66 MB |
+
+`localStorage` da unos 5 MB, así que en el peor caso pasa del 4% al 13%.
+
+**Las miniaturas VIEJAS no se arreglan solas.** Se generan al agregar, y la
+original de 700 px ya no está en el navegador para rehacerlas: un artículo que
+lleve tiempo en el carrito conserva su imagen de 240 px hasta que se quite y
+se vuelva a agregar.
+
+**480 está cerca del techo.** La colocación sale del editor a 700 px
+(`ANCHO_VISTA_PREVIA`), así que subir mucho más no aporta. Si algún día hace
+falta más nitidez, la salida NO es subir el número —el base64 crece con el
+cuadrado del ancho— sino servir la colocación que **ya está en S3** bajo
+`carritos/…`, que hoy no tiene comportamiento en CloudFront.
+
+### La cabecera: dónde va el verde (3 de septiembre)
+
+Quedó recargada al entrar el carrito, y ordenarla obligó a decidir qué merece
+el acento. Ahora: izquierda = navegar el sitio, derecha = lo tuyo.
+
+**El verde va en "Empieza a diseñar", NO en "Iniciar sesión".** Se probó
+ponerlo en la cuenta, como en cualquier plantilla de SaaS, y es un error caro
+aquí: **en Kustto se puede pedir sin cuenta** —la ruta pública no exige sesión
+y el seguimiento viaja en el enlace del correo—, así que hacer de la sesión el
+botón más fuerte de la página le diría a todo el mundo que hace falta
+registrarse para comprar. Por lo mismo **no hay botón de "Registrarse"**:
+registrarse queda a un clic dentro de la cuenta.
+
+**"Soy proveedor" bajó al nav de la izquierda**, más apagado. Va dirigido a
+otro público —talleres, no compradores— y junto al carrito competía con las
+acciones de quien sí viene a comprar. Sigue en el menú de móvil.
+
+**El carrito cierra la fila y está SIEMPRE**, apagado mientras esté vacío. Se
+probó esconderlo en vacío para dejarle sitio al verde y se descartó: un
+carrito que aparece y desaparece no se aprende, y al montarse empujaba el
+resto de la cabecera porque el contador arranca en cero y se llena después.
+El contador **no se pinta al pre-renderizar**: el sitio es estático detrás de
+CloudFront y un número metido en el HTML se cachearía con el de una persona.
+
 ### El orden para construirlo
 
 1. ~~El modelo y la creación~~ — **hecho**.
 2. ~~Las subidas del carrito~~ — **el backend, hecho** (3 de septiembre).
    Falta el botón del editor, que va con el carrito del paso 3: sin carrito no
    hay dónde guardar lo que devuelve.
-3. ~~El carrito en el front~~ — **hecho, salvo probarlo en un navegador**.
-4. **El checkout multi-parte** — **el backend, hecho**; falta la pantalla:
-   `/pedir` todavía lee un solo diseño y no el carrito.
-5. **Seguimiento y correos** de la compra.
+3. ~~El carrito en el front~~ — **hecho**, y rediseñado el 3 de septiembre.
+4. ~~El checkout multi-parte~~ — **hecho**: el backend y la pantalla
+   `/pedir/carrito`, que agrupa por taller y cotiza el envío de cada uno.
+   `/pedir` sigue vivo para el checkout de un solo producto.
+5. **Seguimiento y correos** de la compra. Es lo único que queda del carrito:
+   hoy los avisos salen por PEDIDO —o sea por parte— y no hay nada que hable
+   de la compra entera salvo el correo de confirmación.
 6. **El panel del taller** casi no cambia: ya ve sólo lo suyo. Sólo enseñar de
    qué compra viene su parte.
 

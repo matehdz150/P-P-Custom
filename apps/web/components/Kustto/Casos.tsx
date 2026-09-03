@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Entrada } from "@/components/Animaciones/Entrada";
 import Eyebrow from "./Eyebrow";
 
 const CASOS = [
@@ -29,16 +30,21 @@ export default function Casos() {
 	return (
 		<section className="bg-white px-5 py-16 md:px-11 md:py-[100px]">
 			<div className="mx-auto flex max-w-[1200px] flex-col gap-7 md:gap-11">
-				<div className="flex flex-col gap-3.5 md:gap-[18px]">
+				<Entrada className="flex flex-col gap-3.5 md:gap-[18px]">
 					<Eyebrow>Para qué lo usan</Eyebrow>
 					<h2 className="font-display text-[30px] font-extrabold leading-[37px] tracking-[-0.021em] text-tinta md:max-w-[780px] md:text-[40px] md:leading-[48px]">
 						Bodas, graduaciones y equipos de trabajo
 					</h2>
-				</div>
+				</Entrada>
 
 				<div className="grid grid-cols-1 gap-[26px] md:grid-cols-3 md:gap-6">
-					{CASOS.map((c) => (
-						<div key={c.titulo} className="flex flex-col gap-3 md:gap-4">
+					{CASOS.map((c, i) => (
+						<Entrada
+							key={c.titulo}
+							delay={i * 0.08}
+							desplazamiento={20}
+							className="flex flex-col gap-3 md:gap-4"
+						>
 							<Image
 								src={c.img}
 								alt={c.alt}
@@ -52,7 +58,7 @@ export default function Casos() {
 							<p className="text-[15px] leading-[25px] text-tinta/65 md:text-base md:leading-[26px]">
 								{c.texto}
 							</p>
-						</div>
+						</Entrada>
 					))}
 				</div>
 			</div>

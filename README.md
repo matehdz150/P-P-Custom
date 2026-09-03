@@ -37,11 +37,12 @@ primero admin, luego proveedores, después catálogo y pedidos.
 | Cuentas de comprador | Cognito (pool aparte) + Lambda `kustto-compradores` | migrado |
 | Panel del comprador (`/cuenta`) | Lambda `kustto-compradores` | migrado |
 | Existencias del taller | DynamoDB, dentro del producto | obligatorias; falta el aviso al comprador |
-| Carrito de varios productos | no existe | **lo que sigue** |
-| Aviso por correo | SES, en sandbox | **faltan los DKIM en el DNS** |
+| Carrito de varios talleres | Navegador + Lambda `kustto-compradores` | migrado |
+| Checkout multi-parte (`/pedir/carrito`) | Lambdas + DynamoDB | migrado |
+| Aviso por correo | SES, **fuera del sandbox** (se envía asumiendo un rol en la cuenta root) | migrado |
 | Cotización de envío (Skydropx) | Lambda `kustto-admin` + sandbox | migrado |
 | Compra de guía (taller) | Lambda `kustto-proveedores` + Skydropx | migrado |
-| Rastreo para el comprador | no existe | **lo que sigue** |
+| Rastreo para el comprador | Webhook de Skydropx → Lambda `kustto-admin` | migrado |
 | Pasarela de pago | no existe | aplazado a propósito, hasta el final |
 
 **Reglas de la casa mientras dure esto:**
@@ -344,14 +345,17 @@ En orden, de lo más útil a lo más lejano. El detalle y el porqué están en
    Con él, `entregado` lo pone la paquetería en vez de una persona.
 8. **Fotos de mockup de verdad.** Sin ellas no hay previsualización realista, y
    la plantilla actual es un dibujo de línea con las guías incrustadas.
-9. **Login de admin.** El proxy `/api/admin/*` es una puerta abierta y es lo
-   único que impide desplegar el front público.
-10. **CloudFront + OAC** para servir `/mockups/*` y `/medios/*` sin pasar por
-    Lambda, con el front estático detrás. El certificado de `kustto.com.mx` ya
-    está **emitido**. También destapa la partición caliente de
-    `PRODUCT_ESTADO#activo`, que satura a unas 20 peticiones por segundo.
-11. **Carrito** de varios productos, con el aviso al mezclar talleres. Hoy todo
-    el flujo de envío asume **un paquete por pedido**.
+9. **Login de admin.** El proxy `/api/admin/*` sigue siendo una puerta
+   abierta. Ya no impide desplegar el front —el sitio está publicado y el
+   admin se aparta al construir— pero es lo que lo mantiene fuera.
+10. ~~CloudFront + OAC~~ y ~~el carrito de varios talleres~~ — **hechos**
+    (3 de septiembre). El sitio vive en **https://kustto.com.mx**. Sigue
+    pendiente lo que aquello destapaba: la partición caliente de
+    `PRODUCT_ESTADO#activo`, que satura a unas 20 peticiones por segundo, y
+    que **el flujo de envío asume un paquete por pedido** — cincuenta playeras
+    no van en una caja.
+11. **Seguimiento y correos de la COMPRA.** Hoy los avisos salen por pedido, o
+    sea por parte; nadie habla de la compra entera salvo la confirmación.
 12. **Migrar paquetes**, lo último que queda en Nest.
 13. **Pagos**: Stripe (paso 5) y, por separado, **liquidaciones al taller** —
     que es lo que falta para poder cobrar de verdad los cargos de envío que ya

@@ -21,8 +21,10 @@ import { useCanvasZoom } from "./hooks/useCanvasZoom";
 
 export default function DesktopDesignerShell({
 	product,
+	onVolverAlCatalogo,
 }: {
 	product: ProductTemplate;
+	onVolverAlCatalogo: () => void;
 }) {
 	const { activeSide, setActiveSide, getCanvas } = useDesigner();
 
@@ -76,7 +78,7 @@ export default function DesktopDesignerShell({
 
 	return (
 		<div className="w-full h-screen flex overflow-hidden">
-			<DesignerSidebar />
+			<DesignerSidebar onVolverAlCatalogo={onVolverAlCatalogo} />
 
 			<div className="flex-1 h-full w-full relative overflow-hidden">
 				{product.sides.map((side) => (

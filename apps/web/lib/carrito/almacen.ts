@@ -126,16 +126,31 @@ export function fundir(
 }
 
 /**
- * La miniatura, muy reducida.
+ * La miniatura, reducida.
  *
- * La que sale del editor mide 700 px y pesa cientos de KB en base64. Con
- * cuatro artículos eso ya roza el cupo de `localStorage`, y sólo sirve para
- * reconocer el diseño en una lista: 240 px en JPEG bastan y ocupan una
- * fracción.
+ * La que sale del editor mide 700 px y pesa cientos de KB en base64: con unos
+ * pocos artículos llena el cupo de `localStorage`, que son unos 5 MB para todo
+ * el sitio. Por eso se reduce.
+ *
+ * **480 px, y no 240.** Estuvo en 240 mientras el carrito la enseñaba a 96 px,
+ * donde daba justo. La pantalla nueva la enseña a 132 px —porque el diseño es
+ * lo que la persona reconoce— y en un aparato retina eso son 264 px reales, o
+ * 396 en uno de 3×: a 240 se estaba AMPLIANDO, y se veía sucia.
+ *
+ * Lo que cuesta, medido sobre un mockup real del proyecto y con el tope de
+ * `MAXIMO_ARTICULOS`:
+ *
+ *   240 px · 0.70 →  6.9 KB en base64 → 0.20 MB el carrito lleno
+ *   480 px · 0.82 → 22.5 KB en base64 → 0.66 MB el carrito lleno
+ *
+ * O sea que sube a un 13% del cupo en el peor caso. Si algún día hace falta
+ * más nitidez que ésta, la salida NO es subir el número —el base64 crece con
+ * el cuadrado del ancho— sino servir la colocación que ya está en S3 bajo
+ * `carritos/…`, que hoy no se publica por CloudFront.
  */
 export async function miniaturaPequena(
 	dataUrl: string | null,
-	ancho = 240,
+	ancho = 480,
 ): Promise<string | null> {
 	if (!dataUrl || typeof window === "undefined") return null;
 
@@ -152,12 +167,18 @@ export async function miniaturaPequena(
 		const ctx = lienzo.getContext("2d");
 		if (!ctx) return null;
 
+		// El reescalado por defecto del navegador deja bordes sucios al bajar de
+		// 700 px; esto no cuesta nada y es la diferencia entre un diseño legible
+		// y uno que parece mal exportado.
+		ctx.imageSmoothingEnabled = true;
+		ctx.imageSmoothingQuality = "high";
+
 		// Fondo blanco: la colocación lleva transparencia y en JPEG saldría negra.
 		ctx.fillStyle = "#ffffff";
 		ctx.fillRect(0, 0, lienzo.width, lienzo.height);
 		ctx.drawImage(img, 0, 0, lienzo.width, lienzo.height);
 
-		return lienzo.toDataURL("image/jpeg", 0.7);
+		return lienzo.toDataURL("image/jpeg", 0.82);
 	} catch {
 		// Sin miniatura se puede pedir igual: la lista enseña el nombre.
 		return null;

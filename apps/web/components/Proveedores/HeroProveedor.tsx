@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Entrada } from "@/components/Animaciones/Entrada";
+import { ArosProveedor } from "./Animaciones";
 import { Chevron } from "./Iconos";
 import PanelMockup from "./PanelMockup";
 
@@ -64,50 +66,27 @@ export default function HeroProveedor() {
 	return (
 		<section className="relative overflow-hidden bg-hueso">
 			{/* Aros concéntricos: dan profundidad sin recurrir a un degradado. */}
-			<svg
-				className="pointer-events-none absolute -right-[220px] -top-10 md:-right-40 md:-top-[60px]"
-				width="1200"
-				height="1100"
-				viewBox="0 0 1200 1100"
-				fill="none"
-				aria-hidden="true"
-			>
-				<circle
-					cx="820"
-					cy="560"
-					r="560"
-					stroke="rgba(43,40,18,0.16)"
-					strokeWidth="1.1"
-					fill="none"
-				/>
-				<circle
-					cx="820"
-					cy="560"
-					r="330"
-					stroke="rgba(43,40,18,0.09)"
-					strokeWidth="1.1"
-					fill="none"
-				/>
-				<circle
-					cx="820"
-					cy="560"
-					r="180"
-					stroke="rgba(43,40,18,0.12)"
-					strokeWidth="1.1"
-					fill="none"
-				/>
-			</svg>
+			<ArosProveedor />
 
 			<Encabezado />
 
 			<div className="relative mx-auto flex max-w-[1376px] flex-col gap-[22px] px-5 pt-10 md:gap-[34px] md:px-8 md:pt-[76px]">
-				<Eyebrow>Para talleres de serigrafía, bordado y sublimación</Eyebrow>
+				<Entrada alCargar desplazamiento={14} delay={0.05}>
+					<Eyebrow>Para talleres de serigrafía, bordado y sublimación</Eyebrow>
+				</Entrada>
 
-				<h1 className="font-display text-[34px] font-semibold leading-[41px] tracking-[-0.032em] text-tinta md:max-w-[1120px] md:text-[58px] md:leading-[70px]">
-					Recibe pedidos ya diseñados y pagados, listos para máquina.
-				</h1>
+				<Entrada alCargar desplazamiento={18} delay={0.12}>
+					<h1 className="font-display text-[34px] font-semibold leading-[41px] tracking-[-0.032em] text-tinta md:max-w-[1120px] md:text-[58px] md:leading-[70px]">
+						Recibe pedidos ya diseñados y pagados, listos para máquina.
+					</h1>
+				</Entrada>
 
-				<div className="flex flex-col gap-[22px] md:flex-row md:items-end md:justify-between md:gap-16 md:pb-2">
+				<Entrada
+					alCargar
+					desplazamiento={20}
+					delay={0.2}
+					className="flex flex-col gap-[22px] md:flex-row md:items-end md:justify-between md:gap-16 md:pb-2"
+				>
 					<p className="text-base leading-[27px] text-tinta/75 md:max-w-[620px] md:text-[19px] md:leading-8">
 						Tú pones la producción; nosotros ponemos al cliente y el archivo.
 						Publicas lo que ya sabes producir y cada pedido te llega con el
@@ -115,18 +94,22 @@ export default function HeroProveedor() {
 					</p>
 					<Link
 						href="/proveedores/registro"
-						className="flex h-14 shrink-0 items-center justify-center gap-2.5 rounded-lg bg-tinta text-[17px] font-semibold text-lima md:h-[62px] md:px-8 md:text-lg"
+						className="flex h-14 shrink-0 items-center justify-center gap-2.5 rounded-lg bg-tinta text-[17px] font-semibold text-lima motion-safe:transition-[transform,box-shadow] motion-safe:duration-300 motion-safe:ease-out motion-safe:hover:-translate-y-0.5 motion-safe:hover:shadow-lg md:h-[62px] md:px-8 md:text-lg"
 					>
 						Regístrate como proveedor
 						<Chevron className="md:h-4 md:w-4" />
 					</Link>
-				</div>
+				</Entrada>
 			</div>
 
 			<div className="relative flex justify-center px-5 pt-10 md:px-8 md:pt-[68px]">
-				<div className="w-full md:w-[1040px]">
+				<Entrada
+					desplazamiento={30}
+					escala={0.985}
+					className="w-full md:w-[1040px]"
+				>
 					<PanelMockup />
-				</div>
+				</Entrada>
 			</div>
 
 			<div className="h-14 md:h-24" />

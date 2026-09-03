@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Entrada } from "@/components/Animaciones/Entrada";
 import Eyebrow from "./Eyebrow";
 
 const VENTAJAS = [
@@ -25,7 +26,7 @@ function BotonPublica({ className }: { className: string }) {
 	return (
 		<Link
 			href="/proveedores"
-			className={`h-14 items-center justify-center gap-2.5 rounded-full bg-tinta px-[30px] text-base font-semibold text-hueso md:text-[17px] ${className}`}
+			className={`h-14 items-center justify-center gap-2.5 rounded-full bg-tinta px-[30px] text-base font-semibold text-hueso motion-safe:transition-[transform,box-shadow] motion-safe:duration-300 motion-safe:ease-out motion-safe:hover:-translate-y-0.5 motion-safe:hover:shadow-lg md:text-[17px] ${className}`}
 		>
 			Publica tus productos
 			<svg
@@ -51,7 +52,7 @@ export default function Proveedores() {
 	return (
 		<section className="bg-lavanda px-5 py-14 md:px-11 md:py-24">
 			<div className="mx-auto flex max-w-[1200px] flex-col gap-5 md:flex-row md:items-center md:justify-between md:gap-20">
-				<div className="flex flex-col gap-5 md:max-w-[560px] md:gap-[22px]">
+				<Entrada className="flex flex-col gap-5 md:max-w-[560px] md:gap-[22px]">
 					<Eyebrow>Para proveedores</Eyebrow>
 					<h2 className="font-display text-[30px] font-extrabold leading-[37px] tracking-[-0.021em] text-tinta md:text-[40px] md:leading-[48px]">
 						¿Tienes la máquina? Nosotros te traemos los pedidos
@@ -62,13 +63,15 @@ export default function Proveedores() {
 						impresión listo.
 					</p>
 					<BotonPublica className="hidden w-fit md:flex" />
-				</div>
+				</Entrada>
 
 				<div className="grid grid-cols-1 gap-2.5 md:w-[520px] md:shrink-0 md:grid-cols-2 md:gap-4">
-					{VENTAJAS.map((v) => (
-						<div
+					{VENTAJAS.map((v, i) => (
+						<Entrada
 							key={v.titulo}
-							className="flex flex-col gap-1.5 rounded-[14px] bg-hueso p-[18px] md:gap-2 md:rounded-2xl md:p-6"
+							delay={i * 0.07}
+							desplazamiento={16}
+							className="flex flex-col gap-1.5 rounded-[14px] bg-hueso p-[18px] motion-safe:transition-[transform,box-shadow] motion-safe:duration-300 motion-safe:ease-out motion-safe:hover:-translate-y-1 motion-safe:hover:shadow-[0_12px_28px_rgba(43,40,18,0.08)] md:gap-2 md:rounded-2xl md:p-6"
 						>
 							<span className="text-base font-semibold text-tinta md:text-[17px]">
 								{v.titulo}
@@ -76,11 +79,13 @@ export default function Proveedores() {
 							<span className="text-sm leading-[23px] text-tinta/60 md:text-[15px] md:leading-6">
 								{v.texto}
 							</span>
-						</div>
+						</Entrada>
 					))}
 				</div>
 
-				<BotonPublica className="flex md:hidden" />
+				<Entrada desplazamiento={14} className="md:hidden">
+					<BotonPublica className="flex w-full" />
+				</Entrada>
 			</div>
 		</section>
 	);

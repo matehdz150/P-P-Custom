@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Entrada } from "@/components/Animaciones/Entrada";
 
 const PRODUCTOS = [
 	{
@@ -37,7 +38,7 @@ export default function Catalogo() {
 	return (
 		<section className="bg-gris px-5 py-14 md:px-11 md:py-24">
 			<div className="mx-auto flex max-w-[1200px] flex-col gap-[26px] md:gap-11">
-				<div className="flex items-end justify-between gap-16">
+				<Entrada className="flex items-end justify-between gap-16">
 					<h2 className="font-display text-[30px] font-extrabold leading-[37px] tracking-[-0.021em] text-tinta md:max-w-[700px] md:text-[40px] md:leading-[48px]">
 						Empieza por lo que más se pide
 					</h2>
@@ -62,58 +63,70 @@ export default function Catalogo() {
 							/>
 						</svg>
 					</Link>
-				</div>
+				</Entrada>
 
 				<div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
-					{PRODUCTOS.map((p) => (
-						<Link key={p.nombre} href={p.href} className="flex flex-col gap-3">
-							<div
-								className={`flex h-[190px] justify-center overflow-hidden rounded-[24px] bg-white md:h-[300px] md:rounded-[28px] ${
-									p.anclaAbajo ? "items-end" : "items-center"
-								}`}
+					{PRODUCTOS.map((p, i) => (
+						<Entrada
+							key={p.nombre}
+							delay={i * 0.07}
+							desplazamiento={20}
+							className="h-full"
+						>
+							<Link
+								href={p.href}
+								className="group flex h-full flex-col gap-3"
 							>
-								<Image
-									src={p.img}
-									alt={`${p.nombre} personalizable`}
-									width={280}
-									height={340}
-									className={`h-auto max-w-none object-contain ${p.ancho}`}
-								/>
-							</div>
-							<div className="flex items-baseline justify-between gap-2">
-								<span className="text-[15px] font-semibold text-tinta md:text-base">
-									{p.nombre}
-								</span>
-								<span className="text-[13px] text-tinta/60 md:text-sm">
-									<span className="md:hidden">[TU PRECIO]</span>
-									<span className="hidden md:inline">desde [TU PRECIO]</span>
-								</span>
-							</div>
-						</Link>
+								<div
+									className={`flex h-[190px] justify-center overflow-hidden rounded-[24px] bg-white motion-safe:transition-[transform,box-shadow] motion-safe:duration-300 motion-safe:ease-out motion-safe:group-hover:-translate-y-1 motion-safe:group-hover:shadow-[0_14px_30px_rgba(43,40,18,0.08)] md:h-[300px] md:rounded-[28px] ${
+										p.anclaAbajo ? "items-end" : "items-center"
+									}`}
+								>
+									<Image
+										src={p.img}
+										alt={`${p.nombre} personalizable`}
+										width={280}
+										height={340}
+										className={`h-auto max-w-none object-contain ${p.ancho}`}
+									/>
+								</div>
+								<div className="flex items-baseline justify-between gap-2">
+									<span className="text-[15px] font-semibold text-tinta md:text-base">
+										{p.nombre}
+									</span>
+									<span className="text-[13px] text-tinta/60 md:text-sm">
+										<span className="md:hidden">[TU PRECIO]</span>
+										<span className="hidden md:inline">desde [TU PRECIO]</span>
+									</span>
+								</div>
+							</Link>
+						</Entrada>
 					))}
 				</div>
 
-				<Link
-					href="/catalogo"
-					className="flex h-[52px] items-center justify-center gap-2 rounded-full border-[1.5px] border-tinta text-base font-semibold text-tinta md:hidden"
-				>
-					Ver catálogo completo
-					<svg
-						width="14"
-						height="14"
-						viewBox="0 0 14 14"
-						fill="none"
-						aria-hidden="true"
+				<Entrada desplazamiento={14} className="md:hidden">
+					<Link
+						href="/catalogo"
+						className="flex h-[52px] items-center justify-center gap-2 rounded-full border-[1.5px] border-tinta text-base font-semibold text-tinta"
 					>
-						<path
-							d="M5.833 10.5L9.333 7L5.833 3.5"
-							stroke="currentColor"
-							strokeWidth="1.7"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						/>
-					</svg>
-				</Link>
+						Ver catálogo completo
+						<svg
+							width="14"
+							height="14"
+							viewBox="0 0 14 14"
+							fill="none"
+							aria-hidden="true"
+						>
+							<path
+								d="M5.833 10.5L9.333 7L5.833 3.5"
+								stroke="currentColor"
+								strokeWidth="1.7"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+							/>
+						</svg>
+					</Link>
+				</Entrada>
 			</div>
 		</section>
 	);

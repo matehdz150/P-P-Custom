@@ -1,3 +1,4 @@
+import { Entrada } from "@/components/Animaciones/Entrada";
 import Eyebrow from "./Eyebrow";
 
 const PASOS = [
@@ -34,17 +35,19 @@ export default function Pasos() {
 			className="bg-white px-5 py-16 md:px-11 md:py-[100px]"
 		>
 			<div className="mx-auto flex max-w-[1200px] flex-col gap-8 md:gap-14">
-				<div className="flex flex-col gap-3.5 md:items-center md:gap-[18px]">
+				<Entrada className="flex flex-col gap-3.5 md:items-center md:gap-[18px]">
 					<Eyebrow>Cómo funciona</Eyebrow>
 					<h2 className="font-display text-[30px] font-extrabold leading-[37px] tracking-[-0.021em] text-tinta md:max-w-[820px] md:text-center md:text-[44px] md:leading-[52px]">
 						Cuatro pasos entre tu idea y la caja en tu puerta
 					</h2>
-				</div>
+				</Entrada>
 
 				<div className="grid grid-cols-1 gap-[22px] md:grid-cols-4 md:gap-8">
-					{PASOS.map((p) => (
-						<div
+					{PASOS.map((p, i) => (
+						<Entrada
 							key={p.n}
+							delay={i * 0.07}
+							desplazamiento={18}
 							className="flex flex-col gap-2.5 border-t border-tinta/15 pt-5 md:gap-3.5 md:pt-[26px]"
 						>
 							<span className="font-display text-[34px] font-extrabold leading-none tracking-[-0.021em] text-lima-oscuro md:text-[44px]">
@@ -56,7 +59,7 @@ export default function Pasos() {
 							<p className="text-[15px] leading-[25px] text-tinta/60 md:text-base md:leading-[26px]">
 								{p.texto}
 							</p>
-						</div>
+						</Entrada>
 					))}
 				</div>
 			</div>

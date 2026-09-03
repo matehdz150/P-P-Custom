@@ -6,14 +6,18 @@ import { useCuentaDelCarrito } from "@/lib/carrito/useCuenta";
 /**
  * El carrito en la cabecera.
  *
- * APARECE SÓLO CUANDO TIENE ALGO, y no siempre. Con el carrito vacío, el sitio
- * de honor es de "Empieza a diseñar": es lo único que convierte a quien llega
- * sin nada, que hoy es casi todo el mundo. Un icono que lleva a "tu carrito
- * está vacío" no le sirve a nadie y le quita peso a la acción que sí importa.
+ * ESTÁ SIEMPRE Y ES LO ÚLTIMO DE LA FILA, con algo dentro o sin nada. Es donde
+ * se busca en cualquier tienda, y esa costumbre pesa más que el argumento de
+ * ahorrar un elemento: un carrito que aparece y desaparece no se aprende nunca
+ * —quien no lo ha visto con algo dentro no sabe que el sitio tiene uno—, y al
+ * montarse empujaba el resto de la cabecera, porque `useCuentaDelCarrito`
+ * arranca en cero y se llena después. Ocupando siempre el mismo hueco, la
+ * cabecera ya no se mueve.
  *
- * Cuando hay algo dentro se invierte: quien ya tiene un diseño guardado está
- * más cerca de comprar que de empezar otro, y entonces el carrito merece
- * competir por la mirada.
+ * Lo que cambia con el contenido es el PESO, no la presencia: vacío va apagado
+ * y sin número, para no competir con el verde de "Empieza a diseñar", que es
+ * lo que convierte a quien todavía no tiene nada. Con algo dentro toma el
+ * contraste completo y saca su contador.
  *
  * NO SE PINTA AL PRE-RENDERIZAR. El sitio es estático detrás de CloudFront: un
  * contador metido en el HTML se cachearía con el número de una persona y se le
@@ -22,16 +26,27 @@ import { useCuentaDelCarrito } from "@/lib/carrito/useCuenta";
  */
 export default function BotonCarrito() {
 	const piezas = useCuentaDelCarrito();
-
-	if (piezas === 0) return null;
+	const lleno = piezas > 0;
 
 	return (
 		<Link
 			href="/carrito"
-			aria-label={`Tu carrito, ${piezas} ${piezas === 1 ? "pieza" : "piezas"}`}
-			className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border-[1.5px] border-tinta text-tinta transition-colors hover:bg-tinta hover:text-lima md:h-[46px] md:w-[46px]"
+			aria-label={
+				lleno
+					? `Tu carrito, ${piezas} ${piezas === 1 ? "pieza" : "piezas"}`
+					: "Tu carrito, vacío"
+			}
+			className={`relative inline-flex h-11 w-11 items-center justify-center rounded-full border-[1.5px] transition-colors hover:border-tinta hover:bg-tinta hover:text-lima md:h-[46px] md:w-[46px] ${
+				lleno ? "border-tinta text-tinta" : "border-tinta/25 text-tinta/55"
+			}`}
 		>
-			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+			<svg
+				width="20"
+				height="20"
+				viewBox="0 0 24 24"
+				fill="none"
+				aria-hidden="true"
+			>
 				<title>Carrito</title>
 				<path
 					d="M3 5h2.2l2 10.2a1.6 1.6 0 0 0 1.6 1.3h7.9a1.6 1.6 0 0 0 1.6-1.2L20 8H6.2"
@@ -47,9 +62,11 @@ export default function BotonCarrito() {
 			{/* El número va en lima sobre tinta: es el acento de la marca y aquí
 			    hace de aviso sin necesitar rojo, que en una tienda se lee como
 			    error y no como "tienes algo esperando". */}
-			<span className="absolute -right-1 -top-1 flex h-[22px] min-w-[22px] items-center justify-center rounded-full bg-tinta px-1.5 text-[12px] font-semibold leading-none text-lima ring-2 ring-hueso">
-				{piezas > 99 ? "99+" : piezas}
-			</span>
+			{lleno && (
+				<span className="absolute -right-1 -top-1 flex h-[22px] min-w-[22px] items-center justify-center rounded-full bg-tinta px-1.5 text-[12px] font-semibold leading-none text-lima ring-2 ring-hueso">
+					{piezas > 99 ? "99+" : piezas}
+				</span>
+			)}
 		</Link>
 	);
 }

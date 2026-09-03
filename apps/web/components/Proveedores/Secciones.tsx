@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Entrada } from "@/components/Animaciones/Entrada";
 import {
 	Chevron,
 	IconoCatalogo,
@@ -56,18 +57,20 @@ export function PorQue() {
 	return (
 		<section className="bg-lavanda px-5 pb-15 pt-14 md:px-8 md:pb-26 md:pt-24">
 			<div className="mx-auto flex max-w-[1200px] flex-col gap-[30px] md:gap-14">
-				<div className="flex flex-col gap-4 md:gap-5">
+				<Entrada className="flex flex-col gap-4 md:gap-5">
 					<Eyebrow>Por qué te conviene</Eyebrow>
 					<Titular className="md:max-w-[800px]">
 						Lo que más te cuesta de un pedido personalizado, ya viene resuelto.
 					</Titular>
-				</div>
+				</Entrada>
 
 				<div className="grid grid-cols-1 gap-[22px] md:grid-cols-3 md:gap-12">
-					{VENTAJAS.map((v) => (
-						<div
+					{VENTAJAS.map((v, i) => (
+						<Entrada
 							key={v.titulo}
-							className="flex flex-col gap-2.5 border-t-[1.5px] border-tinta pt-[18px] md:gap-3.5 md:pt-[26px]"
+							delay={i * 0.08}
+							desplazamiento={18}
+							className="flex flex-col gap-2.5 border-t-[1.5px] border-tinta pt-[18px] motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out motion-safe:hover:-translate-y-1 md:gap-3.5 md:pt-[26px]"
 						>
 							<h3 className="font-display text-[21px] font-semibold leading-[27px] tracking-[-0.032em] text-tinta md:text-2xl md:leading-[30px]">
 								{v.titulo}
@@ -75,7 +78,7 @@ export function PorQue() {
 							<p className="text-[15px] leading-[26px] text-tinta md:text-[17px] md:leading-[29px]">
 								{v.texto}
 							</p>
-						</div>
+						</Entrada>
 					))}
 				</div>
 			</div>
@@ -114,18 +117,20 @@ export function TuPanel() {
 	return (
 		<section className="bg-gris px-5 pb-14 pt-13 md:px-8 md:pb-26 md:pt-24">
 			<div className="mx-auto flex max-w-[1200px] flex-col gap-[26px] md:gap-13">
-				<div className="flex flex-col gap-4 md:gap-5">
+				<Entrada className="flex flex-col gap-4 md:gap-5">
 					<Eyebrow>Tu panel</Eyebrow>
 					<Titular className="md:max-w-[760px]">
 						Todo tu catálogo y tus pedidos, en un solo lugar.
 					</Titular>
-				</div>
+				</Entrada>
 
 				<div className="grid grid-cols-1 gap-3 md:grid-cols-4 md:gap-5">
-					{CAPACIDADES.map((c) => (
-						<div
+					{CAPACIDADES.map((c, i) => (
+						<Entrada
 							key={c.titulo}
-							className="flex flex-col gap-2 rounded-[10px] border border-tinta/12 bg-white p-5 md:gap-3.5 md:p-[26px]"
+							delay={i * 0.07}
+							desplazamiento={18}
+							className="flex flex-col gap-2 rounded-[10px] border border-tinta/12 bg-white p-5 motion-safe:transition-[transform,box-shadow] motion-safe:duration-300 motion-safe:ease-out motion-safe:hover:-translate-y-1 motion-safe:hover:shadow-[0_12px_28px_rgba(43,40,18,0.08)] md:gap-3.5 md:p-[26px]"
 						>
 							<span className="hidden md:block">{c.icono}</span>
 							<h3 className="text-base font-semibold text-tinta md:text-[17px]">
@@ -134,7 +139,7 @@ export function TuPanel() {
 							<p className="text-sm leading-[23px] text-tinta/70 md:text-[15px] md:leading-6">
 								{c.texto}
 							</p>
-						</div>
+						</Entrada>
 					))}
 				</div>
 			</div>
@@ -176,17 +181,19 @@ export function ComoEntras() {
 			className="scroll-mt-6 bg-hueso px-5 pb-15 pt-14 md:px-8 md:pb-26 md:pt-24"
 		>
 			<div className="mx-auto flex max-w-[1200px] flex-col gap-[26px] md:gap-12">
-				<div className="flex flex-col gap-4 md:gap-5">
+				<Entrada className="flex flex-col gap-4 md:gap-5">
 					<Eyebrow>Cómo entras</Eyebrow>
 					<Titular className="md:max-w-[760px]">
 						Cuatro pasos y empiezas a recibir pedidos.
 					</Titular>
-				</div>
+				</Entrada>
 
 				<div className="flex flex-col">
 					{PASOS.map((p, i) => (
-						<div
+						<Entrada
 							key={p.n}
+							delay={i * 0.07}
+							desplazamiento={16}
 							className={`flex flex-col gap-2 border-t border-tinta/16 py-5 md:flex-row md:items-start md:gap-12 md:py-[30px] ${
 								i === PASOS.length - 1 ? "border-b border-tinta/16" : ""
 							}`}
@@ -200,7 +207,7 @@ export function ComoEntras() {
 							<p className="text-[15px] leading-[26px] text-tinta md:max-w-[620px] md:flex-1 md:text-[17px] md:leading-[29px]">
 								{p.texto}
 							</p>
-						</div>
+						</Entrada>
 					))}
 				</div>
 			</div>
@@ -212,23 +219,31 @@ export function CierreProveedor() {
 	return (
 		<section className="bg-lima px-5 py-14 md:px-8 md:py-19">
 			<div className="mx-auto flex max-w-[1200px] flex-col items-center gap-5 md:gap-7">
-				<h2 className="text-center font-display text-[30px] font-semibold leading-[37px] tracking-[-0.032em] text-tinta md:max-w-[880px] md:text-[40px] md:leading-[48px]">
-					Pon tu producción a trabajar
-				</h2>
-				<p className="text-center text-[15px] leading-[26px] text-tinta/75 md:max-w-[600px] md:text-lg md:leading-[30px]">
-					Te damos de alta, publicas tu catálogo y empiezas a recibir pedidos
-					con el archivo ya resuelto.
-				</p>
-				<Link
-					href="/proveedores/registro"
-					className="flex h-14 w-full items-center justify-center gap-2.5 rounded-lg bg-tinta text-base font-semibold text-lima md:h-[62px] md:w-auto md:px-9 md:text-lg"
-				>
-					Regístrate como proveedor
-					<Chevron className="md:h-4 md:w-4" />
-				</Link>
-				<span className="text-center text-sm text-tinta/65 md:text-[15px]">
-					¿Dudas antes de entrar? Escríbenos a [TU CORREO]
-				</span>
+				<Entrada desplazamiento={18} className="flex justify-center">
+					<h2 className="text-center font-display text-[30px] font-semibold leading-[37px] tracking-[-0.032em] text-tinta md:max-w-[880px] md:text-[40px] md:leading-[48px]">
+						Pon tu producción a trabajar
+					</h2>
+				</Entrada>
+				<Entrada delay={0.07} desplazamiento={18} className="flex justify-center">
+					<p className="text-center text-[15px] leading-[26px] text-tinta/75 md:max-w-[600px] md:text-lg md:leading-[30px]">
+						Te damos de alta, publicas tu catálogo y empiezas a recibir pedidos
+						con el archivo ya resuelto.
+					</p>
+				</Entrada>
+				<Entrada delay={0.14} desplazamiento={18} className="flex w-full justify-center">
+					<Link
+						href="/proveedores/registro"
+						className="flex h-14 w-full items-center justify-center gap-2.5 rounded-lg bg-tinta text-base font-semibold text-lima motion-safe:transition-[transform,box-shadow] motion-safe:duration-300 motion-safe:ease-out motion-safe:hover:-translate-y-0.5 motion-safe:hover:shadow-lg md:h-[62px] md:w-auto md:px-9 md:text-lg"
+					>
+						Regístrate como proveedor
+						<Chevron className="md:h-4 md:w-4" />
+					</Link>
+				</Entrada>
+				<Entrada delay={0.2} desplazamiento={12}>
+					<span className="text-center text-sm text-tinta/65 md:text-[15px]">
+						¿Dudas antes de entrar? Escríbenos a [TU CORREO]
+					</span>
+				</Entrada>
 			</div>
 		</section>
 	);

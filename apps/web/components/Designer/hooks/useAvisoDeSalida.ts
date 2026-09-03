@@ -25,6 +25,8 @@ export function useAvisoDeSalida(activo: boolean) {
 
 	/** Cuando ya se decidió salir, el guardia deja de estorbar. */
 	const saliendo = useRef(false);
+	/** Una salida explícita puede fijar su destino, como volver al catálogo. */
+	const destino = useRef<string | null>(null);
 
 	useEffect(() => {
 		if (!activo) return;
@@ -62,11 +64,40 @@ export function useAvisoDeSalida(activo: boolean) {
 	const salir = useCallback(() => {
 		saliendo.current = true;
 		setPreguntando(false);
+
+		if (destino.current) {
+			window.location.assign(destino.current);
+			return;
+		}
+
 		// Dos: el señuelo y la propia pantalla del editor.
 		window.history.go(-2);
 	}, []);
 
-	const quedarse = useCallback(() => setPreguntando(false), []);
+	const quedarse = useCallback(() => {
+		destino.current = null;
+		setPreguntando(false);
+	}, []);
 
-	return { preguntando, salir, quedarse };
+	/**
+	 * Pide salir hacia una ruta concreta desde un control del editor.
+	 *
+	 * Si todavía no hay diseño, no hay nada que perder y se navega de inmediato.
+	 * Si ya lo hay, `salir` conservará este destino hasta que la persona confirme.
+	 */
+	const solicitarSalida = useCallback(
+		(ruta: string) => {
+			if (!activo) {
+				saliendo.current = true;
+				window.location.assign(ruta);
+				return;
+			}
+
+			destino.current = ruta;
+			setPreguntando(true);
+		},
+		[activo],
+	);
+
+	return { preguntando, salir, quedarse, solicitarSalida };
 }

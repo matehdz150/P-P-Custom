@@ -9,13 +9,10 @@ import MenuCuenta from "./MenuCuenta";
 const NAV = [
 	{ label: "Catálogo", href: "/catalogo" },
 	{ label: "Cómo funciona", href: "#como-funciona" },
-	{ label: "Paquetes", href: "/catalogo/eventos" },
 ];
 
-const NAV_SECUNDARIA = [
-	{ label: "Soy proveedor", href: "/proveedores" },
-	{ label: "Rastrea tu pedido", href: "/rastreo" },
-];
+/** Sólo para el menú de móvil: "Soy proveedor" ya va en `navIzquierda`. */
+const NAV_SECUNDARIA = [{ label: "Rastrea tu pedido", href: "/rastreo" }];
 
 /**
  * `centrado` es el de la portada: el logotipo al medio, nav a un lado y
@@ -39,18 +36,55 @@ export default function Header({
 		</Link>
 	);
 
-	const acciones = (
+	/**
+	 * La navegación de la izquierda: a dónde se puede ir en el sitio.
+	 *
+	 * "Soy proveedor" vive AQUÍ y no entre las acciones de la derecha, aunque
+	 * ahí estaba antes. Va dirigido a otro público —talleres que quieren
+	 * vender, no gente que quiere comprar— y puesto junto al carrito y a la
+	 * cuenta competía con las acciones de quien sí viene a comprar. Va más
+	 * apagado que el resto porque tampoco es el camino principal de esta
+	 * página: existe para quien lo busca.
+	 */
+	const navIzquierda = (
 		<>
+			{NAV.map((item) => (
+				<Link
+					key={item.label}
+					href={item.href}
+					className="text-base font-medium text-tinta hover:text-lima-oscuro"
+				>
+					{item.label}
+				</Link>
+			))}
 			<Link
 				href="/proveedores"
-				className="hidden text-base font-medium text-tinta hover:text-lima-oscuro lg:inline"
+				className="text-base font-medium text-tinta/55 hover:text-tinta"
 			>
 				Soy proveedor
 			</Link>
-			{/* Sólo sale cuando hay algo dentro: con el carrito vacío, el sitio es
-			    de "Empieza a diseñar". Va antes de la cuenta porque es la acción
-			    que continúa lo que la persona ya empezó. */}
-			<BotonCarrito />
+		</>
+	);
+
+	/**
+	 * La derecha: lo que es TUYO. Tu cuenta, tu carrito, y el paso siguiente.
+	 *
+	 * EL VERDE VA EN "Empieza a diseñar" y no en la cuenta, que es donde suele
+	 * acabar en una plantilla de SaaS. Aquí **se puede pedir sin cuenta** —la
+	 * ruta pública no exige sesión y el seguimiento viaja en el enlace del
+	 * correo—, así que hacer de "Iniciar sesión" el botón más fuerte de la
+	 * página le diría a todo el mundo que hace falta registrarse para comprar.
+	 * Es de los errores que más caro salen en una tienda, y aquí sería además
+	 * mentira. Por eso tampoco hay botón de "Registrarse": registrarse queda a
+	 * un clic dentro de la cuenta, que es lo que merece.
+	 *
+	 * EL CARRITO CIERRA LA FILA y está siempre, apagado mientras esté vacío
+	 * (ver `BotonCarrito`). Es el último porque es donde se busca en cualquier
+	 * tienda; el botón de menú queda después, pero sólo existe por debajo de
+	 * `lg`, donde el borde derecho es suyo por convención.
+	 */
+	const acciones = (
+		<>
 			<MenuCuenta />
 			<Link
 				href="/catalogo"
@@ -59,6 +93,7 @@ export default function Header({
 				<span className="md:hidden">Diseñar</span>
 				<span className="hidden md:inline">Empieza a diseñar</span>
 			</Link>
+			<BotonCarrito />
 
 			<button
 				type="button"
@@ -90,15 +125,7 @@ export default function Header({
 				{centrado ? (
 					<>
 						<nav className="hidden flex-1 items-center gap-7 lg:flex">
-							{NAV.map((item) => (
-								<Link
-									key={item.label}
-									href={item.href}
-									className="text-base font-medium text-tinta hover:text-lima-oscuro"
-								>
-									{item.label}
-								</Link>
-							))}
+							{navIzquierda}
 						</nav>
 
 						{marca}
@@ -112,15 +139,7 @@ export default function Header({
 						<div className="flex items-center gap-8 lg:gap-10">
 							{marca}
 							<nav className="hidden items-center gap-7 lg:flex">
-								{NAV.map((item) => (
-									<Link
-										key={item.label}
-										href={item.href}
-										className="text-base font-medium text-tinta hover:text-lima-oscuro"
-									>
-										{item.label}
-									</Link>
-								))}
+								{navIzquierda}
 							</nav>
 						</div>
 
@@ -135,7 +154,11 @@ export default function Header({
 						centrado ? "mx-auto max-w-[1440px]" : ""
 					}`}
 				>
-					{[...NAV, ...NAV_SECUNDARIA].map((item) => (
+					{[
+						...NAV,
+						{ label: "Soy proveedor", href: "/proveedores" },
+						...NAV_SECUNDARIA,
+					].map((item) => (
 						<Link
 							key={item.label}
 							href={item.href}

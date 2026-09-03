@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import type { DesignerProductTemplate } from "@/lib/api/products";
@@ -16,6 +17,7 @@ import AgregarAlCarrito from "./AgregarAlCarrito";
 import SalidaAPedir from "./SalidaAPedir";
 
 export default function ProductDesigner({ productId }: { productId: string }) {
+	const router = useRouter();
 	const isMobile = useIsMobile();
 	const {
 		setConfig,
@@ -30,7 +32,7 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 	/* Mientras haya algo dibujado y no se haya pedido, salir de aquí pierde el
 	   diseño: sólo vive dentro del lienzo. */
 	const hayDiseno = useHayDiseno(sides);
-	const { preguntando, salir, quedarse } = useAvisoDeSalida(
+	const { preguntando, salir, quedarse, solicitarSalida } = useAvisoDeSalida(
 		hayDiseno && !pidiendo,
 	);
 	const [product, setProduct] = useState<ProductTemplate | null>(null);
@@ -68,7 +70,10 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 			{isMobile ? (
 				<MobileDesignerShell product={product} />
 			) : (
-				<DesktopDesignerShell product={product} />
+				<DesktopDesignerShell
+					product={product}
+					onVolverAlCatalogo={() => solicitarSalida("/catalogo")}
+				/>
 			)}
 
 			{preguntando && <AvisoDeSalida onSalir={salir} onQuedarse={quedarse} />}
@@ -81,12 +86,15 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 				<SalidaAPedir producto={ficha} onCancelar={() => setPidiendo(false)} />
 			)}
 
-			{/* Agregar al carrito NO navega: sube el arte y se queda en el editor,
-			    porque lo normal después de agregar es seguir diseñando. */}
+			{/* El carrito se abre sólo después de que el arte terminó de subir y la
+			    referencia quedó guardada localmente. */}
 			{agregando && ficha && (
 				<AgregarAlCarrito
 					producto={ficha}
-					onListo={() => setAgregando(false)}
+					onListo={() => {
+						setAgregando(false);
+						router.push("/carrito");
+					}}
 					onCancelar={() => setAgregando(false)}
 				/>
 			)}
