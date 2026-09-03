@@ -797,6 +797,73 @@ Outlook renderiza con Word.
 
 ---
 
+## El carrito de varios talleres: decidido, sin construir
+
+Cambia una regla que hoy está en el código: **la API rechaza un pedido que
+mezcle talleres**. Eso deja de ser cierto — pero no porque un pedido pase a
+tener varios talleres, sino porque aparece algo encima.
+
+**Una COMPRA que se parte en un pedido por taller.** El cliente ve una compra;
+por dentro nace un pedido por taller, cada uno con su bitácora, su envío, su
+guía y su estado. Se eligió así porque el taller produce, cobra y envía lo
+suyo: con un pedido multi-taller, el estado dejaría de ser del pedido y pasaría
+a ser de cada línea, y la separación entre talleres —que hoy la impone la
+llave— habría que imponerla en cada lectura y cada escritura.
+
+Lo decidido, punto por punto:
+
+| | |
+|---|---|
+| envío | uno por taller, **desglosado** en el checkout |
+| entrega | se elige **por parte**: recoger con uno y envío con otro es válido |
+| si un taller no puede | se marca esa parte y el cliente decide; la compra sigue |
+| seguimiento | **una pantalla** con las partes dentro, un enlace, un correo al comprar |
+| avisos siguientes | por parte, sólo cuando cambia algo que le importe |
+| pago (cuando llegue) | **un cargo**; Kustto liquida a cada taller, como ya hace con `saldoEnvios` |
+| cancelar | el taller cancela **su parte** y sólo en `nuevo`; devuelve sus existencias |
+| carrito | en el navegador sin cuenta, en la tabla con sesión, y al entrar se funden |
+| el arte | **se sube a S3 al agregar al carrito**; el carrito guarda rutas |
+| lo que nadie compra | se borra solo a los **30 días** por ciclo de vida de S3 |
+
+### Lo que se deriva, y hay que respetar al construirlo
+
+- **El folio es de la compra**, y cada parte es `#481902-1`, `#481902-2`. El
+  cliente dice un número y el taller reconoce el suyo dentro.
+- **Sin índice nuevo.** Los tres GSI ya están ocupados (taller, estado,
+  correo). La compra guarda la lista de sus pedidos y cada pedido su
+  `compraId`: leer una compra es un `GetItem` más un `BatchGet`, no un índice.
+  En `/cuenta` se listan compras porque el `gsi3` (`BUYER#<correo>`) admite las
+  dos cosas distinguidas por el prefijo del `sk`.
+- **Todo se crea en UNA transacción**: la compra, sus pedidos, los candados de
+  folio y los descuentos de existencias. Media compra escrita sería peor que
+  ninguna. Ojo al límite de **100 ítems** por transacción: pone un tope
+  práctico a cuántas líneas y talleres caben en una compra, y hay que
+  rechazarlo con un mensaje claro en vez de fallar con un error de AWS.
+- **Cotizar por taller multiplica las llamadas a Skydropx, que admite 2 por
+  segundo.** Ya tumbó el checkout una vez con siete clics en "+1". Con tres
+  talleres son tres cotizaciones: hay que espaciarlas, no lanzarlas en
+  paralelo.
+- **La ruta que firma subidas del carrito es pública y sin sesión**, como la
+  de crear pedidos. Va con tipo y tamaño limitados y bajo su propio prefijo
+  (`carritos/…`), que es el que caduca a los 30 días. **Al comprar, el arte se
+  copia fuera de ese prefijo**: si se dejara donde está, la regla de limpieza
+  borraría el arte de un pedido pagado.
+
+### El orden para construirlo
+
+1. **El modelo y la creación**: `PURCHASE#`, el reparto por taller, la
+   transacción única y los folios. El checkout sigue siendo de un producto.
+2. **Las subidas del carrito**: ruta firmada, prefijo propio, ciclo de vida, y
+   "agregar al carrito" en el editor.
+3. **El carrito en el front**: navegador, cuenta, y la fusión al entrar.
+4. **El checkout multi-parte**: cotizar por taller, entrega por parte, y el
+   aviso cuando uno no puede cumplir.
+5. **Seguimiento y correos** de la compra.
+6. **El panel del taller** casi no cambia: ya ve sólo lo suyo. Sólo enseñar de
+   qué compra viene su parte.
+
+---
+
 ## Lo que sigue, en orden
 
 1. **El perfil del taller, obligatorio de verdad.** Un taller sin dirección de
