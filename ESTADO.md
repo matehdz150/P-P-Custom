@@ -7,11 +7,11 @@ código. Para el mapa del proyecto ve a `README.md`; para el AWS, a
 `infra/README.md`. Si algo de aquí ya se hizo, bórralo — este documento sólo
 sirve si se mantiene corto y cierto.
 
-**Lo último que se hizo, por si sólo lees esto:** los envíos con Skydropx
-(cotizar en el checkout y comprar la guía con el peso real), el inventario
-obligatorio con ajustes por diálogo, el buzón de `@kustto.com.mx`, y el
-arreglo de la delegación del dominio que tenía bloqueados el certificado y el
-correo. Todo verificado contra AWS, nada en local.
+**Lo último que se hizo, por si sólo lees esto:** el sitio ya está publicado
+en **https://kustto.com.mx** (S3 + CloudFront, export estático), con el admin
+deliberadamente fuera. Antes: los envíos con Skydropx, el inventario
+obligatorio, el buzón de `@kustto.com.mx` y los correos de pedido. Todo
+verificado contra AWS, nada en local.
 
 ---
 
@@ -63,6 +63,15 @@ pedidos" y no hay forma de devolvérselo.
 
 `/pedido?id=…` carga **por sesión o por token**: con sesión no hace falta el
 token del enlace, y por eso "Ver detalle" funciona desde el panel.
+
+**Google ya está enganchado** (3 de septiembre). Las credenciales viven en
+`infra/.google`, fuera del repo, y las aplica `infra/cognito-compradores.sh`.
+Comprobado siguiendo la redirección completa: Cognito manda a Google con el
+`client_id` correcto y Google contesta con su pantalla de inicio de sesión, sin
+`redirect_uri_mismatch` ni `invalid_client` — o sea que el URI de redirección
+de Cognito está autorizado del lado de Google. **No hizo falta republicar el
+sitio**: el bundle ya llevaba el dominio de Cognito, y lo que cambió fue sólo
+la configuración del pool.
 
 ---
 
@@ -304,6 +313,36 @@ intento **409**; el cargo anotado (`saldoEnvios` de −0.51 a −1.03).
 cotizó en el checkout, sólo el resultado. Si se quisiera pre-rellenar habría
 que guardarlo al crear el pedido.
 
+### Cotizar no es poder despachar (3 de septiembre)
+
+**Sólo Paquetexpress genera etiqueta en el sandbox.** ampm devuelve
+`Credential '…' was not found in cache` o se queda en `in_progress` sin
+etiqueta para siempre; tresguerras tampoco la produce. De seis pedidos con
+guía: las dos de Paquetexpress salieron, una de ampm murió, otra se colgó, y
+una de tresguerras sigue esperando. (Una de ampm sí funcionó, así que en el
+sandbox es intermitente, no imposible.)
+
+Lo grave no es el fallo de la paquetería: es **cuándo** ocurre. El cliente
+elige el envío en el checkout, el pedido queda cobrado, y sólo al ir a comprar
+la guía se descubre que esa paquetería no puede despachar. El taller se queda
+sin salida y el pedido atascado con el dinero dentro.
+
+Por eso ahora se puede acotar lo que se OFRECE, con `SKYDROPX_PAQUETERIAS`
+(lista separada por comas; vacío = todas). Hoy vale `paquetexpress`, puesto
+desde los scripts de despliegue. Verificado tras aplicarlo: una cotización real
+devuelve sus tres servicios y ninguna otra paquetería.
+
+Cuando estén dadas de alta las credenciales que faltan:
+
+```bash
+KUSTTO_PAQUETERIAS= bash infra/lambda-admin.sh
+KUSTTO_PAQUETERIAS= bash infra/lambda-proveedores.sh
+```
+
+**Los pedidos que ya se compraron con ampm o tresguerras siguen atascados.**
+Reintentar vuelve a usar la paquetería que eligió el comprador, así que
+fallará igual: hay que dar de alta esa credencial o resolverlos a mano.
+
 ### Lo que falta de envíos
 
 - **Varios bultos.** Todo asume un paquete por pedido. Cincuenta playeras no
@@ -484,52 +523,66 @@ servidor (el navegador ya tiene el lienzo y los píxeles).
 
 ---
 
-## El despliegue del front: a medias, y dónde exactamente
+## El sitio ya está publicado
 
-Se eligió **S3 + CloudFront con export estático** y **URLs bonitas**: cada
-producto es HTML pre-renderizado e indexable. El precio de esa decisión, que
-hay que tener presente: **un producto aprobado no aparece en el sitio hasta que
-se vuelve a construir y subir.** Se automatizará cuando duela.
+**https://kustto.com.mx** sirve desde S3 + CloudFront, con export estático y
+URLs bonitas: cada producto es HTML pre-renderizado e indexable.
 
-### Lo que ya está hecho
+| | |
+|---|---|
+| distribución | `E2UTAKM343NK5Z` → `d1tooh2apdlodr.cloudfront.net` |
+| bucket del sitio | `kustto-sitio-prod` (cerrado; entra sólo CloudFront) |
+| lo monta | `infra/frontend.sh` (infraestructura) |
+| lo publica | `infra/sitio.sh` (construye y sube) |
 
-- **El proyecto vuelve a compilar.** No lo hacía: los restos del dominio de
-  paquetes importaban funciones que no existían. Se borraron
-  (`apps/api/src/package-{designs,orders}`, el esquema, `app/package/*/disenar`
-  y `/resumen`, `app/proveedor/paquetes`, `ProviderProductForm`, `packageMode`)
-  y se arreglaron los 17 errores de tipos que arrastraba el admin.
-  **`pnpm type-check` está en cero y `pnpm build` pasa.**
-- **Las rutas que nunca se pueden pre-renderizar pasaron a query**, porque su
-  contenido se crea después de desplegar:
-  - `/pedido/[id]` → **`/pedido?id=…&token=…`** (`enlaceDeSeguimiento` ya lo
-    genera así).
-  - `/proveedor/productos/[id]/editar` → **`/proveedor/productos/editar?id=…`**.
-  - Las dos van envueltas en `<Suspense>`: sin él, `useSearchParams` revienta
-    el pre-renderizado.
-- **Las públicas conservan su URL** con `generateStaticParams`
-  (`lib/build/parametros.ts`): `/product/[id]`, `/design/[productId]` y
-  `/catalogo/productos/[id]` —cuyo `[id]` es una CATEGORÍA, no un producto—.
-- `/proveedores/[slug]` y `/package/[id]` generan **cero URLs a propósito**:
-  leen de Nest, que no se despliega, y no hay endpoint público que liste
-  talleres. Están partidas en `page.tsx` + `Vista.tsx` porque una página
-  `"use client"` no puede exportar `generateStaticParams`.
-- **Certificado ACM pedido** para `kustto.com.mx` y `www`, con sus dos CNAME de
-  validación ya puestos en Route53. Estaba en `PENDING_VALIDATION`.
+**El precio de la decisión, que hay que tener presente:** un producto aprobado
+**no aparece en el sitio hasta que se vuelve a correr `infra/sitio.sh`**. Las
+URLs se calculan al construir. Se automatizará cuando duela.
+
+Verificado tras publicar: el apex y `www` responden, `http` redirige a `https`,
+`/catalogo` y una ficha de producto cargan, los mockups y los medios llegan por
+el mismo dominio —que es lo que el editor necesita para leer sus píxeles—, los
+dos buckets siguen dando **403** a quien los pida directo, y una URL inventada
+da **404** y no un XML de S3.
+
+### Tres cosas que costaron y no se deducen
+
+- **`output: "export"` no admite una ruta dinámica que no genere ninguna URL.**
+  `/proveedores/[slug]` y `/package/[id]` tenían `generateStaticParams` que
+  devolvía `[]` a propósito, y el build falla con "is missing
+  generateStaticParams()" —que señala justo lo que sí está—. Ponerles
+  `dynamicParams = false` **no** basta. Se apartan al construir, como el admin:
+  igualmente leen de Nest, que no se despliega.
+- **El export necesita su propia carpeta de build** (`distDir: ".next-sitio"`).
+  Compartir `.next` con el servidor de desarrollo rompía la compilación: ahí
+  quedan los tipos que Next genera por ruta, incluidos los del admin apartado,
+  y fallaba con un `Cannot find name` señalando un archivo que ya no existe.
+- **El CORS se configura desde `lambda-admin.sh`, y antes lo reescribía con un
+  solo origen en cada despliegue.** Cambiarlo a mano en la consola habría
+  durado hasta el siguiente `bash infra/lambda-admin.sh`, y el sitio se habría
+  quedado sin datos sin un solo error en los registros. Ahora es una lista
+  (`KUSTTO_ORIGENES`) con el de desarrollo y los dos de producción, en JSON
+  porque la forma corta del CLI usa la coma para separar claves. Lo mismo en
+  `cors.sh` para las subidas directas a S3.
 
 ### Lo que falta
 
-1. **Sacar el admin del despliegue.** Es lo ÚNICO que queda bloqueando
-   `output: "export"`: quedan tres rutas dinámicas y las tres son suyas
-   (`/admin/categorias`, `/admin/paquetes/[id]`, `/api/admin/[...ruta]`). El
-   proxy con la llave no puede ni debe salir a internet.
-2. **`next.config.ts`**: `output: "export"`, `images.unoptimized: true`, y
-   quitar los `rewrites()` —que no existen en un export— pasándolos a
-   comportamientos de CloudFront para `/mockups/*` y `/medios/*`.
-3. **`infra/frontend.sh`** (idempotente, como los demás): bucket privado,
-   distribución de CloudFront con OAC, los tres comportamientos, y los ALIAS de
-   Route53 para el apex y `www`.
-4. **Comprobar que el certificado se emitió** y engancharlo a la distribución.
-   No se va a emitir hasta que se arregle la delegación — ver abajo.
+1. **El admin no se publica, y es a propósito.** El proxy `/api/admin/*` lleva
+   la llave puesta. Comprobado tras publicar: `/admin` y `/api/admin/*` dan
+   **404** en el sitio. Se usa en local con `pnpm --filter web dev` hasta que
+   tenga login propio. Se aparta moviendo carpetas en `infra/sitio.sh` —un
+   apaño consciente—; la salida buena, cuando crezca, es que sea su propia
+   aplicación en el monorepo.
+2. **Redesplegar al aprobar un producto.** Hoy es manual.
+3. **El sitio se construye con `.env.local`**, o sea con las variables de la
+   máquina de quien publica, y eso ya mordió: al primer despliegue le faltaba
+   `NEXT_PUBLIC_KUSTTO_WS`, así que **el panel del taller salió a producción
+   sin canal en vivo** —no se enteraba de un pedido nuevo hasta recargar— y el
+   único rastro era un aviso en la consola del navegador. Arreglado y
+   republicado. Hace falta un `.env.production` versionado con lo que no es
+   secreto (la URL de la API, el WebSocket, los pools) para que dos personas
+   publiquen lo mismo; mientras no exista, **antes de publicar compara las
+   `NEXT_PUBLIC_*` que usa el código con las que tiene tu `.env.local`**.
 
 ### El dominio apuntaba a otra zona — arreglado, esperando al registro
 
@@ -600,26 +653,65 @@ desde el cambio— y aun entonces, comprobando antes que ningún resolutor
 público la siga usando. Cuando se borre, hay que acordarse de que los
 registros de verdad viven en la zona de `kustto-admin`.
 
-### Route53: los DKIM que hay son de SES, y están muertos
+### Route53: hay DOS juegos de DKIM y los dos están vivos
 
-Corregido el 2 de septiembre tras comprobarlo contra AWS. El diagnóstico
-anterior decía que los tres CNAME de `_domainkey` eran "de un correo en uso, no
-de SES". **Sí son de SES**: apuntan a `*.dkim.amazonses.com`. Lo que pasa es
-que son tokens **viejos**, de una identidad que se borró y se volvió a crear —
-recrearla regenera los tokens.
+Corregido el 3 de septiembre. Antes decía aquí que los tres CNAME
+`_domainkey` de la zona eran "tokens viejos de una identidad borrada, que no
+usa nadie". **Es falso, y era una invitación a borrarlos.**
 
-- En la zona están `6vf7srsa…`, `kfq7qcoy…`, `ui6peram…`
-- SES espera `rhwzjikm…`, `5k3xyapq…`, `pshmhqws…`
+Son los DKIM de la identidad `kustto.com.mx` de la **cuenta root**
+(`467685081574`), que es la que manda el correo de verdad:
 
-Ninguno coincide, y comprobé las identidades de `kustto.com.mx` en us-east-1,
-us-east-2 y us-west-2: **las tres esperan los mismos tres tokens nuevos**. O
-sea que los que están en el DNS no los usa nadie.
+- `ui6peram…`, `6vf7srsa…`, `kfq7qcoy…` → identidad de la **cuenta root**, la
+  que firma lo que sale. **NO SE BORRAN.**
+- `rhwzjikm…`, `5k3xyapq…`, `pshmhqws…` → identidad de la **cuenta de la app**
+  (`218897024535`), la que recibe en el buzón.
 
-Así que añadir los tres actuales es seguro y es el desbloqueo. Los viejos se
-pueden dejar mientras tanto: no estorban, sólo sobran.
+Los dos juegos conviven porque el nombre del registro lleva el token dentro.
+El error salió de mirar sólo una cuenta: la identidad de la app pedía unos
+tokens, en la zona había otros, y de ahí a "están muertos" hay un paso muy
+corto y muy equivocado.
 
-El **MX sí está en uso**: apunta a `inbound-smtp.us-east-1.amazonaws.com`, que
-es la recepción de SES en esta misma cuenta. Ése no se toca.
+El **MX** apunta a `inbound-smtp.us-east-1.amazonaws.com`, la recepción de SES
+en la cuenta de la app. Ése tampoco se toca.
+
+### El envío sale de la cuenta root, y NO por la vía que parece
+
+**Corregido el 3 de septiembre tras probarlo.** Aquí decía que autorizar la
+identidad bastaba y que "la cuota y la reputación son las del dueño de la
+identidad". **Es falso.**
+
+`kustto.com.mx` está verificado en las dos cuentas y **sólo una sirve para
+enviar**:
+
+| cuenta | SES |
+|---|---|
+| `218897024535` (la app) | **sandbox**: 200/día, sólo a direcciones verificadas |
+| `467685081574` (root) | **producción**: 50 000/día, 14/s |
+
+**LO QUE NO FUNCIONA.** SES deja que una cuenta envíe con la identidad
+verificada de otra (`FromEmailAddressIdentityArn`, su *sending authorization*).
+Parece la solución y no lo es: **la cuota y el sandbox son los de quien LLAMA**.
+Montado así, el envío se contaba en la cuenta de la app —se vio en su
+`SentLast24Hours`— y seguía rechazando destinatarios sin verificar.
+
+Engañó porque la primera prueba manual salió bien, por dos motivos que no
+aplicaban a las Lambdas: el usuario con el que probé tiene `AdministratorAccess`
+y el destinatario **estaba verificado** en la cuenta de la app.
+
+**LO QUE SÍ.** Un rol en la cuenta root (`kustto-correo`) que las Lambdas
+asumen. Así quien llama a SES es la cuenta root, con su acceso a producción. Lo
+monta `infra/correo-envio.sh`, que es idempotente y necesita los dos lados: el
+rol allá con su relación de confianza, y el permiso para asumirlo acá. Con uno
+solo el error dice "no autorizado" sin aclarar cuál falta.
+
+Se confía en **los dos roles uno a uno**, no en la cuenta entera: con
+`:root` cualquier cosa que corriera en la cuenta de la app podría enviar como
+`kustto.com.mx`.
+
+Verificado el 3 de septiembre: un pedido a `notificaciones@belza.com.mx` —**sin
+verificar** en la cuenta de la app— disparó sus dos correos, y la métrica `Send`
+de la cuenta root los contó. Esa es la prueba de que el sandbox quedó fuera.
 
 ### Lo que se puso para que el correo no caiga en spam
 
@@ -651,25 +743,80 @@ mandó su primer correo ayer: mejora con volumen y con que la gente los abra.
 
 ---
 
+## Los correos que salen
+
+Cinco, todos con `enviar()`, que **nunca lanza**: se mandan después de que el
+pedido está escrito, así que un fallo de correo no puede tumbar un pedido.
+
+| cuándo | a quién | qué lleva |
+|---|---|---|
+| pedido creado | comprador | su **enlace de seguimiento** |
+| pedido creado | taller | folio, producto, piezas, importe |
+| pasa a `listo` | comprador | con `recoger`: **dónde y con quién**; con envío, aviso a secas |
+| pasa a `enviado` | comprador | paquetería y número de rastreo |
+| pasa a `entregado` | comprador | cierre, y 7 días para reportar algo |
+
+**De `produccion` NO se avisa, a propósito.** Entre que entra el pedido y que
+está hecho no hay nada que el comprador pueda hacer, y un correo que no pide
+nada ni cambia nada enseña a ignorar los que sí importan.
+
+**El de `listo` con `recoger` es EL correo de esos pedidos.** Después de él ya
+no hay ningún otro estado que le avise de nada a quien compró: si no lleva la
+dirección del taller y su teléfono, nadie se entera de que puede ir por su
+prenda. Por eso `avisarQueEstaListo` lee el ítem del taller —una lectura de más
+que sólo se paga cuando el método es `recoger`.
+
+**El del comprador es el que importa.** Ese enlace es lo ÚNICO que da acceso al
+pedido a quien pidió sin cuenta: del token sólo se guarda la huella, así que si
+se pierde no hay forma de devolvérselo ni por soporte. Antes sólo aparecía en
+pantalla y cerrar la pestaña bastaba para perderlo.
+
+**Dos de ellos se disparan desde DOS sitios**, porque el estado lo puede mover
+el taller a mano (`services/proveedores`) o la paquetería por webhook
+(`services/admin`):
+
+- **"va en camino"** — el taller lo marca, o lo marca el webhook.
+- **"llegó"** — el taller lo marca cuando el cliente RECOGIÓ; el webhook cuando
+  la paquetería ENTREGÓ. `permitidos()` reparte: con envío el taller no puede
+  marcar `entregado`, porque eso lo sabe quien la llevó, no quien la hizo.
+
+("ya está listo" sale sólo de proveedores: eso lo sabe quien produce.) Por eso `correo.ts` y `plantillas.ts` están **duplicados en
+los dos servicios**: cada uno es su propio bundle, como ya pasa con
+`skydropx.ts`. **Copia los archivos enteros al cambiarlos** — si las plantillas
+divergen, el mismo cliente recibe un texto u otro según quién movió el pedido, y
+eso no sale en ninguna prueba. Si aparece un tercer disparador, la salida buena
+es una Lambda sobre el stream de DynamoDB: los streams ya están activados.
+
+En los dos casos el correo va **después** del `UpdateItem` con su condición, así
+que dos clics a la vez sólo mandan uno.
+
+Los correos van en **texto y HTML**. El texto no es un respaldo de segunda: los
+filtros de spam castigan el sólo-HTML y hay clientes que no lo pintan. El HTML
+va en tablas con estilos en línea porque Gmail borra las hojas de estilo y
+Outlook renderiza con Word.
+
+---
+
 ## Lo que sigue, en orden
 
-1. **SES.** Es lo más grave que queda. Con el panel cerrado nadie se entera de
-   un pedido, y del lado del comprador es peor: el enlace de seguimiento con su
-   token **sólo aparece en pantalla y nunca se manda por correo**. Si cierra esa
-   pestaña pierde su pedido, porque del token sólo guardamos el hash. El dominio
-   `kustto.com.mx` ya existe como identidad en SES con sus **tres CNAME de DKIM
-   esperando en el DNS**, y la cuenta sigue en **sandbox**. Es el único pendiente
-   que necesita un trámite externo de días: arráncalo antes que nada.
+1. **El perfil del taller, obligatorio de verdad.** Un taller sin dirección de
+   recolección desaparece del checkout con envío —`leerOrigen` no cotiza y al
+   comprador le sale "este taller no envía todavía"— y uno sin teléfono no puede
+   comprar la guía, que es peor porque para entonces el pedido ya está cobrado.
+   Ya hay un aviso en el panel (`components/Proveedor/AvisoDePerfil.tsx`) y el
+   teléfono por fin se puede escribir desde el perfil, pero **nada obliga a
+   completarlo al darse de alta**: hoy un taller puede empezar a vender sin
+   ninguno de los dos. `Bordados Tapatíos` está así en producción.
 2. **Cerrar las existencias.** El backend está y verificado; falta lo que se
    ve: el aviso de "+N días, se produce bajo pedido" en el editor y el
    checkout, la alerta de bajas en el panel, y la capacidad semanal. Sin el
    aviso, el comprador no se entera de que tarda más hasta que lee su
    confirmación — y ese aviso es la mitad del trato que se decidió.
-3. **Rechazar un pedido y mover con nota.** La API acepta las dos cosas
-   (`cancelado` está en las transiciones, `cambiarEstado` acepta `nota`, y el
-   seguimiento del comprador ya la enseña) pero el panel no las manda. Es sólo
-   interfaz. Ojo: **cancelar ya devuelve existencias**, así que el botón hace
-   más de lo que parece.
+3. **Rechazar un pedido y mover con nota.** La API acepta las dos cosas y el
+   seguimiento del comprador ya enseña la nota, pero el panel no las manda. Es
+   sólo interfaz. Dos avisos: **cancelar devuelve existencias**, así que el
+   botón hace más de lo que parece; y desde el 3 de septiembre **sólo se puede
+   cancelar en `nuevo`**, antes de que el taller empiece.
 4. **Contraseña del taller.** No hay forma de cambiarla ni de restablecerla: ni
    el taller, ni el admin, ni "olvidé mi contraseña". Hoy se arregla entrando a
    la consola de AWS. El rol de admin **ya tiene `AdminSetUserPassword`**.
@@ -683,14 +830,17 @@ mandó su primer correo ayer: mejora con volumen y con que la gente los abra.
 
 ## Cosas que hay que limpiar
 
-- **La plantilla `tshirt` apunta a mockups que no existen.** `/mockups/tshirtfront.png`
-  y `tshirtback.png` dan 404; lo que hay en S3 es
-  `mockups/tshirt/front-8cdcbb1aa538.png`. En producción saldría sin prenda.
+- **Faltan mockups, y en producción se nota.** El frente de `tshirt` ya está
+  arreglado —apunta a `mockups/tshirt/front-8cdcbb1aa538.png`, que sí existe—
+  pero **el reverso de la playera y la gorra siguen dando 404**
+  (`/mockups/tshirtback.png`, `/mockups/cap.png`): esas imágenes no están en
+  ningún sitio y hay que subirlas desde `/admin/mockups`. Sin ellas el editor
+  abre sin prenda de fondo. Ojo al comprobarlo: el servidor de desarrollo
+  cachea los mockups con `immutable` y tapa el 404 — hay que mirar contra la
+  API o contra el sitio publicado.
 - **El área de esa plantilla es 270 × 350 px** (proporción 0.771) y el producto
   declara 28 × 35 cm (0.8). De ahí sale la desviación de 1.3 cm que avisa la
   ficha. Cambiando el rectángulo a **280 × 350** cuadra exacto.
-- **Acentos estropeados en DynamoDB**: `Detr?s` en los `sideLabels` de la
-  plantilla `tshirt`, de cuando se escribieron con `curl` desde Git Bash.
 - **Los productos no tienen colores capturados.** "Tshirt basico" tiene cero, y
   por eso los pedidos salen con `colorPrenda: null`. Para producir importa: el
   color decide si lleva subbase blanca.
@@ -705,12 +855,12 @@ mandó su primer correo ayer: mejora con volumen y con que la gente los abra.
 - **El asistente de alta exige 2 fotos y sólo pone el botón en gris.** Un
   taller que suba una se queda bloqueado sin entender por qué. Al producto de
   prueba se le duplicó una foto para poder avanzar.
-- **Google NO está enganchado al pool de compradores.** El cliente sólo tiene
-  `COGNITO` como proveedor porque falta `infra/.google`, que no se recupera de
-  AWS —son credenciales de terceros—. El botón de "Entrar con Google" va a
-  fallar hasta que se creen en console.cloud.google.com y se vuelva a correr
-  `infra/cognito-compradores.sh`; el script imprime los pasos exactos. Entrar
-  con correo sí funciona.
+- **La app de Google puede estar en modo "Testing".** Google ya está enganchado
+  (ver abajo), pero si la pantalla de consentimiento sigue en Testing **sólo
+  entran los correos listados como probadores**: cualquier otro recibe "acceso
+  bloqueado" y desde nuestro lado se ve como un login que no vuelve. Se abre
+  con "Publish app" en console.cloud.google.com, y con `openid/email/profile`
+  no hay revisión de por medio.
 - **Cuentas de prueba en el pool de compradores** además de las de talleres.
 - **Hay ~250 archivos modificados sin commitear** que son casi todo formato:
   una pasada de Biome mezclada con conversión CRLF de trabajar desde macOS y

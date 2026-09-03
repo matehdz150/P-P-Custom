@@ -26,14 +26,26 @@ bash infra/lambda-admin.sh          # la Lambda de admin + la API Gateway
 bash infra/lambda-proveedores.sh    # la Lambda de proveedores + el autorizador
 bash infra/lambda-compradores.sh    # la Lambda de la cuenta + su autorizador
 bash infra/websocket.sh             # el canal en vivo del panel del taller
+bash infra/correo.sh                # SES: dominio, DKIM, SPF, DMARC y buzón
+bash infra/lambda-correo.sh         # el reenviador del buzón
+bash infra/correo-envio.sh          # el rol de la cuenta root para ENVIAR
+bash infra/frontend.sh              # el bucket del sitio, CloudFront y el DNS
+bash infra/sitio.sh                 # construye el front y lo publica
 ```
 
 `lambda-proveedores.sh` **depende** de que la API ya exista, porque cuelga de
 ella; si no la encuentra, se detiene y te lo dice. `lambda-admin.sh` lee
 `infra/.cognito` si existe, para pasarle el id del pool a la función.
 
-En el día a día sólo se corren los dos últimos, que además de crear
-**actualizan el código**. Correrlos en cada cambio es lo esperado.
+En el día a día se corren **`lambda-admin.sh` y `lambda-proveedores.sh`**, que
+además de crear actualizan el código; correrlos en cada cambio es lo esperado.
+Y **`sitio.sh`** cada vez que cambia el front o se aprueba un producto: las
+URLs se calculan al construir, así que hasta que no se corre, un producto
+aprobado no existe en el sitio.
+
+Los tres del correo se corren una vez, y `correo-envio.sh` necesita además
+credenciales de la **cuenta root** (perfil `moderateapi`): el envío sale de
+allá, no de la cuenta de la app.
 
 ---
 
@@ -58,6 +70,11 @@ En el día a día sólo se corren los dos últimos, que además de crear
 | Lambda eventos | `kustto-eventos` (rol `kustto-eventos-rol`) |
 | API WebSocket | `kustto-eventos-ws` → `wss://1mdi47dyv4.execute-api.us-east-1.amazonaws.com/prod` |
 | Autorizador WS | `cognito-ws` (REQUEST, token en la query string) |
+| Bucket del sitio | `kustto-sitio-prod` (cerrado; entra sólo CloudFront) |
+| Distribución | `E2UTAKM343NK5Z` → `d1tooh2apdlodr.cloudfront.net` |
+| Función de borde | `kustto-urls-bonitas` |
+| Control de acceso | `kustto-oac` (OAC, para los dos buckets) |
+| Certificado | ACM `kustto.com.mx` + `www`, en us-east-1 |
 
 **Una sola API Gateway para las tres Lambdas.** No hacía falta otra: una API
 enruta por camino hacia funciones distintas. Dos serían dos dominios, dos
@@ -79,6 +96,46 @@ emisor y audiencia, no grupos: con uno solo, un token de taller abriría
 `/cuenta/*` y al revés. Cada prefijo apunta al autorizador de su pool, así que
 la separación la hace cumplir la plataforma antes de invocar código nuestro —
 no depende de que ningún handler se acuerde de comprobarla.
+
+---
+
+## El sitio
+
+**https://kustto.com.mx** es un export estático en S3 detrás de CloudFront. Lo
+monta `frontend.sh` y lo publica `sitio.sh`.
+
+**El bucket sigue cerrado.** Nadie lee de S3: entra CloudFront con un Origin
+Access Control y la política del bucket sólo confía en ESA distribución. Un
+bucket "de sitio web" sería una segunda puerta, sin HTTPS y sin las reglas de
+abajo. Comprobado: pedirle un objeto directo a cualquiera de los dos buckets
+responde **403**.
+
+Tres comportamientos, y el reparto no es cosmético:
+
+```
+/mockups/*  ->  kustto-publico-prod
+/medios/*   ->  kustto-publico-prod
+(el resto)  ->  kustto-sitio-prod
+```
+
+Los mockups salen **por el mismo dominio que la app** porque el editor hace
+`getImageData()` sobre ellos para teñir la prenda: desde otro dominio el
+navegador contamina el lienzo y el teñido se apaga sin decir nada. En
+desarrollo eso lo hacen los rewrites de Next; aquí, estos dos comportamientos.
+
+**Una función de borde resuelve las URLs bonitas.** El export escribe
+`/catalogo/index.html` y la gente pide `/catalogo`. El "documento índice" de S3
+sólo existe en los buckets configurados como sitio web —que son públicos—, así
+que la reescritura la hace `kustto-urls-bonitas` en `viewer-request`. Deja en
+paz cualquier URI con extensión, que es como pasan el JS, el CSS y las
+imágenes.
+
+**Los 403 se sirven como 404.** Con OAC, un objeto que no existe da 403 —el
+bucket no puede listar, así que no sabe distinguir— y sin esa regla una URL
+equivocada enseñaría un XML de acceso denegado en vez de la página de 404.
+
+**El CORS de la API incluye el dominio**, y se configura desde
+`lambda-admin.sh`: cambiarlo en la consola dura hasta el siguiente despliegue.
 
 ---
 
@@ -536,6 +593,8 @@ inmediato falla con un error que parece de permisos y no lo es.
 | `infra/.cognito` | `bash infra/cognito.sh` — idempotente, no crea nada nuevo |
 | `infra/.websocket` | `bash infra/websocket.sh` — idempotente; los ids no son secretos |
 | `infra/.cognito-compradores` | `bash infra/cognito-compradores.sh` — idempotente; tampoco son secretos |
+| `infra/.frontend` | `bash infra/frontend.sh` — el id de la distribución, que tampoco es secreto |
+| `infra/.google` | **NO se recupera**: son credenciales de terceros, de console.cloud.google.com |
 | `infra/.google` | **De AWS no se recupera.** Lo guarda Google y sólo lo enseña al crear el cliente de OAuth: si se pierde, se rota en su consola |
 | `infra/.skydropx` | **De AWS tampoco.** Se sacan del panel de Skydropx, en Conexiones → API. Ver abajo |
 | `services/*/dist/`, `*.zip` | se regeneran al desplegar |
