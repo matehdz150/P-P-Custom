@@ -378,7 +378,10 @@ Y tres decisiones que conviene no deshacer:
 
 ## Trampas que ya mordieron
 
-**Borrar un pedido a mano NO devuelve las existencias.** El descuento se hace
+**Borrar un pedido a mano NO devuelve las existencias.** (Vuelto a pisar el 3
+de septiembre: el `PATCH` de cancelar falló por un token caducado, el borrado
+siguió igual, y la gorra quedó en `-4`. Si automatizas la limpieza, **comprueba
+que la cancelación respondió** antes de borrar.) El descuento se hace
 en la misma transacción que el pedido y sólo lo revierte `cancelado`. Al
 limpiar pedidos de prueba hay que **cancelarlos primero y borrarlos después**,
 o el stock se queda descontado para siempre sin nada que lo explique.
@@ -932,6 +935,35 @@ El botón de pagar del carrito está a la vista pero **deshabilitado a
 propósito**: el checkout que sabe cobrar varias partes es el paso 4, y llevar
 a un formulario de un solo producto sería peor que decirlo.
 
+### Paso 4: el backend del checkout multi-parte (3 de septiembre)
+
+Ya se puede pedir a varios talleres a la vez, cada uno con su entrega.
+
+- **`POST /publico/envios/cotizar-compra`** cotiza UNA por taller y las
+  **espacia 600 ms**, porque Skydropx admite 2 por segundo y eso ya tumbó el
+  checkout una vez. El espaciado se hace en la Lambda y no en el navegador: si
+  dependiera del cliente, bastaría con abrir dos pestañas.
+- **Un taller que no puede no tumba la compra.** Vuelve con su `error` y los
+  demás con sus tarifas; el cliente decide si lo quita o lo recoge. Verificado
+  con dos talleres: uno cotizó Paquetexpress y el otro avisó de que no tiene
+  envíos configurados.
+- **La entrega se elige por parte.** `partes: [{proveedorId, entrega, envio}]`.
+  Si no viene —el checkout de un producto, que sigue vivo— vale la global.
+  Probado: una compra con una parte por envío ($209.93) y otra para recoger.
+- **La compra sólo guarda una `entrega` común si todas coinciden.** Con
+  métodos distintos guarda `null`: poner la de una parte como si fuera la de
+  todas es de esos datos que después se leen mal.
+
+**Ojo con `armarPaquete`: dice "este taller no tiene envíos configurados" por
+TRES motivos distintos** —sin dirección de recolección, sin medidas de caja, o
+sin peso para la talla pedida—. Al cliente le da igual, pero para diagnosticar
+confunde: en una prueba parecía que faltaba la dirección y lo que faltaba era
+el peso de esa talla.
+
+**Y el redondeo:** los totales se guardaban con coma flotante
+(`809.9300000000001`). Se redondea a centavos AL SUMAR, no al pintar: si sólo
+se arreglara en pantalla, el número guardado seguiría siendo el feo.
+
 ### El orden para construirlo
 
 1. ~~El modelo y la creación~~ — **hecho**.
@@ -939,8 +971,8 @@ a un formulario de un solo producto sería peor que decirlo.
    Falta el botón del editor, que va con el carrito del paso 3: sin carrito no
    hay dónde guardar lo que devuelve.
 3. ~~El carrito en el front~~ — **hecho, salvo probarlo en un navegador**.
-4. **El checkout multi-parte**: cotizar por taller, entrega por parte, y el
-   aviso cuando uno no puede cumplir.
+4. **El checkout multi-parte** — **el backend, hecho**; falta la pantalla:
+   `/pedir` todavía lee un solo diseño y no el carrito.
 5. **Seguimiento y correos** de la compra.
 6. **El panel del taller** casi no cambia: ya ve sólo lo suyo. Sólo enseñar de
    qué compra viene su parte.

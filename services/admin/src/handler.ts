@@ -58,6 +58,13 @@ router.get("/publico/categorias", () => categorias.listar());
    pedido. No acepta pesos ni medidas del cuerpo: sólo qué se pide y a dónde,
    y el paquete lo arma el servidor con los datos del producto. */
 router.post("/publico/envios/cotizar", (p) => envios.crear(p.cuerpo));
+
+/* La del carrito: una cotización por taller, espaciadas para no pasarse del
+   límite de Skydropx. Un taller que no puede enviar vuelve con su error y no
+   tumba las demás. */
+router.post("/publico/envios/cotizar-compra", (p) =>
+	envios.crearPorTaller(p.cuerpo),
+);
 router.get("/publico/envios/cotizacion/:id", (p) =>
 	envios.consultar(p.params.id),
 );
@@ -104,6 +111,7 @@ const ABIERTAS = [
 	// libres: hay que traer ids de productos publicados, y eso ya acota
 	// bastante quién puede pedirlas en serie.
 	/^POST \/publico\/envios\/cotizar$/,
+	/^POST \/publico\/envios\/cotizar-compra$/,
 ];
 
 export async function handler(evento: any) {

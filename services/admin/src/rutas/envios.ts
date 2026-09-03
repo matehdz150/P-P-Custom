@@ -71,6 +71,101 @@ export async function crear(cuerpo: unknown) {
 }
 
 /**
+ * Cotiza una COMPRA: una por taller.
+ *
+ * Cada taller manda desde SU dirección, así que no hay un envío sino uno por
+ * parte, con su precio y su plazo. El checkout los enseña por separado porque
+ * es lo que de verdad va a pasar: llegarán en paquetes distintos.
+ *
+ * POR QUÉ SE ESPACIAN LAS LLAMADAS. Skydropx admite **2 peticiones por
+ * segundo** y ya tumbó el checkout una vez (siete clics en "+1"). Lanzar tres
+ * cotizaciones en paralelo lo repetiría, y el espaciado se hace AQUÍ y no en
+ * el navegador: si dependiera del cliente, bastaría con que alguien abriera
+ * dos pestañas.
+ *
+ * UN TALLER QUE NO PUEDE NO TUMBA LA COMPRA. Si le falta la dirección de
+ * recolección, esa parte vuelve con su `error` y las demás con sus tarifas.
+ * El cliente decide: quitarla o recogerla con el taller. Fallar entero por uno
+ * mal configurado sería perder la venta completa.
+ */
+export async function crearPorTaller(cuerpo: unknown) {
+	const c = (cuerpo ?? {}) as Cuerpo;
+
+	const lineas = Array.isArray(c.lineas) ? c.lineas : [];
+	if (lineas.length === 0) throw malaPeticion("No dijiste qué vas a pedir");
+
+	const destino = leerDestino(c.destino);
+
+	const productos = await Promise.all(
+		lineas.map((l: Cuerpo) => leerProducto(String(l.productoId ?? ""))),
+	);
+
+	const grupos = new Map<string, number[]>();
+	productos.forEach((producto, i) => {
+		const taller = String(producto.proveedorId);
+		grupos.set(taller, [...(grupos.get(taller) ?? []), i]);
+	});
+
+	const partes: {
+		proveedorId: string;
+		taller: string | null;
+		cotizacionId?: string;
+		error?: string;
+	}[] = [];
+
+	let primera = true;
+
+	for (const [proveedorId, indices] of grupos) {
+		// 600 ms entre llamadas: por debajo de las 2 por segundo que admite
+		// Skydropx, con margen para lo que ya esté cotizando otra pestaña.
+		if (!primera) await new Promise((r) => setTimeout(r, 600));
+		primera = false;
+
+		const taller = await nombreDelTaller(proveedorId);
+
+		try {
+			const origen = await leerOrigen(proveedorId);
+			const paquete = armarPaquete(
+				indices.map((i) => lineas[i]),
+				indices.map((i) => productos[i]),
+			);
+
+			partes.push({
+				proveedorId,
+				taller,
+				cotizacionId: await cotizar(origen, destino, paquete),
+			});
+		} catch (error) {
+			if (error instanceof DemasiadasPeticiones) {
+				throw muyRapido(
+					"Estamos cotizando muchos envíos. Inténtalo en un momento.",
+				);
+			}
+
+			// Lo que sabemos decir se dice; lo demás no se filtra al cliente.
+			partes.push({
+				proveedorId,
+				taller,
+				error:
+					error instanceof Error && error.message === SIN_ENVIO
+						? SIN_ENVIO
+						: "No pudimos cotizar el envío de este taller",
+			});
+		}
+	}
+
+	return { partes };
+}
+
+async function nombreDelTaller(proveedorId: string): Promise<string | null> {
+	const { Item } = await dynamo.send(
+		new GetCommand({ TableName: TABLA, Key: llaves.proveedor(proveedorId) }),
+	);
+
+	return (Item?.displayName as string) ?? (Item?.name as string) ?? null;
+}
+
+/**
  * El envío que se guarda en el pedido, verificado contra Skydropx.
  *
  * NO se acepta el precio del navegador. Se recibe la cotización y qué tarifa

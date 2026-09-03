@@ -59,6 +59,17 @@ const DIGITOS = (v: string) => v.replace(/\D/g, "");
  * se limpia igual que cualquier otra cosa que llegue de fuera: sin esto, un
  * `../` bien puesto leería objetos de otro sitio del bucket.
  */
+/**
+ * Redondea a centavos.
+ *
+ * Los precios del envío llegan con decimales y sumarlos en coma flotante deja
+ * cosas como `809.9300000000001`, que es lo que se guarda en el pedido y lo
+ * que acabaría en un correo o en una factura. Se redondea al sumar, no al
+ * pintar: si sólo se arreglara en la pantalla, el número guardado seguiría
+ * siendo el feo y dos sumas distintas darían totales distintos.
+ */
+const aPesos = (n: number) => Math.round(n * 100) / 100;
+
 const LIMPIO_ID = (v: unknown) =>
 	String(v ?? "").replace(/[^a-zA-Z0-9-]/g, "").slice(0, 40);
 
@@ -97,7 +108,23 @@ export async function crear(cuerpo: unknown) {
 		);
 	}
 
-	const entrega = leerEntrega(c.entrega);
+	/* La entrega se elige POR PARTE: uno está en tu ciudad y pasas por él, el
+	 * otro te lo manda. `c.partes` trae la de cada taller; si no viene —el
+	 * checkout de un solo producto, que sigue existiendo— vale la global para
+	 * todas. */
+	const porTaller = new Map<string, { entrega: unknown; envio?: unknown }>();
+
+	for (const parte of Array.isArray(c.partes) ? c.partes : []) {
+		const id = String((parte as Cuerpo)?.proveedorId ?? "");
+		if (id) {
+			porTaller.set(id, {
+				entrega: (parte as Cuerpo).entrega,
+				envio: (parte as Cuerpo).envio,
+			});
+		}
+	}
+
+	const entregaGlobal = porTaller.size === 0 ? leerEntrega(c.entrega) : null;
 
 	const lineas = Array.isArray(c.lineas) ? c.lineas : [];
 	if (lineas.length === 0) throw malaPeticion("El pedido va vacío");
@@ -125,19 +152,26 @@ export async function crear(cuerpo: unknown) {
 		grupos.set(taller, [...(grupos.get(taller) ?? []), i]);
 	});
 
-	/* Con envío a domicilio todavía no se puede repartir: cada taller manda
-	 * desde SU dirección, así que son varias cotizaciones y varios costos, y
-	 * eso es el paso siguiente. Mejor decirlo que cobrar un envío que sólo
-	 * cubre a uno de ellos. */
-	if (grupos.size > 1 && entrega.metodo === "envio") {
-		throw malaPeticion(
-			"Todavía no podemos enviar productos de varios talleres en la misma compra. " +
-				"Sepáralos, o elige recoger con cada taller.",
-		);
-	}
+	/* Cada taller trae SU entrega y SU envío. El precio del envío no viene del
+	 * cuerpo: se lee de la cotización que guarda Skydropx, igual que el precio
+	 * del producto se lee de la tabla. */
+	const entregas = new Map<string, { entrega: any; envio: any }>();
 
-	const envio =
-		entrega.metodo === "envio" ? await envios.envioDelPedido(c.envio) : null;
+	for (const proveedorId of grupos.keys()) {
+		const suya = porTaller.get(proveedorId);
+
+		const entrega = entregaGlobal ?? leerEntrega(suya?.entrega);
+
+		entregas.set(proveedorId, {
+			entrega,
+			envio:
+				entrega.metodo === "envio"
+					? await envios.envioDelPedido(
+							porTaller.size === 0 ? c.envio : suya?.envio,
+						)
+					: null,
+		});
+	}
 
 	const compraId = randomUUID();
 	const ahora = new Date().toISOString();
@@ -154,6 +188,7 @@ export async function crear(cuerpo: unknown) {
 
 	const partes = [...grupos.entries()].map(([proveedorId, indices]) => {
 		const pedidoId = randomUUID();
+		const { entrega, envio } = entregas.get(proveedorId)!;
 
 		// El índice ORIGINAL de la línea viaja con ella: es lo que empareja las
 		// subidas del arte con lo que mandó el navegador, y al repartir por
@@ -203,7 +238,7 @@ export async function crear(cuerpo: unknown) {
 				proveedorId,
 				lineas: suyas,
 				productosTotal,
-				total: productosTotal + (envio?.precio ?? 0),
+				total: aPesos(productosTotal + (envio?.precio ?? 0)),
 				piezas: suyas.reduce((n, l) => n + l.piezas, 0),
 				estado: "nuevo" as EstadoPedido,
 				bitacora: [{ estado: "nuevo", en: ahora, por: "cliente", nota: null }],
@@ -214,11 +249,16 @@ export async function crear(cuerpo: unknown) {
 		};
 	});
 
-	const productosTotal = partes.reduce(
-		(suma, p) => suma + Number(p.pedido.productosTotal),
+	const productosTotal = aPesos(
+		partes.reduce((suma, p) => suma + Number(p.pedido.productosTotal), 0),
+	);
+	/* Cada parte lleva su envío, así que el total de la compra los suma todos.
+	   Con un solo envío global esto sería el de antes. */
+	const enviosTotal = [...entregas.values()].reduce(
+		(suma, e) => suma + (e.envio?.precio ?? 0),
 		0,
 	);
-	const total = productosTotal + (envio?.precio ?? 0);
+	const total = aPesos(productosTotal + enviosTotal);
 	const piezas = partes.reduce((n, p) => n + Number(p.pedido.piezas), 0);
 
 	const compra = {
@@ -227,7 +267,15 @@ export async function crear(cuerpo: unknown) {
 		id: compraId,
 		comprador,
 		compradorId: null,
-		entrega,
+		/* Sólo si TODAS las partes entregan igual. Con métodos distintos no hay
+		   una entrega de la compra, y guardar la de una parte como si fuera la
+		   de todas es la clase de dato que después se lee mal. */
+		entrega:
+			[...entregas.values()].every(
+				(e) => e.entrega.metodo === [...entregas.values()][0].entrega.metodo,
+			)
+				? [...entregas.values()][0].entrega
+				: null,
 		productosTotal,
 		total,
 		piezas,
@@ -307,7 +355,7 @@ export async function crear(cuerpo: unknown) {
 				piezas: Number(parte.pedido.piezas),
 				producto: suyas[0]?.producto ?? "Un producto",
 				total: Number(parte.pedido.productosTotal),
-				metodo: entrega.metodo,
+				metodo: String(parte.pedido.entrega?.metodo ?? "envio"),
 			}),
 		);
 	}
