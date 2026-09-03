@@ -41,6 +41,11 @@ export default function ProviderProfilePage() {
 	const [bio, setBio] = useState("");
 	const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 	const [bannerUrl, setBannerUrl] = useState<string | null>(null);
+	/* El teléfono va con la dirección y no con el perfil público: no es dato
+	   de escaparate, es con quien llama el repartidor. Antes no había forma de
+	   ponerlo desde ninguna pantalla y quedaba vacío para siempre, así que la
+	   compra de la guía moría con un 422 de Skydropx. */
+	const [whatsapp, setWhatsapp] = useState("");
 	const [saving, setSaving] = useState(false);
 	const [msg, setMsg] = useState<string | null>(null);
 
@@ -56,6 +61,7 @@ export default function ProviderProfilePage() {
 			setBio(provider.bio ?? "");
 			setAvatarUrl(provider.avatarUrl ?? null);
 			setBannerUrl(provider.bannerUrl ?? null);
+			setWhatsapp(provider.whatsapp ?? "");
 
 			const r = provider.recoleccion;
 			setDir(
@@ -103,6 +109,7 @@ export default function ProviderProfilePage() {
 				bio: bio.trim(),
 				avatarUrl: avatarUrl ?? undefined,
 				bannerUrl: bannerUrl ?? undefined,
+				whatsapp: whatsapp.trim() || null,
 				recoleccion: completa
 					? {
 							calle: dir.calle.trim(),
@@ -251,6 +258,26 @@ export default function ProviderProfilePage() {
 				</div>
 
 				<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+					{/* Va el primero, antes que la calle, porque es el que más veces
+					    falta: la dirección se llena entera o no se llena, pero el
+					    teléfono se olvida solo. */}
+					<div className="md:col-span-2">
+						<label htmlFor="taller-telefono" className="text-sm font-semibold">
+							Teléfono de contacto
+						</label>
+						<Input
+							id="taller-telefono"
+							value={whatsapp}
+							onChange={(e) => setWhatsapp(e.target.value)}
+							placeholder="33 1234 5678"
+							inputMode="tel"
+						/>
+						<p className="mt-1 text-[13px] leading-[19px] text-tinta/60">
+							Con este número te localiza el repartidor cuando pasa por el
+							paquete. Sin él no podemos comprar la guía.
+						</p>
+					</div>
+
 					<div className="md:col-span-2">
 						<label className="text-sm font-semibold">Calle</label>
 						<Input
@@ -269,7 +296,8 @@ export default function ProviderProfilePage() {
 					</div>
 					<div>
 						<label className="text-sm font-semibold">
-							Interior <span className="font-normal text-tinta/50">(opcional)</span>
+							Interior{" "}
+							<span className="font-normal text-tinta/50">(opcional)</span>
 						</label>
 						<Input
 							value={dir.interior}

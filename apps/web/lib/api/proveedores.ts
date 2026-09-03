@@ -92,6 +92,12 @@ export type Proveedor = {
 	avatarUrl: string | null;
 	bannerUrl: string | null;
 	recoleccion?: Recoleccion | null;
+	/**
+	 * El teléfono con el que la paquetería localiza al taller para recoger.
+	 * Sin él, Skydropx rechaza la compra de la guía con un 422 que no dice de
+	 * quién falta el teléfono.
+	 */
+	whatsapp?: string | null;
 	createdAt: string;
 };
 
@@ -107,6 +113,7 @@ export function actualizarMiPerfil(datos: {
 	bannerUrl?: string;
 	/** `null` la borra: un taller puede dejar de ofrecer envío. */
 	recoleccion?: Recoleccion | null;
+	whatsapp?: string | null;
 }) {
 	return pedir<Proveedor>("/proveedores/yo", {
 		method: "PATCH",
@@ -233,10 +240,10 @@ export function moverExistencias(
 		cantidad: number;
 	},
 ) {
-	return pedir<ProductoDeTaller>(
-		`/proveedores/productos/${id}/existencias`,
-		{ method: "PATCH", body: JSON.stringify(movimiento) },
-	);
+	return pedir<ProductoDeTaller>(`/proveedores/productos/${id}/existencias`, {
+		method: "PATCH",
+		body: JSON.stringify(movimiento),
+	});
 }
 
 /**

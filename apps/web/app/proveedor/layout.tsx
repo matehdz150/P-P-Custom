@@ -8,6 +8,7 @@ import {
 	ProviderAuthProvider,
 	useProviderAuth,
 } from "@/Contexts/ProviderAuthContext";
+import { AvisoDePerfil } from "@/components/Proveedor/AvisoDePerfil";
 
 export default function ProviderLayout({
 	children,
@@ -109,7 +110,11 @@ function Shell({ children }: { children: React.ReactNode }) {
 				</div>
 			</aside>
 
+			{/* Va en el layout y no en la página de pedidos: lo que falta le
+			    estorba igual mirando el inventario o dando de alta un producto,
+			    y ahí es justo cuando conviene enterarse. */}
 			<main className="ml-[236px] min-h-screen flex-1 px-10 py-[34px]">
+				<AvisoDePerfil />
 				{children}
 			</main>
 		</div>
