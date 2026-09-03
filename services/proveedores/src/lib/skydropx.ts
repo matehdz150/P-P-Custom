@@ -209,6 +209,52 @@ type RespuestaCotizacion = {
 	}[];
 };
 
+/* ─── Qué paqueterías se pueden ofrecer ──────────────────────────────────
+
+   Cotizar no es lo mismo que poder despachar. Skydropx cotiza con todas las
+   paqueterías de la cuenta, pero si la credencial de una no está dada de alta,
+   la guía se compra y muere con "Credential ... was not found in cache". Para
+   entonces el cliente YA eligió y pagó ese envío, y el taller se queda sin
+   forma de mandarlo: el pedido se atasca con el dinero dentro.
+
+   Pasó de verdad con ampm y con tresguerras; sólo Paquetexpress generó
+   etiqueta. Por eso se puede acotar lo que se ofrece.
+
+   Con la variable vacía se ofrecen todas, que es como estaba. Con
+   `SKYDROPX_PAQUETERIAS=paquetexpress` sólo se ofrece esa. Es una lista
+   separada por comas.
+
+   Se compara sin acentos, espacios ni mayúsculas porque el nombre llega como
+   lo escribe Skydropx: "Paquetexpress", "ampm", "Tres Guerras". */
+const PERMITIDAS = (process.env.SKYDROPX_PAQUETERIAS ?? "")
+	.split(",")
+	.map((n) => nombreLlano(n))
+	.filter(Boolean);
+
+/**
+ * El rango de diacríticos se arma en tiempo de ejecución a propósito: escrito
+ * literal, Biome y las herramientas de edición lo convierten en el carácter
+ * combinante de verdad y el reemplazo deja de funcionar sin avisar.
+ */
+const DIACRITICOS = new RegExp(
+	`[${String.fromCharCode(0x300)}-${String.fromCharCode(0x36f)}]`,
+	"g",
+);
+
+function nombreLlano(s: string) {
+	return s
+		.normalize("NFD")
+		.replace(DIACRITICOS, "")
+		.toLowerCase()
+		.replace(/[^a-z0-9]/g, "");
+}
+
+/** Si la lista está vacía pasan todas: no filtrar es el comportamiento viejo. */
+export function paqueteriaPermitida(nombre: string | null | undefined) {
+	if (PERMITIDAS.length === 0) return true;
+	return PERMITIDAS.includes(nombreLlano(String(nombre ?? "")));
+}
+
 /**
  * Consulta una cotización ya creada.
  *
@@ -227,6 +273,8 @@ export async function consultarCotizacion(id: string): Promise<{
 		// la ruta o no aplican, con el precio en null. Enseñar eso sería
 		// enseñar ruido: sólo pasan las que traen precio de verdad.
 		.filter((r) => r.total !== null && Number(r.total) > 0)
+		// Y de esas, sólo las que de verdad pueden despachar. Ver arriba.
+		.filter((r) => paqueteriaPermitida(r.provider_display_name))
 		.map((r) => ({
 			id: r.id,
 			paqueteria: r.provider_display_name ?? "—",
