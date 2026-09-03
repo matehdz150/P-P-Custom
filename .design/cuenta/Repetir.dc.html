@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: Poppins, system-ui, sans-serif; }
+    a { color: #7cb944; text-decoration: none; }
+    a:hover { color: #2b2812; }
+    * { box-sizing: border-box; }
+  </style>
+</helmet>
+
+<div style="display: flex; width: 1440px; min-height: 1120px; background: #fffdf8; color: #2b2812;">
+
+  <aside style="display: flex; flex-direction: column; justify-content: space-between; width: 236px; flex-shrink: 0; padding: 26px 18px; background: #ffffff; border-right: 1px solid rgba(43,40,18,0.12);">
+    <div style="display: flex; flex-direction: column; gap: 28px;">
+      <span style="padding-left: 12px; font-family: Poppins, sans-serif; font-size: 26px; font-weight: 600; line-height: 1; letter-spacing: -0.05em;">kustto</span>
+      <nav style="display: flex; flex-direction: column; gap: 3px;">
+        <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; background: #f3f3f1; font-size: 15px; font-weight: 600; color: #2b2812;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 6.5h15M4.5 12h15M4.5 17.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          <span style="flex: 1;">Pedidos</span>
+          <span style="display: flex; align-items: center; justify-content: center; height: 22px; min-width: 22px; padding: 0 6px; border-radius: 999px; background: #aeff6e; font-size: 12px; font-weight: 600; color: #2b2812;">2</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; font-size: 15px; color: rgba(43,40,18,0.7);">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.6 19.4l1-4.2L15.2 5.6a2.1 2.1 0 013 3l-9.6 9.6-4.2 1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path><path d="M13.6 7.2l3.2 3.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+          <span style="flex: 1;">Mis diseños</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; font-size: 15px; color: rgba(43,40,18,0.7);">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.5"></rect><rect x="13" y="4" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.5"></rect><rect x="4" y="13" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.5"></rect><rect x="13" y="13" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.5"></rect></svg>
+          <span style="flex: 1;">Catálogo</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; font-size: 15px; color: rgba(43,40,18,0.7);">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8.4" r="3.4" stroke="currentColor" stroke-width="1.5"></circle><path d="M5.4 19.2c0-3 2.9-5.2 6.6-5.2s6.6 2.2 6.6 5.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+          <span style="flex: 1;">Perfil</span>
+        </div>
+      </nav>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 3px; padding-top: 18px; border-top: 1px solid rgba(43,40,18,0.12);">
+      <div style="display: flex; align-items: center; gap: 10px; padding: 0 12px 12px;">
+        <span style="display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; flex-shrink: 0; border-radius: 999px; background: #aeff6e; font-family: Figtree, sans-serif; font-size: 15px; font-weight: 700;">A</span>
+        <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+          <span style="font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Ana Ramírez</span>
+          <span style="font-size: 12px; color: rgba(43,40,18,0.55); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">ana@acme.mx</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; font-size: 15px; color: rgba(43,40,18,0.7);">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 16.5l4-4.5-4-4.5M18 12H9M11 4.5H6.5A1.5 1.5 0 005 6v12a1.5 1.5 0 001.5 1.5H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        Cerrar sesión
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; padding: 34px 40px 44px;">
+    <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: rgba(43,40,18,0.6);">← Pedidos</span>
+
+    <div style="display: flex; flex-direction: column; gap: 5px; padding-top: 12px;">
+      <h1 style="margin: 0; font-family: Figtree, sans-serif; font-size: 30px; font-weight: 600; line-height: 38px; letter-spacing: -0.032em;">Repetir el pedido #481902</h1>
+      <p style="margin: 0; font-size: 15px; line-height: 25px; color: rgba(43,40,18,0.65);">Del 2 de agosto. Ajusta las tallas y revisa lo que cambió desde entonces.</p>
+    </div>
+
+    <!-- Lo primero que hay que decir: repetir produce VARIOS pedidos -->
+    <div style="display: flex; align-items: flex-start; gap: 11px; margin-top: 20px; padding: 14px 16px; border: 1px solid rgba(43,40,18,0.14); border-radius: 10px; background: #f3f3f1;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px;"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"></circle><path d="M12 11v5.4M12 7.8v.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <span style="font-size: 14px; line-height: 22px;">Lo produce <strong style="font-weight: 600;">más de un taller</strong>, así que van a salir <strong style="font-weight: 600;">dos pedidos</strong> con folios distintos — uno por taller. Pagas una sola vez.</span>
+    </div>
+
+    <!-- Taller 1 -->
+    <section style="padding-top: 26px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 12px;">
+        <h2 style="margin: 0; font-family: Figtree, sans-serif; font-size: 17px; font-weight: 600; letter-spacing: -0.02em;">Taller de Prueba</h2>
+        <span style="font-size: 13px; color: rgba(43,40,18,0.5);">Guadalajara · 5 días</span>
+      </div>
+
+      <!-- Cambió el precio -->
+      <article style="display: flex; align-items: center; gap: 18px; padding: 16px; border: 1px solid rgba(43,40,18,0.12); border-top-left-radius: 12px; border-top-right-radius: 12px; background: #ffffff;">
+        <div style="display: flex; align-items: center; justify-content: center; width: 62px; height: 62px; flex-shrink: 0; border-radius: 10px; background: #f3f3f1;">
+          <svg width="38" height="38" viewBox="0 0 118 118" fill="none" aria-hidden="true"><path d="M38 27l-14 7.4v14.6l8.6 3.2V91h48V52.2l8.6-3.2V34.4L75 27l-10 6.6H48L38 27z" stroke="rgba(43,40,18,0.3)" stroke-width="3" stroke-linejoin="round"></path><rect x="45" y="47" width="28" height="22" rx="2" fill="#aeff6e"></rect></svg>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0;">
+          <span style="font-size: 15px; font-weight: 600;">Playera cuello redondo 180g</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55);">Logo Acme — playera negra · Negro</span>
+          <span style="display: inline-flex; align-items: center; gap: 6px; width: fit-content; margin-top: 2px; padding: 3px 9px; border-radius: 999px; background: rgba(248,119,77,0.16); font-size: 12px; font-weight: 600; color: #a8421f;">Subió de $195 a $210 por pieza</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+            <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: rgba(43,40,18,0.45);">M</span>
+            <div style="display: flex; align-items: center; justify-content: center; width: 54px; height: 42px; border: 1.5px solid rgba(43,40,18,0.18); border-radius: 8px; background: #ffffff; font-family: ui-monospace, monospace; font-size: 16px;">12</div>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+            <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: rgba(43,40,18,0.45);">L</span>
+            <div style="display: flex; align-items: center; justify-content: center; width: 54px; height: 42px; border: 1.5px solid rgba(43,40,18,0.18); border-radius: 8px; background: #ffffff; font-family: ui-monospace, monospace; font-size: 16px;">8</div>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+            <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: rgba(43,40,18,0.45);">XL</span>
+            <div style="display: flex; align-items: center; justify-content: center; width: 54px; height: 42px; border: 1.5px solid rgba(43,40,18,0.18); border-radius: 8px; background: #ffffff; font-family: ui-monospace, monospace; font-size: 16px;">4</div>
+          </div>
+        </div>
+
+        <span style="width: 92px; flex-shrink: 0; text-align: right; font-family: Figtree, sans-serif; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums;">$5,040</span>
+      </article>
+
+      <!-- Ya no está: la única que exige decidir algo -->
+      <article style="display: flex; align-items: center; gap: 18px; padding: 16px; border: 1px solid rgba(43,40,18,0.12); border-top: none; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; background: rgba(192,57,43,0.04);">
+        <div style="display: flex; align-items: center; justify-content: center; width: 62px; height: 62px; flex-shrink: 0; border-radius: 10px; background: #f3f3f1; opacity: 0.5;">
+          <svg width="38" height="38" viewBox="0 0 118 118" fill="none" aria-hidden="true"><path d="M44 34h30l4 52a6 6 0 01-6 6H46a6 6 0 01-6-6l4-52z" stroke="rgba(43,40,18,0.3)" stroke-width="3" stroke-linejoin="round"></path></svg>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0;">
+          <span style="font-size: 15px; font-weight: 600; color: rgba(43,40,18,0.55); text-decoration: line-through;">Termo de acero 600 ml</span>
+          <span style="display: inline-flex; align-items: center; width: fit-content; margin-top: 2px; padding: 3px 9px; border-radius: 999px; background: rgba(192,57,43,0.12); font-size: 12px; font-weight: 600; color: #c0392b;">Ya no está en el catálogo</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55);">Tu diseño se queda guardado por si vuelve.</span>
+        </div>
+
+        <span style="display: flex; align-items: center; height: 38px; padding: 0 16px; flex-shrink: 0; border: 1.5px solid rgba(43,40,18,0.2); border-radius: 999px; font-size: 14px; font-weight: 600;">Quitar del pedido</span>
+        <span style="width: 92px; flex-shrink: 0; text-align: right; font-family: Figtree, sans-serif; font-size: 17px; font-weight: 600; color: rgba(43,40,18,0.35); text-decoration: line-through;">$3,100</span>
+      </article>
+    </section>
+
+    <!-- Taller 2 -->
+    <section style="padding-top: 26px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 12px;">
+        <h2 style="margin: 0; font-family: Figtree, sans-serif; font-size: 17px; font-weight: 600; letter-spacing: -0.02em;">Bordados Tapatíos</h2>
+        <span style="font-size: 13px; color: rgba(43,40,18,0.5);">Zapopan</span>
+      </div>
+
+      <!-- Cambió el plazo por falta de blancos -->
+      <article style="display: flex; align-items: center; gap: 18px; padding: 16px; border: 1px solid rgba(43,40,18,0.12); border-radius: 12px; background: #ffffff;">
+        <div style="display: flex; align-items: center; justify-content: center; width: 62px; height: 62px; flex-shrink: 0; border-radius: 10px; background: #f3f3f1;">
+          <svg width="38" height="38" viewBox="0 0 118 118" fill="none" aria-hidden="true"><path d="M30 66c0-16 13-29 29-29s29 13 29 29v6H30v-6z" stroke="rgba(43,40,18,0.3)" stroke-width="3" stroke-linejoin="round"></path><path d="M26 72h66v7H26z" stroke="rgba(43,40,18,0.3)" stroke-width="3" stroke-linejoin="round"></path><circle cx="59" cy="56" r="10" fill="#c9b8ff"></circle></svg>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0;">
+          <span style="font-size: 15px; font-weight: 600;">Gorra bordada</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55);">Logo Acme — gorra · Blanco</span>
+          <span style="display: inline-flex; align-items: center; width: fit-content; margin-top: 2px; padding: 3px 9px; border-radius: 999px; background: #c9b8ff; font-size: 12px; font-weight: 600;">Ahora tarda 12 días — el taller compra el blanco</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+            <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: rgba(43,40,18,0.45);">Única</span>
+            <div style="display: flex; align-items: center; justify-content: center; width: 54px; height: 42px; border: 1.5px solid rgba(43,40,18,0.18); border-radius: 8px; background: #ffffff; font-family: ui-monospace, monospace; font-size: 16px;">24</div>
+          </div>
+        </div>
+
+        <span style="width: 92px; flex-shrink: 0; text-align: right; font-family: Figtree, sans-serif; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums;">$2,880</span>
+      </article>
+    </section>
+
+    <!-- El total, con el de antes al lado: es la comparación que la empresa hace -->
+    <section style="display: flex; justify-content: flex-end; padding-top: 26px;">
+      <div style="display: flex; flex-direction: column; gap: 14px; width: 420px; padding: 22px; border: 1px solid rgba(43,40,18,0.12); border-radius: 12px; background: #ffffff;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between;">
+          <span style="font-size: 14px; color: rgba(43,40,18,0.6);">Lo que pagaste en agosto</span>
+          <span style="font-family: ui-monospace, monospace; font-size: 15px; color: rgba(43,40,18,0.5); text-decoration: line-through;">$10,720</span>
+        </div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between; padding-top: 12px; border-top: 1.5px solid rgba(43,40,18,0.14);">
+          <span style="font-family: Figtree, sans-serif; font-size: 17px; font-weight: 600; letter-spacing: -0.02em;">Ahora</span>
+          <span style="font-family: Figtree, sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -0.032em; font-variant-numeric: tabular-nums;">$7,920</span>
+        </div>
+        <span style="font-size: 13px; line-height: 21px; color: rgba(43,40,18,0.55);">Sin el termo y con la playera más cara. El envío se cotiza en el siguiente paso, por taller.</span>
+        <span style="display: flex; align-items: center; justify-content: center; height: 52px; border-radius: 8px; background: #2b2812; font-size: 16px; font-weight: 600; color: #aeff6e;">Continuar al pago</span>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+</body>
+</html>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useProviderAuth } from "@/Contexts/ProviderAuthContext";
+import { mismaRuta } from "@/lib/rutas";
 
 /**
  * Le dice al taller lo que le falta para poder vender con envío.
@@ -32,8 +33,10 @@ export function AvisoDePerfil() {
 	const pathname = usePathname();
 
 	// En el propio perfil sobra: el aviso estaría encima del formulario que lo
-	// resuelve, señalando campos que ya se ven.
-	if (!provider || pathname === "/proveedor/perfil") return null;
+	// resuelve, señalando campos que ya se ven. Sin la barra final, porque en
+	// producción `usePathname()` la trae y el aviso salía TAMBIÉN ahí — ver
+	// `lib/rutas.ts`.
+	if (!provider || mismaRuta(pathname, "/proveedor/perfil")) return null;
 
 	const sinDireccion = !provider.recoleccion?.cp;
 	const sinTelefono = !String(provider.whatsapp ?? "").trim();

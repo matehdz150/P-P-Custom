@@ -24,6 +24,7 @@ FUNCION="${KUSTTO_LAMBDA_COMPRADORES:-kustto-compradores}"
 ROL="${FUNCION}-rol"
 API_NOMBRE="${KUSTTO_API:-kustto-admin-api}"
 TABLA="${KUSTTO_TABLA:-kustto-prod}"
+PUBLICO="${KUSTTO_BUCKET_PUBLICO:-kustto-publico-prod}"
 ORIGEN="${KUSTTO_ORIGEN:-http://localhost:3000}"
 
 CUENTA=$(aws_ sts get-caller-identity --query Account --output text)
@@ -52,20 +53,59 @@ fi
 # ampliarla no surtiría efecto justo donde el rol ya existe, y se descubre con
 # un AccessDenied en producción.
 #
-# Es el rol más estrecho de los tres: lee pedidos por índice, y escribe
-# ÚNICAMENTE el ítem de su propia cuenta. Sin borrar, sin S3, sin Cognito, sin
-# transacciones. Un comprador no crea nada que otro tenga que ver.
+# Sigue siendo el rol más estrecho de los tres: sin Cognito y sin
+# transacciones. Escribe sólo bajo su propio `CUSTOMER#<sub>`, que es la llave
+# que arma el handler con el `sub` del token — no con nada que venga del
+# cuerpo.
+#
+# `DeleteItem` hace falta para vaciar el carrito y para quitar un diseño
+# guardado. Sin él, `DELETE /cuenta/carrito` devolvía un 500 con
+# `AccessDenied` en el log y "Error interno" en el navegador.
+#
+# EL S3 ES ASIMÉTRICO Y ES DELIBERADO: lee de `medios/pedidos/*` y escribe
+# Escribir en `carritos/*` es para repetir un pedido: el arte se copia de
+# servidor a servidor en vez de hacer que el navegador baje varios MB y los
+# vuelva a subir. Ese prefijo caduca a los 30 días, así que lo peor que puede
+# dejar un fallo a medias es basura que se limpia sola.
+#
+# SÓLO en `medios/disenos/*`. Guardar un diseño copia el arte de un pedido a
+# la carpeta de diseños, así que necesita leer el origen; lo que no puede
+# hacer nunca es tocar el arte de un pedido ya hecho.
+#
+# Lo que IAM no puede hacer aquí: la política deja escribir en la carpeta de
+# CUALQUIER comprador. Lo único que separa a uno de otro es que la Lambda arma
+# la ruta con el `sub` del token (`rutas/disenos.ts`). Si esa carpeta llegara a
+# salir del cuerpo de la petición, la separación desaparece sin que ningún
+# permiso proteste.
 aws_ iam put-role-policy --role-name "$ROL" --policy-name datos \
   --policy-document "{
     \"Version\": \"2012-10-17\",
     \"Statement\": [
       {
         \"Effect\": \"Allow\",
-        \"Action\": [\"dynamodb:GetItem\", \"dynamodb:PutItem\", \"dynamodb:Query\"],
+        \"Action\": [
+          \"dynamodb:GetItem\", \"dynamodb:PutItem\", \"dynamodb:UpdateItem\",
+          \"dynamodb:DeleteItem\", \"dynamodb:Query\"
+        ],
         \"Resource\": [
           \"arn:aws:dynamodb:${REGION}:${CUENTA}:table/${TABLA}\",
           \"arn:aws:dynamodb:${REGION}:${CUENTA}:table/${TABLA}/index/*\"
         ]
+      },
+      {
+        \"Effect\": \"Allow\",
+        \"Action\": [\"s3:GetObject\"],
+        \"Resource\": \"arn:aws:s3:::${PUBLICO}/medios/pedidos/*\"
+      },
+      {
+        \"Effect\": \"Allow\",
+        \"Action\": [\"s3:PutObject\"],
+        \"Resource\": \"arn:aws:s3:::${PUBLICO}/medios/disenos/*\"
+      },
+      {
+        \"Effect\": \"Allow\",
+        \"Action\": [\"s3:PutObject\"],
+        \"Resource\": \"arn:aws:s3:::${PUBLICO}/carritos/*\"
       }
     ]
   }"
@@ -83,7 +123,7 @@ else
   powershell.exe -NoProfile -Command "Compress-Archive -Path services\compradores\dist\handler.mjs -DestinationPath services\compradores\compradores.zip -Force" >/dev/null
 fi
 
-VARIABLES="Variables={KUSTTO_TABLA=$TABLA,KUSTTO_ORIGEN=$ORIGEN}"
+VARIABLES="Variables={KUSTTO_TABLA=$TABLA,KUSTTO_BUCKET_PUBLICO=$PUBLICO,KUSTTO_ORIGEN=$ORIGEN}"
 
 if aws_ lambda get-function --function-name "$FUNCION" >/dev/null 2>&1; then
   echo "Actualizando código…"

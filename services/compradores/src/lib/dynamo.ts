@@ -101,7 +101,46 @@ export const llaves = {
 	 * (ver `carritos/` en infra/buckets.sh).
 	 */
 	carrito: (sub: string) => ({ pk: `CUSTOMER#${sub}`, sk: "CART" }),
+
+	/**
+	 * Un diseño guardado: el logo al que su dueño le puso nombre.
+	 *
+	 * CUELGA DEL MISMO `CUSTOMER#` que el perfil y el carrito, en otro `sk`. No
+	 * es una comodidad, es la única forma de listarlos: los tres índices ya
+	 * están ocupados (ver infra/README.md) y un cuarto obligaría a replantear
+	 * el reparto entero. Con esto, "mis diseños" es un `Query` sobre la
+	 * partición que ya existe, con `begins_with(sk, "DESIGN#")`.
+	 */
+	diseno: (sub: string, id: string) => ({
+		pk: `CUSTOMER#${sub}`,
+		sk: `DESIGN#${id}`,
+	}),
+
+	/** El prefijo con el que se listan. Espejo del `sk` de arriba. */
+	disenosDe: (sub: string) => ({
+		pk: `CUSTOMER#${sub}`,
+		prefijo: "DESIGN#",
+	}),
+
+	/**
+	 * El producto, para comparar lo que se pagó con lo que cuesta HOY.
+	 *
+	 * Sólo se lee. El comprador no escribe productos; esto existe porque
+	 * repetir un pedido cruza la frontera entre lo congelado y el catálogo, y
+	 * alguien tiene que mirar los dos lados.
+	 */
+	producto: (id: string) => ({ pk: `PRODUCT#${id}`, sk: "META" }),
 };
+
+/* ─── Existencias ─────────────────────────────────────────────────────────
+   Espejo de services/admin y services/proveedores: los tres se mueven
+   juntos. Ver infra/README.md. */
+
+/** La llave de una variante dentro del mapa `existencias` del producto. */
+export function variante(color: string | null, talla: string) {
+	const limpia = (s: string) => s.trim().replace(/\|/g, "-");
+	return color ? `${limpia(color)}|${limpia(talla)}` : limpia(talla);
+}
 
 /** Las llaves son de la tabla, no del recurso: no salen a la API. */
 export function sinLlaves<T extends Record<string, unknown>>(item: T) {

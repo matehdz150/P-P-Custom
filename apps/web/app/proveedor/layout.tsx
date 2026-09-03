@@ -9,6 +9,7 @@ import {
 	useProviderAuth,
 } from "@/Contexts/ProviderAuthContext";
 import { AvisoDePerfil } from "@/components/Proveedor/AvisoDePerfil";
+import { mismaRuta } from "@/lib/rutas";
 
 export default function ProviderLayout({
 	children,
@@ -16,7 +17,14 @@ export default function ProviderLayout({
 	children: React.ReactNode;
 }) {
 	const pathname = usePathname();
-	const isLogin = pathname === "/proveedor/login";
+
+	/* SIN LA BARRA FINAL, y no es cosmético.
+	   En el sitio publicado `usePathname()` devuelve `/proveedor/login/`, así
+	   que comparar contra el literal daba falso, se montaba el panel en vez del
+	   login, y sin sesión el panel devuelve `null`: pantalla en blanco y el
+	   efecto redirigiendo al mismo sitio en bucle. En desarrollo no pasa porque
+	   `trailingSlash` sólo se enciende al exportar. Ver `lib/rutas.ts`. */
+	const isLogin = mismaRuta(pathname, "/proveedor/login");
 
 	return (
 		<ProviderAuthProvider>
@@ -132,7 +140,9 @@ function NavLink({
 }) {
 	const pathname = usePathname();
 	const { nuevos } = usePedidos();
-	const activo = pathname === href;
+	// Igual que arriba: con la barra final, en producción NINGUNA entrada
+	// quedaba marcada como activa.
+	const activo = mismaRuta(pathname, href);
 
 	// La insignia sólo vive en Pedidos y sólo cuando hay algo sin abrir.
 	const insignia = href === "/proveedor" && nuevos > 0 ? nuevos : null;

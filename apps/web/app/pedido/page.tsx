@@ -1,73 +1,35 @@
 "use client";
 
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { useComprador } from "@/Contexts/CompradorContext";
 import Footer from "@/components/Kustto/Footer";
 import Header from "@/components/Kustto/Header";
+import DetalleDePedido from "@/components/Pedido/Detalle";
 import { getMiPedido } from "@/lib/api/cuenta";
 import { type PedidoEnSeguimiento, seguirPedido } from "@/lib/api/pedir";
 
 /**
- * El seguimiento del pedido.
+ * El seguimiento del pedido, para quien llega DE FUERA.
  *
  * SE PUEDE LLEGAR POR DOS CAMINOS y los dos enseñan lo mismo:
  *
  *   CON SESIÓN — se pide por `/cuenta/pedidos/:id`, que comprueba que el
  *   pedido sea tuyo comparando el correo del token. No hace falta el token del
- *   enlace, y por eso "Ver detalle" funciona desde el panel.
+ *   enlace.
  *
  *   SIN SESIÓN — con el `?token=` que va en el enlace del correo. Pedir no
  *   exige cuenta, así que este camino no puede desaparecer.
  *
  * Cuando hay sesión se prefiere la sesión aunque venga token: el token caduca
  * conceptualmente —se comparte, se reenvía— y la sesión es quien de verdad es.
- */
-
-const PASOS = [
-	{
-		estado: "nuevo",
-		etiqueta: "Recibido",
-		explica: "El taller ya lo tiene y va a confirmarte precio y fecha.",
-	},
-	{
-		estado: "produccion",
-		etiqueta: "En producción",
-		explica: "Lo están fabricando ahora mismo.",
-	},
-	{
-		estado: "listo",
-		etiqueta: "Listo",
-		explica: "Terminado y listo para salir.",
-	},
-	{
-		estado: "enviado",
-		etiqueta: "En camino",
-		explica: "Va con la paquetería. Abajo tienes el número para rastrearlo.",
-	},
-	{ estado: "entregado", etiqueta: "Entregado", explica: "Se entregó." },
-];
-
-/**
- * Los pasos que se enseñan, según cómo se entrega.
  *
- * Quien recoge en el taller no pasa por "En camino": enseñarle un paso que
- * nunca se va a marcar deja la barra a medias para siempre y da la impresión
- * de que algo se atoró.
+ * QUIEN YA ESTÁ DENTRO DEL PANEL no pasa por aquí: allí el mismo detalle se
+ * abre sin salir del dashboard. Los dos pintan `<DetalleDePedido>`, que es lo
+ * que garantiza que sean la misma pantalla y no dos que se parecen.
  */
-function pasosDe(metodo: string | undefined) {
-	return metodo === "recoger"
-		? PASOS.filter((p) => p.estado !== "enviado")
-		: PASOS;
-}
-
-const pesos = (n: number) =>
-	new Intl.NumberFormat("es-MX", {
-		style: "currency",
-		currency: "MXN",
-		maximumFractionDigits: 0,
-	}).format(n);
 
 function Seguimiento() {
 	/* El id va en la query y no en la ruta a propósito.
@@ -167,224 +129,20 @@ function Seguimiento() {
 		);
 	}
 
-	const cancelado = pedido.estado === "cancelado";
-	const entrega = pedido.entrega;
-	const pasos = pasosDe(entrega?.metodo);
-	const pasoActual = pasos.findIndex((p) => p.estado === pedido.estado);
-
 	return (
-		<main className="mx-auto w-full max-w-[760px] flex-1 px-5 py-8 md:py-12">
+		<main className="mx-auto w-full max-w-[1120px] flex-1 px-5 py-8 md:py-12">
 			{comprador && (
 				<Link
 					href="/cuenta"
-					className="inline-flex items-center gap-1.5 text-[14px] font-medium text-tinta/60 hover:text-tinta"
+					className="mb-4 inline-flex items-center gap-1.5 text-[14px] font-medium text-tinta/60 hover:text-tinta"
 				>
-					<span aria-hidden>←</span> Mis pedidos
+					<ArrowLeft className="size-4" aria-hidden />
+					Mis pedidos
 				</Link>
 			)}
 
-			{/* La cabecera del estado: lo primero que alguien viene a saber. */}
-			<section
-				className={`mt-4 rounded-2xl px-6 py-7 md:px-8 md:py-8 ${
-					cancelado ? "bg-gris" : "bg-tinta"
-				}`}
-			>
-				<span
-					className={`font-mono text-[13px] ${cancelado ? "text-tinta/55" : "text-hueso-suave/60"}`}
-				>
-					Pedido #{pedido.folio}
-				</span>
-				<h1
-					className={`pt-1 font-display text-[28px] font-semibold leading-9 tracking-[-0.032em] md:text-[34px] ${
-						cancelado ? "text-tinta" : "text-lima"
-					}`}
-				>
-					{cancelado ? "Pedido cancelado" : pasos[pasoActual]?.etiqueta}
-				</h1>
-				<p
-					className={`max-w-[46ch] pt-2 text-[15px] leading-[25px] ${
-						cancelado ? "text-tinta/70" : "text-hueso-suave/75"
-					}`}
-				>
-					{cancelado
-						? "Este pedido se canceló. Si crees que es un error, escríbenos con tu folio."
-						: pasos[pasoActual]?.explica}
-				</p>
-
-				{!cancelado && (
-					<ol className="flex gap-1.5 pt-7">
-						{pasos.map((paso, i) => (
-							<li key={paso.estado} className="flex flex-1 flex-col gap-2">
-								<span
-									className={`h-1.5 rounded-full ${
-										i <= pasoActual ? "bg-lima" : "bg-hueso-suave/20"
-									}`}
-								/>
-								<span
-									className={`text-[11px] leading-tight md:text-xs ${
-										i <= pasoActual ? "text-hueso-suave" : "text-hueso-suave/45"
-									}`}
-								>
-									{paso.etiqueta}
-								</span>
-							</li>
-						))}
-					</ol>
-				)}
-			</section>
-
-			<Titulo>Lo que pediste</Titulo>
-			<section className="flex flex-col gap-3">
-				{pedido.lineas.map((l) => (
-					<article
-						key={l.id}
-						className="flex gap-4 rounded-xl border border-tinta/12 bg-white p-4"
-					>
-						<div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gris">
-							{/* La colocación —la prenda con el diseño encima— antes que la
-							    foto de catálogo: es lo que la persona reconoce como suyo. */}
-							{/* biome-ignore lint/performance/noImgElement: export estático */}
-							<img
-								src={l.arte?.[0]?.colocacion ?? l.imagen ?? ""}
-								alt=""
-								className="h-full w-full object-contain"
-							/>
-						</div>
-						<div className="flex min-w-0 flex-col gap-1">
-							<span className="text-[15px] font-semibold text-tinta">
-								{l.producto}
-							</span>
-							<span className="text-sm text-tinta/65">
-								{l.colorPrenda ? `${l.colorPrenda} · ` : ""}
-								{l.tallas.map((t) => `${t.size}×${t.piezas}`).join(", ")}
-							</span>
-							<span className="text-sm text-tinta/65">
-								{l.lados.length} {l.lados.length === 1 ? "lado" : "lados"} con
-								diseño · {pesos(l.importe)}
-							</span>
-						</div>
-					</article>
-				))}
-
-				<div className="flex items-center justify-between rounded-xl border border-tinta/12 bg-gris px-4 py-3.5">
-					<span className="text-sm text-tinta/70">
-						{pedido.piezas} {pedido.piezas === 1 ? "pieza" : "piezas"}
-					</span>
-					<span className="font-display text-[19px] font-semibold tabular-nums text-tinta">
-						{pesos(pedido.total)}
-					</span>
-				</div>
-			</section>
-
-			{/* El rastreo, en cuanto el taller compra la guía.
-
-			    Va ANTES de la dirección porque es lo que alguien viene a mirar
-			    cuando su pedido ya salió: la dirección ya la escribió él. */}
-			{pedido.guia?.rastreo && (
-				<>
-					<Titulo>Rastrea tu paquete</Titulo>
-					<div className="rounded-xl border border-tinta/12 bg-white p-4">
-						<p className="text-[15px] text-tinta/70">
-							Lo lleva{" "}
-							<span className="font-semibold text-tinta">
-								{pedido.guia.paqueteria ??
-									pedido.envio?.paqueteria ??
-									"la paquetería"}
-							</span>
-						</p>
-
-						<p className="pt-1 font-mono text-[17px] font-semibold tracking-[0.01em] text-tinta">
-							{pedido.guia.rastreo}
-						</p>
-
-						{pedido.guia.rastreoUrl && (
-							<a
-								href={pedido.guia.rastreoUrl}
-								target="_blank"
-								rel="noreferrer"
-								className="mt-3.5 inline-flex h-11 items-center rounded-lg bg-tinta px-5 text-[15px] font-semibold text-lima"
-							>
-								Ver dónde va
-							</a>
-						)}
-
-						<p className="pt-3 text-[13px] leading-[19px] text-tinta/55">
-							El rastreo lo actualiza la paquetería y puede tardar unas horas en
-							mostrar movimiento después de la recolección.
-						</p>
-					</div>
-				</>
-			)}
-
-			{entrega && (
-				<>
-					<Titulo>
-						{entrega.metodo === "recoger" ? "Recoges con el taller" : "Envío a"}
-					</Titulo>
-					<div className="rounded-xl border border-tinta/12 bg-white p-4 text-[15px] leading-[25px] text-tinta/80">
-						{entrega.metodo === "recoger" ? (
-							<p>El taller se pone de acuerdo contigo por WhatsApp.</p>
-						) : entrega.direccion ? (
-							<p>
-								{entrega.direccion.calle} {entrega.direccion.numero}
-								{entrega.direccion.interior
-									? ` int. ${entrega.direccion.interior}`
-									: ""}
-								<br />
-								{entrega.direccion.colonia}, {entrega.direccion.ciudad}
-								<br />
-								{entrega.direccion.estado}, C.P. {entrega.direccion.cp}
-								{entrega.direccion.referencias && (
-									<>
-										<br />
-										<span className="text-tinta/55">
-											{entrega.direccion.referencias}
-										</span>
-									</>
-								)}
-							</p>
-						) : null}
-					</div>
-				</>
-			)}
-
-			<Titulo>Lo que ha pasado</Titulo>
-			<ol className="flex flex-col gap-2.5">
-				{pedido.bitacora.map((b) => (
-					<li key={`${b.estado}-${b.en}`} className="flex gap-3 text-sm">
-						<span className="w-16 shrink-0 font-mono text-tinta/50">
-							{new Date(b.en).toLocaleDateString("es-MX", {
-								day: "2-digit",
-								month: "short",
-							})}
-						</span>
-						<span className="text-tinta/80">
-							{PASOS.find((p) => p.estado === b.estado)?.etiqueta ?? b.estado}
-							{b.nota ? ` — ${b.nota}` : ""}
-						</span>
-					</li>
-				))}
-			</ol>
-
-			{/* Sólo tiene sentido decírselo a quien no tiene dónde volver. */}
-			{!comprador && (
-				<p className="pt-9 text-[13px] leading-5 text-tinta/55">
-					Guarda este enlace: es la forma de volver a tu pedido.{" "}
-					<Link href="/cuenta/entrar" className="font-semibold text-tinta">
-						Crea una cuenta
-					</Link>{" "}
-					y no vas a necesitarlo.
-				</p>
-			)}
+			<DetalleDePedido pedido={pedido} conCuenta={Boolean(comprador)} />
 		</main>
-	);
-}
-
-function Titulo({ children }: { children: React.ReactNode }) {
-	return (
-		<h2 className="pb-3 pt-9 font-display text-[19px] font-semibold tracking-[-0.02em] text-tinta">
-			{children}
-		</h2>
 	);
 }
 

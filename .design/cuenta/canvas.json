@@ -1,0 +1,25 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 980, "title": "Detalle A · Panel" },
+    { "file": "DetalleB.dc.html", "x": 1560, "y": 0, "w": 1440, "h": 980, "title": "Detalle B · Línea de tiempo" },
+    { "file": "RepetirA.dc.html", "x": 0, "y": 1140, "w": 1440, "h": 980, "title": "Repetir A · Comparación" },
+    { "file": "RepetirB.dc.html", "x": 1560, "y": 1140, "w": 1440, "h": 980, "title": "Repetir B · Tarjetas" }
+  ],
+  "annotations": [
+    {
+      "id": "detalle",
+      "x": 0,
+      "y": -150,
+      "w": 620,
+      "text": "DETALLE DEL PEDIDO — dos formas de usar el ancho.\n\nA · Panel: la banda de estado a lo ancho, y debajo dos columnas — lo que se lee largo a la izquierda, lo que se consulta de un vistazo a la derecha.\n\nB · Línea de tiempo: el viaje del pedido ES la columna izquierda. Los pasos y la bitácora dejan de contarse dos veces, y el rastreo vive dentro del paso actual."
+    },
+    {
+      "id": "repetir",
+      "x": 0,
+      "y": 990,
+      "w": 620,
+      "text": "REPETIR — el problema no era el ancho, era que no se ve QUÉ cambió.\n\nA · Comparación: columnas ENTONCES y HOY. La pregunta que trae a alguien aquí se responde leyendo en horizontal.\n\nB · Tarjetas: cada diseño con su miniatura grande y una franja de color arriba según su estado. Se reconoce sin leer, pero el precio viejo cuesta más encontrarlo."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}

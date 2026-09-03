@@ -102,7 +102,7 @@ if [ "$ARN_FUNCION" = "None" ] || [ -z "$ARN_FUNCION" ]; then
   aws_ cloudfront create-function \
     --name "$NOMBRE_FUNCION" \
     --function-config "Comment=Resuelve las URLs sin extension al index.html,Runtime=cloudfront-js-2.0" \
-    --function-code "fileb://${CODIGO_FUNCION}" >/dev/null
+    --function-code "fileb://$(ruta_cli "$CODIGO_FUNCION")" >/dev/null
 else
   ETAG_FUNCION=$(aws_ cloudfront describe-function --name "$NOMBRE_FUNCION" \
     --query "ETag" --output text)
@@ -110,7 +110,7 @@ else
     --name "$NOMBRE_FUNCION" \
     --if-match "$ETAG_FUNCION" \
     --function-config "Comment=Resuelve las URLs sin extension al index.html,Runtime=cloudfront-js-2.0" \
-    --function-code "fileb://${CODIGO_FUNCION}" >/dev/null
+    --function-code "fileb://$(ruta_cli "$CODIGO_FUNCION")" >/dev/null
 fi
 
 # Publicar es un paso aparte: sin esto la distribución sigue con la versión
@@ -153,14 +153,14 @@ python3 infra/frontend-config.py \
 if [ "$DIST_ID" = "None" ] || [ -z "$DIST_ID" ]; then
   echo "Creando la distribución…"
   DIST_ID=$(aws_ cloudfront create-distribution \
-    --distribution-config "file://${CONFIG}" \
+    --distribution-config "file://$(ruta_cli "$CONFIG")" \
     --query "Distribution.Id" --output text)
 else
   echo "Actualizando la distribución $DIST_ID…"
   ETAG=$(aws_ cloudfront get-distribution-config --id "$DIST_ID" \
     --query "ETag" --output text)
   aws_ cloudfront update-distribution --id "$DIST_ID" \
-    --distribution-config "file://${CONFIG}" --if-match "$ETAG" >/dev/null
+    --distribution-config "file://$(ruta_cli "$CONFIG")" --if-match "$ETAG" >/dev/null
 fi
 
 rm -f "$CONFIG"
@@ -199,7 +199,7 @@ CAMBIOS=$(mktemp)
 python3 infra/frontend-dns.py --dominio "$DOMINIO" --destino "$DOMINIO_CF" > "$CAMBIOS"
 
 aws_ route53 change-resource-record-sets --hosted-zone-id "$ZONA" \
-  --change-batch "file://${CAMBIOS}" >/dev/null
+  --change-batch "file://$(ruta_cli "$CAMBIOS")" >/dev/null
 
 rm -f "$CAMBIOS"
 

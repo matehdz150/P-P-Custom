@@ -100,6 +100,31 @@ export function useCarrito() {
 		[escribir],
 	);
 
+	/**
+	 * Varios de golpe. Es lo que usa "repetir pedido".
+	 *
+	 * NO es `agregar` en un bucle: cada `agregar` escribe en las dos mitades, o
+	 * sea que repetir cinco líneas mandaría cinco PATCH a la cuenta con el
+	 * carrito casi igual, y el último gana. Aquí se escribe una vez.
+	 *
+	 * Si no caben todos, no se mete ninguno: dejar entrar tres de cinco sin
+	 * decir cuáles es peor que no dejar entrar nada.
+	 */
+	const agregarVarios = useCallback(
+		(nuevos: ArticuloDeCarrito[]) => {
+			const actuales = leerLocal();
+
+			if (actuales.length + nuevos.length > MAXIMO_ARTICULOS) {
+				throw new Error(
+					`El carrito no admite más de ${MAXIMO_ARTICULOS} artículos, y ya tienes ${actuales.length}.`,
+				);
+			}
+
+			escribir([...actuales, ...nuevos]);
+		},
+		[escribir],
+	);
+
 	const quitar = useCallback(
 		(id: string) => {
 			escribir(leerLocal().filter((a) => a.id !== id));
@@ -126,5 +151,13 @@ export function useCarrito() {
 		if (leerSesion()) vaciarCarritoDeLaCuenta().catch(() => {});
 	}, []);
 
-	return { articulos, cargando, agregar, quitar, cambiarTallas, vaciar };
+	return {
+		articulos,
+		cargando,
+		agregar,
+		agregarVarios,
+		quitar,
+		cambiarTallas,
+		vaciar,
+	};
 }

@@ -33,3 +33,6 @@ infra/.correo-envio
 # El build del sitio publicado (infra/sitio.sh)
 .next-sitio/
 infra/.frontend
+
+# Vista previa de los correos (infra local, no va al repo)
+.correos/

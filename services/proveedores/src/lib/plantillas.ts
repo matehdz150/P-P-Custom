@@ -34,55 +34,239 @@ import { type Correo, esc, pesos, SITIO } from "./correo.js";
  * Gmail borra las hojas de estilo, Outlook renderiza con Word y el flexbox no
  * existe ahí. Lo que aquí parece anticuado es lo único que se ve igual en
  * todos.
+ *
+ * TAMPOCO HAY TIPOGRAFÍA DE MARCA. Figtree y Poppins no se pueden cargar en
+ * un correo —Outlook ignora las webfonts—, así que la marca la sostienen el
+ * color, el espacio y el tono.
+ *
+ * VAN EN OSCURO, sobre tinta. No es una variante: es el correo. Por eso se
+ * declara `color-scheme: dark`, para que los clientes que invierten solos no
+ * lo "arreglen" a claro y rompan el contraste que se buscó.
  */
 
-const TINTA = "#2b2812";
-const HUESO = "#fffdf8";
-const GRIS = "#f3f3f1";
+/* ─── El sistema ─────────────────────────────────────────────────────────── */
 
-/** El marco común. Todo lo demás sólo rellena el cuerpo. */
-function envoltorio(titulo: string, cuerpo: string): string {
+/** El fondo de la página: tinta bajada, para que la tarjeta se despegue. */
+const FONDO = "#1b1a0c";
+const TINTA = "#2b2812";
+/** Tinta levantada. Es la superficie de las fichas dentro de la tarjeta. */
+const SUPERFICIE = "#39351b";
+const LIMA = "#aeff6e";
+const LAVANDA = "#c9b8ff";
+const HUESO = "#fffdf8";
+
+/* Los apagados van en hexadecimal y no en rgba: Outlook renderiza con Word y
+   la transparencia le sale a manchas. Son el hueso mezclado con la tinta. */
+const SUAVE = "#b9b5a4";
+const TENUE = "#847f6b";
+const BORDE = "#453f22";
+
+const FUENTE =
+	"-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+
+const P = `margin:0 0 14px;font-size:15px;line-height:24px;color:${SUAVE};`;
+
+/**
+ * El marco común.
+ *
+ * `preheader` es lo que se lee en la bandeja DESPUÉS del asunto, y era lo que
+ * más faltaba: sin él, Gmail rellena ese hueco con lo primero que encuentre en
+ * el cuerpo —o sea la palabra "kustto"— y desperdicia la única línea que
+ * decide si alguien abre. Va oculto y seguido de espacios de ancho cero para
+ * que el cliente no siga arrastrando texto detrás.
+ *
+ * La cabecera es una BANDA LIMA con el logo en tinta. Es lo primero que se ve
+ * y lo que hace que el correo se reconozca antes de leerlo; en oscuro, un
+ * logotipo claro sobre fondo oscuro se pierde entre el resto del texto.
+ */
+function envoltorio(
+	titulo: string,
+	preheader: string,
+	cuerpo: string,
+): string {
 	return `<!doctype html>
-<html lang="es"><head><meta charset="utf-8">
+<html lang="es"><head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(titulo)}</title></head>
-<body style="margin:0;padding:0;background:${GRIS};">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${GRIS};padding:24px 12px;">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
+<title>${esc(titulo)}</title>
+</head>
+<body style="margin:0;padding:0;background:${FONDO};-webkit-font-smoothing:antialiased;">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;height:0;width:0;">${esc(preheader)}${"&#8199;&#65279;&#847; ".repeat(40)}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="${FONDO}" style="background:${FONDO};padding:28px 12px;">
 <tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:${HUESO};border-radius:14px;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
-<tr><td style="padding:26px 28px 0;">
-<span style="font-size:21px;font-weight:700;letter-spacing:-0.04em;color:${TINTA};">kustto</span>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="${TINTA}" style="max-width:560px;background:${TINTA};border-radius:18px;overflow:hidden;font-family:${FUENTE};">
+
+<tr><td bgcolor="${LIMA}" style="background:${LIMA};padding:16px 32px;">
+<span style="font-size:21px;font-weight:700;letter-spacing:-0.045em;color:${TINTA};">kustto</span>
 </td></tr>
+
 ${cuerpo}
-<tr><td style="padding:22px 28px 28px;border-top:1px solid rgba(43,40,18,0.10);">
-<p style="margin:0;font-size:12px;line-height:18px;color:rgba(43,40,18,0.45);">
+
+<tr><td style="padding:24px 32px 30px;border-top:1px solid ${BORDE};">
+<p style="margin:0;font-size:12px;line-height:19px;color:${TENUE};font-family:${FUENTE};">
 Personalización bajo demanda, hecha en México.<br>
-¿Dudas? Responde a este correo y te contestamos.
+¿Dudas? <strong style="color:${SUAVE};font-weight:600;">Responde a este correo</strong> y te contestamos.
 </p>
 </td></tr>
+
 </table>
 </td></tr></table>
 </body></html>`;
 }
 
-function boton(url: string, texto: string): string {
-	return `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:18px 0 0;"><tr>
-<td style="background:${TINTA};border-radius:9px;">
-<a href="${esc(url)}" style="display:inline-block;padding:13px 26px;font-size:15px;font-weight:600;color:#aeff6e;text-decoration:none;">${esc(texto)}</a>
-</td></tr></table>`;
+/**
+ * El titular, con un antetítulo en lima.
+ *
+ * El antetítulo hace el trabajo que en el sitio hacen los pesos de Figtree:
+ * en dos palabras dice de qué va el correo antes de que se lea el titular,
+ * y con la tipografía del sistema esa jerarquía no se puede conseguir sólo
+ * con tamaños.
+ */
+function encabezado(
+	antetitulo: string,
+	titulo: string,
+	entrada: string,
+	acento = LIMA,
+): string {
+	return `<tr><td style="padding:28px 32px 0;font-family:${FUENTE};">
+<p style="margin:0 0 8px;font-size:12px;line-height:16px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${acento};">${antetitulo}</p>
+<h1 style="margin:0 0 12px;font-size:29px;line-height:35px;font-weight:700;letter-spacing:-0.035em;color:${HUESO};">${titulo}</h1>
+<p style="${P}">${entrada}</p>
+</td></tr>`;
 }
 
-const P = `margin:0 0 12px;font-size:15px;line-height:24px;color:${TINTA};`;
+/**
+ * Dónde va el pedido, en cuatro tramos.
+ *
+ * Es lo que más levanta el correo de una lista de datos: en un vistazo se ve
+ * el camino entero y en qué punto está, sin leer. Hecho con celdas y bloques
+ * de color en vez de una imagen, porque las imágenes llegan bloqueadas por
+ * defecto en media bandeja y un progreso que no se ve no sirve de nada.
+ *
+ * Los tramos pasados van en lima apagado y el actual en lima: si todos
+ * fueran iguales habría que contar para saber dónde estás.
+ */
+function progreso(activo: number, recoge: boolean): string {
+	const tramos = [
+		"Recibido",
+		"Producción",
+		recoge ? "Listo" : "En camino",
+		recoge ? "Recogido" : "Entregado",
+	];
+
+	const celdas = tramos
+		.map((nombre, i) => {
+			const hecho = i < activo;
+			const aqui = i === activo;
+			const color = aqui ? LIMA : hecho ? "#6d8f47" : BORDE;
+			return `<td width="25%" style="padding:0 3px 0 0;">
+<div style="height:5px;background:${color};border-radius:3px;font-size:0;line-height:0;">&nbsp;</div>
+<p style="margin:8px 0 0;font-family:${FUENTE};font-size:11px;line-height:14px;letter-spacing:0.02em;color:${aqui ? HUESO : TENUE};font-weight:${aqui ? "700" : "400"};">${nombre}</p>
+</td>`;
+		})
+		.join("");
+
+	return `<tr><td style="padding:22px 32px 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>${celdas}</tr></table>
+</td></tr>`;
+}
+
+/**
+ * El dato grande.
+ *
+ * Un folio o un número de rastreo en cuerpo 15 obliga a buscarlo; puesto en
+ * grande, ES el correo. Va sobre la superficie levantada para que se lea como
+ * una placa y no como un párrafo suelto.
+ */
+function destacado(etiqueta: string, valor: string, pie?: string): string {
+	return `<tr><td style="padding:22px 32px 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="${SUPERFICIE}" style="background:${SUPERFICIE};border-radius:14px;">
+<tr><td align="center" style="padding:20px 18px;font-family:${FUENTE};">
+<p style="margin:0 0 6px;font-size:11px;line-height:15px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${TENUE};">${etiqueta}</p>
+<p style="margin:0;font-size:30px;line-height:36px;font-weight:700;letter-spacing:-0.02em;color:${LIMA};">${valor}</p>
+${pie ? `<p style="margin:8px 0 0;font-size:13px;line-height:19px;color:${SUAVE};">${pie}</p>` : ""}
+</td></tr></table>
+</td></tr>`;
+}
+
+/**
+ * Los datos, en pares etiqueta/valor.
+ *
+ * En dos columnas y no en una frase corrida: quien abre esto ya sabe qué
+ * compró y busca UN dato. Alineados, el ojo lo encuentra sin leer.
+ */
+function ficha(filas: [string, string][], titulo?: string): string {
+	const cuerpo = filas
+		.map(
+			([etiqueta, valor], i) => `<tr>
+<td style="padding:${i === 0 ? "0" : "10px"} 12px 0 0;font-size:13px;line-height:20px;color:${TENUE};white-space:nowrap;vertical-align:top;">${etiqueta}</td>
+<td style="padding:${i === 0 ? "0" : "10px"} 0 0;font-size:14px;line-height:20px;color:${HUESO};font-weight:600;text-align:right;">${valor}</td>
+</tr>`,
+		)
+		.join("");
+
+	return `<tr><td style="padding:18px 32px 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="${SUPERFICIE}" style="background:${SUPERFICIE};border-radius:14px;">
+<tr><td style="padding:18px 20px;font-family:${FUENTE};">
+${titulo ? `<p style="margin:0 0 14px;padding:0 0 12px;border-bottom:1px solid ${BORDE};font-size:16px;line-height:22px;font-weight:700;color:${HUESO};">${titulo}</p>` : ""}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">${cuerpo}</table>
+</td></tr></table>
+</td></tr>`;
+}
+
+/**
+ * El botón, en lima con texto tinta.
+ *
+ * Invertido respecto al sitio a propósito: sobre oscuro, un botón oscuro
+ * desaparece. Es una tabla con `bgcolor` y no un `<a>` con padding porque
+ * Outlook ignora el padding de los enlaces y el botón sale del tamaño del
+ * texto.
+ */
+function boton(url: string, texto: string): string {
+	return `<tr><td style="padding:22px 32px 0;">
+<table role="presentation" cellpadding="0" cellspacing="0"><tr>
+<td bgcolor="${LIMA}" style="background:${LIMA};border-radius:10px;">
+<a href="${esc(url)}" style="display:inline-block;padding:14px 30px;font-family:${FUENTE};font-size:15px;font-weight:700;color:${TINTA};text-decoration:none;">${esc(texto)}</a>
+</td></tr></table>
+</td></tr>`;
+}
+
+/** La letra chica. Con barra de acento cuando hay que hacerle caso. */
+function nota(html: string, acento?: string): string {
+	if (!acento) {
+		return `<tr><td style="padding:18px 32px 0;font-family:${FUENTE};">
+<p style="margin:0;font-size:13px;line-height:20px;color:${TENUE};">${html}</p>
+</td></tr>`;
+	}
+
+	return `<tr><td style="padding:20px 32px 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="${SUPERFICIE}" style="background:${SUPERFICIE};border-radius:0 12px 12px 0;border-left:3px solid ${acento};">
+<tr><td style="padding:14px 16px;font-family:${FUENTE};">
+<p style="margin:0;font-size:13px;line-height:20px;color:${SUAVE};">${html}</p>
+</td></tr></table>
+</td></tr>`;
+}
+
+/** Cierra el cuerpo con aire antes del pie. */
+const FIN = `<tr><td style="height:10px;line-height:10px;">&nbsp;</td></tr>`;
+
+/** Las piezas, en singular o plural, que se repite en los cinco. */
+const piezas = (n: number) => `${n} ${n === 1 ? "pieza" : "piezas"}`;
 
 /* ─── 1 · Al comprador, cuando hace el pedido ───────────────────────────── */
 
 /**
- * EL CORREO MÁS IMPORTANTE DE LOS TRES.
+ * EL CORREO MÁS IMPORTANTE DE LOS CINCO.
  *
  * Lleva el enlace de seguimiento, y ese enlace es lo ÚNICO que da acceso al
  * pedido a quien pidió sin cuenta: del token sólo se guarda su huella, así que
  * si se pierde no hay forma de devolvérselo, ni por soporte. Antes de esto el
  * enlace sólo aparecía en pantalla y cerrar la pestaña bastaba para perderlo.
+ *
+ * Por eso el "guarda este correo" va acentuado y no en letra gris al final:
+ * es la única instrucción del correo que tiene consecuencias si se ignora.
  */
 export function pedidoRecibido(datos: {
 	para: string;
@@ -101,8 +285,8 @@ export function pedidoRecibido(datos: {
 		"",
 		`Recibimos tu pedido #${datos.folio}. El taller ya lo tiene.`,
 		"",
-		`${datos.producto} · ${datos.piezas} ${datos.piezas === 1 ? "pieza" : "piezas"}`,
-		`Total: ${pesos(datos.total)}`,
+		`${datos.producto}`,
+		`${piezas(datos.piezas)} · ${pesos(datos.total)}`,
 		datos.dias ? `Producción estimada: ${datos.dias} días` : "",
 		"",
 		"Sigue tu pedido aquí:",
@@ -116,27 +300,31 @@ export function pedidoRecibido(datos: {
 
 	const html = envoltorio(
 		`Pedido #${datos.folio} recibido`,
-		`<tr><td style="padding:20px 28px 0;">
-<h1 style="margin:0 0 14px;font-size:23px;line-height:30px;font-weight:700;letter-spacing:-0.02em;color:${TINTA};">
-Recibimos tu pedido</h1>
-<p style="${P}">Hola ${esc(datos.nombre)}, el taller ya tiene tu pedido
-<strong>#${esc(datos.folio)}</strong> y se pone con él.</p>
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:6px 0 0;background:${GRIS};border-radius:10px;">
-<tr><td style="padding:14px 16px;">
-<p style="margin:0;font-size:15px;line-height:22px;color:${TINTA};"><strong>${esc(datos.producto)}</strong></p>
-<p style="margin:2px 0 0;font-size:14px;line-height:21px;color:rgba(43,40,18,0.65);">
-${datos.piezas} ${datos.piezas === 1 ? "pieza" : "piezas"} · ${pesos(datos.total)}${
-			datos.dias ? ` · ~${datos.dias} días de producción` : ""
-		}</p>
-</td></tr></table>
-
-${boton(url, "Seguir mi pedido")}
-
-<p style="margin:16px 0 0;font-size:13px;line-height:20px;color:rgba(43,40,18,0.6);">
-<strong>Guarda este correo.</strong> Ese enlace es la única forma de entrar a tu
-pedido si no tienes cuenta con nosotros.</p>
-</td></tr>`,
+		"Aquí está tu enlace de seguimiento — guárdalo.",
+		encabezado(
+			"Pedido confirmado",
+			"Ya está en el taller",
+			`Hola ${esc(datos.nombre)}, tu pedido entró y el taller se pone con él.`,
+		) +
+			destacado(
+				"Tu folio",
+				`#${esc(datos.folio)}`,
+				datos.dias ? `Listo en ~${datos.dias} días` : undefined,
+			) +
+			progreso(0, false) +
+			ficha(
+				[
+					["Cantidad", piezas(datos.piezas)],
+					["Total", pesos(datos.total)],
+				],
+				esc(datos.producto),
+			) +
+			boton(url, "Seguir mi pedido") +
+			nota(
+				`<strong style="color:${HUESO};">Guarda este correo.</strong> Ese enlace es la única forma de entrar a tu pedido si no tienes cuenta con nosotros.`,
+				LIMA,
+			) +
+			FIN,
 	);
 
 	return {
@@ -153,6 +341,14 @@ pedido si no tienes cuenta con nosotros.</p>
  * El taller sólo se enteraba si tenía el panel abierto: el aviso en vivo va
  * por WebSocket y muere con la pestaña. Un pedido que entra un viernes por la
  * tarde esperaba al lunes.
+ *
+ * Éste es una herramienta de trabajo, no un correo de marca: lo que importa
+ * es que en la bandeja se lea cuánto es y de qué, sin abrirlo. De ahí el
+ * asunto con las piezas y el preheader con el producto.
+ *
+ * Va en LAVANDA en vez de lima, que es el otro acento de la marca: el taller
+ * recibe los suyos mezclados con los del cliente si usa el mismo correo, y a
+ * un golpe de vista se distinguen.
  */
 export function pedidoParaTaller(datos: {
 	para: string;
@@ -164,47 +360,49 @@ export function pedidoParaTaller(datos: {
 	metodo: string;
 }): Correo {
 	const url = `${SITIO}/proveedor`;
+	const recoge = datos.metodo === "recoger";
+	const entrega = recoge ? "Lo recoge el cliente" : "Se envía por paquetería";
 
 	const texto = [
+		`Hola ${datos.taller},`,
+		"",
 		`Entró el pedido #${datos.folio}.`,
 		"",
-		`${datos.producto} · ${datos.piezas} ${datos.piezas === 1 ? "pieza" : "piezas"}`,
-		`Importe: ${pesos(datos.total)}`,
-		datos.metodo === "recoger"
-			? "El cliente lo recoge contigo."
-			: "Lleva envío a domicilio.",
+		`${datos.producto}`,
+		`${piezas(datos.piezas)} · ${pesos(datos.total)}`,
+		entrega,
 		"",
-		"Ábrelo en tu panel para ver el arte y los datos:",
+		"Los archivos de producción y los datos de entrega están en tu panel:",
 		url,
 	].join("\n");
 
 	const html = envoltorio(
-		`Pedido #${datos.folio}`,
-		`<tr><td style="padding:20px 28px 0;">
-<h1 style="margin:0 0 14px;font-size:23px;line-height:30px;font-weight:700;letter-spacing:-0.02em;color:${TINTA};">
-Tienes un pedido nuevo</h1>
-<p style="${P}">${esc(datos.taller)}, entró el pedido
-<strong>#${esc(datos.folio)}</strong>.</p>
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:6px 0 0;background:${GRIS};border-radius:10px;">
-<tr><td style="padding:14px 16px;">
-<p style="margin:0;font-size:15px;line-height:22px;color:${TINTA};"><strong>${esc(datos.producto)}</strong></p>
-<p style="margin:2px 0 0;font-size:14px;line-height:21px;color:rgba(43,40,18,0.65);">
-${datos.piezas} ${datos.piezas === 1 ? "pieza" : "piezas"} · ${pesos(datos.total)} · ${
-			datos.metodo === "recoger" ? "lo recoge el cliente" : "con envío"
-		}</p>
-</td></tr></table>
-
-${boton(url, "Abrir el pedido")}
-
-<p style="margin:16px 0 0;font-size:13px;line-height:20px;color:rgba(43,40,18,0.6);">
-En el panel están el arte listo para producir, las tallas y la dirección.</p>
-</td></tr>`,
+		`Pedido nuevo #${datos.folio}`,
+		`${piezas(datos.piezas)} de ${datos.producto} · ${pesos(datos.total)}`,
+		encabezado(
+			"Trabajo nuevo",
+			"Entró un pedido",
+			`Hola ${esc(datos.taller)}, tienes algo que producir.`,
+			LAVANDA,
+		) +
+			destacado("Pedido", `#${esc(datos.folio)}`, `${piezas(datos.piezas)}`) +
+			ficha(
+				[
+					["Entrega", entrega],
+					["Te toca", pesos(datos.total)],
+				],
+				esc(datos.producto),
+			) +
+			boton(url, "Ver el pedido") +
+			nota(
+				"En el panel están los archivos listos para imprimir, con sus medidas y su resolución.",
+			) +
+			FIN,
 	);
 
 	return {
 		para: datos.para,
-		asunto: `Pedido nuevo #${datos.folio} · ${datos.piezas} ${datos.piezas === 1 ? "pieza" : "piezas"}`,
+		asunto: `Pedido nuevo #${datos.folio} · ${piezas(datos.piezas)}`,
 		texto,
 		html,
 	};
@@ -231,68 +429,67 @@ export function pedidoListo(datos: {
 	folio: string;
 	producto: string;
 	piezas: number;
-	metodo: "envio" | "recoger";
-	/** Sólo con `recoger`: dónde y con quién. */
+	metodo: string;
 	taller?: string | null;
 	direccion?: string | null;
 	whatsapp?: string | null;
 }): Correo {
 	const recoge = datos.metodo === "recoger";
 
-	const dondeTexto = recoge
-		? [
-				datos.taller ? `Lo tiene ${datos.taller}.` : "",
-				datos.direccion ? `Dirección: ${datos.direccion}` : "",
-				datos.whatsapp
-					? `Escríbeles antes de ir para acordar la hora: ${datos.whatsapp}`
-					: "Escríbenos si quieres acordar una hora antes de ir.",
-			].filter((l) => l !== "")
-		: [
-				"En cuanto la paquetería lo recoja te mandamos el número de rastreo",
-				"para que lo sigas.",
-			];
-
 	const texto = [
 		`Hola ${datos.nombre},`,
 		"",
 		recoge
-			? `Tu pedido #${datos.folio} ya está terminado y puedes pasar por él.`
-			: `Tu pedido #${datos.folio} ya está terminado y sale del taller.`,
+			? `Tu pedido #${datos.folio} ya está listo para que lo recojas.`
+			: `Tu pedido #${datos.folio} ya está hecho y va camino a la paquetería.`,
 		"",
-		`${datos.producto} · ${datos.piezas} ${datos.piezas === 1 ? "pieza" : "piezas"}`,
+		`${datos.producto} · ${piezas(datos.piezas)}`,
 		"",
-		...dondeTexto,
-	].join("\n");
+		...(recoge
+			? [
+					datos.taller ? `Recógelo en ${datos.taller}` : "",
+					datos.direccion ?? "",
+					datos.whatsapp ? `WhatsApp: ${datos.whatsapp}` : "",
+					"",
+					"Escríbeles antes de ir para acordar la hora.",
+				]
+			: ["Te avisamos otra vez en cuanto salga, con el número de rastreo."]),
+	]
+		.filter((l) => l !== "")
+		.join("\n");
 
-	const dondeHtml = recoge
-		? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:6px 0 0;background:${GRIS};border-radius:10px;">
-<tr><td style="padding:14px 16px;">
-<p style="margin:0;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(43,40,18,0.45);">Pasa por él</p>
-${datos.taller ? `<p style="margin:5px 0 0;font-size:15px;line-height:22px;color:${TINTA};"><strong>${esc(datos.taller)}</strong></p>` : ""}
-${datos.direccion ? `<p style="margin:2px 0 0;font-size:14px;line-height:21px;color:rgba(43,40,18,0.65);">${esc(datos.direccion)}</p>` : ""}
-${datos.whatsapp ? `<p style="margin:8px 0 0;font-size:14px;line-height:21px;color:rgba(43,40,18,0.65);">Acuerda la hora al <strong style="color:${TINTA};">${esc(datos.whatsapp)}</strong></p>` : ""}
-</td></tr></table>`
-		: `<p style="margin:14px 0 0;font-size:13px;line-height:20px;color:rgba(43,40,18,0.6);">
-En cuanto la paquetería lo recoja te mandamos el número de rastreo para que lo
-sigas.</p>`;
+	const filas: [string, string][] = [
+		["Folio", `#${esc(datos.folio)}`],
+		["Cantidad", piezas(datos.piezas)],
+	];
+	if (recoge && datos.whatsapp) filas.push(["WhatsApp", esc(datos.whatsapp)]);
 
 	const html = envoltorio(
-		`Tu pedido #${datos.folio} está listo`,
-		`<tr><td style="padding:20px 28px 0;">
-<h1 style="margin:0 0 14px;font-size:23px;line-height:30px;font-weight:700;letter-spacing:-0.02em;color:${TINTA};">
-${recoge ? "Ya puedes pasar por él" : "Tu pedido ya está hecho"}</h1>
-<p style="${P}">Hola ${esc(datos.nombre)}, el taller terminó tu pedido
-<strong>#${esc(datos.folio)}</strong>.</p>
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:6px 0 14px;background:${GRIS};border-radius:10px;">
-<tr><td style="padding:14px 16px;">
-<p style="margin:0;font-size:15px;line-height:22px;color:${TINTA};"><strong>${esc(datos.producto)}</strong></p>
-<p style="margin:2px 0 0;font-size:14px;line-height:21px;color:rgba(43,40,18,0.65);">
-${datos.piezas} ${datos.piezas === 1 ? "pieza" : "piezas"}</p>
-</td></tr></table>
-
-${dondeHtml}
-</td></tr>`,
+		recoge ? "Listo para recoger" : "Tu pedido ya está hecho",
+		recoge
+			? "Pásate por él cuando quieras — dentro va la dirección."
+			: "Ahora pasa a la paquetería. Te avisamos cuando salga.",
+		encabezado(
+			recoge ? "Listo para recoger" : "Producción terminada",
+			recoge ? "Ya puedes recogerlo" : "Tu pedido ya está hecho",
+			recoge
+				? `Hola ${esc(datos.nombre)}, el taller terminó y te lo tiene guardado.`
+				: `Hola ${esc(datos.nombre)}, el taller terminó y ahora pasa a la paquetería.`,
+		) +
+			(recoge && datos.taller
+				? destacado("Recógelo en", esc(datos.taller), esc(datos.direccion ?? ""))
+				: destacado("Tu folio", `#${esc(datos.folio)}`)) +
+			progreso(2, recoge) +
+			ficha(filas, esc(datos.producto)) +
+			(recoge
+				? nota(
+						"Escríbeles antes de ir para acordar la hora: así no te encuentras la cortina abajo.",
+						LIMA,
+					)
+				: nota(
+						"Te escribimos otra vez en cuanto salga, con el número para rastrearlo.",
+					)) +
+			FIN,
 	);
 
 	return {
@@ -313,6 +510,9 @@ ${dondeHtml}
  * sin cuenta lo tiene en el correo de confirmación; el de aquí lleva lo que
  * de verdad hace falta en este momento —el número y el enlace de la
  * paquetería— y para quien sí tenga cuenta, el acceso a sus pedidos.
+ *
+ * El número de rastreo va EN GRANDE y en el preheader: es el dato que la
+ * gente busca, y aquí se puede copiar sin buscarlo.
  */
 export function pedidoEnviado(datos: {
 	para: string;
@@ -325,38 +525,38 @@ export function pedidoEnviado(datos: {
 	const texto = [
 		`Hola ${datos.nombre},`,
 		"",
-		`Tu pedido #${datos.folio} ya va en camino con ${datos.paqueteria}.`,
+		`Tu pedido #${datos.folio} va en camino.`,
 		"",
+		`Paquetería: ${datos.paqueteria}`,
 		`Número de rastreo: ${datos.rastreo}`,
-		datos.rastreoUrl ? `Sigue el paquete: ${datos.rastreoUrl}` : "",
+		datos.rastreoUrl ? `Rastréalo aquí: ${datos.rastreoUrl}` : "",
 		"",
-		"El rastreo lo actualiza la paquetería y puede tardar unas horas en",
-		"mostrar movimiento después de la recolección.",
+		"Los tiempos los pone la paquetería; nosotros ya cumplimos nuestra parte.",
 	]
 		.filter((l) => l !== "")
 		.join("\n");
 
 	const html = envoltorio(
-		`Tu pedido #${datos.folio} va en camino`,
-		`<tr><td style="padding:20px 28px 0;">
-<h1 style="margin:0 0 14px;font-size:23px;line-height:30px;font-weight:700;letter-spacing:-0.02em;color:${TINTA};">
-Tu pedido va en camino</h1>
-<p style="${P}">Hola ${esc(datos.nombre)}, el pedido
-<strong>#${esc(datos.folio)}</strong> salió del taller con
-<strong>${esc(datos.paqueteria)}</strong>.</p>
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:6px 0 0;background:${GRIS};border-radius:10px;">
-<tr><td style="padding:14px 16px;">
-<p style="margin:0;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(43,40,18,0.45);">Número de rastreo</p>
-<p style="margin:3px 0 0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:18px;font-weight:600;color:${TINTA};">${esc(datos.rastreo)}</p>
-</td></tr></table>
-
-${datos.rastreoUrl ? boton(datos.rastreoUrl, "Ver dónde va") : ""}
-
-<p style="margin:16px 0 0;font-size:13px;line-height:20px;color:rgba(43,40,18,0.6);">
-El rastreo lo actualiza la paquetería y puede tardar unas horas en mostrar
-movimiento después de la recolección.</p>
-</td></tr>`,
+		`Pedido #${datos.folio} en camino`,
+		`${datos.paqueteria} · rastreo ${datos.rastreo}`,
+		encabezado(
+			"En camino",
+			"Tu paquete salió",
+			`Hola ${esc(datos.nombre)}, tu pedido dejó el taller y ya lo tiene la paquetería.`,
+		) +
+			destacado(
+				`Rastreo · ${esc(datos.paqueteria)}`,
+				esc(datos.rastreo),
+				`Pedido #${esc(datos.folio)}`,
+			) +
+			progreso(2, false) +
+			(datos.rastreoUrl
+				? boton(datos.rastreoUrl, "Rastrear mi paquete")
+				: boton(`${SITIO}/cuenta`, "Ver mis pedidos")) +
+			nota(
+				"A partir de aquí los tiempos los pone la paquetería. Si algo se atora, respóndenos y lo vemos.",
+			) +
+			FIN,
 	);
 
 	return {
@@ -372,20 +572,16 @@ movimiento después de la recolección.</p>
 /**
  * El que cierra.
  *
- * Es el único momento en que preguntar algo no molesta: la prenda ya está en
- * sus manos. También es la última oportunidad de enterarnos de que llegó mal
- * antes de que el cliente se resigne y no vuelva.
- *
- * `entregado` lo pone la paquetería por webhook cuando hubo envío, y el taller
- * a mano cuando el cliente recogió. El texto se bifurca por eso: "te llegó" a
- * quien no estuvo ahí, "lo recogiste" a quien fue en persona.
+ * Es el único que puede pedir algo sin resultar pesado, porque llega cuando la
+ * persona tiene la prenda en la mano: por eso lleva la invitación a diseñar
+ * otra vez, y ninguno de los anteriores.
  */
 export function pedidoEntregado(datos: {
 	para: string;
 	nombre: string;
 	folio: string;
 	producto: string;
-	metodo: "envio" | "recoger";
+	metodo: string;
 }): Correo {
 	const recogio = datos.metodo === "recoger";
 
@@ -393,37 +589,37 @@ export function pedidoEntregado(datos: {
 		`Hola ${datos.nombre},`,
 		"",
 		recogio
-			? `Damos por recogido tu pedido #${datos.folio}. Gracias por pasar.`
-			: `Tu pedido #${datos.folio} aparece como entregado.`,
+			? `Tu pedido #${datos.folio} ya está en tus manos.`
+			: `Tu pedido #${datos.folio} llegó.`,
 		"",
-		datos.producto,
+		`${datos.producto}`,
 		"",
-		"Si algo no llegó como esperabas, responde a este correo y lo vemos.",
-		"Tienes hasta 7 días para reportarlo.",
+		"Si algo no salió como esperabas, responde a este correo y lo resolvemos.",
 		"",
-		`Vuelve cuando quieras: ${SITIO}`,
+		`¿Otra idea? ${SITIO}/catalogo`,
 	].join("\n");
 
 	const html = envoltorio(
-		`Tu pedido #${datos.folio} llegó`,
-		`<tr><td style="padding:20px 28px 0;">
-<h1 style="margin:0 0 14px;font-size:23px;line-height:30px;font-weight:700;letter-spacing:-0.02em;color:${TINTA};">
-${recogio ? "Gracias por pasar" : "Tu pedido llegó"}</h1>
-<p style="${P}">Hola ${esc(datos.nombre)}, damos por
-${recogio ? "recogido" : "entregado"} el pedido
-<strong>#${esc(datos.folio)}</strong>.</p>
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:6px 0 0;background:${GRIS};border-radius:10px;">
-<tr><td style="padding:14px 16px;">
-<p style="margin:0;font-size:15px;line-height:22px;color:${TINTA};"><strong>${esc(datos.producto)}</strong></p>
-</td></tr></table>
-
-${boton(SITIO, "Hacer otro")}
-
-<p style="margin:16px 0 0;font-size:13px;line-height:20px;color:rgba(43,40,18,0.6);">
-¿Algo no llegó como esperabas? Responde a este correo y lo vemos. Tienes 7 días
-para reportarlo.</p>
-</td></tr>`,
+		recogio ? "Ya lo tienes" : "Tu pedido llegó",
+		"Si algo no salió como esperabas, respóndenos.",
+		encabezado(
+			"Entregado",
+			recogio ? "Ya lo tienes" : "Tu pedido llegó",
+			`Hola ${esc(datos.nombre)}, ${
+				recogio ? "gracias por pasar por él" : "esperamos que te haya gustado"
+			}.`,
+		) +
+			progreso(3, recogio) +
+			ficha(
+				[["Folio", `#${esc(datos.folio)}`]],
+				esc(datos.producto),
+			) +
+			nota(
+				`<strong style="color:${HUESO};">¿Algo no salió bien?</strong> Responde a este correo. Lo lee una persona y lo resolvemos.`,
+				LIMA,
+			) +
+			boton(`${SITIO}/catalogo`, "Diseñar otra cosa") +
+			FIN,
 	);
 
 	return {

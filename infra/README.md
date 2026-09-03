@@ -47,6 +47,24 @@ Los tres del correo se corren una vez, y `correo-envio.sh` necesita además
 credenciales de la **cuenta root** (perfil `moderateapi`): el envío sale de
 allá, no de la cuenta de la app.
 
+**En Windows, para `sitio.sh` hay que parar antes el `pnpm dev`.** El script
+aparta `app/admin` y `app/api` para construir sin ellos —el export no los
+admite— y `next dev` tiene esos archivos tomados: el `mv` falla con
+`Permission denied` y la publicación se corta antes de empezar. En macOS no
+pasa, porque ahí un archivo abierto se puede mover igual.
+
+**Y `sitio.sh` necesita `infra/.frontend`**, que es generado y no viaja en el
+repo. Si falta, la vía barata **no** es correr `frontend.sh` —ése crea y
+ACTUALIZA la distribución y el DNS— sino escribirlo con lo que ya existe:
+
+```bash
+source infra/aws.sh
+DIST=$(aws_ cloudfront list-distributions \
+  --query "DistributionList.Items[?contains(Aliases.Items,'kustto.com.mx')].{d:DomainName,i:Id}|[0]" --output text)
+printf 'KUSTTO_DISTRIBUCION=%s\nKUSTTO_BUCKET_SITIO=kustto-sitio-prod\nKUSTTO_DOMINIO_CF=%s\n' \
+  "$(echo "$DIST" | cut -f2)" "$(echo "$DIST" | cut -f1)" > infra/.frontend
+```
+
 ---
 
 ## Lo que existe hoy
@@ -548,9 +566,18 @@ Cada rol ve lo mínimo:
   que ningún permiso proteste.
 
 - **`kustto-compradores-rol`**: el más estrecho de los tres.
-  `GetItem`/`PutItem`/`Query` sobre la tabla y sus índices, y nada más. Sin
-  borrar, sin S3, sin Cognito, sin transacciones — un comprador no crea nada
-  que otro tenga que ver.
+  `GetItem`/`PutItem`/`UpdateItem`/`DeleteItem`/`Query` sobre la tabla y sus
+  índices. Sin Cognito y sin transacciones.
+
+  De S3 sólo ve tres cosas, y cada una por un motivo concreto:
+  `GetObject` en `medios/pedidos/*`, y `PutObject` en `medios/disenos/*` y en
+  `carritos/*`. Las tres son para **copiar de servidor a servidor**: guardar un
+  diseño con nombre copia el arte de un pedido a la carpeta del comprador, y
+  repetir un pedido lo copia a un carrito nuevo. La alternativa era que el
+  navegador bajara varios MB para volver a subirlos.
+
+  `DeleteItem` hace falta para vaciar el carrito y para quitar un diseño
+  guardado. Sin él, `DELETE /cuenta/carrito` devolvía un 500 en producción.
 
   **Lo que IAM tampoco puede hacer aquí:** la política deja leer cualquier
   ítem de la tabla. Lo único que impide que un comprador lea los pedidos de

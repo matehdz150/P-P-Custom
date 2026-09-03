@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: Poppins, system-ui, sans-serif; background: #fffdf8; color: #2b2812; }
+    * { box-sizing: border-box; }
+    a { color: #2b2812; } a:hover { color: #7cb944; }
+    .d { font-family: Figtree, system-ui, sans-serif; }
+  </style>
+</helmet>
+
+<div style="display:flex; width:1440px; height:980px; background:#fffdf8;">
+
+  <aside style="display:flex; flex-direction:column; justify-content:space-between; width:236px; flex:none; background:#ffffff; border-right:1px solid rgba(43,40,18,0.12); padding:26px 0;">
+    <div style="display:flex; flex-direction:column; gap:28px;">
+      <div style="padding:0 30px;">
+        <span class="d" style="font-size:26px; font-weight:600; letter-spacing:-0.05em; line-height:1;">kustto</span>
+      </div>
+      <nav style="display:flex; flex-direction:column; gap:4px; padding:0 18px;">
+        <div style="display:flex; align-items:center; gap:11px; height:42px; padding:0 12px; border-radius:10px; background:#2b2812; color:#aeff6e; font-size:15px; font-weight:500;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span style="flex:1;">Pedidos</span>
+          <span style="display:flex; align-items:center; justify-content:center; height:22px; min-width:22px; padding:0 6px; border-radius:999px; background:#aeff6e; color:#2b2812; font-size:12px; font-weight:600;">3</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:11px; height:42px; padding:0 12px; border-radius:10px; color:rgba(43,40,18,0.7); font-size:15px;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 9l10 6 10-6-10-6z"/><path d="m2 15 10 6 10-6"/></svg>
+          <span>Mis diseños</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:11px; height:42px; padding:0 12px; border-radius:10px; color:rgba(43,40,18,0.7); font-size:15px;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+          <span>Ajustes</span>
+        </div>
+      </nav>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px; margin:0 18px; padding:18px 12px 0; border-top:1px solid rgba(43,40,18,0.12);">
+      <span class="d" style="display:flex; align-items:center; justify-content:center; width:34px; height:34px; flex:none; border-radius:999px; background:#aeff6e; font-size:15px; font-weight:700;">M</span>
+      <div style="display:flex; flex-direction:column; min-width:0;">
+        <span style="font-size:14px; font-weight:600;">Mateo</span>
+        <span style="font-size:12px; color:rgba(43,40,18,0.55);">mateo@correo.mx</span>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex:1; min-width:0; padding:34px 40px 0; overflow:hidden;">
+
+    <!-- Titular de la página: el folio manda, el estado es una pastilla.
+         No hay banda oscura: el color se guarda para la línea de tiempo. -->
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:32px; padding-bottom:24px; border-bottom:1px solid rgba(43,40,18,0.12);">
+      <div>
+        <div style="display:flex; align-items:center; gap:6px; font-size:14px; font-weight:500; color:rgba(43,40,18,0.6);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          <span>Mis pedidos</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; margin-top:10px;">
+          <h1 class="d" style="margin:0; font-size:36px; font-weight:700; letter-spacing:-0.035em; line-height:1.1;">Pedido #922995</h1>
+          <span style="display:inline-flex; align-items:center; gap:7px; height:30px; padding:0 14px; border-radius:999px; background:#2b2812; color:#aeff6e; font-size:13px; font-weight:600;">
+            <span style="width:7px; height:7px; border-radius:999px; background:#aeff6e;"></span>
+            En camino
+          </span>
+        </div>
+        <p style="margin:8px 0 0; font-size:15px; color:rgba(43,40,18,0.6);">1 de septiembre · 5 piezas · 2 talleres</p>
+      </div>
+
+      <div style="display:flex; gap:10px; flex:none;">
+        <a href="#" style="display:inline-flex; align-items:center; gap:8px; height:44px; padding:0 20px; border-radius:999px; border:1.5px solid rgba(43,40,18,0.18); font-size:15px; font-weight:600; text-decoration:none;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>
+          Volver a pedir
+        </a>
+        <a href="#" style="display:inline-flex; align-items:center; gap:8px; height:44px; padding:0 22px; border-radius:999px; background:#2b2812; color:#aeff6e; font-size:15px; font-weight:600; text-decoration:none;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          Rastrear
+        </a>
+      </div>
+    </div>
+
+    <!-- El viaje como columna izquierda: pasos y bitácora son la MISMA cosa,
+         y aquí se cuentan una sola vez en vez de dos veces separadas. -->
+    <div style="display:grid; grid-template-columns:400px minmax(0,1fr); gap:44px; margin-top:26px;">
+
+      <div>
+        <h3 class="d" style="margin:0 0 18px; font-size:19px; font-weight:600; letter-spacing:-0.02em;">Dónde va</h3>
+
+        <ol style="margin:0; padding:0; list-style:none;">
+          <li style="display:flex; gap:18px;">
+            <div style="display:flex; flex-direction:column; align-items:center; width:34px; flex:none;">
+              <span style="display:flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; background:#aeff6e; color:#2b2812;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </span>
+              <span style="flex:1; width:2px; background:#aeff6e;"></span>
+            </div>
+            <div style="padding-bottom:22px;">
+              <p class="d" style="margin:5px 0 0; font-size:16px; font-weight:600;">Recibido</p>
+              <p style="margin:3px 0 0; font-size:13px; color:rgba(43,40,18,0.55);">1 sep · el taller lo tomó</p>
+            </div>
+          </li>
+
+          <li style="display:flex; gap:18px;">
+            <div style="display:flex; flex-direction:column; align-items:center; width:34px; flex:none;">
+              <span style="display:flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; background:#aeff6e; color:#2b2812;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </span>
+              <span style="flex:1; width:2px; background:#aeff6e;"></span>
+            </div>
+            <div style="padding-bottom:22px;">
+              <p class="d" style="margin:5px 0 0; font-size:16px; font-weight:600;">En producción</p>
+              <p style="margin:3px 0 0; font-size:13px; color:rgba(43,40,18,0.55);">2 sep</p>
+            </div>
+          </li>
+
+          <li style="display:flex; gap:18px;">
+            <div style="display:flex; flex-direction:column; align-items:center; width:34px; flex:none;">
+              <span style="display:flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; background:#aeff6e; color:#2b2812;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </span>
+              <span style="flex:1; width:2px; background:#aeff6e;"></span>
+            </div>
+            <div style="padding-bottom:22px;">
+              <p class="d" style="margin:5px 0 0; font-size:16px; font-weight:600;">Listo</p>
+              <p style="margin:3px 0 0; font-size:13px; color:rgba(43,40,18,0.55);">4 sep</p>
+            </div>
+          </li>
+
+          <!-- El paso actual se abre y trae dentro lo que hace falta AHORA.
+               El rastreo deja de ser una tarjeta suelta más abajo. -->
+          <li style="display:flex; gap:18px;">
+            <div style="display:flex; flex-direction:column; align-items:center; width:34px; flex:none;">
+              <span style="display:flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; background:#2b2812;">
+                <span style="width:11px; height:11px; border-radius:999px; background:#aeff6e;"></span>
+              </span>
+              <span style="flex:1; width:2px; background:rgba(43,40,18,0.14);"></span>
+            </div>
+            <div style="padding-bottom:22px; flex:1; min-width:0;">
+              <p class="d" style="margin:5px 0 0; font-size:16px; font-weight:700;">En camino</p>
+              <p style="margin:3px 0 0; font-size:13px; color:rgba(43,40,18,0.55);">4 sep · ampm recogió el paquete</p>
+
+              <div style="margin-top:12px; background:#2b2812; border-radius:12px; padding:16px 18px;">
+                <span style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(239,235,225,0.55);">Número de rastreo</span>
+                <p style="margin:8px 0 0; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:19px; font-weight:600; color:#aeff6e;">794859312226</p>
+                <a href="#" style="display:inline-flex; align-items:center; justify-content:center; height:40px; margin-top:14px; padding:0 18px; border-radius:9px; background:#aeff6e; color:#2b2812; font-size:14px; font-weight:600; text-decoration:none;">Ver dónde va</a>
+              </div>
+            </div>
+          </li>
+
+          <li style="display:flex; gap:18px;">
+            <div style="width:34px; flex:none;">
+              <span style="display:block; width:34px; height:34px; border-radius:999px; border:2px dashed rgba(43,40,18,0.22);"></span>
+            </div>
+            <div>
+              <p class="d" style="margin:5px 0 0; font-size:16px; font-weight:600; color:rgba(43,40,18,0.45);">Entregado</p>
+              <p style="margin:3px 0 0; font-size:13px; color:rgba(43,40,18,0.4);">Estimado: 9 sep</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <h3 class="d" style="margin:0 0 8px; font-size:19px; font-weight:600; letter-spacing:-0.02em;">Lo que pediste</h3>
+
+        <article style="display:flex; gap:16px; align-items:center; background:#ffffff; border:1px solid rgba(43,40,18,0.12); border-radius:12px; padding:16px;">
+          <div style="display:flex; align-items:center; justify-content:center; width:76px; height:76px; flex:none; border-radius:10px; background:#f3f3f1;">
+            <svg width="42" height="42" viewBox="0 0 48 48" fill="none" stroke="rgba(43,40,18,0.28)" stroke-width="2" stroke-linejoin="round"><path d="M17 8 9 12l3 8 4-1v21h16V19l4 1 3-8-8-4-3 4h-8z"/></svg>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px; min-width:0; flex:1;">
+            <span style="font-size:15px; font-weight:600;">Playera cuello redondo 180g</span>
+            <span style="font-size:14px; color:rgba(43,40,18,0.65);">Negro · M×2, L×1 · 2 lados</span>
+            <span style="font-size:13px; color:rgba(43,40,18,0.5);">Bordados Tapatíos</span>
+          </div>
+          <span class="d" style="font-size:17px; font-weight:600; letter-spacing:-0.02em; font-variant-numeric:tabular-nums;">$585</span>
+        </article>
+
+        <article style="display:flex; gap:16px; align-items:center; background:#ffffff; border:1px solid rgba(43,40,18,0.12); border-radius:12px; padding:16px;">
+          <div style="display:flex; align-items:center; justify-content:center; width:76px; height:76px; flex:none; border-radius:10px; background:#f3f3f1;">
+            <svg width="42" height="42" viewBox="0 0 48 48" fill="none" stroke="rgba(43,40,18,0.28)" stroke-width="2" stroke-linejoin="round"><path d="M10 26a14 14 0 0 1 28 0z"/><path d="M6 30h36v4H6z"/></svg>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px; min-width:0; flex:1;">
+            <span style="font-size:15px; font-weight:600;">Gorra clásica</span>
+            <span style="font-size:14px; color:rgba(43,40,18,0.65);">Blanco · Única×2 · 1 lado</span>
+            <span style="font-size:13px; color:rgba(43,40,18,0.5);">Serigrafía del Norte</span>
+          </div>
+          <span class="d" style="font-size:17px; font-weight:600; letter-spacing:-0.02em; font-variant-numeric:tabular-nums;">$260</span>
+        </article>
+
+        <div style="display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; margin-top:16px;">
+          <section style="background:#ffffff; border:1px solid rgba(43,40,18,0.12); border-radius:12px; padding:16px 18px;">
+            <span style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(43,40,18,0.45);">Envío a</span>
+            <p style="margin:10px 0 0; font-size:14px; line-height:23px; color:rgba(43,40,18,0.8);">
+              Ocampo 450<br>Centro, Monterrey<br>Nuevo León, C.P. 64000
+            </p>
+          </section>
+
+          <section style="background:#f3f3f1; border-radius:12px; padding:16px 18px;">
+            <div style="display:flex; justify-content:space-between; font-size:14px; color:rgba(43,40,18,0.7);">
+              <span>5 piezas</span><span style="font-variant-numeric:tabular-nums;">$845</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-top:7px; font-size:14px; color:rgba(43,40,18,0.7);">
+              <span>Envío</span><span style="font-variant-numeric:tabular-nums;">$35</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:12px; padding-top:12px; border-top:1px solid rgba(43,40,18,0.12);">
+              <span class="d" style="font-size:14px; font-weight:600;">Total</span>
+              <span class="d" style="font-size:22px; font-weight:600; letter-spacing:-0.032em; font-variant-numeric:tabular-nums;">$880</span>
+            </div>
+          </section>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</x-dc>
+</body>
+</html>

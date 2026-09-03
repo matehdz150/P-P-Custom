@@ -1,5 +1,6 @@
 "use client";
 
+import { Heart } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -8,6 +9,7 @@ import {
 	getCategoriasPublicas,
 	type ProductoDeCatalogo,
 } from "@/lib/api/catalogo";
+import { useFavoritos } from "@/lib/favoritos/useFavoritos";
 import { pesos } from "./Pedidos";
 import { Aviso, Cargando, Vacio } from "./piezas";
 
@@ -20,6 +22,7 @@ import { Aviso, Cargando, Vacio } from "./piezas";
  * en su panel ya decidió que quiere hacer algo.
  */
 export default function CatalogoEnPanel() {
+	const { alternar, esFavorito } = useFavoritos();
 	const [productos, setProductos] = useState<ProductoDeCatalogo[] | null>(null);
 	const [categorias, setCategorias] = useState<CategoriaPublica[]>([]);
 	const [categoria, setCategoria] = useState<string | null>(null);
@@ -62,7 +65,7 @@ export default function CatalogoEnPanel() {
 					value={busqueda}
 					onChange={(e) => setBusqueda(e.target.value)}
 					placeholder="Busca una prenda o un taller"
-					className="h-11 flex-1 rounded-lg border-[1.5px] border-tinta/18 bg-white px-4 text-[15px] text-tinta outline-none placeholder:text-tinta/45 focus:border-tinta focus:shadow-[0_0_0_3px_rgba(174,255,110,0.55)]"
+					className="h-11 flex-1 rounded-full border-[1.5px] border-tinta/14 bg-white px-4 text-[15px] text-tinta outline-none placeholder:text-tinta/45 focus:border-tinta/30 focus:shadow-[0_0_0_4px_rgba(43,40,18,0.04)]"
 				/>
 			</div>
 
@@ -94,12 +97,9 @@ export default function CatalogoEnPanel() {
 			) : (
 				<div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
 					{visibles.map((p) => (
-						<Link
-							key={p.id}
-							href={`/design/${encodeURIComponent(p.id)}`}
-							className="group flex flex-col gap-2.5"
-						>
-							<div className="overflow-hidden rounded-xl border border-tinta/12 bg-gris">
+						<article key={p.id} className="group relative flex flex-col gap-2.5">
+							<Link href={`/design/${encodeURIComponent(p.id)}`}>
+							<div className="overflow-hidden rounded-2xl border border-tinta/10 bg-gris">
 								{p.images[0]?.url ? (
 									// biome-ignore lint/performance/noImgElement: export estático
 									<img
@@ -121,7 +121,25 @@ export default function CatalogoEnPanel() {
 									{p.basePrice ? ` · desde ${pesos(p.basePrice)}` : ""}
 								</p>
 							</div>
-						</Link>
+							</Link>
+							<button
+								type="button"
+								onClick={() => alternar(p.id)}
+								aria-label={
+									esFavorito(p.id)
+										? `Quitar ${p.name} de favoritos`
+										: `Guardar ${p.name} en favoritos`
+								}
+								className={`absolute right-3 top-3 inline-flex size-9 items-center justify-center rounded-full bg-white/95 shadow-sm transition-colors ${
+									esFavorito(p.id) ? "text-tinta" : "text-tinta/45 hover:text-tinta"
+								}`}
+							>
+								<Heart
+									className={`size-[17px] ${esFavorito(p.id) ? "fill-current" : ""}`}
+									aria-hidden
+								/>
+							</button>
+						</article>
 					))}
 				</div>
 			)}

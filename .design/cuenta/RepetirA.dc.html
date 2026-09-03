@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: Poppins, system-ui, sans-serif; background: #fffdf8; color: #2b2812; }
+    * { box-sizing: border-box; }
+    a { color: #2b2812; } a:hover { color: #7cb944; }
+    .d { font-family: Figtree, system-ui, sans-serif; }
+  </style>
+</helmet>
+
+<div style="display:flex; width:1440px; height:980px; background:#fffdf8;">
+
+  <aside style="display:flex; flex-direction:column; justify-content:space-between; width:236px; flex:none; background:#ffffff; border-right:1px solid rgba(43,40,18,0.12); padding:26px 0;">
+    <div style="display:flex; flex-direction:column; gap:28px;">
+      <div style="padding:0 30px;">
+        <span class="d" style="font-size:26px; font-weight:600; letter-spacing:-0.05em; line-height:1;">kustto</span>
+      </div>
+      <nav style="display:flex; flex-direction:column; gap:4px; padding:0 18px;">
+        <div style="display:flex; align-items:center; gap:11px; height:42px; padding:0 12px; border-radius:10px; background:#2b2812; color:#aeff6e; font-size:15px; font-weight:500;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span style="flex:1;">Pedidos</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:11px; height:42px; padding:0 12px; border-radius:10px; color:rgba(43,40,18,0.7); font-size:15px;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 9l10 6 10-6-10-6z"/><path d="m2 15 10 6 10-6"/></svg>
+          <span>Mis diseños</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:11px; height:42px; padding:0 12px; border-radius:10px; color:rgba(43,40,18,0.7); font-size:15px;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+          <span>Ajustes</span>
+        </div>
+      </nav>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px; margin:0 18px; padding:18px 12px 0; border-top:1px solid rgba(43,40,18,0.12);">
+      <span class="d" style="display:flex; align-items:center; justify-content:center; width:34px; height:34px; flex:none; border-radius:999px; background:#aeff6e; font-size:15px; font-weight:700;">M</span>
+      <div style="display:flex; flex-direction:column; min-width:0;">
+        <span style="font-size:14px; font-weight:600;">Mateo</span>
+        <span style="font-size:12px; color:rgba(43,40,18,0.55);">mateo@correo.mx</span>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex:1; min-width:0; padding:34px 40px 0; overflow:hidden;">
+
+    <div style="display:flex; align-items:center; gap:6px; font-size:14px; font-weight:500; color:rgba(43,40,18,0.6);">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      <span>Mis pedidos · Del pedido #922995, 1 sep</span>
+    </div>
+
+    <h1 class="d" style="margin:12px 0 0; font-size:32px; font-weight:700; letter-spacing:-0.035em; line-height:1.15;">Volver a pedir</h1>
+    <p style="margin:8px 0 0; max-width:62ch; font-size:15px; line-height:25px; color:rgba(43,40,18,0.7);">
+      Lo mismo que pediste, con los precios y plazos de hoy. Quita lo que no quieras y lo dejamos en tu carrito — todavía no se cobra nada.
+    </p>
+
+    <!-- Dos cambios sobre lo de hoy: (1) el aviso de lo que NO sigue igual va
+         arriba y en una línea, no repartido por las filas; (2) el resumen es
+         una columna fija a la derecha en vez de una barra pegada abajo. -->
+    <div style="display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:28px; margin-top:26px;">
+
+      <div>
+        <div style="display:flex; align-items:center; gap:10px; background:#c9b8ff; border-radius:12px; padding:13px 16px; margin-bottom:16px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2b2812" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16.5v.2"/></svg>
+          <span style="font-size:14px; font-weight:500;">2 de 3 cosas cambiaron desde entonces. Míralas antes de pasar al carrito.</span>
+        </div>
+
+        <!-- Cabecera de la comparación: la tabla dice ENTONCES y HOY, que es
+             lo que se viene a resolver. -->
+        <div style="display:grid; grid-template-columns:32px 1fr 148px 148px 96px; gap:16px; align-items:center; padding:0 18px 10px;">
+          <span></span>
+          <span style="font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:rgba(43,40,18,0.45);">Diseño</span>
+          <span style="font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:rgba(43,40,18,0.45);">Entonces</span>
+          <span style="font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:rgba(43,40,18,0.45);">Hoy</span>
+          <span style="font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:rgba(43,40,18,0.45); text-align:right;">Importe</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+
+          <!-- Igual -->
+          <article style="display:grid; grid-template-columns:32px 1fr 148px 148px 96px; gap:16px; align-items:center; background:#ffffff; border:1px solid rgba(43,40,18,0.12); border-radius:12px; padding:14px 18px;">
+            <span style="display:flex; align-items:center; justify-content:center; width:19px; height:19px; border-radius:5px; background:#2b2812; color:#aeff6e;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <div style="display:flex; align-items:center; gap:14px; min-width:0;">
+              <div style="display:flex; align-items:center; justify-content:center; width:54px; height:54px; flex:none; border-radius:9px; background:#f3f3f1;">
+                <svg width="30" height="30" viewBox="0 0 48 48" fill="none" stroke="rgba(43,40,18,0.28)" stroke-width="2" stroke-linejoin="round"><path d="M17 8 9 12l3 8 4-1v21h16V19l4 1 3-8-8-4-3 4h-8z"/></svg>
+              </div>
+              <div style="min-width:0;">
+                <p style="margin:0; font-size:15px; font-weight:600;">Playera cuello redondo</p>
+                <p style="margin:3px 0 0; font-size:13px; color:rgba(43,40,18,0.6);">Negro · 2 lados · M×2, L×1</p>
+              </div>
+            </div>
+            <span style="font-size:14px; color:rgba(43,40,18,0.55); font-variant-numeric:tabular-nums;">$195 c/u · 5 d</span>
+            <span style="font-size:14px; color:rgba(43,40,18,0.55); font-variant-numeric:tabular-nums;">Sin cambios</span>
+            <span class="d" style="font-size:17px; font-weight:600; text-align:right; font-variant-numeric:tabular-nums;">$585</span>
+          </article>
+
+          <!-- Cambió el precio: la única fila donde el "hoy" se destaca -->
+          <article style="display:grid; grid-template-columns:32px 1fr 148px 148px 96px; gap:16px; align-items:center; background:#ffffff; border:1px solid #c9b8ff; border-radius:12px; padding:14px 18px;">
+            <span style="display:flex; align-items:center; justify-content:center; width:19px; height:19px; border-radius:5px; background:#2b2812; color:#aeff6e;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <div style="display:flex; align-items:center; gap:14px; min-width:0;">
+              <div style="display:flex; align-items:center; justify-content:center; width:54px; height:54px; flex:none; border-radius:9px; background:#f3f3f1;">
+                <svg width="30" height="30" viewBox="0 0 48 48" fill="none" stroke="rgba(43,40,18,0.28)" stroke-width="2" stroke-linejoin="round"><path d="M10 26a14 14 0 0 1 28 0z"/><path d="M6 30h36v4H6z"/></svg>
+              </div>
+              <div style="min-width:0;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <p style="margin:0; font-size:15px; font-weight:600;">Gorra clásica</p>
+                  <span style="display:inline-flex; align-items:center; height:21px; padding:0 9px; border-radius:999px; background:#c9b8ff; font-size:11px; font-weight:600;">Subió el precio</span>
+                </div>
+                <p style="margin:3px 0 0; font-size:13px; color:rgba(43,40,18,0.6);">Blanco · 1 lado · Única×2</p>
+              </div>
+            </div>
+            <span style="font-size:14px; color:rgba(43,40,18,0.45); text-decoration:line-through; font-variant-numeric:tabular-nums;">$115 c/u</span>
+            <span style="font-size:14px; font-weight:600; font-variant-numeric:tabular-nums;">$130 c/u <span style="color:#c0392b; font-weight:600;">+13%</span></span>
+            <span class="d" style="font-size:17px; font-weight:600; text-align:right; font-variant-numeric:tabular-nums;">$260</span>
+          </article>
+
+          <!-- No disponible: sin casilla y en gris, no en rojo de alarma -->
+          <article style="display:grid; grid-template-columns:32px 1fr 148px 148px 96px; gap:16px; align-items:center; background:#f3f3f1; border:1px solid rgba(43,40,18,0.10); border-radius:12px; padding:14px 18px;">
+            <span style="display:flex; align-items:center; justify-content:center; width:19px; height:19px; color:rgba(43,40,18,0.3);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </span>
+            <div style="display:flex; align-items:center; gap:14px; min-width:0; opacity:0.62;">
+              <div style="display:flex; align-items:center; justify-content:center; width:54px; height:54px; flex:none; border-radius:9px; background:#ffffff;">
+                <svg width="30" height="30" viewBox="0 0 48 48" fill="none" stroke="rgba(43,40,18,0.28)" stroke-width="2" stroke-linejoin="round"><rect x="14" y="10" width="20" height="28" rx="3"/></svg>
+              </div>
+              <div style="min-width:0;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <p style="margin:0; font-size:15px; font-weight:600;">Termo 600 ml</p>
+                  <span style="display:inline-flex; align-items:center; height:21px; padding:0 9px; border-radius:999px; background:#ffffff; border:1px solid rgba(43,40,18,0.15); font-size:11px; font-weight:600; color:rgba(43,40,18,0.6);">Ya no se puede</span>
+                </div>
+                <p style="margin:3px 0 0; font-size:13px; color:rgba(43,40,18,0.6);">El taller lo quitó del catálogo</p>
+              </div>
+            </div>
+            <span style="font-size:14px; color:rgba(43,40,18,0.4); font-variant-numeric:tabular-nums;">$240 c/u</span>
+            <span style="font-size:14px; color:rgba(43,40,18,0.4);">—</span>
+            <span class="d" style="font-size:17px; font-weight:600; text-align:right; color:rgba(43,40,18,0.35);">—</span>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- El resumen, fijo a la derecha. La barra pegada abajo se comía la
+           última fila justo cuando había que decidir. -->
+      <aside style="display:flex; flex-direction:column; gap:14px;">
+        <section style="background:#2b2812; border-radius:14px; padding:22px;">
+          <span style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(239,235,225,0.55);">Se va al carrito</span>
+
+          <div style="display:flex; align-items:baseline; gap:10px; margin-top:12px;">
+            <span class="d" style="font-size:32px; font-weight:700; letter-spacing:-0.035em; color:#aeff6e; font-variant-numeric:tabular-nums;">$845</span>
+          </div>
+          <p style="margin:6px 0 0; font-size:13px; color:#c9b8ff; font-variant-numeric:tabular-nums;">+$30 vs. entonces</p>
+
+          <div style="height:1px; background:rgba(239,235,225,0.14); margin:18px 0;"></div>
+
+          <div style="display:flex; justify-content:space-between; font-size:14px; color:rgba(239,235,225,0.7);">
+            <span>2 diseños</span><span>5 piezas</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:14px; color:rgba(239,235,225,0.7);">
+            <span>2 talleres</span><span>2 entregas</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:14px; color:rgba(239,235,225,0.7);">
+            <span>Envío</span><span>Se cotiza al pagar</span>
+          </div>
+
+          <a href="#" style="display:flex; align-items:center; justify-content:center; height:50px; margin-top:20px; border-radius:999px; background:#aeff6e; color:#2b2812; font-size:15px; font-weight:600; text-decoration:none;">Pasar al carrito</a>
+          <p style="margin:12px 0 0; font-size:12px; line-height:18px; color:rgba(239,235,225,0.45); text-align:center;">Todavía no se cobra nada.</p>
+        </section>
+
+        <p style="margin:0; font-size:13px; line-height:20px; color:rgba(43,40,18,0.55);">
+          Son 2 talleres, así que llegan en 2 entregas por separado.
+        </p>
+      </aside>
+
+    </div>
+  </main>
+</div>
+</x-dc>
+</body>
+</html>

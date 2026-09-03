@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: Poppins, system-ui, sans-serif; background: #fffdf8; color: #2b2812; }
+    * { box-sizing: border-box; }
+    a { color: #2b2812; } a:hover { color: #7cb944; }
+    .d { font-family: Figtree, system-ui, sans-serif; }
+  </style>
+</helmet>
+
+<div style="display:flex; width:1440px; height:980px; background:#fffdf8;">
+
+  <!-- Sidebar del panel: 236px, blanco, borde a la derecha. Va sólo como
+       contexto para que se lea cuánto ancho queda de verdad. -->
+  <aside style="display:flex; flex-direction:column; justify-content:space-between; width:236px; flex:none; background:#ffffff; border-right:1px solid rgba(43,40,18,0.12); padding:26px 0;">
+    <div style="display:flex; flex-direction:column; gap:28px;">
+      <div style="padding:0 30px;">
+        <span class="d" style="font-size:26px; font-weight:600; letter-spacing:-0.05em; line-height:1;">kustto</span>
+      </div>
+      <nav style="display:flex; flex-direction:column; gap:4px; padding:0 18px;">
+        <div style="display:flex; align-items:center; gap:11px; height:42px; padding:0 12px; border-radius:10px; background:#2b2812; color:#aeff6e; font-size:15px; font-weight:500;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span style="flex:1;">Pedidos</span>
+          <span style="display:flex; align-items:center; justify-content:center; height:22px; min-width:22px; padding:0 6px; border-radius:999px; background:#aeff6e; color:#2b2812; font-size:12px; font-weight:600;">3</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:11px; height:42px; padding:0 12px; border-radius:10px; color:rgba(43,40,18,0.7); font-size:15px;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 9l10 6 10-6-10-6z"/><path d="m2 15 10 6 10-6"/></svg>
+          <span>Mis diseños</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:11px; height:42px; padding:0 12px; border-radius:10px; color:rgba(43,40,18,0.7); font-size:15px;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+          <span>Ajustes</span>
+        </div>
+      </nav>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px; margin:0 18px; padding:18px 12px 0; border-top:1px solid rgba(43,40,18,0.12);">
+      <span class="d" style="display:flex; align-items:center; justify-content:center; width:34px; height:34px; flex:none; border-radius:999px; background:#aeff6e; font-size:15px; font-weight:700;">M</span>
+      <div style="display:flex; flex-direction:column; min-width:0;">
+        <span style="font-size:14px; font-weight:600;">Mateo</span>
+        <span style="font-size:12px; color:rgba(43,40,18,0.55);">mateo@correo.mx</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Contenido -->
+  <main style="flex:1; min-width:0; padding:34px 40px 0; overflow:hidden;">
+
+    <div style="display:flex; align-items:center; gap:6px; font-size:14px; font-weight:500; color:rgba(43,40,18,0.6); margin-bottom:18px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      <span>Mis pedidos</span>
+    </div>
+
+    <!-- La banda de estado, ahora a lo ancho: el titular y los pasos dejan de
+         pelearse por 760px y el número de pieza cabe al lado. -->
+    <section style="display:flex; align-items:flex-end; gap:48px; background:#2b2812; border-radius:16px; padding:30px 34px;">
+      <div style="flex:1; min-width:0;">
+        <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13px; color:rgba(239,235,225,0.6);">Pedido #922995</span>
+        <h2 class="d" style="margin:4px 0 0; font-size:34px; font-weight:600; letter-spacing:-0.032em; line-height:1.15; color:#aeff6e;">En camino</h2>
+        <p style="margin:8px 0 0; max-width:46ch; font-size:15px; line-height:25px; color:rgba(239,235,225,0.75);">Va con la paquetería. A la derecha tienes el número para rastrearlo.</p>
+      </div>
+
+      <ol style="display:flex; gap:6px; width:520px; flex:none; margin:0; padding:0; list-style:none;">
+        <li style="display:flex; flex-direction:column; gap:8px; flex:1;">
+          <span style="height:6px; border-radius:999px; background:#aeff6e;"></span>
+          <span style="font-size:12px; color:#efebe1;">Recibido</span>
+        </li>
+        <li style="display:flex; flex-direction:column; gap:8px; flex:1;">
+          <span style="height:6px; border-radius:999px; background:#aeff6e;"></span>
+          <span style="font-size:12px; color:#efebe1;">En producción</span>
+        </li>
+        <li style="display:flex; flex-direction:column; gap:8px; flex:1;">
+          <span style="height:6px; border-radius:999px; background:#aeff6e;"></span>
+          <span style="font-size:12px; color:#efebe1;">Listo</span>
+        </li>
+        <li style="display:flex; flex-direction:column; gap:8px; flex:1;">
+          <span style="height:6px; border-radius:999px; background:#aeff6e;"></span>
+          <span style="font-size:12px; font-weight:600; color:#efebe1;">En camino</span>
+        </li>
+        <li style="display:flex; flex-direction:column; gap:8px; flex:1;">
+          <span style="height:6px; border-radius:999px; background:rgba(239,235,225,0.2);"></span>
+          <span style="font-size:12px; color:rgba(239,235,225,0.45);">Entregado</span>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Dos columnas: lo que se mira largo a la izquierda, lo que se consulta
+         de un vistazo a la derecha. -->
+    <div style="display:grid; grid-template-columns:minmax(0,1fr) 372px; gap:28px; margin-top:28px;">
+
+      <!-- Columna principal -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <h3 class="d" style="margin:0 0 2px; font-size:19px; font-weight:600; letter-spacing:-0.02em;">Lo que pediste</h3>
+
+        <article style="display:flex; gap:16px; align-items:center; background:#ffffff; border:1px solid rgba(43,40,18,0.12); border-radius:12px; padding:16px;">
+          <div style="display:flex; align-items:center; justify-content:center; width:80px; height:80px; flex:none; border-radius:10px; background:#f3f3f1;">
+            <svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="rgba(43,40,18,0.28)" stroke-width="2" stroke-linejoin="round"><path d="M17 8 9 12l3 8 4-1v21h16V19l4 1 3-8-8-4-3 4h-8z"/></svg>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px; min-width:0; flex:1;">
+            <span style="font-size:15px; font-weight:600;">Playera cuello redondo 180g</span>
+            <span style="font-size:14px; color:rgba(43,40,18,0.65);">Negro · M×2, L×1</span>
+            <span style="font-size:14px; color:rgba(43,40,18,0.65);">2 lados con diseño</span>
+          </div>
+          <span class="d" style="font-size:17px; font-weight:600; letter-spacing:-0.02em; font-variant-numeric:tabular-nums;">$585</span>
+        </article>
+
+        <article style="display:flex; gap:16px; align-items:center; background:#ffffff; border:1px solid rgba(43,40,18,0.12); border-radius:12px; padding:16px;">
+          <div style="display:flex; align-items:center; justify-content:center; width:80px; height:80px; flex:none; border-radius:10px; background:#f3f3f1;">
+            <svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="rgba(43,40,18,0.28)" stroke-width="2" stroke-linejoin="round"><path d="M10 26a14 14 0 0 1 28 0z"/><path d="M6 30h36v4H6z"/></svg>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px; min-width:0; flex:1;">
+            <span style="font-size:15px; font-weight:600;">Gorra clásica</span>
+            <span style="font-size:14px; color:rgba(43,40,18,0.65);">Blanco · Única×2</span>
+            <span style="font-size:14px; color:rgba(43,40,18,0.65);">1 lado con diseño</span>
+          </div>
+          <span class="d" style="font-size:17px; font-weight:600; letter-spacing:-0.02em; font-variant-numeric:tabular-nums;">$260</span>
+        </article>
+
+        <h3 class="d" style="margin:26px 0 2px; font-size:19px; font-weight:600; letter-spacing:-0.02em;">Lo que ha pasado</h3>
+
+        <ol style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column;">
+          <li style="display:flex; gap:16px;">
+            <div style="display:flex; flex-direction:column; align-items:center; width:12px; flex:none;">
+              <span style="width:11px; height:11px; border-radius:999px; background:#aeff6e; border:2px solid #2b2812; margin-top:5px;"></span>
+              <span style="flex:1; width:2px; background:rgba(43,40,18,0.14);"></span>
+            </div>
+            <div style="padding-bottom:16px;">
+              <p style="margin:0; font-size:14px; font-weight:600;">En camino</p>
+              <p style="margin:2px 0 0; font-size:13px; color:rgba(43,40,18,0.55);">04 sep · ampm recogió el paquete</p>
+            </div>
+          </li>
+          <li style="display:flex; gap:16px;">
+            <div style="display:flex; flex-direction:column; align-items:center; width:12px; flex:none;">
+              <span style="width:11px; height:11px; border-radius:999px; background:rgba(43,40,18,0.22); margin-top:5px;"></span>
+              <span style="flex:1; width:2px; background:rgba(43,40,18,0.14);"></span>
+            </div>
+            <div style="padding-bottom:16px;">
+              <p style="margin:0; font-size:14px; font-weight:600;">Listo</p>
+              <p style="margin:2px 0 0; font-size:13px; color:rgba(43,40,18,0.55);">04 sep</p>
+            </div>
+          </li>
+          <li style="display:flex; gap:16px;">
+            <div style="display:flex; flex-direction:column; align-items:center; width:12px; flex:none;">
+              <span style="width:11px; height:11px; border-radius:999px; background:rgba(43,40,18,0.22); margin-top:5px;"></span>
+              <span style="flex:1; width:2px; background:rgba(43,40,18,0.14);"></span>
+            </div>
+            <div style="padding-bottom:16px;">
+              <p style="margin:0; font-size:14px; font-weight:600;">En producción</p>
+              <p style="margin:2px 0 0; font-size:13px; color:rgba(43,40,18,0.55);">02 sep</p>
+            </div>
+          </li>
+          <li style="display:flex; gap:16px;">
+            <div style="display:flex; flex-direction:column; align-items:center; width:12px; flex:none;">
+              <span style="width:11px; height:11px; border-radius:999px; background:rgba(43,40,18,0.22); margin-top:5px;"></span>
+            </div>
+            <div>
+              <p style="margin:0; font-size:14px; font-weight:600;">Recibido</p>
+              <p style="margin:2px 0 0; font-size:13px; color:rgba(43,40,18,0.55);">01 sep</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Columna de consulta -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+
+        <!-- El rastreo primero: es a lo que se entra cuando el pedido ya salió. -->
+        <section style="background:#2b2812; border-radius:14px; padding:20px 22px;">
+          <span style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(239,235,225,0.55);">Rastrea tu paquete</span>
+          <p style="margin:12px 0 0; font-size:14px; color:rgba(239,235,225,0.7);">Lo lleva <strong style="color:#efebe1; font-weight:600;">ampm</strong></p>
+          <p style="margin:6px 0 0; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:20px; font-weight:600; color:#aeff6e;">794859312226</p>
+          <a href="#" style="display:inline-flex; align-items:center; justify-content:center; height:44px; margin-top:16px; padding:0 22px; border-radius:10px; background:#aeff6e; color:#2b2812; font-size:15px; font-weight:600; text-decoration:none;">Ver dónde va</a>
+          <p style="margin:12px 0 0; font-size:12px; line-height:18px; color:rgba(239,235,225,0.45);">La paquetería puede tardar unas horas en mostrar movimiento.</p>
+        </section>
+
+        <section style="background:#ffffff; border:1px solid rgba(43,40,18,0.12); border-radius:14px; padding:18px 20px;">
+          <span style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(43,40,18,0.45);">Envío a</span>
+          <p style="margin:10px 0 0; font-size:15px; line-height:24px; color:rgba(43,40,18,0.8);">
+            Ocampo 450<br>
+            Centro, Monterrey<br>
+            Nuevo León, C.P. 64000
+          </p>
+        </section>
+
+        <section style="background:#f3f3f1; border-radius:14px; padding:18px 20px;">
+          <div style="display:flex; justify-content:space-between; font-size:14px; color:rgba(43,40,18,0.7);">
+            <span>5 piezas</span>
+            <span style="font-variant-numeric:tabular-nums;">$845</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:14px; color:rgba(43,40,18,0.7);">
+            <span>Envío · ampm</span>
+            <span style="font-variant-numeric:tabular-nums;">$35</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:14px; padding-top:14px; border-top:1px solid rgba(43,40,18,0.12);">
+            <span class="d" style="font-size:15px; font-weight:600;">Total</span>
+            <span class="d" style="font-size:24px; font-weight:600; letter-spacing:-0.032em; font-variant-numeric:tabular-nums;">$880</span>
+          </div>
+        </section>
+
+        <a href="#" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; height:48px; border-radius:999px; border:1.5px solid rgba(43,40,18,0.18); color:#2b2812; font-size:15px; font-weight:600; text-decoration:none;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>
+          Volver a pedir
+        </a>
+      </div>
+
+    </div>
+  </main>
+</div>
+</x-dc>
+</body>
+</html>

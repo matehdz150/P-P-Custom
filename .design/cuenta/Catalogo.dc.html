@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: Poppins, system-ui, sans-serif; }
+    a { color: #7cb944; text-decoration: none; }
+    a:hover { color: #2b2812; }
+    * { box-sizing: border-box; }
+  </style>
+</helmet>
+
+<div style="display: flex; width: 1440px; height: 900px; background: #fffdf8; color: #2b2812;">
+
+  <aside style="display: flex; flex-direction: column; justify-content: space-between; width: 236px; flex-shrink: 0; height: 900px; padding: 26px 18px; background: #ffffff; border-right: 1px solid rgba(43,40,18,0.12);">
+    <div style="display: flex; flex-direction: column; gap: 28px;">
+      <span style="padding-left: 12px; font-family: Poppins, sans-serif; font-size: 26px; font-weight: 600; line-height: 1; letter-spacing: -0.05em;">kustto</span>
+
+      <nav style="display: flex; flex-direction: column; gap: 3px;">
+        <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; font-size: 15px; color: rgba(43,40,18,0.7);">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 6.5h15M4.5 12h15M4.5 17.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          <span style="flex: 1;">Pedidos</span>
+          <span style="display: flex; align-items: center; justify-content: center; height: 22px; min-width: 22px; padding: 0 6px; border-radius: 999px; background: #aeff6e; font-size: 12px; font-weight: 600; color: #2b2812;">2</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; font-size: 15px; color: rgba(43,40,18,0.7);">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.6 19.4l1-4.2L15.2 5.6a2.1 2.1 0 013 3l-9.6 9.6-4.2 1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path><path d="M13.6 7.2l3.2 3.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+          <span style="flex: 1;">Mis diseños</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; background: #f3f3f1; font-size: 15px; font-weight: 600; color: #2b2812;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.5"></rect><rect x="13" y="4" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.5"></rect><rect x="4" y="13" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.5"></rect><rect x="13" y="13" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.5"></rect></svg>
+          <span style="flex: 1;">Catálogo</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; font-size: 15px; color: rgba(43,40,18,0.7);">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8.4" r="3.4" stroke="currentColor" stroke-width="1.5"></circle><path d="M5.4 19.2c0-3 2.9-5.2 6.6-5.2s6.6 2.2 6.6 5.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+          <span style="flex: 1;">Perfil</span>
+        </div>
+      </nav>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 3px; padding-top: 18px; border-top: 1px solid rgba(43,40,18,0.12);">
+      <div style="display: flex; align-items: center; gap: 10px; padding: 0 12px 12px;">
+        <span style="display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; flex-shrink: 0; border-radius: 999px; background: #aeff6e; font-family: Figtree, sans-serif; font-size: 15px; font-weight: 700;">A</span>
+        <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+          <span style="font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Ana Ramírez</span>
+          <span style="font-size: 12px; color: rgba(43,40,18,0.55); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">ana@correo.mx</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; font-size: 15px; color: rgba(43,40,18,0.7);">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 16.5l4-4.5-4-4.5M18 12H9M11 4.5H6.5A1.5 1.5 0 005 6v12a1.5 1.5 0 001.5 1.5H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        Cerrar sesión
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; padding: 34px 40px; overflow: hidden;">
+    <div style="display: flex; flex-direction: column; gap: 5px;">
+      <h1 style="margin: 0; font-family: Figtree, sans-serif; font-size: 30px; font-weight: 600; line-height: 38px; letter-spacing: -0.032em;">Catálogo</h1>
+      <p style="margin: 0; font-size: 15px; line-height: 25px; color: rgba(43,40,18,0.65);">Elige una prenda y ponle lo tuyo. Desde una pieza.</p>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 10px; padding-top: 22px;">
+      <div style="position: relative; width: 340px;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: rgba(43,40,18,0.4);"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"></circle><path d="M16.5 16.5l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+        <div style="display: flex; align-items: center; height: 44px; padding: 0 14px 0 40px; border: 1.5px solid rgba(43,40,18,0.15); border-radius: 8px; background: #ffffff; font-size: 15px; color: rgba(43,40,18,0.45);">Busca una prenda o un taller</div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 8px; padding-top: 14px;">
+      <span style="display: flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 999px; background: #2b2812; font-size: 14px; font-weight: 600; color: #aeff6e;">Todo</span>
+      <span style="display: flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 14px; font-weight: 600;">Playeras</span>
+      <span style="display: flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 14px; font-weight: 600;">Gorras</span>
+      <span style="display: flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 14px; font-weight: 600;">Sudaderas</span>
+      <span style="display: flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 999px; border: 1.5px solid rgba(43,40,18,0.15); font-size: 14px; font-weight: 600;">Para eventos</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; padding-top: 22px;">
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border: 1px solid rgba(43,40,18,0.12); border-radius: 12px; background: #ffffff;">
+          <svg width="130" height="130" viewBox="0 0 118 118" fill="none" aria-hidden="true"><path d="M38 27l-14 7.4v14.6l8.6 3.2V91h48V52.2l8.6-3.2V34.4L75 27l-10 6.6H48L38 27z" stroke="rgba(43,40,18,0.3)" stroke-width="2" stroke-linejoin="round"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Playera cuello redondo 180g</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55);">Taller de Prueba · desde $195</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border: 1px solid rgba(43,40,18,0.12); border-radius: 12px; background: #ffffff;">
+          <svg width="130" height="130" viewBox="0 0 118 118" fill="none" aria-hidden="true"><path d="M30 66c0-16 13-29 29-29s29 13 29 29v6H30v-6z" stroke="rgba(43,40,18,0.3)" stroke-width="2" stroke-linejoin="round"></path><path d="M26 72h66v7H26z" stroke="rgba(43,40,18,0.3)" stroke-width="2" stroke-linejoin="round"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Gorra bordada</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55);">Bordados Tapatíos · desde $120</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border: 1px solid rgba(43,40,18,0.12); border-radius: 12px; background: #ffffff;">
+          <svg width="130" height="130" viewBox="0 0 118 118" fill="none" aria-hidden="true"><path d="M38 27l-14 7.4v14.6l8.6 3.2V91h48V52.2l8.6-3.2V34.4L75 27l-10 6.6H48L38 27z" stroke="rgba(43,40,18,0.3)" stroke-width="2" stroke-linejoin="round"></path><path d="M48 33c0 8 4 12 11 12s11-4 11-12" stroke="rgba(43,40,18,0.3)" stroke-width="2" stroke-linecap="round"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Sudadera con capucha</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55);">Taller de Prueba · desde $430</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border: 1px solid rgba(43,40,18,0.12); border-radius: 12px; background: #ffffff;">
+          <svg width="130" height="130" viewBox="0 0 118 118" fill="none" aria-hidden="true"><path d="M38 27l-14 7.4v14.6l8.6 3.2V91h48V52.2l8.6-3.2V34.4L75 27l-10 6.6H48L38 27z" stroke="rgba(43,40,18,0.3)" stroke-width="2" stroke-linejoin="round"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Tshirt básico</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55);">Taller de Prueba · desde $100</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border: 1px solid rgba(43,40,18,0.12); border-radius: 12px; background: #ffffff;">
+          <svg width="130" height="130" viewBox="0 0 118 118" fill="none" aria-hidden="true"><path d="M38 27l-14 7.4v14.6l8.6 3.2V91h48V52.2l8.6-3.2V34.4L75 27l-10 6.6H48L38 27z" stroke="rgba(43,40,18,0.3)" stroke-width="2" stroke-linejoin="round"></path><path d="M32 52v39M86 52v39" stroke="rgba(43,40,18,0.3)" stroke-width="2"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Playera manga larga</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55);">Taller de Prueba · desde $260</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border: 1px solid rgba(43,40,18,0.12); border-radius: 12px; background: #ffffff;">
+          <svg width="130" height="130" viewBox="0 0 118 118" fill="none" aria-hidden="true"><path d="M40 30h38v58H40z" stroke="rgba(43,40,18,0.3)" stroke-width="2" stroke-linejoin="round"></path><path d="M40 30l-10 8 6 9 4-3M78 30l10 8-6 9-4-3" stroke="rgba(43,40,18,0.3)" stroke-width="2" stroke-linejoin="round"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Delantal de lona</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55);">Bordados Tapatíos · desde $215</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border: 1px solid rgba(43,40,18,0.12); border-radius: 12px; background: #ffffff;">
+          <svg width="130" height="130" viewBox="0 0 118 118" fill="none" aria-hidden="true"><path d="M36 40h46v50H36z" stroke="rgba(43,40,18,0.3)" stroke-width="2" stroke-linejoin="round"></path><path d="M47 40V30a12 12 0 0124 0v10" stroke="rgba(43,40,18,0.3)" stroke-width="2" stroke-linecap="round"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Tote bag algodón</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55);">Taller de Prueba · desde $145</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border: 1px solid rgba(43,40,18,0.12); border-radius: 12px; background: #ffffff;">
+          <svg width="130" height="130" viewBox="0 0 118 118" fill="none" aria-hidden="true"><path d="M44 34h30l4 52a6 6 0 01-6 6H46a6 6 0 01-6-6l4-52z" stroke="rgba(43,40,18,0.3)" stroke-width="2" stroke-linejoin="round"></path><path d="M44 48h30" stroke="rgba(43,40,18,0.3)" stroke-width="2"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Termo de acero 600 ml</span>
+          <span style="font-size: 13px; color: rgba(43,40,18,0.55);">Bordados Tapatíos · desde $310</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</x-dc>
+</body>
+</html>

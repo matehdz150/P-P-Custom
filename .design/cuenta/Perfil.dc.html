@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: Poppins, system-ui, sans-serif; }
+    a { color: #7cb944; text-decoration: none; }
+    a:hover { color: #2b2812; }
+    * { box-sizing: border-box; }
+  </style>
+</helmet>
+
+<div style="display: flex; width: 1440px; height: 900px; background: #fffdf8; color: #2b2812;">
+
+  <aside style="display: flex; flex-direction: column; justify-content: space-between; width: 236px; flex-shrink: 0; height: 900px; padding: 26px 18px; background: #ffffff; border-right: 1px solid rgba(43,40,18,0.12);">
+    <div style="display: flex; flex-direction: column; gap: 28px;">
+      <span style="padding-left: 12px; font-family: Poppins, sans-serif; font-size: 26px; font-weight: 600; line-height: 1; letter-spacing: -0.05em;">kustto</span>
+
+      <nav style="display: flex; flex-direction: column; gap: 3px;">
+        <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; font-size: 15px; color: rgba(43,40,18,0.7);">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 6.5h15M4.5 12h15M4.5 17.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          <span style="flex: 1;">Pedidos</span>
+          <span style="display: flex; align-items: center; justify-content: center; height: 22px; min-width: 22px; padding: 0 6px; border-radius: 999px; background: #aeff6e; font-size: 12px; font-weight: 600; color: #2b2812;">2</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; font-size: 15px; color: rgba(43,40,18,0.7);">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.6 19.4l1-4.2L15.2 5.6a2.1 2.1 0 013 3l-9.6 9.6-4.2 1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path><path d="M13.6 7.2l3.2 3.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+          <span style="flex: 1;">Mis diseños</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; font-size: 15px; color: rgba(43,40,18,0.7);">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.5"></rect><rect x="13" y="4" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.5"></rect><rect x="4" y="13" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.5"></rect><rect x="13" y="13" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.5"></rect></svg>
+          <span style="flex: 1;">Catálogo</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; background: #f3f3f1; font-size: 15px; font-weight: 600; color: #2b2812;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8.4" r="3.4" stroke="currentColor" stroke-width="1.5"></circle><path d="M5.4 19.2c0-3 2.9-5.2 6.6-5.2s6.6 2.2 6.6 5.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+          <span style="flex: 1;">Perfil</span>
+        </div>
+      </nav>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 3px; padding-top: 18px; border-top: 1px solid rgba(43,40,18,0.12);">
+      <div style="display: flex; align-items: center; gap: 10px; padding: 0 12px 12px;">
+        <span style="display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; flex-shrink: 0; border-radius: 999px; background: #aeff6e; font-family: Figtree, sans-serif; font-size: 15px; font-weight: 700;">A</span>
+        <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+          <span style="font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Ana Ramírez</span>
+          <span style="font-size: 12px; color: rgba(43,40,18,0.55); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">ana@correo.mx</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px; border-radius: 8px; font-size: 15px; color: rgba(43,40,18,0.7);">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 16.5l4-4.5-4-4.5M18 12H9M11 4.5H6.5A1.5 1.5 0 005 6v12a1.5 1.5 0 001.5 1.5H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        Cerrar sesión
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex: 1; min-width: 0; padding: 34px 40px; overflow: hidden;">
+    <div style="display: flex; flex-direction: column; gap: 5px;">
+      <h1 style="margin: 0; font-family: Figtree, sans-serif; font-size: 30px; font-weight: 600; line-height: 38px; letter-spacing: -0.032em;">Perfil</h1>
+      <p style="margin: 0; font-size: 15px; line-height: 25px; color: rgba(43,40,18,0.65);">Lo que usamos para contactarte y para mandarte lo que pides.</p>
+    </div>
+
+    <div style="display: flex; gap: 24px; padding-top: 26px; max-width: 1020px;">
+
+      <!-- Tu información -->
+      <section style="display: flex; flex-direction: column; gap: 16px; flex: 1; min-width: 0; padding: 24px; border: 1px solid rgba(43,40,18,0.12); border-radius: 12px; background: #ffffff;">
+        <h2 style="margin: 0; font-family: Figtree, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.02em;">Tu información</h2>
+
+        <label style="display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-size: 14px; font-weight: 600;">Nombre</span>
+          <input type="text" value="Ana Ramírez" style="height: 52px; padding: 0 16px; border: 1.5px solid rgba(43,40,18,0.18); border-radius: 8px; background: #ffffff; font-family: Poppins, sans-serif; font-size: 16px; color: #2b2812; outline: none;">
+        </label>
+
+        <!-- El correo se enseña, no se edita: es lo que ata los pedidos -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-size: 14px; font-weight: 600;">Correo</span>
+          <div style="display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 16px; border: 1.5px solid rgba(43,40,18,0.12); border-radius: 8px; background: #f3f3f1; font-size: 16px; color: rgba(43,40,18,0.6);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink: 0;"><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.6"></rect><path d="M8.5 11V8a3.5 3.5 0 017 0v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+            ana@correo.mx
+          </div>
+          <span style="font-size: 13px; line-height: 21px; color: rgba(43,40,18,0.55);">No se puede cambiar: es con el que encontramos tus pedidos, incluso los que hiciste antes de tener cuenta.</span>
+        </div>
+
+        <label style="display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-size: 14px; font-weight: 600;">WhatsApp</span>
+          <input type="text" value="33 1234 5678" style="height: 52px; padding: 0 16px; border: 1.5px solid rgba(43,40,18,0.18); border-radius: 8px; background: #ffffff; font-family: Poppins, sans-serif; font-size: 16px; color: #2b2812; outline: none;">
+          <span style="font-size: 13px; line-height: 21px; color: rgba(43,40,18,0.55);">El taller lo usa para dudas rápidas sobre tu diseño.</span>
+        </label>
+      </section>
+
+      <!-- Dirección -->
+      <section style="display: flex; flex-direction: column; gap: 16px; flex: 1; min-width: 0; padding: 24px; border: 1px solid rgba(43,40,18,0.12); border-radius: 12px; background: #ffffff;">
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <h2 style="margin: 0; font-family: Figtree, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.02em;">Dirección de envío</h2>
+          <p style="margin: 0; font-size: 13px; line-height: 21px; color: rgba(43,40,18,0.55);">Es la que te vamos a precargar la próxima vez. Los pedidos que ya hiciste conservan la suya y no cambian.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
+          <label style="display: flex; flex-direction: column; gap: 8px; grid-column: span 2;">
+            <span style="font-size: 14px; font-weight: 600;">Calle</span>
+            <input type="text" value="Av. Insurgentes Sur" style="height: 52px; padding: 0 16px; border: 1.5px solid rgba(43,40,18,0.18); border-radius: 8px; background: #ffffff; font-family: Poppins, sans-serif; font-size: 16px; color: #2b2812; outline: none;">
+          </label>
+
+          <label style="display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 14px; font-weight: 600;">Número</span>
+            <input type="text" value="1234" style="height: 52px; padding: 0 16px; border: 1.5px solid rgba(43,40,18,0.18); border-radius: 8px; background: #ffffff; font-family: Poppins, sans-serif; font-size: 16px; color: #2b2812; outline: none;">
+          </label>
+
+          <label style="display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 14px; font-weight: 600;">Interior</span>
+            <input type="text" value="5B" style="height: 52px; padding: 0 16px; border: 1.5px solid rgba(43,40,18,0.18); border-radius: 8px; background: #ffffff; font-family: Poppins, sans-serif; font-size: 16px; color: #2b2812; outline: none;">
+          </label>
+
+          <label style="display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 14px; font-weight: 600;">Colonia</span>
+            <input type="text" value="Del Valle" style="height: 52px; padding: 0 16px; border: 1.5px solid rgba(43,40,18,0.18); border-radius: 8px; background: #ffffff; font-family: Poppins, sans-serif; font-size: 16px; color: #2b2812; outline: none;">
+          </label>
+
+          <label style="display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 14px; font-weight: 600;">C.P.</span>
+            <input type="text" value="03100" style="height: 52px; padding: 0 16px; border: 1.5px solid rgba(43,40,18,0.18); border-radius: 8px; background: #ffffff; font-family: ui-monospace, monospace; font-size: 16px; color: #2b2812; outline: none;">
+          </label>
+
+          <label style="display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 14px; font-weight: 600;">Ciudad o municipio</span>
+            <input type="text" value="Benito Juárez" style="height: 52px; padding: 0 16px; border: 1.5px solid rgba(43,40,18,0.18); border-radius: 8px; background: #ffffff; font-family: Poppins, sans-serif; font-size: 16px; color: #2b2812; outline: none;">
+          </label>
+
+          <label style="display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 14px; font-weight: 600;">Estado</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; height: 52px; padding: 0 16px; border: 1.5px solid rgba(43,40,18,0.18); border-radius: 8px; background: #ffffff; font-size: 16px;">
+              Ciudad de México
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="color: rgba(43,40,18,0.45);"><path d="M6 9.5l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </div>
+          </label>
+        </div>
+
+        <label style="display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-size: 14px; font-weight: 600;">Referencias</span>
+          <input type="text" value="Entre Eje 7 y Municipio Libre, portón gris" style="height: 52px; padding: 0 16px; border: 1.5px solid rgba(43,40,18,0.18); border-radius: 8px; background: #ffffff; font-family: Poppins, sans-serif; font-size: 16px; color: #2b2812; outline: none;">
+        </label>
+      </section>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 16px; padding-top: 22px; max-width: 1020px;">
+      <span style="display: flex; align-items: center; height: 52px; padding: 0 26px; border-radius: 8px; background: #2b2812; font-size: 16px; font-weight: 600; color: #aeff6e;">Guardar cambios</span>
+      <span style="font-size: 15px; color: rgba(43,40,18,0.55);">Nada se guarda hasta que lo confirmes.</span>
+    </div>
+  </main>
+</div>
+</x-dc>
+</body>
+</html>

@@ -81,3 +81,13 @@ Antes de cambiar código por una hipótesis, comprueba la hipótesis.
   función que muere por timeout DESPUÉS de pagar algo es peor que un error.
 - **No dispares una petición a un proveedor externo por cada tecla o clic.**
   Skydropx admite 2 por segundo. Siete clics en "+1" tumbaron el checkout.
+- **No dibujes iconos ni controles a mano.** El front ya trae `lucide-react`
+  para los iconos y shadcn en `components/ui` —checkbox, dialog, sheet, drawer,
+  select— sobre Radix. Escribir un `<svg>` de cuatro trazos o un
+  `<input type="checkbox">` con `accent-color` parece más corto y sale peor:
+  ya pasó con el panel del comprador, y hubo que rehacerlo entero.
+- **No compares `usePathname()` con un literal.** Usa `mismaRuta()` de
+  `lib/rutas.ts`. En producción el sitio se exporta con `trailingSlash`, así
+  que la ruta llega con barra final y la comparación da falso **sólo ahí**, que
+  es donde nadie la prueba. Ya dejó dos buscadores en el catálogo y el login
+  del taller en blanco.

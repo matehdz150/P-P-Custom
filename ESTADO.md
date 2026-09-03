@@ -7,11 +7,17 @@ código. Para el mapa del proyecto ve a `README.md`; para el AWS, a
 `infra/README.md`. Si algo de aquí ya se hizo, bórralo — este documento sólo
 sirve si se mantiene corto y cierto.
 
-**Lo último que se hizo, por si sólo lees esto:** el **carrito de varios
-talleres está completo** —se agrega desde el editor, se ve en `/carrito`, y
-`/pedir/carrito` cobra una compra que se parte en un pedido por taller—, y sus
-dos pantallas están rediseñadas. De ese bloque sólo falta el **seguimiento y
-los correos de la COMPRA**: hoy los avisos salen por parte.
+**Lo último que se hizo, por si sólo lees esto:** el **panel del comprador es
+ya un dashboard completo** —sin cabecera ni pie del sitio, sidebar fijo, y el
+detalle del pedido se abre dentro— y con él **repetir un pedido y guardar
+diseños con nombre**, que es el flujo de la empresa que pide su logo cada mes.
+Backend desplegado y probado contra AWS; el aspecto **no está mirado** (ver
+"Lo que quedó sin comprobar").
+
+Antes: el **carrito de varios talleres**, completo —se agrega desde el editor,
+se ve en `/carrito`, y `/pedir/carrito` cobra una compra que se parte en un
+pedido por taller—, con sus dos pantallas rediseñadas. De ese bloque sólo falta
+el **seguimiento y los correos de la COMPRA**: hoy los avisos salen por parte.
 
 Antes: el sitio publicado en **https://kustto.com.mx** (S3 + CloudFront,
 export estático, con el admin deliberadamente fuera), los envíos con Skydropx,
@@ -51,8 +57,8 @@ JSON de Cognito, como el login del taller.
 El autorizador de API Gateway valida emisor y audiencia, no grupos: con un
 solo pool, un token de taller abriría `/cuenta/*`. Ver `infra/README.md`.
 
-**El panel del comprador es `/cuenta`**, una sola ruta con cuatro pestañas en
-`?s=`. No son cuatro rutas con layout compartido a propósito: `/cuenta/entrar`
+**El panel del comprador es `/cuenta`**, una sola ruta con las secciones en
+`?s=`. No son varias rutas con layout compartido a propósito: `/cuenta/entrar`
 y `/cuenta/callback` cuelgan del mismo prefijo, y un `layout.tsx` ahí les
 pediría sesión justo a las dos pantallas que sirven para no tenerla.
 
@@ -77,6 +83,98 @@ Comprobado siguiendo la redirección completa: Cognito manda a Google con el
 de Cognito está autorizado del lado de Google. **No hizo falta republicar el
 sitio**: el bundle ya llevaba el dominio de Cognito, y lo que cambió fue sólo
 la configuración del pool.
+
+---
+
+## El panel es un dashboard, y repetir pedidos (3 de septiembre)
+
+**Ya no lleva la cabecera ni el pie del sitio.** El armazón es el sidebar más
+el área de contenido, cada uno con su propio scroll (`h-screen` +
+`overflow-hidden` en el contenedor, `overflow-y-auto` en el `<main>`). Con el
+scroll en el `body` la columna se iba hacia arriba al bajar por la lista.
+
+Dos consecuencias que hay que respetar al tocarlo:
+
+- **La marca del sidebar es la única salida al catálogo.** Sin cabecera, no
+  hay otra. Si la quitas, el panel se convierte en un callejón.
+- **El carrito se enseña en la barra de título del panel**, y sólo cuando
+  tiene algo. Vivía en la cabecera del sitio; sin esto, quien acaba de repetir
+  un pedido no tiene por dónde llegar a pagarlo sin salirse.
+
+**Las secciones fuera del menú son `?s=pedido` y `?s=repetir`.** Las dos
+exigen `&id=`, así que sin él no significan nada y por eso no están en la
+lista; en el menú se marca "Pedidos", del que cuelgan.
+
+**El detalle del pedido lo pintan DOS sitios y es el mismo componente**
+(`components/Pedido/Detalle.tsx`): el panel y la página pública `/pedido`, a la
+que se llega con el token del correo sin tener cuenta. Estaban duplicados y eso
+garantizaba que un arreglo cayera sólo en el que se mira, no en el que le llega
+al cliente. **No lo vuelvas a separar.**
+
+**Los datos del panel se piden UNA vez** (`components/Cuenta/datos.tsx`). Los
+pedidos los necesitan tres sitios —la lista, las pastillas del menú y la
+rejilla de diseños— y antes eran tres viajes idénticos; además, cambiar de
+sección desmontaba el componente y los volvía a pedir. No es una caché: no
+caduca ni revalida, vive mientras el panel esté abierto.
+
+### Repetir: la comparación no se salta
+
+La línea de un pedido **congela** precio, medidas y plazo; el catálogo es de
+hoy. Entre un mes y otro sube un precio, se archiva un producto o se acaban los
+blancos. Por eso hay dos rutas y no una:
+
+- `GET /cuenta/pedidos/:id/repetir` **lee y compara, no crea nada.** Devuelve
+  cada línea con `estado`: `igual`, `precio`, `plazo` o `no_disponible`.
+- `POST /cuenta/pedidos/:id/repetir` deja las líneas elegidas en el carrito.
+
+**El POST vuelve a comparar**, aunque el front ya lo hizo al pintar la
+pantalla: entre mirar y pulsar puede archivarse un producto, y descubrirlo al
+final del checkout es el peor sitio. Lo que se cae vuelve en `descartadas`, y
+el front avisa **sin navegar**.
+
+**El arte se copia de servidor a servidor**, de `medios/pedidos/…` a
+`carritos/<id nuevo>/…`, con el mismo mapa de nombres que usa `copiarDelCarrito`
+al comprar pero al revés. Un arte de producción es de MB —el que se probó, 1.1
+MB— y hacer que el navegador lo baje para volver a subirlo lo dobla. Por eso el
+rol de `kustto-compradores` necesita **`s3:PutObject` en `carritos/*`**, que se
+añadió en `infra/lambda-compradores.sh`.
+
+**Ninguna de las dos crea el pedido.** Acaba en el carrito y sale por el
+checkout de siempre. Repetir no puede ser una segunda forma de escribir
+pedidos: ahí es donde acaban divergiendo las reglas de precio.
+
+**Un id de carrito nuevo por artículo**, nunca el del pedido viejo: si dos
+repeticiones compartieran carpeta, vaciar el carrito de una borraría el arte de
+la otra.
+
+### Diseños guardados
+
+**No hay un "guardar" en el editor, y es deliberado.** Un diseño guardado nace
+ascendiendo una línea de pedido que ya existe: se le pone nombre y sube. Así
+quien compra una vez no ve un concepto nuevo, y quien repite lo tiene arriba.
+
+**El arte se copia, no se referencia.** Un diseño guardado sobrevive a su
+pedido; apuntar a `medios/pedidos/<pedido>/…` lo dejaría colgando el día que
+ese pedido se limpie.
+
+**El id nace sin `:` ni `.`** (`20260903T192354-df08e579`). Ordena igual que el
+ISO y no hay que escaparlo ni en una llave de S3 ni en una URL — el editor lo
+recibe por `?diseno=` y lo valida contra una lista blanca.
+
+**`useCarrito` tiene `agregarVarios`** para esto. No es `agregar` en un bucle:
+cada `agregar` escribe en las dos mitades, así que repetir cinco líneas
+mandaría cinco PATCH a la cuenta y ganaría el último.
+
+### Lo que quedó sin comprobar
+
+**El aspecto del panel logueado no se ha mirado nunca.** Se verificó que
+compila (`tsc`, `biome`, y esbuild sobre los trece componentes) y que el
+backend funciona, pero no cómo se ve. Falta mirar sobre todo:
+
+- el sidebar y la tira de secciones **en teléfono**,
+- el diálogo de ponerle nombre a un diseño,
+- el perfil en dos tarjetas a pantalla ancha,
+- la barra pegada del resumen en `?s=repetir`.
 
 ---
 
@@ -382,6 +480,102 @@ Y tres decisiones que conviene no deshacer:
 ---
 
 ## Trampas que ya mordieron
+
+**Turbopack miente sobre archivos que acabas de crear o cambiar.** Mordió dos
+veces seguidas el 3 de septiembre, y las dos veces el error apuntaba al sitio
+equivocado.
+
+- Un `Module not found: Can't resolve '@/components/Cuenta/Repetir'` con el
+  archivo en disco y `tsc` en verde. Otros archivos nuevos de la misma carpeta
+  sí resolvían, así que no era "los archivos nuevos fallan".
+- Un `Parsing ecmascript source code failed` en `Ajustes.tsx` señalando un `}`
+  perfectamente válido.
+
+**Cómo saber que es la caché y no tú:** mira el número de línea que da el
+error contra el archivo real. La segunda vez decía `</form>` en la 245 cuando
+estaba en la 257 — o sea que estaba compilando una versión doce líneas más
+corta. Y comprueba con **otro parser** antes de tocar el código: `tsc
+--noEmit`, o `esbuild archivo.tsx --outfile=…`, que da el error exacto si
+existe.
+
+Lo primero a veces se arregla tocando el archivo (`printf '\n' >> …`); lo
+segundo no se arregló así y hubo que **reiniciar el servidor**. Perdí un rato
+buscando un desequilibrio de JSX que no existía — y una comprobación mía a
+mano contó mal, porque había un `<label>` dentro de un comentario en prosa.
+
+**`pathname === "/algo"` funciona en `pnpm dev` y falla en producción.** Ya
+mordió DOS veces y la segunda dejó una pantalla en blanco.
+
+`trailingSlash` se enciende **sólo al exportar** (`next.config.ts`), porque el
+export escribe `/catalogo/index.html` y la función de CloudFront resuelve las
+URLs bonitas añadiendo `index.html`. Consecuencia: en el sitio publicado
+`usePathname()` devuelve `/proveedor/login/` **con barra**, y en desarrollo
+sin ella. La comparación contra el literal da falso justo donde nadie la
+prueba.
+
+- La primera vez: el layout del catálogo creía estar en una subruta y montaba
+  su buscador encima del hero, que ya trae el suyo — **dos buscadores**.
+- La segunda (3 de septiembre): `isLogin` daba falso en `/proveedor/login/`,
+  el layout montaba el panel en vez del login, y sin sesión el panel devuelve
+  `null` → **página en blanco**, con el efecto redirigiendo al mismo sitio en
+  bucle. Se llegaba entrando a `/proveedor` sin sesión, que es el camino
+  normal. Entrando directo a `/proveedor/login` sin barra sí renderizaba, y
+  por eso parecía intermitente.
+- Y dos más que nadie había notado: ninguna entrada de la barra lateral quedaba
+  marcada como activa, y el aviso de perfil incompleto salía **también dentro
+  del propio perfil**.
+
+Se compara con **`mismaRuta()` de `apps/web/lib/rutas.ts`**, que normaliza los
+dos lados. Vive en un archivo compartido y no como un `.replace()` suelto por
+pantalla justamente porque repetido se olvida: la primera vez se arregló en un
+solo sitio y quedó suelto en los otros tres.
+
+Comprobado con el build de export servido en local imitando a CloudFront:
+misma URL `/proveedor/login/`, producción `(VACIO)` y el build con el arreglo
+enseñando el formulario.
+
+**Los scripts de `infra/` se corren en Windows Y en macOS, y el CLI de AWS no
+es el mismo bicho en los dos.** Dos cosas que ya rompieron y que ahora resuelve
+`infra/aws.sh` para todos:
+
+- **Git Bash convierte los argumentos que empiezan por `/`** antes de pasarlos
+  a un binario nativo. `--paths "/*"` de una invalidación de CloudFront salía
+  como `C:/Program Files/Git/*` y AWS contestaba *"invalid invalidation
+  paths"*, sin mencionar rutas. Ahora `aws.sh` exporta `MSYS_NO_PATHCONV=1`.
+- **Al revés, una ruta de archivo REAL sí hay que traducirla.** El CLI de
+  Windows no entiende `/tmp/tmp.XXXX` y falla con `Unable to load paramfile`
+  señalando una ruta que para el shell existe. Se pasa por
+  **`ruta_cli()`**, que usa `cygpath -m`. Comprobado: con la ruta convertida el
+  CLI lee el archivo; sin convertir, falla.
+
+Las dos son **inertes en macOS** —la variable no la lee nadie y `cygpath` no
+existe, así que el helper devuelve la ruta tal cual—, que es la única forma de
+que un solo script sirva en las dos máquinas. Si añades un `file://` o
+`fileb://` con ruta absoluta, pásalo por `ruta_cli`; con ruta relativa (como
+los `--zip-file fileb://services/...`) no hace falta.
+
+**Ampliar un rol de IAM no basta: hay que reciclar la Lambda.** Al añadirle
+`dynamodb:DeleteItem` al rol de compradores —que le faltaba, y por eso
+`DELETE /cuenta/carrito` daba **500 en producción** desde que se escribió— la
+función siguió negando durante **90 segundos** con `AccessDeniedException`,
+aunque:
+
+- `get-role-policy` ya devolvía la acción,
+- `iam simulate-principal-policy` decía **`allowed`**,
+- y no había otra política, ni política gestionada de más, ni límite de
+  permisos.
+
+El contenedor conserva la autorización vieja. Se destraba forzando contenedores
+nuevos:
+
+```bash
+aws_ lambda update-function-configuration --function-name kustto-compradores \
+  --description "reciclar $(date +%s)"
+```
+
+Los scripts NO lo hacen. Si amplías un rol y pruebas enseguida, vas a creer que
+tu política está mal — y el simulador te va a decir que está bien, que es lo
+que más despista.
 
 **Borrar un pedido a mano NO devuelve las existencias.** (Vuelto a pisar el 3
 de septiembre: el `PATCH` de cancelar falló por un token caducado, el borrado
@@ -1087,6 +1281,10 @@ CloudFront y un número metido en el HTML se cachearía con el de una persona.
 
 ## Lo que sigue, en orden
 
+0. **Mirar el panel del comprador con una sesión abierta.** Está construido,
+   compila y su backend está probado, pero **nadie ha visto cómo se ve**. Es lo
+   más barato de la lista y lo más probable que tenga algo roto: la lista de
+   qué mirar está en "Lo que quedó sin comprobar", arriba.
 1. **El perfil del taller, obligatorio de verdad.** Un taller sin dirección de
    recolección desaparece del checkout con envío —`leerOrigen` no cotiza y al
    comprador le sale "este taller no envía todavía"— y uno sin teléfono no puede
@@ -1153,7 +1351,20 @@ CloudFront y un número metido en el HTML se cachearía con el de una persona.
 - **Hay ~250 archivos modificados sin commitear** que son casi todo formato:
   una pasada de Biome mezclada con conversión CRLF de trabajar desde macOS y
   Windows. **No hay `.gitattributes`** y `core.autocrlf` está en `true`.
-  Mientras siga así, cualquier diff real queda enterrado.
+  Mientras siga así, cualquier diff real queda enterrado. Y por lo mismo: **no
+  corras `pnpm format` sobre todo el repo** — ya reformateó 393 archivos de una
+  vez y revertirlo fue peor que el problema. Formatea sólo lo que tocaste.
+- **El trabajo del panel del comprador está SIN COMMITEAR**, mezclado con esa
+  churn. Lo nuevo son `components/Cuenta/{Sidebar,datos,Repetir,DetallePedido,
+  NombrarDiseno}.tsx`, `components/Pedido/Detalle.tsx`,
+  `services/compradores/src/lib/medios.ts` y
+  `services/compradores/src/rutas/disenos.ts`.
+- **La Lambda de compradores ya está desplegada con todo esto** (24.1 kb), y su
+  rol tiene el `PutObject` en `carritos/*`. El **front NO está publicado**: el
+  panel nuevo sólo existe en local.
+- **Los datos de la prueba de repetir se borraron** —la carpeta de `carritos/`,
+  los dos archivos de `medios/disenos/prueba-repetir/` y su ítem en DynamoDB—,
+  así que si ves un diseño de un `sub` llamado `prueba-repetir`, es nuevo.
 
 ---
 

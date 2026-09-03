@@ -14,6 +14,10 @@ import {
 import { useEffect, useRef } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import { leerBorrador } from "@/lib/pedido/borrador";
+import {
+	cargarDisenoGuardado,
+	rutaDisenoDeLaUrl,
+} from "@/lib/pedido/disenoGuardado";
 import type {
 	EditableShape,
 	ProductSide,
@@ -121,24 +125,33 @@ export function useFabricCanvas(
 		setEditableAreas(side, areas);
 		registerCanvas(side, c);
 
-		/* ---- volver del checkout con el diseño puesto ----
+		/* ---- abrir con un diseño ya hecho ----
 
-		   Si hay un borrador de ESTE producto, sus objetos se reponen encima de
-		   las guías que se acaban de crear. Sin esto, el enlace "volver a editar"
-		   de la pantalla de pedido devolvería un lienzo en blanco y habría que
-		   rehacer el diseño entero para cambiar una talla.
-
-		   Se guardan sólo los objetos del cliente, no el lienzo completo, así que
-		   aquí no hay que filtrar nada ni se duplican las guías. */
+		   Los objetos se reponen encima de las guías que se acaban de crear. Se
+		   guardan SÓLO los objetos del cliente, no el lienzo entero, así que aquí
+		   no hay que filtrar nada ni se duplican los recuadros del área. */
 		let cancelado = false;
 
-		leerBorrador()
-			.then(async (borrador) => {
-				if (cancelado || !borrador) return;
-				if (borrador.productoId !== product.id) return;
+		/* DOS ORÍGENES, Y LA URL MANDA.
 
-				const guardados = borrador.diseno?.[side];
-				if (!guardados?.length) return;
+		   `?diseno=<ruta>` abre uno que ya se hizo —de un pedido, o guardado con
+		   nombre— para volver a pedirlo con otras tallas. Sin él se restaura el
+		   borrador local de siempre.
+
+		   Cuando viene por la URL el borrador se IGNORA a propósito: si no,
+		   quien abre su logo de cada mes se encontraría encima lo que dejó a
+		   medias hace un rato, y los objetos de los dos diseños mezclados. */
+		const desdeLaUrl = rutaDisenoDeLaUrl();
+
+		const objetosDelLado = desdeLaUrl
+			? cargarDisenoGuardado(desdeLaUrl).then((d) => d?.[side])
+			: leerBorrador().then((b) =>
+					b && b.productoId === product.id ? b.diseno?.[side] : undefined,
+				);
+
+		objetosDelLado
+			.then(async (guardados) => {
+				if (cancelado || !guardados?.length) return;
 
 				const vivos = await util.enlivenObjects<FabricObject>(guardados);
 
@@ -150,7 +163,7 @@ export function useFabricCanvas(
 				c.requestRenderAll();
 			})
 			.catch(() => {
-				// Un borrador ilegible no puede impedir diseñar desde cero.
+				// Un diseño ilegible no puede impedir diseñar desde cero.
 			});
 
 		// ---- selection ----
@@ -170,8 +183,9 @@ export function useFabricCanvas(
 			});
 		};
 
-		c.on("text:editing:entered", onTextEditingEntered);
-
+		// Una sola vez: estaba registrado dos veces con un solo `off` en la
+		// limpieza, así que el manejador corría por duplicado y cada montaje
+		// dejaba un oyente vivo sobre un lienzo ya dispuesto.
 		c.on("text:editing:entered", onTextEditingEntered);
 		c.on("selection:created", onSel);
 		c.on("selection:updated", onSel);
