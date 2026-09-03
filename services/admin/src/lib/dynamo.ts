@@ -173,7 +173,37 @@ export const llaves = {
 		sk: "LOCK",
 	}),
 
-	/** El folio corto que ve la gente (#2418). Único, con su candado. */
+	/* ─── La compra ───────────────────────────────────────────────────────
+	   Lo que el cliente cree que hizo: UNA compra. Por dentro nace un pedido
+	   por taller, porque el taller produce, cobra y envía lo suyo — y porque
+	   así la separación entre talleres la sigue imponiendo la llave y no una
+	   comprobación que alguien puede olvidar.
+
+	   La compra no tiene índice propio: guarda la lista de sus pedidos, y cada
+	   pedido su `compraId`. Los tres GSI ya están ocupados (taller, estado,
+	   correo) y leer una compra es un GetItem más un BatchGet. */
+
+	compra: (id: string) => ({ pk: `PURCHASE#${id}`, sk: "META" }),
+
+	/**
+	 * Las compras de un correo, en la MISMA partición que sus pedidos.
+	 *
+	 * El prefijo `COMPRA#` es lo que las distingue: `/cuenta` lista compras con
+	 * un `begins_with`, y los pedidos sueltos de antes siguen ahí sin él.
+	 */
+	compraDeComprador: (correo: string, id: string, creadoEn: string) => ({
+		gsi3pk: `BUYER#${correo.toLowerCase()}`,
+		gsi3sk: `COMPRA#${creadoEn}#${id}`,
+	}),
+
+	/**
+	 * El folio corto que ve la gente (#481902). Es de la COMPRA; cada parte es
+	 * `#481902-1`, `#481902-2`, así que el cliente dice un número y el taller
+	 * reconoce el suyo dentro.
+	 *
+	 * Se conserva el prefijo `ORDER_FOLIO#` para que los candados de los
+	 * pedidos anteriores a las compras sigan valiendo.
+	 */
 	folioDePedido: (folio: string) => ({
 		pk: `ORDER_FOLIO#${folio}`,
 		sk: "LOCK",

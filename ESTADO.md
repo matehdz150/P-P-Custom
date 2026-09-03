@@ -849,10 +849,32 @@ Lo decidido, punto por punto:
   copia fuera de ese prefijo**: si se dejara donde está, la regla de limpieza
   borraría el arte de un pedido pagado.
 
+### Paso 1: hecho (3 de septiembre)
+
+`PURCHASE#` existe, la creación reparte por taller y todo se escribe en una
+transacción. Verificado contra AWS: una compra de dos talleres nació con sus
+partes `#696914-1` y `#696914-2`, cada taller vio **sólo la suya**, y el
+comprador vio la compra entera con su enlace. Sin token, 401.
+
+Lo que hay que saber para seguir:
+
+- **El token es de la compra y cada pedido guarda la misma huella.** Así el
+  enlace del correo abre la compra y también sirve para mirar una parte
+  suelta, sin inventar un segundo token.
+- **`seguimiento` acepta id de pedido o de compra**, y con UNA sola parte
+  devuelve la parte con el folio de la compra al lado. Por eso el front actual
+  siguió funcionando sin tocarlo: no tiene que saber que existen las compras
+  hasta que de verdad haya varias.
+- **El índice de la línea viaja con ella.** Al repartir por taller el orden
+  cambia, y las subidas del arte se emparejan por ese índice: sin él, el arte
+  de una línea acabaría en la ruta de otra.
+- **Multi-taller con envío devuelve 400 a propósito**, explicando por qué.
+  Cada taller manda desde su dirección y eso son varias cotizaciones — es el
+  paso 4. Mejor decirlo que cobrar un envío que sólo cubre a uno.
+
 ### El orden para construirlo
 
-1. **El modelo y la creación**: `PURCHASE#`, el reparto por taller, la
-   transacción única y los folios. El checkout sigue siendo de un producto.
+1. ~~El modelo y la creación~~ — **hecho**.
 2. **Las subidas del carrito**: ruta firmada, prefijo propio, ciclo de vida, y
    "agregar al carrito" en el editor.
 3. **El carrito en el front**: navegador, cuenta, y la fusión al entrar.

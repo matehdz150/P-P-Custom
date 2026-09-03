@@ -98,135 +98,215 @@ export async function crear(cuerpo: unknown) {
 		),
 	);
 
-	const talleres = new Set(productos.map((p) => String(p.proveedorId)));
-	if (talleres.size > 1) {
+	/* ─── El reparto por taller ───────────────────────────────────────────
+	 *
+	 * Una COMPRA, y por dentro un pedido por taller. No es un pedido con
+	 * líneas de varios: el taller produce, cobra y envía lo suyo, y su estado
+	 * es suyo. Con un pedido compartido, "en producción" dejaría de significar
+	 * algo y la separación entre talleres —que hoy impone la llave— habría que
+	 * imponerla en cada lectura.
+	 */
+	const grupos = new Map<string, number[]>();
+
+	productos.forEach((producto, i) => {
+		const taller = String(producto.proveedorId);
+		grupos.set(taller, [...(grupos.get(taller) ?? []), i]);
+	});
+
+	/* Con envío a domicilio todavía no se puede repartir: cada taller manda
+	 * desde SU dirección, así que son varias cotizaciones y varios costos, y
+	 * eso es el paso siguiente. Mejor decirlo que cobrar un envío que sólo
+	 * cubre a uno de ellos. */
+	if (grupos.size > 1 && entrega.metodo === "envio") {
 		throw malaPeticion(
-			"Un pedido es de un solo taller. Sepáralo en uno por taller.",
+			"Todavía no podemos enviar productos de varios talleres en la misma compra. " +
+				"Sepáralos, o elige recoger con cada taller.",
 		);
 	}
 
-	const proveedorId = [...talleres][0];
-	const ahora = new Date().toISOString();
-	const id = randomUUID();
-
-	const detalladas = lineas.map((l: Cuerpo, i: number) =>
-		aLinea(l, productos[i], id),
-	);
-
-	/* El envío, verificado contra Skydropx.
-	 *
-	 * Sólo cuando va a domicilio: recoger con el taller no lleva guía ni
-	 * cobro. El precio NO viene del cuerpo — se lee de la cotización que
-	 * Skydropx guarda, igual que el precio del producto se lee de la tabla. */
 	const envio =
 		entrega.metodo === "envio" ? await envios.envioDelPedido(c.envio) : null;
 
-	const productosTotal = detalladas.reduce((suma, l) => suma + l.importe, 0);
-	const total = productosTotal + (envio?.precio ?? 0);
+	const compraId = randomUUID();
+	const ahora = new Date().toISOString();
 
 	/* El token de seguimiento NO se guarda: se guarda su huella. Si alguien
-     llega a leer la tabla, no se lleva los enlaces de seguimiento de nadie.
-     Es la misma razón por la que la llave del admin se compara con hash. */
-	const token = randomBytes(24).toString("base64url");
+	   llega a leer la tabla, no se lleva los enlaces de seguimiento de nadie.
+	   Es la misma razón por la que la llave del admin se compara con hash.
 
-	const pedido = {
-		...llaves.pedido(id),
-		...llaves.pedidoDeProveedor(proveedorId, id, ahora),
-		...llaves.pedidoPorEstado("nuevo", ahora),
-		...llaves.pedidoDeComprador(comprador.email, id, ahora),
-		id,
+	   Es UNO para toda la compra, y cada pedido guarda la misma huella: así el
+	   enlace del correo abre la compra entera y también sirve para mirar una
+	   parte suelta. */
+	const token = randomBytes(24).toString("base64url");
+	const tokenHuella = huella(token);
+
+	const partes = [...grupos.entries()].map(([proveedorId, indices]) => {
+		const pedidoId = randomUUID();
+
+		// El índice ORIGINAL de la línea viaja con ella: es lo que empareja las
+		// subidas del arte con lo que mandó el navegador, y al repartir por
+		// taller el orden deja de coincidir.
+		const detalladas = indices.map((i) => ({
+			indice: i,
+			linea: aLinea(lineas[i], productos[i], pedidoId),
+		}));
+
+		const suyas = detalladas.map((d) => d.linea);
+		const productosTotal = suyas.reduce((suma, l) => suma + l.importe, 0);
+
+		return {
+			proveedorId,
+			pedidoId,
+			detalladas,
+			descuentos: descuentosDeStock(
+				suyas,
+				indices.map((i) => productos[i]),
+			),
+			pedido: {
+				...llaves.pedido(pedidoId),
+				...llaves.pedidoDeProveedor(proveedorId, pedidoId, ahora),
+				...llaves.pedidoPorEstado("nuevo", ahora),
+				...llaves.pedidoDeComprador(comprador.email, pedidoId, ahora),
+				id: pedidoId,
+				/** De qué compra es esta parte. Al revés, la compra lista sus pedidos. */
+				compraId,
+				comprador,
+				/**
+				 * A dónde va. Se guarda tal como se capturó y no se vuelve a tocar: es
+				 * lo que el taller lee para mandar el paquete, y "corregirle" el
+				 * formato a una dirección mexicana es como se pierden los envíos.
+				 */
+				entrega,
+				/**
+				 * La paquetería elegida y lo que se cobró por ella. Se CONGELA aquí,
+				 * como el precio y las medidas: la cotización de Skydropx caduca y el
+				 * precio de mañana no es el que pagó esta persona.
+				 *
+				 * `guia` se llena en el paso siguiente, cuando el taller confirma el
+				 * peso real y se compra la etiqueta.
+				 */
+				envio,
+				/** Se llena el día que haya cuentas; hoy el pedido vive por su correo. */
+				compradorId: null,
+				proveedorId,
+				lineas: suyas,
+				productosTotal,
+				total: productosTotal + (envio?.precio ?? 0),
+				piezas: suyas.reduce((n, l) => n + l.piezas, 0),
+				estado: "nuevo" as EstadoPedido,
+				bitacora: [{ estado: "nuevo", en: ahora, por: "cliente", nota: null }],
+				tokenHuella,
+				createdAt: ahora,
+				updatedAt: ahora,
+			},
+		};
+	});
+
+	const productosTotal = partes.reduce(
+		(suma, p) => suma + Number(p.pedido.productosTotal),
+		0,
+	);
+	const total = productosTotal + (envio?.precio ?? 0);
+	const piezas = partes.reduce((n, p) => n + Number(p.pedido.piezas), 0);
+
+	const compra = {
+		...llaves.compra(compraId),
+		...llaves.compraDeComprador(comprador.email, compraId, ahora),
+		id: compraId,
 		comprador,
-		/**
-		 * A dónde va. Se guarda tal como se capturó y no se vuelve a tocar: es lo
-		 * que el taller lee para mandar el paquete, y "corregirle" el formato a
-		 * una dirección mexicana es como se pierden los envíos.
-		 */
-		entrega,
-		/**
-		 * La paquetería elegida y lo que se cobró por ella. Se CONGELA aquí,
-		 * como el precio y las medidas: la cotización de Skydropx caduca y el
-		 * precio de mañana no es el que pagó esta persona.
-		 *
-		 * `guia` se llena en el paso siguiente, cuando el taller confirma el
-		 * peso real y se compra la etiqueta.
-		 */
-		envio,
-		/** Se llena el día que haya cuentas; hoy el pedido vive por su correo. */
 		compradorId: null,
-		proveedorId,
-		lineas: detalladas,
+		entrega,
 		productosTotal,
 		total,
-		piezas: detalladas.reduce((n, l) => n + l.piezas, 0),
-		estado: "nuevo" as EstadoPedido,
-		bitacora: [{ estado: "nuevo", en: ahora, por: "cliente", nota: null }],
-		tokenHuella: huella(token),
+		piezas,
+		tokenHuella,
 		createdAt: ahora,
 		updatedAt: ahora,
 	};
 
-	const folio = await escribirConFolio(
-		pedido,
-		id,
-		descuentosDeStock(detalladas, productos),
-	);
+	const { folio, folios } = await escribirCompra(compra, partes);
 
-	// Después de escribir y sin poder fallar: el pedido ya existe, y el aviso es
-	// una comodidad. `avisarAlTaller` se traga sus propios errores.
-	await avisarAlTaller(proveedorId, {
-		tipo: "pedido-nuevo",
-		pedidoId: id,
-		folio,
-	});
-
-	/* Los dos correos. Igual que el aviso en vivo: después de escribir y sin
-	   poder tumbar nada — `enviar` se traga sus propios errores.
+	/* Todo lo que sigue va DESPUÉS de escribir y no puede tumbar nada: la
+	 * compra ya existe. `avisarAlTaller` y `enviar` se tragan sus errores.
 	 *
-	 * El del comprador es el que importa: lleva su enlace de seguimiento, y de
-	 * ese token sólo guardamos la huella. Si no le llega por correo y cierra la
-	 * pestaña, no hay forma de devolvérselo ni por soporte. */
-	const primera = detalladas[0];
+	 * Un aviso en vivo por taller: cada uno recibe el suyo por su propio canal,
+	 * que ya reparte por `proveedorId`. */
+	for (const parte of partes) {
+		await avisarAlTaller(parte.proveedorId, {
+			tipo: "pedido-nuevo",
+			pedidoId: parte.pedidoId,
+			folio: folios[parte.pedidoId],
+		});
+	}
+
+	/* UN correo al comprador por toda la compra, no uno por taller: él hizo una
+	 * compra, y tres correos por lo mismo enseñan a ignorarlos.
+	 *
+	 * Es el que importa: lleva su enlace de seguimiento, y de ese token sólo
+	 * guardamos la huella. Si no le llega y cierra la pestaña, no hay forma de
+	 * devolvérselo ni por soporte. */
+	const todas = partes.flatMap((parte) => parte.detalladas.map((d) => d.linea));
+	const primera = todas[0];
 
 	await enviar(
 		pedidoRecibido({
 			para: comprador.email,
 			nombre: comprador.nombre,
 			folio,
-			enlace: `/pedido?id=${encodeURIComponent(id)}&token=${encodeURIComponent(token)}`,
+			enlace: `/pedido?id=${encodeURIComponent(compraId)}&token=${encodeURIComponent(token)}`,
 			total,
-			piezas: pedido.piezas,
+			piezas,
 			producto: primera?.producto ?? "Tu pedido",
 			dias: primera?.diasPrometidos ?? null,
 		}),
 	);
 
-	// El del taller necesita su correo, que vive en su ítem. Se lee aquí y no
-	// antes: si el pedido no llega a escribirse, esta lectura sobra.
-	const taller = await leerTaller(proveedorId);
+	/* Y uno por taller, con SU parte: su folio, sus piezas y su importe. El
+	 * correo del taller vive en su ítem, y se lee aquí y no antes: si la compra
+	 * no llega a escribirse, estas lecturas sobran. */
+	for (const parte of partes) {
+		const taller = await leerTaller(parte.proveedorId);
+		if (!taller?.email) continue;
 
-	if (taller?.email) {
+		const suyas = parte.detalladas.map((d) => d.linea);
+
 		await enviar(
 			pedidoParaTaller({
 				para: String(taller.email),
 				taller: String(taller.displayName ?? taller.name ?? "Hola"),
-				folio,
-				piezas: pedido.piezas,
-				producto: primera?.producto ?? "Un producto",
-				total: productosTotal,
+				folio: folios[parte.pedidoId],
+				piezas: Number(parte.pedido.piezas),
+				producto: suyas[0]?.producto ?? "Un producto",
+				total: Number(parte.pedido.productosTotal),
 				metodo: entrega.metodo,
 			}),
 		);
 	}
 
 	return {
-		id,
+		/** El id de la COMPRA: es lo que abre el enlace de seguimiento. */
+		id: compraId,
 		folio,
 		token,
 		total,
+		/** Qué se creó por dentro, por si quien llama quiere enseñarlo. */
+		pedidos: partes.map((parte) => ({
+			id: parte.pedidoId,
+			folio: folios[parte.pedidoId],
+			proveedorId: parte.proveedorId,
+		})),
 		// El arte va directo del navegador a S3, como los mockups: firmar aquí
-		// ata el permiso a este pedido en vez de dejar un firmador abierto.
-		subidas: await firmarArte(id, detalladas),
+		// ata el permiso a una compra que ya existe en vez de dejar un firmador
+		// abierto. El `indice` es el de la línea tal como la mandó el navegador.
+		subidas: await firmarArte(todasConIndice(partes)),
 	};
+}
+
+/** Las líneas de todas las partes, con el índice que traían al llegar. */
+function todasConIndice(
+	partes: { detalladas: { indice: number; linea: Linea }[] }[],
+) {
+	return partes.flatMap((parte) => parte.detalladas);
 }
 
 /**
@@ -237,14 +317,36 @@ export async function crear(cuerpo: unknown) {
  * carácter.
  */
 export async function seguimiento(id: string, token: string | undefined) {
-	const { Item } = await dynamo.send(
-		new GetCommand({ TableName: TABLA, Key: llaves.pedido(id) }),
-	);
+	/* El mismo enlace sirve para las dos cosas. El correo lleva el id de la
+	   COMPRA, pero los enlaces que ya circulan —y los que el taller consulta—
+	   traen el de un pedido. Se busca primero el pedido porque es el caso
+	   viejo y el más común. */
+	const pedido = await leerSiExiste(llaves.pedido(id));
+	const item = pedido ?? (await leerSiExiste(llaves.compra(id)));
 
-	if (!Item) throw noEncontrado("No encontramos ese pedido");
+	if (!item) throw noEncontrado("No encontramos ese pedido");
+
+	exigirToken(item, token);
+
+	if (pedido) return paraComprador(pedido);
+
+	return await comoCompra(item);
+}
+
+async function leerSiExiste(Key: Record<string, string>) {
+	const { Item } = await dynamo.send(new GetCommand({ TableName: TABLA, Key }));
+	return Item ?? null;
+}
+
+/**
+ * El token se compara en tiempo constante: una comparación normal filtra por
+ * cuánto tarda en fallar, y aquí eso permitiría adivinarlo carácter a
+ * carácter.
+ */
+function exigirToken(item: Record<string, unknown>, token: string | undefined) {
 	if (!token) throw noAutorizado("Falta el enlace de seguimiento");
 
-	const esperada = Buffer.from(String(Item.tokenHuella ?? ""));
+	const esperada = Buffer.from(String(item.tokenHuella ?? ""));
 	const recibida = Buffer.from(huella(token));
 
 	if (
@@ -253,8 +355,42 @@ export async function seguimiento(id: string, token: string | undefined) {
 	) {
 		throw noAutorizado("Ese enlace de seguimiento no es válido");
 	}
+}
 
-	return paraComprador(Item);
+/**
+ * La compra con sus partes dentro.
+ *
+ * Con UNA sola parte se devuelve la parte tal cual, con el folio de la compra
+ * al lado: es lo que ve casi todo el mundo hoy, y así la pantalla de
+ * seguimiento no tiene que saber que existen las compras hasta que de verdad
+ * haya varias.
+ */
+async function comoCompra(compra: Record<string, unknown>) {
+	const lista = (compra.pedidos ?? []) as { id: string }[];
+
+	const leidos = await Promise.all(
+		lista.map((p) => leerSiExiste(llaves.pedido(p.id))),
+	);
+
+	const partes = leidos
+		.filter((p): p is Record<string, unknown> => p !== null)
+		.map((p) => paraComprador(p));
+
+	if (partes.length === 1) {
+		return { ...partes[0], compra: { id: compra.id, folio: compra.folio } };
+	}
+
+	return {
+		id: compra.id,
+		folio: compra.folio,
+		esCompra: true,
+		comprador: compra.comprador,
+		entrega: compra.entrega,
+		total: compra.total,
+		piezas: compra.piezas,
+		createdAt: compra.createdAt,
+		partes,
+	};
 }
 
 /* ─── Lo que sostiene todo lo de arriba ─────────────────────────────────── */
@@ -641,8 +777,11 @@ function descuentosDeStock(lineas: Linea[], productos: Cuerpo[]) {
 	});
 }
 
-async function firmarArte(pedidoId: string, lineas: Linea[]) {
-	const piezas = lineas.flatMap((l, indice) => [
+async function firmarArte(conIndice: { indice: number; linea: Linea }[]) {
+	// El índice NO es la posición en este array: es la que traía la línea en lo
+	// que mandó el navegador. Al repartir por taller el orden cambia, y
+	// emparejar por posición subiría el arte de una línea a la ruta de otra.
+	const piezas = conIndice.flatMap(({ indice, linea: l }) => [
 		...l.arte.flatMap((a) => [
 			{
 				indice,
@@ -710,22 +849,40 @@ async function firmarArte(pedidoId: string, lineas: Linea[]) {
  * `randomInt` y no `Math.random()`: no es un secreto, pero viene del mismo
  * módulo que ya se usa aquí y reparte parejo sin pensarlo.
  */
-async function escribirConFolio(
-	pedido: Record<string, unknown>,
-	id: string,
-	/**
-	 * Los descuentos de inventario viajan en la MISMA transacción que el pedido.
-	 *
-	 * Escribirlos aparte dejaría dos formas de quedar a medias: un pedido sin
-	 * descontar, o un descuento sin pedido. Aquí es todo o nada.
-	 *
-	 * Ninguno lleva condición, así que no añaden motivos nuevos para que la
-	 * transacción se cancele: si se cancela, sigue siendo el folio.
-	 */
-	descuentos: Record<string, unknown>[] = [],
-) {
+async function escribirCompra(
+	compra: Record<string, unknown>,
+	partes: {
+		proveedorId: string;
+		pedidoId: string;
+		pedido: Record<string, unknown>;
+		descuentos: Record<string, unknown>[];
+	}[],
+): Promise<{ folio: string; folios: Record<string, string> }> {
+	const descuentos = partes.flatMap((parte) => parte.descuentos);
+
+	/* DynamoDB no acepta más de 100 ítems por transacción, y una compra son la
+	 * compra, un pedido por taller, el candado del folio y un descuento por
+	 * talla vendida. Se comprueba aquí para poder decirlo en castellano: si no,
+	 * sale un `TransactionCanceledException` que no explica nada y llega al
+	 * navegador como un 500 al pagar. */
+	const total = 2 + partes.length + descuentos.length;
+
+	if (total > 100) {
+		throw malaPeticion(
+			"La compra lleva demasiadas cosas para procesarla de una vez. " +
+				"Sepárala en dos y vuelve a intentarlo.",
+		);
+	}
+
 	for (let intento = 0; intento < 6; intento++) {
 		const folio = String(randomInt(100_000, 1_000_000));
+
+		// `#481902-1`, `#481902-2`… El cliente dice el folio de la compra y cada
+		// taller reconoce el suyo dentro sin tener que explicarle nada.
+		const folios: Record<string, string> = {};
+		partes.forEach((parte, i) => {
+			folios[parte.pedidoId] = `${folio}-${i + 1}`;
+		});
 
 		try {
 			await dynamo.send(
@@ -734,14 +891,40 @@ async function escribirConFolio(
 						{
 							Put: {
 								TableName: TABLA,
-								Item: { ...pedido, folio },
+								Item: {
+									...compra,
+									folio,
+									/* La compra lleva dentro la lista de sus pedidos: es lo que
+									   evita un cuarto índice. Leerla es un GetItem y un
+									   BatchGet. */
+									pedidos: partes.map((parte) => ({
+										id: parte.pedidoId,
+										folio: folios[parte.pedidoId],
+										proveedorId: parte.proveedorId,
+									})),
+								},
 								ConditionExpression: "attribute_not_exists(pk)",
 							},
 						},
+						...partes.map((parte) => ({
+							Put: {
+								TableName: TABLA,
+								Item: {
+									...parte.pedido,
+									folio: folios[parte.pedidoId],
+									/** El folio que ve el cliente, para no recalcularlo al leer. */
+									compraFolio: folio,
+								},
+								ConditionExpression: "attribute_not_exists(pk)",
+							},
+						})),
 						{
 							Put: {
 								TableName: TABLA,
-								Item: { ...llaves.folioDePedido(folio), pedidoId: id },
+								Item: {
+									...llaves.folioDePedido(folio),
+									compraId: compra.id,
+								},
 								ConditionExpression: "attribute_not_exists(pk)",
 							},
 						},
@@ -750,14 +933,14 @@ async function escribirConFolio(
 				}),
 			);
 
-			return folio;
+			return { folio, folios };
 		} catch (error) {
 			if (!esConflicto(error)) throw error;
 		}
 	}
 
 	throw conflicto(
-		"No pudimos asignarle un folio al pedido. Inténtalo otra vez.",
+		"No pudimos asignarle un folio a la compra. Inténtalo otra vez.",
 	);
 }
 
