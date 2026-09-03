@@ -92,6 +92,18 @@ function Tarjeta({ pedido }: { pedido: PedidoDelComprador }) {
 						{fecha(pedido.createdAt)} · {pedido.piezas}{" "}
 						{pedido.piezas === 1 ? "pieza" : "piezas"}
 					</p>
+
+					{/* El número de rastreo, en cuanto existe. Se enseña aquí y no
+					    sólo en el detalle porque es lo que la gente viene a mirar
+					    cuando su pedido ya salió, y así se ahorra un clic. */}
+					{pedido.guia?.rastreo && (
+						<p className="mt-1 truncate text-[13px] text-tinta/70">
+							<span className="text-tinta/50">
+								{pedido.guia.paqueteria ?? "Guía"}:
+							</span>{" "}
+							<span className="font-mono">{pedido.guia.rastreo}</span>
+						</p>
+					)}
 				</div>
 			</div>
 

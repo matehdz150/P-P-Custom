@@ -84,13 +84,39 @@ export type PedidoCreado = {
 export type PedidoEnSeguimiento = {
 	id: string;
 	folio: string;
-	estado: "nuevo" | "produccion" | "listo" | "entregado" | "cancelado";
+	estado:
+		| "nuevo"
+		| "produccion"
+		| "listo"
+		/** Ya salió con la paquetería. */
+		| "enviado"
+		| "entregado"
+		| "cancelado";
 	comprador: { nombre: string; email: string; whatsapp: string | null };
 	entrega?: {
 		metodo: "envio" | "recoger";
 		direccion:
 			| (Direccion & { interior: string | null; referencias: string | null })
 			| null;
+	} | null;
+	/**
+	 * El envío, recortado a lo que puede ver quien compró.
+	 *
+	 * La API quita a propósito la etiqueta y lo que le costó al taller: con el
+	 * costo real al lado de lo que se cobró, el margen queda a la vista.
+	 */
+	envio?: {
+		paqueteria: string;
+		servicio: string;
+		precio: number;
+		diasEstimados?: number | string | null;
+	} | null;
+	/** Aparece cuando el taller compra la guía. */
+	guia?: {
+		paqueteria: string | null;
+		rastreo: string | null;
+		rastreoUrl: string | null;
+		compradaEn: string;
 	} | null;
 	lineas: {
 		id: string;

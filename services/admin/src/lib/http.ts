@@ -13,6 +13,15 @@ export type Peticion = {
 	params: Record<string, string>;
 	query: Record<string, string | undefined>;
 	cuerpo: unknown;
+	/**
+	 * El cuerpo TAL CUAL llegó, sin parsear.
+	 *
+	 * Lo necesita el webhook de Skydropx: la firma HMAC se calcula sobre los
+	 * bytes exactos que se mandaron, y volver a serializar el objeto ya
+	 * parseado cambia espacios y orden de claves, con lo que la firma deja de
+	 * cuadrar sin que nada parezca roto.
+	 */
+	cuerpoCrudo?: string;
 	headers: Record<string, string | undefined>;
 };
 

@@ -41,8 +41,26 @@ const PASOS = [
 		etiqueta: "Listo",
 		explica: "Terminado y listo para salir.",
 	},
+	{
+		estado: "enviado",
+		etiqueta: "En camino",
+		explica: "Va con la paquetería. Abajo tienes el número para rastrearlo.",
+	},
 	{ estado: "entregado", etiqueta: "Entregado", explica: "Se entregó." },
 ];
+
+/**
+ * Los pasos que se enseñan, según cómo se entrega.
+ *
+ * Quien recoge en el taller no pasa por "En camino": enseñarle un paso que
+ * nunca se va a marcar deja la barra a medias para siempre y da la impresión
+ * de que algo se atoró.
+ */
+function pasosDe(metodo: string | undefined) {
+	return metodo === "recoger"
+		? PASOS.filter((p) => p.estado !== "enviado")
+		: PASOS;
+}
 
 const pesos = (n: number) =>
 	new Intl.NumberFormat("es-MX", {
@@ -150,8 +168,9 @@ function Seguimiento() {
 	}
 
 	const cancelado = pedido.estado === "cancelado";
-	const pasoActual = PASOS.findIndex((p) => p.estado === pedido.estado);
 	const entrega = pedido.entrega;
+	const pasos = pasosDe(entrega?.metodo);
+	const pasoActual = pasos.findIndex((p) => p.estado === pedido.estado);
 
 	return (
 		<main className="mx-auto w-full max-w-[760px] flex-1 px-5 py-8 md:py-12">
@@ -180,7 +199,7 @@ function Seguimiento() {
 						cancelado ? "text-tinta" : "text-lima"
 					}`}
 				>
-					{cancelado ? "Pedido cancelado" : PASOS[pasoActual]?.etiqueta}
+					{cancelado ? "Pedido cancelado" : pasos[pasoActual]?.etiqueta}
 				</h1>
 				<p
 					className={`max-w-[46ch] pt-2 text-[15px] leading-[25px] ${
@@ -189,12 +208,12 @@ function Seguimiento() {
 				>
 					{cancelado
 						? "Este pedido se canceló. Si crees que es un error, escríbenos con tu folio."
-						: PASOS[pasoActual]?.explica}
+						: pasos[pasoActual]?.explica}
 				</p>
 
 				{!cancelado && (
 					<ol className="flex gap-1.5 pt-7">
-						{PASOS.map((paso, i) => (
+						{pasos.map((paso, i) => (
 							<li key={paso.estado} className="flex flex-1 flex-col gap-2">
 								<span
 									className={`h-1.5 rounded-full ${
@@ -256,6 +275,46 @@ function Seguimiento() {
 					</span>
 				</div>
 			</section>
+
+			{/* El rastreo, en cuanto el taller compra la guía.
+
+			    Va ANTES de la dirección porque es lo que alguien viene a mirar
+			    cuando su pedido ya salió: la dirección ya la escribió él. */}
+			{pedido.guia?.rastreo && (
+				<>
+					<Titulo>Rastrea tu paquete</Titulo>
+					<div className="rounded-xl border border-tinta/12 bg-white p-4">
+						<p className="text-[15px] text-tinta/70">
+							Lo lleva{" "}
+							<span className="font-semibold text-tinta">
+								{pedido.guia.paqueteria ??
+									pedido.envio?.paqueteria ??
+									"la paquetería"}
+							</span>
+						</p>
+
+						<p className="pt-1 font-mono text-[17px] font-semibold tracking-[0.01em] text-tinta">
+							{pedido.guia.rastreo}
+						</p>
+
+						{pedido.guia.rastreoUrl && (
+							<a
+								href={pedido.guia.rastreoUrl}
+								target="_blank"
+								rel="noreferrer"
+								className="mt-3.5 inline-flex h-11 items-center rounded-lg bg-tinta px-5 text-[15px] font-semibold text-lima"
+							>
+								Ver dónde va
+							</a>
+						)}
+
+						<p className="pt-3 text-[13px] leading-[19px] text-tinta/55">
+							El rastreo lo actualiza la paquetería y puede tardar unas horas en
+							mostrar movimiento después de la recolección.
+						</p>
+					</div>
+				</>
+			)}
 
 			{entrega && (
 				<>

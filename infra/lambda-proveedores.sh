@@ -113,6 +113,27 @@ PARES="KUSTTO_TABLA=$TABLA,KUSTTO_BUCKET_PUBLICO=$PUBLICO,KUSTTO_ORIGEN=$ORIGEN"
 # credenciales todo lo demás sigue andando; sólo no se pueden generar guías.
 if [ -f infra/.skydropx ]; then
   source infra/.skydropx
+fi
+
+# Si el repo no las trae pero la función sí, mandan las suyas.
+# `update-function-configuration` sustituye el entorno ENTERO: sin esto, un
+# despliegue desde una máquina sin `infra/.skydropx` borra las credenciales y
+# comprar la guía deja de funcionar sin un solo error a la vista.
+if [ -z "${SKYDROPX_CLIENT_ID:-}" ] && \
+   aws_ lambda get-function --function-name "$FUNCION" >/dev/null 2>&1; then
+  SKY_VIVAS=$(aws_ lambda get-function-configuration --function-name "$FUNCION" \
+    --query "[Environment.Variables.SKYDROPX_HOST, Environment.Variables.SKYDROPX_CLIENT_ID, Environment.Variables.SKYDROPX_CLIENT_SECRET]" \
+    --output text)
+  SKY_ID=$(echo "$SKY_VIVAS" | cut -f2)
+
+  if [ -n "$SKY_ID" ] && [ "$SKY_ID" != "None" ]; then
+    SKYDROPX_HOST=$(echo "$SKY_VIVAS" | cut -f1)
+    SKYDROPX_CLIENT_ID="$SKY_ID"
+    SKYDROPX_CLIENT_SECRET=$(echo "$SKY_VIVAS" | cut -f3)
+  fi
+fi
+
+if [ -n "${SKYDROPX_CLIENT_ID:-}" ]; then
   PARES="$PARES,SKYDROPX_HOST=$SKYDROPX_HOST,SKYDROPX_CLIENT_ID=$SKYDROPX_CLIENT_ID,SKYDROPX_CLIENT_SECRET=$SKYDROPX_CLIENT_SECRET"
 else
   echo "Aviso: sin credenciales de Skydropx. No se podrán generar guías."

@@ -13,8 +13,9 @@ import {
 	type EstadoPedido,
 	ETIQUETA_ESTADO,
 	type Pedido,
-	SIGUIENTE_ESTADO,
+	siguientesDe,
 } from "@/lib/api/pedidos";
+import { EnvioDelPedido } from "./EnvioDelPedido";
 
 /**
  * La ficha completa de un pedido, para el taller.
@@ -33,6 +34,7 @@ const TONO: Record<EstadoPedido, string> = {
 	nuevo: "bg-lima text-tinta",
 	produccion: "bg-lavanda text-tinta",
 	listo: "border-[1.5px] border-tinta/25 text-tinta",
+	enviado: "bg-tinta text-lima",
 	entregado: "bg-tinta/10 text-tinta/70",
 	cancelado: "bg-tinta/5 text-tinta/45 line-through",
 };
@@ -71,9 +73,7 @@ export function PedidoSheet({
 
 	if (!pedido) return null;
 
-	const siguiente = SIGUIENTE_ESTADO[pedido.estado].filter(
-		(e) => e !== "cancelado",
-	)[0];
+	const siguiente = siguientesDe(pedido).filter((e) => e !== "cancelado")[0];
 
 	async function mover(destino: EstadoPedido) {
 		if (!pedido || moviendo) return;
@@ -272,6 +272,10 @@ export function PedidoSheet({
 
 						<Seccion titulo="Entrega">
 							<Entrega entrega={pedido.entrega} />
+						</Seccion>
+
+						<Seccion titulo="Envío">
+							<EnvioDelPedido pedido={pedido} onCambio={onCambio} />
 						</Seccion>
 
 						<Seccion titulo="Historial">

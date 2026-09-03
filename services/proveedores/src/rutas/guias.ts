@@ -1,6 +1,6 @@
-import { GetCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import { GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
-import { dynamo, llaves, sinLlaves, TABLA } from "../lib/dynamo.js";
+import { dynamo, llaves, TABLA } from "../lib/dynamo.js";
 import { conflicto, malaPeticion, noEncontrado } from "../lib/http.js";
 import {
 	comprarGuia,
@@ -10,6 +10,7 @@ import {
 	type Direccion,
 	type Tarifa,
 } from "../lib/skydropx.js";
+import { sinSecretos } from "./pedidos.js";
 
 type Cuerpo = Record<string, any>;
 
@@ -45,11 +46,27 @@ export async function comprar(
 	if (pedido.entrega?.metodo !== "envio") {
 		throw malaPeticion("Este pedido lo recoge el cliente contigo");
 	}
-	if (pedido.guia?.envioId) {
+	/* Un envío fallido NO bloquea: si el anterior murió, el cobro se reembolsó
+	   y el pedido se quedaría sin guía para siempre, sin forma de arreglarlo
+	   desde el panel. Sólo bloquea una guía viva. */
+	if (pedido.guia?.envioId && pedido.guia?.estado !== "error") {
 		throw conflicto("Este pedido ya tiene guía");
 	}
 	if (!pedido.envio?.tarifaId) {
 		throw malaPeticion("Este pedido no trae envío cotizado");
+	}
+
+	/* La paquetería exige un teléfono del DESTINATARIO para poder entregar,
+	   igual que exige el del taller para recoger. Sin él responde 422, que
+	   salía como "Error interno" y no decía qué faltaba ni de quién.
+
+	   Puede faltar de verdad: en el checkout el WhatsApp es opcional. Por eso
+	   se comprueba aquí y se dice a quién hay que pedírselo. */
+	if (!String(pedido.comprador?.whatsapp ?? "").trim()) {
+		throw malaPeticion(
+			"Este pedido no trae teléfono del cliente y la paquetería lo exige " +
+				"para entregar. Pídeselo y escríbenos para añadirlo.",
+		);
 	}
 
 	const paquete = leerPaquete(cuerpo);
@@ -107,8 +124,10 @@ export async function comprar(
 				"#envio": "envio",
 				"#real": "real",
 				"#updatedAt": "updatedAt",
+				"#estado": "estado",
 			},
 			ExpressionAttributeValues: {
+				":error": "error",
 				":guia": { ...guia, compradaEn: ahora },
 				":real": {
 					...paquete,
@@ -124,15 +143,38 @@ export async function comprar(
 				},
 				":ahora": ahora,
 			},
-			// Sin esto, dos clics seguidos compran dos guías y se pagan las dos.
-			ConditionExpression: "attribute_not_exists(#guia)",
+			/* Sin esto, dos clics seguidos compran dos guías y se pagan las dos.
+			   El segundo caso deja reintentar sobre una que murió: ahí no hay
+			   nada que proteger, el cobro ya se reembolsó. */
+			ConditionExpression:
+				"attribute_not_exists(#guia) OR #guia.#estado = :error",
 			ReturnValues: "ALL_NEW",
 		}),
 	);
 
+	/* El apunte que le permite al webhook de rastreo llegar del envío al
+	   pedido. Va DESPUÉS de escribir el pedido y sin poder tumbarlo: si falla,
+	   la guía ya está comprada y lo único que se pierde es el rastreo
+	   automático, que el taller puede suplir a mano. */
+	await dynamo
+		.send(
+			new PutCommand({
+				TableName: TABLA,
+				Item: {
+					...llaves.envioDeSkydropx(guia.envioId),
+					pedidoId,
+					proveedorId,
+					creadoEn: ahora,
+				},
+			}),
+		)
+		.catch((e) => console.error("No pudimos apuntar el envío:", e));
+
 	if (diferencia !== 0) await anotarCargo(proveedorId, pedidoId, diferencia);
 
-	return sinLlaves(Attributes ?? {});
+	// `sinSecretos`, no `sinLlaves`: si no, la huella del token del comprador
+	// se va en la respuesta al taller.
+	return sinSecretos(Attributes ?? {});
 }
 
 /**
@@ -153,6 +195,37 @@ export async function refrescar(proveedorId: string, pedidoId: string) {
 	if (guiaVieja.etiquetaUrl) return { guia: guiaVieja, lista: true };
 
 	const guia = await consultarEnvio(String(guiaVieja.envioId));
+
+	/* Un envío puede MORIR, y hasta que se leyó `workflow_status` no había
+	   forma de saberlo: sin etiqueta se veía igual que uno lento. Cuando pasa,
+	   Skydropx reembolsa el cobro y la etiqueta no va a llegar nunca. Se
+	   guarda el motivo y se deja de esperar. */
+	if (guia.estado === "error") {
+		const muerta = {
+			...guiaVieja,
+			estado: guia.estado,
+			error: guia.error,
+		};
+
+		await dynamo.send(
+			new UpdateCommand({
+				TableName: TABLA,
+				Key: llaves.pedido(pedidoId),
+				UpdateExpression: "SET #guia = :guia, #updatedAt = :ahora",
+				ExpressionAttributeNames: {
+					"#guia": "guia",
+					"#updatedAt": "updatedAt",
+				},
+				ExpressionAttributeValues: {
+					":guia": muerta,
+					":ahora": new Date().toISOString(),
+				},
+			}),
+		);
+
+		return { guia: muerta, lista: false, fallo: guia.error };
+	}
+
 	if (!guia.etiquetaUrl) return { guia: guiaVieja, lista: false };
 
 	const { Attributes } = await dynamo.send(
@@ -246,9 +319,7 @@ async function anotarCargo(
 					":cero": 0,
 					":d": diferencia,
 					":vacia": [],
-					":cargo": [
-						{ pedidoId, diferencia, en: new Date().toISOString() },
-					],
+					":cargo": [{ pedidoId, diferencia, en: new Date().toISOString() }],
 				},
 			}),
 		)

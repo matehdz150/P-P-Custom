@@ -10,6 +10,7 @@ import * as envios from "./rutas/envios.js";
 import * as pedidos from "./rutas/pedidos.js";
 import * as plantillas from "./rutas/plantillas.js";
 import * as productos from "./rutas/productos.js";
+import * as rastreo from "./rutas/rastreo.js";
 import * as proveedores from "./rutas/proveedores.js";
 import * as subidas from "./rutas/subidas.js";
 
@@ -63,6 +64,13 @@ router.get("/publico/envios/cotizacion/:id", (p) =>
 /* Pedir no exige cuenta: la cuenta es opcional a propósito. El seguimiento
    se abre con el token que se le manda al comprador por correo, no con una
    sesión. */
+/* El rastreo que manda Skydropx. Abierta porque la llama un tercero, pero NO
+   sin autenticar: verifica la firma HMAC del cuerpo y rechaza si falta el
+   secreto. Ver services/admin/src/rutas/rastreo.ts. */
+router.post("/publico/envios/rastreo", (p) =>
+	rastreo.recibir(p.cuerpo, p.cuerpoCrudo, p.headers),
+);
+
 router.post("/publico/pedidos", (p) => pedidos.crear(p.cuerpo));
 router.get("/publico/pedidos/:id", (p) =>
 	pedidos.seguimiento(p.params.id, p.query.token),
@@ -82,6 +90,9 @@ const ABIERTAS = [
 	// cualquier ruta que alguien cuelgue ahí mañana nace abierta sin que nadie
 	// lo decida.
 	/^POST \/publico\/pedidos$/,
+	// El webhook de Skydropx. Abierta al mundo pero cerrada de verdad: exige
+	// la firma HMAC del cuerpo y rechaza si no hay secreto configurado.
+	/^POST \/publico\/envios\/rastreo$/,
 	// Cotizar no escribe nada nuestro, pero sí gasta cuota en Skydropx, que
 	// admite 2 peticiones por segundo. Por eso no acepta direcciones ni pesos
 	// libres: hay que traer ids de productos publicados, y eso ya acota
@@ -137,6 +148,7 @@ export async function handler(evento: any) {
 			ruta,
 			query: evento?.queryStringParameters ?? {},
 			cuerpo: cuerpoCrudo ? JSON.parse(cuerpoCrudo) : undefined,
+			cuerpoCrudo,
 			headers,
 		});
 	} catch (error) {

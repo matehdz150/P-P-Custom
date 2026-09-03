@@ -39,6 +39,12 @@ if [ -f infra/.skydropx ]; then
   source infra/.skydropx
 fi
 
+# El secreto con el que se firma el webhook de rastreo. Vive aparte porque no
+# lo da Skydropx: lo elegimos nosotros y se pega en su panel.
+if [ -f infra/.skydropx-webhook ]; then
+  source infra/.skydropx-webhook
+fi
+
 if aws_ lambda get-function --function-name "$FUNCION" >/dev/null 2>&1; then
   EXISTE=1
 else
@@ -70,6 +76,33 @@ if [ "$EXISTE" = "1" ]; then
   CLAVE_VIVA=$(echo "$VIVAS" | cut -f1)
   POOL_VIVO=$(echo "$VIVAS" | cut -f2)
   WS_VIVO=$(echo "$VIVAS" | cut -f3)
+
+  # Skydropx igual que todo lo demás: si la función ya las trae y el repo no,
+  # mandan las suyas. `update-function-configuration` sustituye el entorno
+  # ENTERO, así que sin esto un despliegue desde una máquina sin
+  # `infra/.skydropx` le borra las credenciales y cotizar deja de funcionar sin
+  # un solo error a la vista.
+  SKY_VIVAS=$(aws_ lambda get-function-configuration --function-name "$FUNCION" \
+    --query "[Environment.Variables.SKYDROPX_HOST, Environment.Variables.SKYDROPX_CLIENT_ID, Environment.Variables.SKYDROPX_CLIENT_SECRET, Environment.Variables.SKYDROPX_WEBHOOK_SECRETO]" \
+    --output text)
+
+  # Igual que todo lo demás: si el repo no lo trae y la función sí, manda el
+  # suyo. Perderlo dejaría el webhook rechazando a Skydropx en silencio.
+  if [ -z "${SKYDROPX_WEBHOOK_SECRETO:-}" ]; then
+    WH_VIVO=$(echo "$SKY_VIVAS" | cut -f4)
+    if [ -n "$WH_VIVO" ] && [ "$WH_VIVO" != "None" ]; then
+      SKYDROPX_WEBHOOK_SECRETO="$WH_VIVO"
+    fi
+  fi
+
+  if [ -z "${SKYDROPX_CLIENT_ID:-}" ]; then
+    SKY_ID=$(echo "$SKY_VIVAS" | cut -f2)
+    if [ -n "$SKY_ID" ] && [ "$SKY_ID" != "None" ]; then
+      SKYDROPX_HOST=$(echo "$SKY_VIVAS" | cut -f1)
+      SKYDROPX_CLIENT_ID="$SKY_ID"
+      SKYDROPX_CLIENT_SECRET=$(echo "$SKY_VIVAS" | cut -f3)
+    fi
+  fi
 
   if [ -n "$CLAVE_VIVA" ] && [ "$CLAVE_VIVA" != "None" ]; then
     if [ -f "$ARCHIVO_CLAVE" ] && [ "$(cat "$ARCHIVO_CLAVE")" != "$CLAVE_VIVA" ]; then
@@ -178,6 +211,11 @@ else
 fi
 if [ -n "${WS_ENDPOINT:-}" ]; then
   PARES="$PARES,KUSTTO_WS_ENDPOINT=$WS_ENDPOINT"
+fi
+if [ -n "${SKYDROPX_WEBHOOK_SECRETO:-}" ]; then
+  PARES="$PARES,SKYDROPX_WEBHOOK_SECRETO=$SKYDROPX_WEBHOOK_SECRETO"
+else
+  echo "Aviso: sin SKYDROPX_WEBHOOK_SECRETO. El webhook de rastreo rechazará todo."
 fi
 if [ -n "${SKYDROPX_CLIENT_ID:-}" ]; then
   PARES="$PARES,SKYDROPX_HOST=$SKYDROPX_HOST,SKYDROPX_CLIENT_ID=$SKYDROPX_CLIENT_ID,SKYDROPX_CLIENT_SECRET=$SKYDROPX_CLIENT_SECRET"

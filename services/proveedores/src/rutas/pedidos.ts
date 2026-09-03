@@ -29,15 +29,50 @@ import { conflicto, malaPeticion, noEncontrado } from "../lib/http.js";
  * corrección la hace el admin, y queda anotada.
  */
 const TRANSICIONES: Record<EstadoPedido, EstadoPedido[]> = {
+	/* Cancelar SÓLO desde `nuevo`, o sea antes de que el taller lo empiece.
+	   Antes se podía desde `produccion` y no debía: ahí la prenda ya se está
+	   fabricando y las existencias ya se consumieron, así que anularlo no es
+	   cancelar sino devolver, que es otro flujo con sus propias reglas. */
 	nuevo: ["produccion", "cancelado"],
-	produccion: ["listo", "cancelado"],
-	listo: ["entregado"],
+	produccion: ["listo"],
+	/* De `listo` se sale por donde diga la entrega, y eso no cabe en esta
+	   tabla: lo afina `permitidos()`. Con envío hay que pasar por `enviado`;
+	   quien recoge en el taller va directo a `entregado`. */
+	listo: ["enviado", "entregado"],
+	enviado: ["entregado"],
 	entregado: [],
 	cancelado: [],
 };
 
-/** La huella del token de seguimiento no sale de la Lambda, ni al taller. */
-function sinSecretos(item: Record<string, unknown>) {
+/**
+ * Los destinos válidos para ESTE pedido.
+ *
+ * La tabla sola no basta porque el camino depende de cómo se entrega:
+ *
+ * - Con **envío**, saltar de `listo` a `entregado` se saltaría el hecho de que
+ *   el paquete viajó, y `entregado` acabaría siendo la palabra del taller
+ *   sobre algo que sabe la paquetería.
+ * - Con **recoger**, `enviado` no significa nada: nadie lo envía.
+ */
+function permitidos(pedido: Record<string, unknown>, actual: EstadoPedido) {
+	const destinos = TRANSICIONES[actual] ?? [];
+	if (actual !== "listo") return destinos;
+
+	const entrega = pedido.entrega as { metodo?: string } | undefined;
+
+	return entrega?.metodo === "recoger"
+		? destinos.filter((e) => e !== "enviado")
+		: destinos.filter((e) => e !== "entregado");
+}
+
+/**
+ * La huella del token de seguimiento no sale de la Lambda, ni al taller.
+ *
+ * Se exporta para que cualquier ruta que devuelva un pedido use ESTA y no
+ * `sinLlaves` a secas: `guias.ts` lo hacía y la huella se le estaba
+ * devolviendo al taller al comprar una guía.
+ */
+export function sinSecretos(item: Record<string, unknown>) {
 	const { tokenHuella, ...resto } = sinLlaves(item);
 	return resto;
 }
@@ -79,12 +114,12 @@ export async function cambiarEstado(
 	const pedido = await suyoOFalla(proveedorId, id);
 	const actual = String(pedido.estado) as EstadoPedido;
 
-	const permitidos = TRANSICIONES[actual] ?? [];
-	if (!permitidos.includes(destino)) {
+	const destinos = permitidos(pedido, actual);
+	if (!destinos.includes(destino)) {
 		throw malaPeticion(
-			permitidos.length === 0
+			destinos.length === 0
 				? `Un pedido ${actual} ya no se mueve`
-				: `De ${actual} sólo puede pasar a ${permitidos.join(" o ")}`,
+				: `De ${actual} sólo puede pasar a ${destinos.join(" o ")}`,
 		);
 	}
 

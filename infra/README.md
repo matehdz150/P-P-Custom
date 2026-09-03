@@ -409,6 +409,65 @@ decir nada.
 
 ---
 
+## El rastreo de Skydropx
+
+`POST /publico/envios/rastreo` en `kustto-admin`. Es la **única ruta que mueve
+un pedido sin que nadie de la casa haya entrado**, así que todo lo de aquí es
+por eso.
+
+**Se configura en el panel de Skydropx**, no por API: sección **Envíos**,
+método **HMAC**, header `Authorization`. El secreto lo elegimos nosotros —no lo
+da Skydropx— y vive en `infra/.skydropx-webhook` y en la variable
+`SKYDROPX_WEBHOOK_SECRETO` de la Lambda. `lambda-admin.sh` lo conserva leyéndolo
+de la función, como la llave del admin.
+
+**Sin secreto configurado se rechaza todo.** Una ruta pública que mueve pedidos
+a "entregado" y acepta cualquier cosa mientras falte una variable de entorno es
+una puerta abierta que nadie nota hasta que alguien la usa.
+
+### La forma real del aviso, comprobada
+
+La documentación pública **se corta antes de la sección de webhooks**. Esto sale
+de un aviso de verdad:
+
+```
+data.type                           = "packages"
+data.attributes.status              = "in_transit"   ← NO tracking_status
+data.attributes.returned            = false          ← la devolución es bandera aparte
+data.relationships.shipment.data.id                  ← NO attributes.shipment_id
+```
+
+Los dos campos que parecían obvios se llaman de otra forma, y el primer aviso
+real entró y **se ignoró en silencio**. También llegan `tracking_number` y
+`tracking_url_provider`, que se guardan si el pedido no los tenía —nunca se
+pisan: lo de la compra manda—.
+
+Los nombres se normalizan a minúsculas: el panel los lista como `In_transit` y
+`Picked_up`.
+
+### Del envío al pedido
+
+```
+ENVIO#<envioId>       LOCK     apunta al pedido
+```
+
+Se escribe al comprar la guía. Sin él habría que recorrer la tabla en cada
+aviso. **Los pedidos anteriores a esto no tienen apunte y no reciben rastreo.**
+
+### Reglas que no hay que deshacer
+
+- **Nunca retrocede.** Los avisos llegan desordenados; un `delivered` puede
+  adelantar a un `in_transit`. Si el pedido ya está más adelante, no entra.
+- **`delivered_to_branch` NO es entregado.** Para la paquetería su trabajo
+  terminó; para quien compró, el paquete sigue sin estar en su mano.
+- **Los repetidos no ensucian la bitácora.** Un webhook reintenta por diseño, y
+  esa bitácora la ve el comprador.
+- **`exception`, `in_return`, `retained`, `canceled`, `destroyed` y
+  `returned: true`** no mueven el pedido pero sí se anotan: un paquete devuelto
+  que nadie mira durante semanas es peor que un estado de más.
+
+---
+
 ## Permisos
 
 Cada rol ve lo mínimo:

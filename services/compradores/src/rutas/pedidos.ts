@@ -51,6 +51,35 @@ function sinSecretos(item: Record<string, unknown>) {
 	return resto;
 }
 
+/**
+ * El pedido tal como puede verlo QUIEN LO COMPRÓ.
+ *
+ * Quitar la huella del token no basta: el envío y la guía llevan dentro cosas
+ * del taller. La **etiqueta** es su documento operativo, y el **costo real**
+ * comparado con lo que se cobró deja el margen a la vista. Se recortan a lo
+ * único que el comprador necesita: quién lleva el paquete, cuánto pagó y el
+ * número para rastrearlo.
+ *
+ * OJO: esto está DUPLICADO en `services/admin/src/rutas/pedidos.ts`, porque
+ * cada servicio tiene su propio `lib`. Si cambias una, cambia la otra — es un
+ * filtro de seguridad y divergirlo se nota tarde.
+ */
+function paraComprador(item: Record<string, unknown>) {
+	const pedido = sinSecretos(item) as Record<string, any>;
+
+	if (pedido.envio) {
+		const { paqueteria, servicio, precio, diasEstimados } = pedido.envio;
+		pedido.envio = { paqueteria, servicio, precio, diasEstimados };
+	}
+
+	if (pedido.guia) {
+		const { paqueteria, rastreo, rastreoUrl, compradaEn } = pedido.guia;
+		pedido.guia = { paqueteria, rastreo, rastreoUrl, compradaEn };
+	}
+
+	return pedido;
+}
+
 export async function listar(quien: Identidad) {
 	const items = await consultarTodo({
 		TableName: TABLA,
@@ -64,7 +93,7 @@ export async function listar(quien: Identidad) {
 		ScanIndexForward: false,
 	});
 
-	return items.map(sinSecretos);
+	return items.map(paraComprador);
 }
 
 export async function obtener(quien: Identidad, id: string) {
@@ -80,5 +109,5 @@ export async function obtener(quien: Identidad, id: string) {
 		throw noEncontrado("No encontramos ese pedido");
 	}
 
-	return sinSecretos(Item);
+	return paraComprador(Item);
 }

@@ -139,11 +139,11 @@ y el webhook de tracking.
 5  Cliente paga                  ⬜  Stripe, sin empezar
 6  Pedido creado                 ✅  ya existía
 7  Taller acepta                 ✅  mover a producción ES aceptar
-8  Taller confirma peso real     ✅  API sí, pantalla NO
+8  Taller confirma peso real     ✅  formulario en la ficha del pedido
 9  Comprar la guía               ✅  POST /proveedores/pedidos/:id/guia
-10 Descargar la etiqueta         ⚠️  API sí, pantalla NO
+10 Descargar la etiqueta         ✅  con sondeo; ver el aviso de abajo
 11 Entrega a la paquetería       —   fuera del sistema
-12 Tracking                      ⬜  falta el webhook
+12 Tracking                      ✅  webhook con firma HMAC verificada
 ```
 
 **Las credenciales de sandbox están en `infra/.skydropx`** (fuera del repo).
@@ -173,7 +173,9 @@ Todas costaron tiempo. Ninguna está en su documentación.
    en `pending`; tardan unos 5 s y llegan de a poco. Por eso son dos rutas y
    espera el navegador, no una Lambda.
 3. **`area_level3` (la colonia) es obligatoria.** Sin ella rechaza; no adivina.
-4. **El envío usa `packages`, la cotización usa `parcel`.** Mandando `parcels`
+4. **La etiqueta viaja en `included[]`, no en el envío.** Ver la trampa de
+   abajo: es la que más tiempo costó.
+5. **El envío usa `packages`, la cotización usa `parcel`.** Mandando `parcels`
    al crear el envío contesta *"consignment_note es requerido en todos los
    paquetes"* — como si faltara el dato, no como si la clave estuviera mal.
 5. **`package_number` tiene que coincidir con el de la cotización.** Para un
@@ -276,12 +278,34 @@ $34.95, `saldoEnvios: -0.51`.
 Si anotar el cargo falla, **se grita al log y no se tira el envío**: la guía ya
 se compró y lo que se pierde es un apunte contable.
 
+### Las pantallas del taller ya existen (2 de septiembre)
+
+`components/Proveedor/EnvioDelPedido.tsx`, dentro de la ficha del pedido. Tres
+estados: medir y comprar, esperando la etiqueta, y etiqueta lista.
+
+- **El sondeo se rinde a los 8 intentos** (~40 s) y deja un botón manual. No es
+  precaución teórica: el pedido 922995 lleva **más de un día** con la guía
+  comprada y `etiquetaUrl` en `null` —ampm en el sandbox no la genera—. Sondear
+  para siempre con la pestaña abierta gastaría invocaciones sin fin.
+- **La etiqueta se abre en pestaña nueva, no se "descarga".** La sirve la
+  paquetería desde SU dominio y ahí el navegador ignora `download`. Prometer
+  una descarga y abrir una pestaña es peor que decirlo.
+- **Un 409 al comprar no se enseña como error**: significa que ya hay guía
+  —otra pestaña, doble clic— así que se recarga y aparece.
+- Se enseña siempre lo que costó de verdad y la diferencia, no sólo cuando es
+  desfavorable: un cargo que aparece sólo cuando duele parece un castigo
+  escondido.
+
+Verificado contra AWS: compra en **7.9 s** recotizando con las medidas reales
+(0.62 kg, 30×24×8) y respetando la paquetería que eligió el comprador; segundo
+intento **409**; el cargo anotado (`saldoEnvios` de −0.51 a −1.03).
+
+**El formulario va vacío**: el pedido NO guarda el peso estimado con el que se
+cotizó en el checkout, sólo el resultado. Si se quisiera pre-rellenar habría
+que guardarlo al crear el pedido.
+
 ### Lo que falta de envíos
 
-- **Las dos pantallas del taller**: el formulario de peso y medidas, y el botón
-  de descargar la etiqueta. El backend está y probado; la interfaz no existe.
-- **El webhook de tracking** (paso 12), que necesita una ruta pública con
-  verificación de firma.
 - **Varios bultos.** Todo asume un paquete por pedido. Cincuenta playeras no
   van en una caja; hoy hay un tope de 500 piezas que devuelve "escríbenos".
 - **El cliente de Skydropx está duplicado** en `services/admin/src/lib/` y
@@ -314,6 +338,72 @@ Y tres decisiones que conviene no deshacer:
 ---
 
 ## Trampas que ya mordieron
+
+**Borrar un pedido a mano NO devuelve las existencias.** El descuento se hace
+en la misma transacción que el pedido y sólo lo revierte `cancelado`. Al
+limpiar pedidos de prueba hay que **cancelarlos primero y borrarlos después**,
+o el stock se queda descontado para siempre sin nada que lo explique.
+Comprobado al limpiar: cancelar devolvió la gorra de 8 a 9 y la playera de −4
+a −2.
+
+**El comprador veía el margen del taller.** `sinSecretos` sólo quitaba la huella
+del token, así que en el seguimiento y en `/cuenta` viajaban la **etiqueta** —un
+documento operativo del taller— y el **costo real del envío**: $161.41 pagados
+contra $209.93 cobrados, con la resta a la vista. Ahora hay un `paraComprador`
+que recorta `envio` y `guia` a lo que necesita quien compró. **Está duplicado en
+`services/admin` y `services/compradores`** porque cada servicio tiene su `lib`:
+es un filtro de seguridad, así que si tocas uno toca el otro.
+
+**La etiqueta no está en el envío, está en el PAQUETE.** `label_url`,
+`tracking_number` y `tracking_url_provider` viven en `included[]` con
+`type: "package"`, NO en `data.attributes`. Leyendo sólo los atributos del
+envío, `label_url` sale `undefined` **siempre**: un envío de paquetexpress en
+`success` y `paid`, con su PDF ya generado, se veía en el panel como "la
+paquetería está preparando la etiqueta" para siempre. Por eso `aGuia` recibe
+ahora el documento entero y no `data.attributes`. Verificado: la etiqueta baja
+como **PDF de 64 KB**.
+
+Se usa el `tracking_number` del paquete y no el `master_tracking_number` del
+envío: el segundo existe antes que la guía y con varios bultos sería otro
+número.
+
+**Un envío puede MORIR, y se veía igual que uno lento.** `aGuia` sólo leía
+`label_url`: un envío en `workflow_status: error` quedaba sin etiqueta para
+siempre y el panel decía "la paquetería está tardando". Pasó con dos envíos
+reales —`CREDENTIAL_SERVICE_PROVIDER_NOT_FOUND`, la cuenta del sandbox no tiene
+dada de alta a ampm— y Skydropx **reembolsó** el cobro. Ahora se leen
+`workflow_status` y `error_detail`, un envío muerto se dice tal cual con su
+motivo, y **se puede reintentar**: la condición de "una sola guía" ya no
+bloquea si la anterior falló, porque si no el pedido se quedaba sin guía para
+siempre y sin forma de arreglarlo.
+
+**El teléfono del comprador era opcional y la paquetería lo exige.** Entró un
+pedido sin él; al ir a comprar la guía, Skydropx devolvía **422** y salía como
+"Error interno". Ahora: obligatorio en el checkout, obligatorio en la API al
+crear el pedido (10 dígitos, contando sólo dígitos para no rechazar un teléfono
+bueno por cómo esté escrito), y una guardia antes de llamar a Skydropx que dice
+qué falta y de quién. Además **un 422 sale como 400 con el mensaje de
+Skydropx**, no como 500: es un dato que corregir, no un fallo nuestro.
+
+**`guias.ts` devolvía `tokenHuella` al taller.** Usaba `sinLlaves` en vez de
+`sinSecretos`, así que la huella del token de seguimiento del comprador viajaba
+en la respuesta de comprar la guía —justo lo que el archivo de al lado prohíbe
+explícitamente—. `sinSecretos` ahora se exporta para que no haya dos versiones
+de la regla.
+
+**Un despliegue desde otra máquina borraba las credenciales de Skydropx.**
+`update-function-configuration` sustituye el entorno ENTERO, y los scripts
+sólo ponían `SKYDROPX_*` si existía `infra/.skydropx` en local. Desde un equipo
+sin ese archivo —el `.gitignore` lo deja fuera— el despliegue las borraba y
+cotizar dejaba de funcionar **sin un solo error a la vista**. Arreglado el 2 de
+septiembre en `lambda-admin.sh` y `lambda-proveedores.sh`: si el repo no las
+trae y la función sí, mandan las suyas, igual que ya se hacía con la llave del
+admin, el pool y el endpoint del WebSocket. Verificado desplegando las dos
+funciones sin el archivo y comprobando que las credenciales siguen puestas.
+
+**Ojo con esto en general:** cualquier variable de entorno nueva que sólo salga
+de un archivo local necesita el mismo trato, o el siguiente despliegue desde
+otro equipo la borra.
 
 **Un ítem de DynamoDB no pasa de 400 KB, y el diseño no cabe.** El diseño
 editable lleva dentro las imágenes que sube el cliente como data URL. Con
@@ -615,8 +705,12 @@ mandó su primer correo ayer: mejora con volumen y con que la gente los abra.
 - **El asistente de alta exige 2 fotos y sólo pone el botón en gris.** Un
   taller que suba una se queda bloqueado sin entender por qué. Al producto de
   prueba se le duplicó una foto para poder avanzar.
-- **Pedidos de prueba con guía comprada** en el sandbox de Skydropx. Consumen
-  saldo de mentira, así que da igual, pero ensucian la bandeja del taller.
+- **Google NO está enganchado al pool de compradores.** El cliente sólo tiene
+  `COGNITO` como proveedor porque falta `infra/.google`, que no se recupera de
+  AWS —son credenciales de terceros—. El botón de "Entrar con Google" va a
+  fallar hasta que se creen en console.cloud.google.com y se vuelva a correr
+  `infra/cognito-compradores.sh`; el script imprime los pasos exactos. Entrar
+  con correo sí funciona.
 - **Cuentas de prueba en el pool de compradores** además de las de talleres.
 - **Hay ~250 archivos modificados sin commitear** que son casi todo formato:
   una pasada de Biome mezclada con conversión CRLF de trabajar desde macOS y
@@ -629,8 +723,12 @@ mandó su primer correo ayer: mejora con volumen y con que la gente los abra.
 
 1. Clona y sigue "Puesta en marcha en una máquina nueva" del `README.md`.
 2. Los secretos (`services/admin/.clave-admin`, `infra/.cognito`,
-   `infra/.websocket`, el `.env` del front) **se recuperan de AWS**, no hay que
-   llevarlos a mano.
+   `infra/.cognito-compradores`, `infra/.websocket`, el `.env` del front) **se
+   recuperan de AWS**, no hay que llevarlos a mano: los `.cognito*` y
+   `.websocket` los reescriben sus scripts, que son idempotentes.
+   **`infra/.skydropx` e `infra/.google` NO se recuperan** —son credenciales de
+   terceros— pero ya no hacen falta para desplegar: los scripts conservan lo
+   que la función tenga puesto.
 3. Reinicia el servidor de desarrollo después de instalar, o los títulos salen
    en Poppins en vez de Figtree: el `@theme` de Tailwind sólo se recompila al
    arrancar.

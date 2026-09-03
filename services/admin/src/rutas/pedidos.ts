@@ -20,13 +20,13 @@ import {
 	variante,
 } from "../lib/dynamo.js";
 import { avisarAlTaller } from "../lib/eventos.js";
-import * as envios from "./envios.js";
 import {
 	conflicto,
 	malaPeticion,
 	noAutorizado,
 	noEncontrado,
 } from "../lib/http.js";
+import * as envios from "./envios.js";
 
 /**
  * Los pedidos.
@@ -46,6 +46,8 @@ const VIGENCIA_SUBIDA = 900;
 const CORREO = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 /** Código postal mexicano: cinco dígitos, ni uno más. */
 const CP = /^\d{5}$/;
+/** Sólo los dígitos: la gente escribe espacios, guiones y prefijos. */
+const DIGITOS = (v: string) => v.replace(/\D/g, "");
 
 type Cuerpo = Record<string, any>;
 
@@ -64,6 +66,22 @@ export async function crear(cuerpo: unknown) {
 	if (!comprador.nombre) throw malaPeticion("Falta tu nombre");
 	if (!CORREO.test(comprador.email)) {
 		throw malaPeticion("Hace falta un correo válido: ahí llega el seguimiento");
+	}
+
+	/* El teléfono es OBLIGATORIO y se valida AQUÍ, no sólo en el formulario.
+	 *
+	 * La paquetería lo exige para entregar: sin él la guía no se puede comprar,
+	 * y eso no se descubre al pedir sino días después, cuando el taller va a
+	 * generar la etiqueta y ya no hay a quién pedírselo. Entró un pedido así
+	 * mientras el campo era opcional.
+	 *
+	 * Se cuentan dígitos en vez de exigir un formato: la gente escribe
+	 * espacios, guiones y prefijos, y rechazar un teléfono bueno por cómo está
+	 * escrito es peor que aceptarlo tal cual. */
+	if (DIGITOS(comprador.whatsapp ?? "").length < 10) {
+		throw malaPeticion(
+			"Hace falta un teléfono de 10 dígitos: la paquetería lo exige para entregar",
+		);
 	}
 
 	const entrega = leerEntrega(c.entrega);
@@ -196,7 +214,7 @@ export async function seguimiento(id: string, token: string | undefined) {
 		throw noAutorizado("Ese enlace de seguimiento no es válido");
 	}
 
-	return sinSecretos(Item);
+	return paraComprador(Item);
 }
 
 /* ─── Lo que sostiene todo lo de arriba ─────────────────────────────────── */
@@ -698,4 +716,36 @@ function huella(token: string) {
 export function sinSecretos(item: Record<string, unknown>) {
 	const { tokenHuella, ...resto } = sinLlaves(item);
 	return resto;
+}
+
+/**
+ * El pedido tal como puede verlo QUIEN LO COMPRÓ.
+ *
+ * `sinSecretos` sólo quita la huella del token, así que todo lo demás salía:
+ * la etiqueta de la paquetería —un documento operativo del taller—, lo que el
+ * envío costó DE VERDAD y la diferencia a cargo del taller. Con eso a la vista,
+ * cualquiera compara lo que pagó contra lo que costó y ve el margen.
+ *
+ * Así que el envío y la guía se recortan a lo que el comprador necesita para
+ * saber dónde está su paquete: quién lo lleva, con qué servicio, cuánto pagó y
+ * el número para rastrearlo.
+ *
+ * OJO: esta función está DUPLICADA en `services/compradores` porque cada
+ * servicio tiene su propio `lib`. Si cambias una, cambia la otra — es un filtro
+ * de seguridad y divergirlo se nota tarde.
+ */
+export function paraComprador(item: Record<string, unknown>) {
+	const pedido = sinSecretos(item) as Record<string, any>;
+
+	if (pedido.envio) {
+		const { paqueteria, servicio, precio, diasEstimados } = pedido.envio;
+		pedido.envio = { paqueteria, servicio, precio, diasEstimados };
+	}
+
+	if (pedido.guia) {
+		const { paqueteria, rastreo, rastreoUrl, compradaEn } = pedido.guia;
+		pedido.guia = { paqueteria, rastreo, rastreoUrl, compradaEn };
+	}
+
+	return pedido;
 }

@@ -75,6 +75,7 @@ export const ESTADOS_PEDIDO = {
 	nuevo: { texto: "Recibido", tono: "lima" },
 	produccion: { texto: "En producción", tono: "lavanda" },
 	listo: { texto: "Listo", tono: "lima" },
+	enviado: { texto: "En camino", tono: "lavanda" },
 	entregado: { texto: "Entregado", tono: "gris" },
 	cancelado: { texto: "Cancelado", tono: "rojo" },
 } as const;

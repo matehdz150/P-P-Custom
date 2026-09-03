@@ -9,7 +9,7 @@ import {
 	type EstadoPedido,
 	ETIQUETA_ESTADO,
 	type Pedido,
-	SIGUIENTE_ESTADO,
+	siguientesDe,
 } from "@/lib/api/pedidos";
 import { sinAcentos } from "@/lib/texto";
 
@@ -18,6 +18,7 @@ const FILTROS: { valor: EstadoPedido | "todos"; label: string }[] = [
 	{ valor: "nuevo", label: "Nuevos" },
 	{ valor: "produccion", label: "En producción" },
 	{ valor: "listo", label: "Listos" },
+	{ valor: "enviado", label: "En camino" },
 	{ valor: "entregado", label: "Entregados" },
 ];
 
@@ -26,6 +27,7 @@ const TONO: Record<EstadoPedido, string> = {
 	nuevo: "bg-lima text-tinta",
 	produccion: "bg-lavanda text-tinta",
 	listo: "border-[1.5px] border-tinta/20 text-tinta",
+	enviado: "bg-tinta text-lima",
 	entregado: "text-tinta/60",
 	cancelado: "text-tinta/45 line-through",
 };
@@ -241,9 +243,7 @@ function Renglon({
 
 	// El siguiente paso natural es el primero de la lista; cancelar va aparte
 	// para que no quede a un clic de distancia del botón de avanzar.
-	const siguiente = SIGUIENTE_ESTADO[pedido.estado].filter(
-		(e) => e !== "cancelado",
-	)[0];
+	const siguiente = siguientesDe(pedido).filter((e) => e !== "cancelado")[0];
 
 	async function mover(destino: EstadoPedido) {
 		if (moviendo) return;

@@ -20,6 +20,8 @@
  * cotizar sólo con el CP completo, nunca mientras se escribe.
  */
 
+import { malaPeticion } from "./http.js";
+
 const HOST = process.env.SKYDROPX_HOST ?? "https://sb-pro.skydropx.com";
 const CLIENT_ID = process.env.SKYDROPX_CLIENT_ID ?? "";
 const CLIENT_SECRET = process.env.SKYDROPX_CLIENT_SECRET ?? "";
@@ -154,6 +156,15 @@ async function llamar<T>(
 			if (res.status === 429) {
 				throw new DemasiadasPeticiones("Skydropx está saturado ahora mismo");
 			}
+
+			/* Un 422 es un dato que falta o no cuadra, no un fallo nuestro:
+			   sale como 400 con lo que Skydropx dijo. Con un 500 genérico el
+			   taller no sabe si reintentar ni qué corregir — ya pasó, con un
+			   pedido sin teléfono del cliente. */
+			if (res.status === 422) {
+				throw malaPeticion(mensajeDeSkydropx(dato));
+			}
+
 			throw new Error(`Skydropx respondió ${res.status}`);
 		}
 
@@ -246,6 +257,18 @@ export type Guia = {
 	rastreoUrl: string | null;
 	/** Lo que Skydropx nos cobró de verdad. Manda sobre la tarifa cotizada. */
 	costo: number | null;
+	/**
+	 * En qué acabó el envío del lado de la paquetería.
+	 *
+	 * HACE FALTA PORQUE UN ENVÍO PUEDE MORIR, y sin esto no se distingue de uno
+	 * que va lento: los dos se ven como "sin etiqueta". Pasó de verdad — dos
+	 * envíos quedaron en `error` con `CREDENTIAL_SERVICE_PROVIDER_NOT_FOUND`
+	 * (la cuenta no tenía dada de alta esa paquetería), el cobro se reembolsó,
+	 * y el panel se quedó diciendo "la paquetería está tardando" para siempre.
+	 */
+	estado: string | null;
+	/** El motivo, cuando `estado` es `error`. Es lo único accionable. */
+	error: string | null;
 };
 
 /**
@@ -310,22 +333,87 @@ export async function comprarGuia(
 	 *
 	 * Así que se devuelve lo que haya y la etiqueta se consulta aparte, con
 	 * `consultarEnvio`. Lo que importa guardar ya está: el id y el cobro. */
-	return aGuia(String(dato?.data?.id ?? ""), dato?.data?.attributes ?? {});
+	return aGuia(String(dato?.data?.id ?? ""), dato);
 }
 
 /** Relee un envío ya creado. Es como aparece la etiqueta cuando esté lista. */
 export async function consultarEnvio(envioId: string): Promise<Guia> {
 	const r = await llamar<any>(`/api/v1/shipments/${envioId}`);
-	return aGuia(envioId, r?.data?.attributes ?? {});
+	return aGuia(envioId, r);
 }
 
-function aGuia(envioId: string, a: any): Guia {
+/**
+ * Saca algo legible del 422.
+ *
+ * Su formato varía: a veces `errors` es un objeto de campo → mensajes, a veces
+ * una lista. Se junta lo que haya; si no se entiende, se dice que no se
+ * entendió en vez de inventar.
+ */
+function mensajeDeSkydropx(dato: any): string {
+	const e = dato?.errors ?? dato?.error ?? null;
+
+	if (typeof e === "string") return e;
+
+	if (Array.isArray(e)) {
+		const partes = e
+			.map((x) => (typeof x === "string" ? x : (x?.detail ?? x?.title ?? "")))
+			.filter(Boolean);
+		if (partes.length > 0) return partes.join(". ");
+	}
+
+	if (e && typeof e === "object") {
+		const partes = Object.entries(e).map(
+			([campo, v]) =>
+				`${campo}: ${Array.isArray(v) ? v.join(", ") : String(v)}`,
+		);
+		if (partes.length > 0) return partes.join(". ");
+	}
+
+	return "La paquetería rechazó los datos del envío";
+}
+
+/**
+ * Traduce la respuesta de Skydropx a nuestra `Guia`.
+ *
+ * RECIBE EL DOCUMENTO ENTERO, NO `data.attributes`. Es la parte que costó
+ * descubrir: la etiqueta, el número de rastreo y el enlace de la paquetería
+ * **no están en el envío**, están en el PAQUETE, que viaja aparte en
+ * `included[]` con `type: "package"`. Leyendo sólo `data.attributes`,
+ * `label_url` sale `undefined` siempre y el panel se queda diciendo "la
+ * paquetería está preparando la etiqueta" para un envío que ya está listo.
+ *
+ * Pasó exactamente eso: un envío de paquetexpress en `success` y `paid`, con
+ * su etiqueta generada, que aquí se veía sin etiqueta.
+ *
+ * Del envío salen el estado, la paquetería y el cobro; del paquete, todo lo
+ * que el taller necesita para producir el envío.
+ */
+function aGuia(envioId: string, doc: any): Guia {
+	const a = doc?.data?.attributes ?? {};
+
+	const paquete =
+		(doc?.included ?? []).find((i: any) => i?.type === "package")?.attributes ??
+		{};
+
+	const detalle = a.error_detail ?? null;
+
 	return {
 		envioId,
-		rastreo: a.tracking_number ?? a.master_tracking_number ?? null,
+		// El del paquete manda: el `master_tracking_number` del envío existe
+		// antes que la guía y con varios bultos sería otro número.
+		rastreo: paquete.tracking_number ?? a.master_tracking_number ?? null,
 		paqueteria: a.carrier_name ?? null,
-		etiquetaUrl: a.label_url ?? null,
-		rastreoUrl: a.tracking_url_provider ?? null,
+		etiquetaUrl: paquete.label_url ?? null,
+		rastreoUrl: paquete.tracking_url_provider ?? null,
+		estado: a.workflow_status ?? null,
+		// El mensaje largo primero: el corto es "vuelve a intentarlo", que no
+		// dice nada. El largo trae la causa real.
+		error: detalle
+			? (detalle.error_message_detail ??
+				detalle.error_message ??
+				detalle.error_code ??
+				null)
+			: null,
 		// Lo que Skydropx nos cobró de verdad. No tiene por qué coincidir con
 		// la tarifa cotizada, y es el número que manda para las cuentas.
 		costo: a.total !== undefined ? Number(a.total) : null,

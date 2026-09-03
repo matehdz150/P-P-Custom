@@ -40,7 +40,8 @@ primero admin, luego proveedores, después catálogo y pedidos.
 | Carrito de varios productos | no existe | **lo que sigue** |
 | Aviso por correo | SES, en sandbox | **faltan los DKIM en el DNS** |
 | Cotización de envío (Skydropx) | Lambda `kustto-admin` + sandbox | migrado |
-| Compra de guía y tracking | no existe | **lo que sigue** |
+| Compra de guía (taller) | Lambda `kustto-proveedores` + Skydropx | migrado |
+| Rastreo para el comprador | no existe | **lo que sigue** |
 | Pasarela de pago | no existe | aplazado a propósito, hasta el final |
 
 **Reglas de la casa mientras dure esto:**
@@ -134,6 +135,12 @@ KUSTTO_CLAVE_ADMIN=<el contenido de services/admin/.clave-admin>
 NEXT_PUBLIC_KUSTTO_API=https://kd8ydpp2c6.execute-api.us-east-1.amazonaws.com
 NEXT_PUBLIC_COGNITO_REGION=us-east-1
 NEXT_PUBLIC_COGNITO_CLIENTE=<KUSTTO_POOL_CLIENTE de infra/.cognito>
+
+# El pool de COMPRADORES, que es OTRO distinto al de talleres a proposito: con
+# uno solo, un token de taller abriria /cuenta/*. Salen de
+# infra/.cognito-compradores, que regenera `bash infra/cognito-compradores.sh`.
+NEXT_PUBLIC_COGNITO_COMPRADORES_CLIENTE=<KUSTTO_COMPRADORES_CLIENTE>
+NEXT_PUBLIC_COGNITO_COMPRADORES_DOMINIO=<KUSTTO_COMPRADORES_DOMINIO>
 
 # El canal en vivo del panel del taller. Tampoco es secreto: la conexión la
 # autoriza el token de Cognito, no esta URL.

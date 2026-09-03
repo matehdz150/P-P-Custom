@@ -14,6 +14,8 @@ export type EstadoPedido =
 	| "nuevo"
 	| "produccion"
 	| "listo"
+	/** Ya salió con la paquetería. Sólo en pedidos con envío. */
+	| "enviado"
 	| "entregado"
 	| "cancelado";
 
@@ -84,6 +86,50 @@ export type Pedido = {
 		metodo: "envio" | "recoger";
 		direccion: Direccion | null;
 	} | null;
+	/**
+	 * El envío que eligió y pagó el comprador, congelado al hacer el pedido.
+	 * `real` aparece al comprar la guía, con lo que se midió de verdad.
+	 */
+	envio?: {
+		/** La cotización del checkout. La guía NO se compra con ésta. */
+		cotizacionId?: string;
+		tarifaId?: string;
+		paqueteria: string;
+		servicio: string;
+		precio: number;
+		diasEstimados?: number | string | null;
+		real?: {
+			peso: number;
+			largo: number;
+			ancho: number;
+			alto: number;
+			costo: number;
+			/** Positivo lo debe el taller; negativo sobró a favor de Kustto. */
+			diferencia: number;
+		} | null;
+	} | null;
+	/**
+	 * La guía, cuando ya se compró.
+	 *
+	 * `etiquetaUrl` y `rastreo` nacen en `null`: la paquetería tarda en
+	 * generarlos y hay que volver a preguntar. Ver `refrescarGuia`.
+	 */
+	guia?: {
+		envioId: string;
+		paqueteria: string;
+		costo: number | string;
+		compradaEn: string;
+		rastreo: string | null;
+		rastreoUrl: string | null;
+		etiquetaUrl: string | null;
+		/**
+		 * `error` significa que el envío MURIÓ del lado de la paquetería y la
+		 * etiqueta no va a llegar nunca. Skydropx reembolsa el cobro. Sin este
+		 * campo no se distinguía de uno lento y el panel esperaba para siempre.
+		 */
+		estado?: string | null;
+		error?: string | null;
+	} | null;
 	lineas: LineaDePedido[];
 	total: number;
 	piezas: number;
@@ -96,6 +142,7 @@ export const ETIQUETA_ESTADO: Record<EstadoPedido, string> = {
 	nuevo: "Nuevo",
 	produccion: "En producción",
 	listo: "Listo",
+	enviado: "En camino",
 	entregado: "Entregado",
 	cancelado: "Cancelado",
 };
@@ -108,12 +155,34 @@ export const ETIQUETA_ESTADO: Record<EstadoPedido, string> = {
  * las dos dejaran de coincidir, el servidor gana y devuelve 400.
  */
 export const SIGUIENTE_ESTADO: Record<EstadoPedido, EstadoPedido[]> = {
+	// Cancelar sólo antes de empezar: después la prenda ya existe y las
+	// existencias ya se consumieron. Eso es una devolución, no una cancelación.
 	nuevo: ["produccion", "cancelado"],
-	produccion: ["listo", "cancelado"],
-	listo: ["entregado"],
+	produccion: ["listo"],
+	listo: ["enviado", "entregado"],
+	enviado: ["entregado"],
 	entregado: [],
 	cancelado: [],
 };
+
+/**
+ * A dónde puede ir ESTE pedido, que depende de cómo se entrega.
+ *
+ * Con envío hay que pasar por `enviado`: saltar a `entregado` haría que la
+ * palabra del taller sustituyera a la de quien entregó el paquete. Con
+ * recoger, `enviado` no significa nada porque nadie lo envía.
+ *
+ * Es la misma regla que aplica la API; aquí sólo evita ofrecer un botón que
+ * el servidor va a rechazar.
+ */
+export function siguientesDe(pedido: Pedido): EstadoPedido[] {
+	const destinos = SIGUIENTE_ESTADO[pedido.estado] ?? [];
+	if (pedido.estado !== "listo") return destinos;
+
+	return pedido.entrega?.metodo === "recoger"
+		? destinos.filter((e) => e !== "enviado")
+		: destinos.filter((e) => e !== "entregado");
+}
 
 /** Los recién llegados. Es lo que cuenta la insignia del menú. */
 export function contarNuevos(pedidos: Pedido[]) {
@@ -144,4 +213,47 @@ export function cambiarEstadoPedido(
 		method: "PATCH",
 		body: JSON.stringify({ estado, nota }),
 	});
+}
+
+/** Lo que el taller mide del paquete ya armado. Kilos y centímetros. */
+export type PaqueteMedido = {
+	peso: number;
+	largo: number;
+	ancho: number;
+	alto: number;
+};
+
+/**
+ * Compra la guía con el peso REAL.
+ *
+ * La API vuelve a cotizar con estas medidas en vez de reusar la del checkout,
+ * que salió de un peso estimado: una etiqueta con el peso equivocado la
+ * repesa la paquetería y factura la diferencia semanas después.
+ *
+ * Devuelve el pedido entero ya actualizado. Es lento —son cuatro llamadas
+ * encadenadas a Skydropx— y no se puede repetir: la API rechaza con 409 si el
+ * pedido ya tiene guía, porque dos clics comprarían dos envíos y se pagan los
+ * dos.
+ */
+export function comprarGuia(id: string, paquete: PaqueteMedido) {
+	return pedirComoProveedor<Pedido>(`/proveedores/pedidos/${id}/guia`, {
+		method: "POST",
+		body: JSON.stringify(paquete),
+	});
+}
+
+/**
+ * Vuelve a preguntar por la etiqueta.
+ *
+ * Al comprar, el envío nace sin etiqueta ni número de rastreo: cada paquetería
+ * tarda lo suyo y con algunas son minutos. `lista` dice si ya salió, para que
+ * la pantalla sepa cuándo dejar de preguntar.
+ */
+export function refrescarGuia(id: string) {
+	return pedirComoProveedor<{
+		guia: NonNullable<Pedido["guia"]>;
+		lista: boolean;
+		/** Presente sólo si el envío murió: es el motivo, ya legible. */
+		fallo?: string | null;
+	}>(`/proveedores/pedidos/${id}/guia`);
 }

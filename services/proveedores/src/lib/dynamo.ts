@@ -173,6 +173,20 @@ export const llaves = {
 		gsi1sk: connectionId,
 	}),
 
+	/**
+	 * Del envío de Skydropx al pedido.
+	 *
+	 * Hace falta para el webhook de rastreo: lo que llega es el id del envío y
+	 * hay que llegar al pedido. Sin este apunte habría que recorrer la tabla
+	 * entera en cada aviso de la paquetería.
+	 *
+	 * Se escribe al comprar la guía, junto al pedido.
+	 */
+	envioDeSkydropx: (envioId: string) => ({
+		pk: `ENVIO#${envioId}`,
+		sk: "LOCK",
+	}),
+
 	/** El folio corto que ve la gente (#2418). Único, con su candado. */
 	folioDePedido: (folio: string) => ({
 		pk: `ORDER_FOLIO#${folio}`,
@@ -263,6 +277,14 @@ export const ESTADOS_PEDIDO = [
 	"nuevo",
 	"produccion",
 	"listo",
+	/**
+	 * Ya no está en el taller: salió con la paquetería.
+	 *
+	 * Existe porque `listo` se tragaba todo el envío — un paquete viajando tres
+	 * días se veía igual que uno recién salido de la plancha. Sólo aplica a los
+	 * pedidos con envío; los de recoger van de `listo` a `entregado`.
+	 */
+	"enviado",
 	"entregado",
 	"cancelado",
 ] as const;

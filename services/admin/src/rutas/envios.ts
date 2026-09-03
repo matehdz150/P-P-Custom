@@ -1,13 +1,13 @@
 import { GetCommand } from "@aws-sdk/lib-dynamodb";
 
 import { dynamo, llaves, TABLA } from "../lib/dynamo.js";
+import { malaPeticion, muyRapido, noEncontrado } from "../lib/http.js";
 import {
 	consultarCotizacion,
 	cotizar,
 	DemasiadasPeticiones,
 	type Direccion,
 } from "../lib/skydropx.js";
-import { malaPeticion, muyRapido, noEncontrado } from "../lib/http.js";
 
 /**
  * Cotizar el envío de un pedido que todavía no existe.
@@ -62,7 +62,9 @@ export async function crear(cuerpo: unknown) {
 		// pedido ni del dato. El navegador puede volver a intentar, y con un
 		// 500 se rendiría creyendo que algo se rompió.
 		if (error instanceof DemasiadasPeticiones) {
-			throw muyRapido("Estamos cotizando muchos envíos. Inténtalo en un momento.");
+			throw muyRapido(
+				"Estamos cotizando muchos envíos. Inténtalo en un momento.",
+			);
 		}
 		throw error;
 	}
@@ -115,7 +117,9 @@ export async function consultar(id: string) {
 		return await consultarCotizacion(id);
 	} catch (error) {
 		if (error instanceof DemasiadasPeticiones) {
-			throw muyRapido("Estamos cotizando muchos envíos. Inténtalo en un momento.");
+			throw muyRapido(
+				"Estamos cotizando muchos envíos. Inténtalo en un momento.",
+			);
 		}
 		throw error;
 	}

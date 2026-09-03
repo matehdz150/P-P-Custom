@@ -9,13 +9,13 @@ import { Envio } from "@/components/Pedir/Envio";
 import { Paso } from "@/components/Pedir/Paso";
 import { Resumen } from "@/components/Pedir/Resumen";
 import { getFichaDeProducto } from "@/lib/api/catalogo";
+import { getMiPerfil } from "@/lib/api/cuenta";
 import {
 	cotizarEnvio,
 	destacadas,
 	SinEnvio,
 	type Tarifa,
 } from "@/lib/api/envios";
-import { getMiPerfil } from "@/lib/api/cuenta";
 import {
 	crearPedido,
 	type Direccion,
@@ -216,7 +216,8 @@ export default function PedirPage() {
 		return (base + extra) * piezas;
 	}, [producto, lados.length, piezas]);
 
-	const total = subtotal + (metodo === "envio" ? (envio.elegida?.precio ?? 0) : 0);
+	const total =
+		subtotal + (metodo === "envio" ? (envio.elegida?.precio ?? 0) : 0);
 
 	/* ─── El envío ───────────────────────────────────────────────────────
 	   Se cotiza cuando la dirección está COMPLETA, nunca mientras se teclea:
@@ -245,12 +246,22 @@ export default function PedirPage() {
 
 	useEffect(() => {
 		if (!claveDestino || !borrador?.productoId) {
-			setEnvio({ estado: "inactivo", tarifas: [], elegida: null, cotizacionId: null });
+			setEnvio({
+				estado: "inactivo",
+				tarifas: [],
+				elegida: null,
+				cotizacionId: null,
+			});
 			return;
 		}
 
 		const control = new AbortController();
-		setEnvio({ estado: "cotizando", tarifas: [], elegida: null, cotizacionId: null });
+		setEnvio({
+			estado: "cotizando",
+			tarifas: [],
+			elegida: null,
+			cotizacionId: null,
+		});
 
 		const productoId = borrador.productoId;
 		const tallas = Object.entries(cantidades)
@@ -328,6 +339,17 @@ export default function PedirPage() {
 			if (!CORREO.test(contacto.email.trim())) {
 				e.email = "Escribe un correo válido: ahí te llega el seguimiento.";
 			}
+
+			/* El teléfono es OBLIGATORIO: la paquetería lo exige para entregar y
+			   sin él la guía no se puede comprar. Era opcional y entraron pedidos
+			   sin él que el taller no podía enviar — el error salía días después,
+			   al ir a generar la etiqueta, y ya no había forma de pedírselo. */
+			const digitos = contacto.whatsapp.replace(/\D/g, "");
+			if (!digitos) {
+				e.whatsapp = "La paquetería necesita un teléfono para entregar.";
+			} else if (digitos.length < 10) {
+				e.whatsapp = "Faltan dígitos: son 10, con la clave de tu ciudad.";
+			}
 		}
 
 		if (n === 3 && metodo === "envio") {
@@ -384,7 +406,7 @@ export default function PedirPage() {
 				comprador: {
 					nombre: contacto.nombre.trim(),
 					email: contacto.email.trim(),
-					whatsapp: contacto.whatsapp.trim() || undefined,
+					whatsapp: contacto.whatsapp.trim(),
 					notas: notas.trim() || undefined,
 				},
 				entrega:
@@ -610,11 +632,14 @@ export default function PedirPage() {
 							/>
 							<Campo
 								id="whatsapp"
-								etiqueta="WhatsApp (opcional)"
+								etiqueta="Teléfono"
+								tipo="tel"
 								inputMode="tel"
+								requerido
 								autoComplete="tel"
-								ayuda="El taller lo usa para dudas rápidas sobre tu diseño."
+								ayuda="La paquetería lo necesita para entregarte, y el taller para dudas del diseño."
 								valor={contacto.whatsapp}
+								error={errores.whatsapp}
 								onChange={(v) => setContacto((c) => ({ ...c, whatsapp: v }))}
 							/>
 						</div>
