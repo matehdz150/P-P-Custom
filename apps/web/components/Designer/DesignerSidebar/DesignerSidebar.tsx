@@ -3,18 +3,37 @@
 import { ArrowLeft, Info, Layers, Shapes, Type, Upload } from "lucide-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
+import { useDesigner } from "@/Contexts/DesignerContext";
 import SidebarPanelManager from "./panels/SidebarPanelManager";
 
 export default function DesignerSidebar({
 	onVolverAlCatalogo,
+	inhabilitado,
 }: {
 	onVolverAlCatalogo: () => void;
+	/**
+	 * En "Probar" no se edita: las herramientas se apagan.
+	 *
+	 * La flecha de volver NO se apaga con ellas. Es la salida de la pantalla, y
+	 * dejar a alguien sin salida por estar mirando cómo le queda sería encerrarlo
+	 * en el modo de vista.
+	 */
+	inhabilitado?: boolean;
 }) {
 	const [activePanel, setActivePanel] = useState<string | null>("info");
+	// Armando una plantilla la flecha no vuelve al catálogo, sino a la
+	// plantilla a medio armar; la etiqueta tiene que decirlo o parece una
+	// salida en falso.
+	const { plantilla } = useDesigner();
 
 	const toggle = (panel: string) => {
 		setActivePanel(activePanel === panel ? null : panel);
 	};
+
+	/* El panel abierto se cierra al entrar a "Probar" y se recuerda para cuando
+	   se vuelva: reabrir "Información del producto" a mano cada vez que uno mira
+	   la prenda sería un peaje por mirar. */
+	const panelVisible = inhabilitado ? null : activePanel;
 
 	return (
 		<>
@@ -25,44 +44,49 @@ export default function DesignerSidebar({
 			>
 				<SidebarIcon
 					icon={<ArrowLeft size={22} />}
-					label="Regresar al catálogo"
+					label={plantilla ? "Regresar a la plantilla" : "Regresar al catálogo"}
 					onClick={onVolverAlCatalogo}
 				/>
 				<SidebarIcon
 					icon={<Upload size={22} />}
 					label="Subir imagen"
+					inhabilitado={inhabilitado}
 					onClick={() => toggle("upload")}
-					active={activePanel === "upload"}
+					active={panelVisible === "upload"}
 				/>
 				<SidebarIcon
 					icon={<Type size={22} />}
 					label="Texto"
+					inhabilitado={inhabilitado}
 					onClick={() => toggle("text")}
-					active={activePanel === "text"}
+					active={panelVisible === "text"}
 				/>
 				<SidebarIcon
 					icon={<Shapes size={22} />}
 					label="Gráficos y formas"
+					inhabilitado={inhabilitado}
 					onClick={() => toggle("shapes")}
-					active={activePanel === "shapes"}
+					active={panelVisible === "shapes"}
 				/>
 				<SidebarIcon
 					icon={<Layers size={22} />}
 					label="Capas"
+					inhabilitado={inhabilitado}
 					onClick={() => toggle("layers")}
-					active={activePanel === "layers"}
+					active={panelVisible === "layers"}
 				/>
 				<SidebarIcon
 					icon={<Info size={22} />}
 					label="Información del producto"
+					inhabilitado={inhabilitado}
 					onClick={() => toggle("info")}
-					active={activePanel === "info"}
+					active={panelVisible === "info"}
 				/>
 			</div>
 
 			{/* RIGHT PANEL */}
 			<SidebarPanelManager
-				activePanel={activePanel}
+				activePanel={panelVisible}
 				close={() => setActivePanel(null)}
 			/>
 		</>
@@ -74,15 +98,25 @@ type SidebarIconProps = {
 	active?: boolean;
 	onClick: () => void;
 	label: string;
+	inhabilitado?: boolean;
 };
 
-function SidebarIcon({ icon, active, onClick, label }: SidebarIconProps) {
+function SidebarIcon({
+	icon,
+	active,
+	onClick,
+	label,
+	inhabilitado,
+}: SidebarIconProps) {
 	return (
 		<button
 			type="button"
 			onClick={onClick}
 			aria-label={label}
+			disabled={inhabilitado}
 			className={`
+		disabled:cursor-not-allowed disabled:opacity-35
+		disabled:hover:bg-transparent disabled:hover:text-tinta
 		group relative flex h-[60px] w-full items-center justify-center
 		transition-colors focus-visible:outline-none focus-visible:ring-2
 		focus-visible:ring-inset focus-visible:ring-lima

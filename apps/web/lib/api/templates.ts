@@ -17,6 +17,19 @@ export type EditableArea = {
 
 export type ProductTemplateData = {
 	/**
+	 * Qué forma tiene el objeto, que NO es cuántos lados tiene.
+	 *
+	 * Ausente = `plano`, que es lo que eran todas las plantillas antes de que
+	 * esto existiera. Un cilindro tiene UN lado: la envoltura entera.
+	 *
+	 * `cono` se puede guardar y todavía no se dibuja: un vaso que se estrecha
+	 * no se despliega en un rectángulo sino en un sector de corona circular, y
+	 * meterle un rectángulo saca el estampado torcido. Está en el tipo desde el
+	 * principio porque añadirlo después es migrar todas las plantillas.
+	 */
+	forma?: "plano" | "cilindro" | "cono";
+
+	/**
 	 * Lados disponibles del template
 	 * ej: ["front", "back", "sleeve"]
 	 */

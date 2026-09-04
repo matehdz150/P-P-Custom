@@ -8,6 +8,15 @@ export type Lado = {
 	widthCm: Cifra;
 	heightCm: Cifra;
 	dpi: Cifra;
+	/**
+	 * Cuánto tiene que desbordar el arte por cada lado, en centímetros.
+	 *
+	 * Vacío o cero = sin sangrado, y es lo correcto para un estampado que no
+	 * llega al borde. Hace falta cuando SÍ llega —una taza, un termo, un tote
+	 * impreso a sangre—: el papel se mueve al prensar y sin desbordamiento
+	 * queda una línea blanca en el filo.
+	 */
+	sangradoCm: Cifra;
 };
 
 export type Talla = {
@@ -20,6 +29,53 @@ export type Color = {
 	name: string;
 	hex: string;
 };
+
+export type Punto = { x: number; y: number };
+
+import type { BandaDeCilindro } from "@/lib/api/catalogo";
+
+export type { BandaDeCilindro };
+
+/**
+ * La foto de la prenda de verdad con el cuadro donde cae lo impreso.
+ *
+ * UNA POR LADO **Y POR COLOR**. El mockup se tiñe —es una prenda clara sobre
+ * blanco que se recorta y se multiplica—, pero una foto con modelo o de una
+ * prenda ya oscura no admite ese tratamiento: teñiría también la cara. Así que
+ * la llave es el par, y un color sin foto simplemente no tiene vista realista.
+ *
+ * Las esquinas van en FRACCIONES de 0 a 1, en el orden arriba-izquierda,
+ * arriba-derecha, abajo-derecha, abajo-izquierda. En píxeles quedarían atadas
+ * al tamaño con el que se marcaron y bastaría recomprimir la foto para
+ * descuadrar el estampado.
+ */
+export type FotoDePrenda = {
+	lado: string;
+	color: string;
+	url: string;
+	/** Plano: las cuatro esquinas del cuadro. */
+	esquinas?: Punto[];
+	/** Cilindro: la banda visible. Otra geometría, no una variante. */
+	banda?: BandaDeCilindro;
+};
+
+/** El arranque de la banda: el cuerpo centrado, sin bombeo y con la costura detrás. */
+export const BANDA_POR_DEFECTO: BandaDeCilindro = {
+	izquierda: 0.2,
+	derecha: 0.8,
+	arriba: 0.32,
+	abajo: 0.72,
+	bombeo: 0.04,
+	centro: 0.5,
+};
+
+/** El cuadro de arranque: centrado en el pecho, que es donde cae casi siempre. */
+export const ESQUINAS_POR_DEFECTO: Punto[] = [
+	{ x: 0.34, y: 0.3 },
+	{ x: 0.66, y: 0.3 },
+	{ x: 0.66, y: 0.66 },
+	{ x: 0.34, y: 0.66 },
+];
 
 /**
  * El estado del alta, en el vocabulario del proveedor.
@@ -47,6 +103,8 @@ export type Alta = {
 	};
 	sizes: Talla[];
 	colors: Color[];
+	/** Ver `FotoDePrenda`. Vacío es válido: el editor se cae al mockup. */
+	fotosReales: FotoDePrenda[];
 	pricing: {
 		basePrice: Cifra;
 		perSidePrice: Cifra;
@@ -114,6 +172,7 @@ export const ALTA_VACIA: Alta = {
 		{ size: "L", widthIn: "", lengthIn: "" },
 	],
 	colors: [],
+	fotosReales: [],
 	pricing: {
 		basePrice: "",
 		perSidePrice: "",
@@ -154,6 +213,7 @@ export function deProductoAAlta(p: {
 		widthCm: number;
 		heightCm: number;
 		dpi?: number;
+		sangradoCm?: number;
 	}[];
 	customizationRules?: {
 		allowText?: boolean;
@@ -170,6 +230,7 @@ export function deProductoAAlta(p: {
 	diasExtraSinStock?: number;
 	pesoPorTalla?: Record<string, number>;
 	caja?: { largo: number; ancho: number; alto: number } | null;
+	fotosReales?: FotoDePrenda[];
 }): Alta {
 	const reglas = p.customizationRules ?? {};
 	const precios = p.pricing ?? {};
@@ -186,6 +247,9 @@ export function deProductoAAlta(p: {
 			widthCm: s.widthCm,
 			heightCm: s.heightCm,
 			dpi: s.dpi ?? 300,
+			// Vacío y no cero: el campo tiene que poder quedarse en blanco, que es
+			// lo normal, sin que aparezca un 0 que invita a borrarlo.
+			sangradoCm: s.sangradoCm ?? "",
 		})),
 		reglas: {
 			allowText: reglas.allowText ?? true,
@@ -199,6 +263,7 @@ export function deProductoAAlta(p: {
 		// para que el paso no quede vacío si el producto viene incompleto.
 		sizes: p.sizes?.length ? p.sizes : ALTA_VACIA.sizes,
 		colors: p.colors ?? [],
+		fotosReales: p.fotosReales ?? [],
 		pricing: {
 			basePrice: precios.basePrice ?? "",
 			perSidePrice: precios.perSidePrice ?? "",
@@ -270,6 +335,17 @@ export function aPayload(alta: Alta, enviar: boolean) {
 			widthCm: Number(s.widthCm) || 28,
 			heightCm: Number(s.heightCm) || 35,
 			dpi: Number(s.dpi) || 300,
+			/* Aquí SÍ vale el cero, al revés que el ancho y el alto: "sin
+			   sangrado" es una respuesta legítima y la más común. Poner un valor
+			   por defecto haría desbordar arte a productos donde el estampado no
+			   llega al borde, y eso se recorta contra la prenda.
+			
+			   CON TOPE porque este número dimensiona el ARCHIVO: el PNG sale
+			   `(ancho + 2·sangrado)` a los DPI del taller, así que un 100 mal
+			   tecleado no da un aviso, da un archivo de cientos de megas que
+			   revienta el tope de subida después de que el cliente ya pagó. Dos
+			   centímetros por lado es más de lo que pide cualquier sublimación. */
+			sangradoCm: Math.min(2, Math.max(0, Number(s.sangradoCm) || 0)),
 			enabled: true,
 		})),
 		templateSides: alta.printSides.map((s) => s.sideKey),
@@ -296,6 +372,18 @@ export function aPayload(alta: Alta, enviar: boolean) {
 				lengthIn: Number(t.lengthIn),
 			})),
 		colors: alta.colors.filter((c) => c.name.trim() && c.hex.trim()),
+		/* Sólo las completas. Una foto a la que le falta el cuadro no se puede
+		   proyectar, y la Lambda la rechazaría entera con un error que aquí no
+		   tendría a qué campo apuntar. */
+		fotosReales: alta.fotosReales.filter(
+			(f) =>
+				f.url &&
+				f.lado &&
+				f.color &&
+				// Una u otra, según la forma de la plantilla. Sin ninguna, la foto
+				// no se puede proyectar y no se manda.
+				(f.esquinas?.length === 4 || !!f.banda),
+		),
 		pricing: {
 			basePrice: cifra(alta.pricing.basePrice) ?? 0,
 			perSidePrice: cifra(alta.pricing.perSidePrice),

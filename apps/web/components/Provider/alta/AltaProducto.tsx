@@ -12,6 +12,7 @@ import {
 } from "@/lib/api/proveedores";
 import type { ProductTemplate } from "@/lib/api/templates";
 import { Palomita } from "./campos";
+import PasoPrenda from "./PasoPrenda";
 import {
 	PasoDatos,
 	PasoImpresion,
@@ -27,6 +28,9 @@ const PASOS = [
 	{ id: "datos", nombre: "Preséntalo", titulo: "Preséntalo" },
 	{ id: "impresion", nombre: "Cómo se imprime", titulo: "Cómo se imprime" },
 	{ id: "variantes", nombre: "Tallas y colores", titulo: "Tallas y colores" },
+	/* Después de los colores y no antes: la rejilla de fotos se arma con ellos,
+	   y sin colores capturados este paso no tendría casillas que enseñar. */
+	{ id: "prenda", nombre: "Cómo se ve", titulo: "Cómo se ve puesta" },
 	{ id: "precio", nombre: "Tu precio", titulo: "Tu precio" },
 	{ id: "revisar", nombre: "Revisar", titulo: "Revisa antes de enviarlo" },
 ] as const;
@@ -189,6 +193,14 @@ export default function AltaProducto({
 					<PasoImpresion alta={alta} set={set} plantilla={plantilla} />
 				)}
 				{actual.id === "variantes" && <PasoVariantes alta={alta} set={set} />}
+				{actual.id === "prenda" && (
+					<PasoPrenda
+						alta={alta}
+						set={set}
+						forma={plantilla?.data.forma}
+						etiquetas={plantilla?.data.sideLabels}
+					/>
+				)}
 				{actual.id === "precio" && <PasoPrecio alta={alta} set={set} />}
 				{actual.id === "revisar" && (
 					<PasoRevisar

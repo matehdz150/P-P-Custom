@@ -1,6 +1,5 @@
-import { ReactNode } from "react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+"use client";
+
 import {
 	ClipboardCheck,
 	LayoutGrid,
@@ -8,6 +7,11 @@ import {
 	SlidersHorizontal,
 	Truck,
 } from "lucide-react";
+import Link from "next/link";
+import type { ReactNode } from "react";
+import { AdminAuthProvider } from "@/Contexts/AdminAuthContext";
+import { cn } from "@/lib/utils";
+import Guardia from "./Guardia";
 
 type AdminLayoutProps = {
 	children: ReactNode;
@@ -46,7 +50,29 @@ const navItems = [
 	},
 ];
 
+/**
+ * El marco del backoffice.
+ *
+ * ES CLIENTE Y NO SERVIDOR desde que esto se publica: el sitio se exporta
+ * estático y la sesión vive en el navegador, así que quien decide si se enseña
+ * el panel tiene que estar del lado del navegador.
+ *
+ * EL GUARDIA NO ES LA SEGURIDAD, y conviene tenerlo claro al leer esto: lo que
+ * de verdad cierra el backoffice es el autorizador JWT de `/admin/*` en la API
+ * Gateway. Sin token no hay datos, se pinte lo que se pinte. Esto sólo evita
+ * enseñar un panel vacío y mandar a entrar.
+ */
 export default function AdminLayout({ children }: AdminLayoutProps) {
+	return (
+		<AdminAuthProvider>
+			<Guardia>
+				<Panel>{children}</Panel>
+			</Guardia>
+		</AdminAuthProvider>
+	);
+}
+
+function Panel({ children }: AdminLayoutProps) {
 	return (
 		<div className="min-h-screen bg-muted/40">
 			{/* SIDEBAR */}

@@ -60,7 +60,11 @@ export default function SalidaAPedir({
 			// La exportación vive en lib/designer: la comparten esta pantalla y
 			// "agregar al carrito", y es la parte del editor que menos conviene
 			// tener duplicada.
-			const { archivos, diseno } = await exportarParaPedido(sides, producto);
+			const { archivos, diseno } = await exportarParaPedido(
+				sides,
+				producto,
+				colorPrenda,
+			);
 
 			await guardarBorrador({
 				productoId: producto.id,

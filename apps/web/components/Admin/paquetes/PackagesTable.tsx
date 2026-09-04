@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -51,7 +51,9 @@ export function PackagesTable({ packages, onDelete }: Props) {
 
 					{/* ACTIONS */}
 					<div className="flex gap-2 ">
-						<Link href={`/admin/paquetes/${pkg.id}`}>
+						<Link
+							href={`/admin/paquetes/editar?id=${encodeURIComponent(pkg.id)}`}
+						>
 							<Button variant="outline" className="shadown-none">
 								Editar
 							</Button>

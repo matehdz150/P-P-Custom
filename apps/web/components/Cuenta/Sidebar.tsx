@@ -1,10 +1,6 @@
 "use client";
 
-import {
-	PanelLeftClose,
-	PanelLeftOpen,
-	type LucideIcon,
-} from "lucide-react";
+import { type LucideIcon, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 

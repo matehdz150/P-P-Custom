@@ -23,7 +23,7 @@ const CLAVE = "actual";
  * Cuánto vale un borrador. Pasado eso se tira: es el diseño de alguien que se
  * fue a otra cosa, y resucitárselo días después sería más confuso que útil.
  */
-const VIGENCIA_MS = 6 * 60 * 60 * 1000;
+export const VIGENCIA_MS = 6 * 60 * 60 * 1000;
 
 /**
  * Todo lo de un lado dibujado.
@@ -43,6 +43,13 @@ export type ArchivoDeLado = {
 	lado: string;
 	arte: Blob;
 	colocacion: Blob | null;
+	/**
+	 * El diseño sobre la FOTO REAL de la prenda, si el taller la subió.
+	 *
+	 * Nulo es lo normal: hay una foto por lado y por color, y el paso del alta
+	 * es opcional. Ver `sobreLaPrendaReal` en `lib/designer/exportarParaPedido`.
+	 */
+	prenda: Blob | null;
 	/** El arte solo, en pequeño. */
 	miniaturaArte: string | null;
 	/** La prenda con el diseño, en pequeño. Es el mismo píxel que `colocacion`. */
@@ -51,6 +58,14 @@ export type ArchivoDeLado = {
 	anchoPx: number;
 	altoPx: number;
 	dpi: number;
+	/**
+	 * Cuánto de ese archivo es sangrado, por lado y en cm.
+	 *
+	 * Viaja hasta la ficha del taller, que lo RESTA antes de comparar con lo
+	 * declarado: el archivo mide a propósito más que el área, y sin esto el
+	 * aviso de "revisa el área de la plantilla" saltaría en cada pedido.
+	 */
+	sangradoCm?: number;
 };
 
 export type BorradorPedido = {

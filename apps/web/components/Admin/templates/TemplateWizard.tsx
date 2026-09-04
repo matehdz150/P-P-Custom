@@ -38,6 +38,40 @@ export function TemplateWizard({ onCancel, onSubmit, initial }: Props) {
 
 	const [id, setId] = useState(initial?.id ?? "");
 	const [name, setName] = useState(initial?.name ?? "");
+	/**
+	 * Qué forma tiene el objeto, y se elige ANTES que nada.
+	 *
+	 * No es un adorno del formulario: decide qué pregunta el paso siguiente. Un
+	 * cilindro tiene UN lado —la envoltura entera— así que elegirlo salta el
+	 * paso de Lados en vez de pedir que alguien escriba "wrap" a mano y se
+	 * acuerde de borrar "front".
+	 */
+	const [forma, setForma] = useState<"plano" | "cilindro" | "cono">(
+		(initial?.data as { forma?: "plano" | "cilindro" | "cono" })?.forma ??
+			"plano",
+	);
+	const esCilindro = forma !== "plano";
+
+	/**
+	 * Cambiar a cilindro deja UN lado, y cambiar a plano repone el de siempre.
+	 *
+	 * Se hace al elegir y no al guardar: si no, el paso del lado seguiría
+	 * enseñando "front" con el mockup de una playera mientras el resto del
+	 * asistente ya cree que es una taza.
+	 */
+	function elegirForma(nueva: "plano" | "cilindro" | "cono") {
+		setForma(nueva);
+
+		if (nueva === "plano") {
+			if (sides.length === 1 && sides[0].key === "wrap") {
+				setSides([{ key: "front", label: "Delante" }]);
+			}
+			return;
+		}
+
+		setSides([{ key: "wrap", label: "Envoltura" }]);
+	}
+
 	const [sides, setSides] = useState<SideDef[]>(
 		initial
 			? initial.data.sides.map((k) => ({
@@ -54,6 +88,11 @@ export function TemplateWizard({ onCancel, onSubmit, initial }: Props) {
 	);
 
 	// pasos: 0 Identidad · 1 Lados · 2..(1+N) cada lado · último Revisar
+	//
+	// En un cilindro el paso de Lados no existe —hay uno y lo fija la forma—,
+	// pero el número de pasos NO cambia: se salta al avanzar y al retroceder.
+	// Recalcular los índices habría obligado a tocar `sideIndex`, `isReview` y
+	// las dos navegaciones, y ahí es donde se cuela un paso inalcanzable.
 	const totalSteps = 2 + sides.length + 1;
 	const isIdentity = step === 0;
 	const isSides = step === 1;
@@ -99,7 +138,9 @@ export function TemplateWizard({ onCancel, onSubmit, initial }: Props) {
 	function goNext() {
 		if (!canContinue) return;
 		if (isReview) return submit();
-		const next = step + 1;
+
+		// El paso de Lados se salta en un cilindro: su único lado ya está puesto.
+		const next = isIdentity && esCilindro ? 2 : step + 1;
 		// al pasar a un step de lado, garantiza área por defecto
 		const nextSideIdx = next >= 2 && next < 2 + sides.length ? next - 2 : -1;
 		if (nextSideIdx >= 0) ensureDefaultArea(sides[nextSideIdx].key);
@@ -108,7 +149,9 @@ export function TemplateWizard({ onCancel, onSubmit, initial }: Props) {
 
 	function goBack() {
 		if (step === 0) return onCancel();
-		setStep(step - 1);
+		// Y se salta también hacia atrás, o quedaría una pantalla a la que sólo
+		// se llega retrocediendo.
+		setStep(step === 2 && esCilindro ? 0 : step - 1);
 	}
 
 	async function submit() {
@@ -124,6 +167,7 @@ export function TemplateWizard({ onCancel, onSubmit, initial }: Props) {
 				id: isEdit ? (initial?.id ?? id) : slugify(id),
 				name: name.trim(),
 				data: {
+					forma,
 					sides: sideKeys,
 					sideLabels,
 					mockups,
@@ -226,6 +270,40 @@ export function TemplateWizard({ onCancel, onSubmit, initial }: Props) {
 									onChange={(e) => setName(e.target.value)}
 								/>
 							</Field>
+
+							{/* LA FORMA VA AQUÍ y no más adelante porque decide qué
+							    pregunta el paso siguiente: un cilindro tiene UN lado —la
+							    envoltura entera— así que elegirlo salta el paso de Lados
+							    en vez de pedir que alguien escriba "wrap" a mano. */}
+							{/* `fieldset` y no `Field`: eso último pinta un `<label>`, y un
+							    label tiene que apuntar a un campo. Esto es un grupo de
+							    botones, y su etiqueta es la leyenda. */}
+							<fieldset className="grid gap-2">
+								<legend className="pb-1.5 text-sm font-medium">
+									¿Qué forma tiene?
+								</legend>
+								<Forma
+									valor="plano"
+									actual={forma}
+									onElegir={elegirForma}
+									titulo="Plano"
+									desc="Playeras, totes, gorras: cada lado se ve entero de frente."
+								/>
+								<Forma
+									valor="cilindro"
+									actual={forma}
+									onElegir={elegirForma}
+									titulo="Cilindro"
+									desc="Tazas y termos rectos. Un solo lado: la envoltura de 360°."
+								/>
+								<Forma
+									valor="cono"
+									actual={forma}
+									onElegir={elegirForma}
+									titulo="Cono"
+									desc="Vasos que se estrechan. Se puede guardar, pero el preview todavía no lo dibuja."
+								/>
+							</fieldset>
 						</Section>
 					)}
 
@@ -382,5 +460,38 @@ function Row({ k, v }: { k: string; v: string }) {
 			<span className="text-gray-500">{k}</span>
 			<span className="font-medium text-right">{v}</span>
 		</div>
+	);
+}
+
+/** Una forma para elegir. Tarjeta y no radio suelto: la explicación es lo que decide. */
+function Forma({
+	valor,
+	actual,
+	onElegir,
+	titulo,
+	desc,
+}: {
+	valor: "plano" | "cilindro" | "cono";
+	actual: string;
+	onElegir: (v: "plano" | "cilindro" | "cono") => void;
+	titulo: string;
+	desc: string;
+}) {
+	const activa = actual === valor;
+
+	return (
+		<button
+			type="button"
+			onClick={() => onElegir(valor)}
+			aria-pressed={activa}
+			className={`rounded-lg border p-3 text-left transition ${
+				activa
+					? "border-black bg-gray-50"
+					: "border-gray-200 hover:border-gray-400"
+			}`}
+		>
+			<span className="block text-sm font-semibold">{titulo}</span>
+			<span className="block pt-0.5 text-xs text-gray-500">{desc}</span>
+		</button>
 	);
 }

@@ -16,6 +16,14 @@ export type ArteDeLado = {
 	anchoPx: number;
 	altoPx: number;
 	dpi: number;
+	/**
+	 * Cuánto de ese archivo es sangrado, por lado y en centímetros.
+	 *
+	 * Viaja hasta la ficha del taller para que reste antes de comparar: el
+	 * archivo mide a propósito más que el área, y sin esto el aviso de "revisa
+	 * el área de la plantilla" saltaría en cada pedido con sangrado.
+	 */
+	sangradoCm: number;
 };
 
 /** Área imprimible declarada por el taller, en centímetros. */
@@ -79,14 +87,24 @@ export function exportarArteDeLado(
 		// Se escala por ANCHO y el alto sale de la proporción del área. Forzar
 		// también el alto deformaría el diseño, y encogerlo para que cupiera en
 		// los dos lo dejaría más chico de lo que la persona vio en pantalla.
+		//
+		// EL MULTIPLICADOR SALE DEL ÁREA, NO DEL RECORTE CON SANGRADO. Es lo que
+		// mantiene la escala: el estampado tiene que medir los centímetros
+		// declarados; lo que crece es el archivo, no lo impreso.
 		const multiplicador = anchoObjetivo / recorte.width;
+
+		/* El sangrado, en píxeles del lienzo. Va pegado al objeto del área desde
+		   `loadProductTemplate`, que es donde se supo a cuántos píxeles equivale
+		   un centímetro en esta plantilla. */
+		const sangradoPx =
+			Number((area as { sangradoPx?: number }).sangradoPx ?? 0) || 0;
 
 		const dataUrl = canvas.toDataURL({
 			format: "png",
-			left: recorte.left,
-			top: recorte.top,
-			width: recorte.width,
-			height: recorte.height,
+			left: recorte.left - sangradoPx,
+			top: recorte.top - sangradoPx,
+			width: recorte.width + sangradoPx * 2,
+			height: recorte.height + sangradoPx * 2,
 			multiplier: multiplicador,
 		});
 
@@ -99,9 +117,14 @@ export function exportarArteDeLado(
 		return {
 			lado,
 			blob: aBlob(dataUrl),
-			anchoPx: Math.round(recorte.width * multiplicador),
-			altoPx: Math.round(recorte.height * multiplicador),
+			anchoPx: Math.round((recorte.width + sangradoPx * 2) * multiplicador),
+			altoPx: Math.round((recorte.height + sangradoPx * 2) * multiplicador),
 			dpi,
+			/* Se manda con el archivo para que la ficha del taller pueda restarlo
+			   antes de comparar con lo declarado. Sin esto, un sangrado de 3 mm
+			   dispara el aviso de "revisa el área de la plantilla" en cada pedido,
+			   y un aviso que salta siempre se aprende a ignorar. */
+			sangradoCm: (sangradoPx * medidas.widthCm) / recorte.width,
 		};
 	} finally {
 		// En `finally` para que un fallo al exportar no deje el editor sin
@@ -118,6 +141,28 @@ export function exportarArteDeLado(
 
 /** Lo ancho que se guarda la vista previa. Es para mirarla, no para imprimir. */
 const ANCHO_VISTA_PREVIA = 700;
+
+/**
+ * A qué ancho sale la referencia de colocación.
+ *
+ * ES MÁS QUE `ANCHO_VISTA_PREVIA` a propósito, y no comparten constante aunque
+ * antes la compartían. La miniatura del arte se enseña pequeña y ya está; ésta
+ * la mira el TALLER a pantalla completa para decidir dónde plancha, y la
+ * enseñan además el carrito y el detalle del pedido. A 700 px se veía pixelada
+ * en cuanto alguien la ampliaba o la abría en una pantalla retina.
+ */
+const ANCHO_COLOCACION = 1600;
+
+/**
+ * Cuánto se deja ampliar por encima del lienzo.
+ *
+ * El multiplicador de Fabric NO es un reescalado de bitmap: vuelve a
+ * rasterizar la escena, así que el texto y las formas salen nítidos a 2×. Lo
+ * que no mejora es el mockup, que ya es una imagen; por eso hay tope. Sin él,
+ * un lienzo pequeño pediría un 4× que sólo interpola píxeles del mockup y
+ * multiplica el peso del PNG por dieciséis.
+ */
+const AMPLIACION_MAXIMA = 2;
 
 /**
  * El arte solo, en pequeño, para enseñarlo en la pantalla de pedido.
@@ -201,10 +246,23 @@ export function exportarColocacion(
 ): { dataUrl: string; blob: Blob } | null {
 	const vista = canvas.viewportTransform;
 	const visibles = areas.map((a) => a.visible);
+	const colorFondo = canvas.backgroundColor;
 
 	try {
 		// El zoom y el desplazamiento son de quien diseña, no de la imagen.
 		canvas.viewportTransform = [1, 0, 0, 1, 0, 0];
+
+		/* FONDO BLANCO, y no transparente como el arte de producción.
+
+		   Aquí el PNG es una FOTO de cómo queda, no un archivo para imprimir.
+		   Con alfa, cada quien le pone detrás lo que tenga: el gris de la ficha
+		   del taller, el tablero de cuadros de un visor al descargarlo. La
+		   miniatura del carrito ya se defendía sola rellenando blanco antes de
+		   pasar a JPEG —que no tiene alfa y lo habría puesto negro—; ahora no
+		   tiene que defenderse de nada.
+
+		   El arte de producción sigue saliendo transparente; eso no se toca. */
+		canvas.backgroundColor = "#ffffff";
 
 		for (const a of areas) a.visible = false;
 
@@ -212,7 +270,10 @@ export function exportarColocacion(
 
 		const dataUrl = canvas.toDataURL({
 			format: "png",
-			multiplier: Math.min(1, ANCHO_VISTA_PREVIA / (canvas.getWidth() || 1)),
+			multiplier: Math.min(
+				AMPLIACION_MAXIMA,
+				ANCHO_COLOCACION / (canvas.getWidth() || 1),
+			),
 		});
 
 		return { dataUrl, blob: aBlob(dataUrl) };
@@ -221,6 +282,7 @@ export function exportarColocacion(
 		// arte y la ficha. No vale la pena tumbar un pedido por una imagen.
 		return null;
 	} finally {
+		canvas.backgroundColor = colorFondo;
 		if (vista) canvas.viewportTransform = vista;
 		areas.forEach((a, i) => {
 			a.visible = visibles[i];

@@ -35,11 +35,21 @@ export type EditableTriangleShape = {
 	height: number;
 };
 
+/**
+ * Cuánto desborda el área, en píxeles del lienzo.
+ *
+ * VIENE YA CONVERTIDO desde `loadProductTemplate`, que es el único sitio donde
+ * se conocen a la vez los centímetros que declaró el taller y lo que mide el
+ * área en la plantilla. Hacer la cuenta en cada consumidor sería repetir la
+ * misma regla de tres en el recorte, en el clip y en la exportación.
+ */
+export type ConSangrado = { sangradoPx?: number };
+
 export type EditableShape =
-	| EditableRectShape
-	| EditableEllipseShape
-	| EditableTriangleShape
-	| EditableCircleShape;
+	| (EditableRectShape & ConSangrado)
+	| (EditableEllipseShape & ConSangrado)
+	| (EditableTriangleShape & ConSangrado)
+	| (EditableCircleShape & ConSangrado);
 
 // 👇 cualquier string es un lado válido
 export type ProductSide = string;
@@ -48,6 +58,17 @@ export type ProductSide = string;
 export interface ProductTemplate<S extends ProductSide = ProductSide> {
 	id: string;
 	name: string;
+
+	/**
+	 * Qué forma tiene el objeto. Ausente = plano, que es lo que eran todos los
+	 * productos antes de que existieran las tazas.
+	 *
+	 * Lo que decide HOY: si el modo "Probar" puede proyectar sobre una foto
+	 * plana. Una envoltura no se puede proyectar con la homografía —cuatro
+	 * esquinas son un plano y una taza es un cilindro— y enseñarlo igual sería
+	 * un preview mentiroso justo en la pantalla que existe para no mentir.
+	 */
+	forma?: "plano" | "cilindro" | "cono";
 
 	// aquí van tus labels: "delantera", "trasera", "manga derecha"
 	sides: S[];

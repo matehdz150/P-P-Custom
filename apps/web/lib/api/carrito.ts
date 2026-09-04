@@ -13,7 +13,7 @@
 const API = process.env.NEXT_PUBLIC_KUSTTO_API ?? "";
 
 type Archivo = {
-	tipo: "arte" | "colocacion" | "diseno";
+	tipo: "arte" | "colocacion" | "prenda" | "diseno";
 	lado?: string;
 	cuerpo: Blob;
 };

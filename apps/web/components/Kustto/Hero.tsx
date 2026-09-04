@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Entrada } from "@/components/Animaciones/Entrada";
+import BuscadorHero from "./BuscadorHero";
 
 const GARANTIAS = [
 	{ corto: "Diseñar es gratis", largo: "Diseñar y cotizar es gratis" },
@@ -65,34 +65,18 @@ export default function Hero() {
 					</h1>
 				</Entrada>
 
+				{/* El buscador ocupa el sitio del botón. Quien llega a un
+				    marketplace suele saber qué quiere, y un botón a "/catalogo"
+				    le metía una pantalla de por medio antes de poder escribirlo.
+				    Para empezar de cero sigue estando el botón de la cabecera, y
+				    el del cierre al final de la página. */}
 				<Entrada
 					alCargar
 					desplazamiento={18}
 					delay={0.18}
 					className="mt-7 flex w-full justify-center md:mt-[38px]"
 				>
-					<Link
-						href="/catalogo"
-						className="flex h-14 w-full items-center justify-center gap-2.5 rounded-full bg-[#2B2812] text-[17px] font-semibold text-lima motion-safe:transition-[transform,box-shadow] motion-safe:duration-300 motion-safe:ease-out motion-safe:hover:-translate-y-0.5 motion-safe:hover:shadow-lg md:h-[62px] md:w-auto md:px-10 md:text-lg"
-					>
-						Empieza a diseñar
-						<svg
-							width="15"
-							height="15"
-							viewBox="0 0 14 14"
-							fill="none"
-							aria-hidden="true"
-							className="md:h-4 md:w-4"
-						>
-							<path
-								d="M5.833 10.5L9.333 7L5.833 3.5"
-								stroke="currentColor"
-								strokeWidth="1.8"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							/>
-						</svg>
-					</Link>
+					<BuscadorHero />
 				</Entrada>
 
 				<Entrada alCargar desplazamiento={12} delay={0.24}>

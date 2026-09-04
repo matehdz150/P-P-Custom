@@ -4,11 +4,11 @@ import { Textbox } from "fabric";
 import { ChevronDown, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
-import { makeAreaClip } from "@/lib/fabric/areaClip";
 import {
 	useDesignRules,
 	useElementGuard,
 } from "@/components/Designer/hooks/useProductConfig";
+import { makeAreaClip } from "@/lib/fabric/areaClip";
 import { AVAILABLE_FONTS } from "@/lib/fabric/fontList";
 import TextPresets from "./TextPresets";
 

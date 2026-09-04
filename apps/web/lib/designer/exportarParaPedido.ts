@@ -1,9 +1,13 @@
 "use client";
 
 import type { Canvas, FabricObject } from "fabric";
+import type { PrendaColor } from "@/Contexts/DesignerContext";
 import type { DesignerProductTemplate } from "@/lib/api/products";
 import { conDpi } from "@/lib/designer/dpi";
 import type { ArchivoDeLado } from "@/lib/pedido/borrador";
+import { componerCilindro } from "@/lib/prenda/cilindro";
+import { componerPrenda, type MezclaDeTinta } from "@/lib/prenda/componer";
+import { mezclaParaColor } from "@/lib/prenda/perspectiva";
 import {
 	exportarArteDeLado,
 	exportarColocacion,
@@ -32,6 +36,11 @@ type EstadoDeLado = { canvas: Canvas | null; editableAreas: FabricObject[] };
 export async function exportarParaPedido(
 	sides: Record<string, EstadoDeLado>,
 	producto: DesignerProductTemplate,
+	/**
+	 * El color elegido. Decide QUÉ foto real toca y cómo se mezcla la tinta:
+	 * hay una foto por lado Y por color, así que sin esto no se puede componer.
+	 */
+	colorPrenda?: PrendaColor | null,
 ): Promise<LadosExportados> {
 	const conDiseno = Object.entries(sides).flatMap(([lado, estado]) => {
 		const canvas = estado.canvas;
@@ -69,8 +78,10 @@ export async function exportarParaPedido(
 			   el archivo se abre a 72 dpi: 116 cm en vez de 28. */
 			arte: await conDpi(arte.blob, arte.dpi),
 			colocacion: colocacion?.blob ?? null,
+			prenda: await sobreLaPrendaReal(producto, lado, colorPrenda, arte.blob),
 			miniaturaArte: exportarMiniaturaDelArte(canvas, areas),
 			miniaturaPrenda: colocacion?.dataUrl ?? null,
+			sangradoCm: arte.sangradoCm,
 			anchoPx: arte.anchoPx,
 			altoPx: arte.altoPx,
 			dpi: arte.dpi,
@@ -93,4 +104,70 @@ export async function exportarParaPedido(
 			]),
 		),
 	};
+}
+
+/**
+ * El diseño proyectado sobre la FOTO REAL de la prenda, si el taller la subió.
+ *
+ * ES OTRA COSA QUE `colocacion`, y por eso viaja aparte en vez de sustituirla.
+ * `colocacion` es el mockup —el dibujo de línea— y sirve para comprobar DÓNDE
+ * cae el estampado con geometría limpia; ésta es la prenda de verdad, con sus
+ * pliegues y su caída, y sirve para ver lo que el cliente vio. El taller
+ * necesita las dos: una para cuadrar y otra para saber qué esperaba quien pidió.
+ *
+ * DEVUELVE NULO SIN DRAMA cuando no hay foto de ese lado en ese color. Es lo
+ * normal hoy —el paso del alta es opcional y casi ningún producto las tiene— y
+ * un pedido no se puede caer porque falte una imagen de referencia.
+ *
+ * TAMPOCO SE CAE SI FALLA. Componer recorre píxeles y puede quedarse sin
+ * memoria con una foto enorme; si eso pasa, se pide igual y el taller se queda
+ * con el mockup, que es lo que tenía antes de que esto existiera.
+ */
+async function sobreLaPrendaReal(
+	producto: DesignerProductTemplate,
+	lado: string,
+	colorPrenda: PrendaColor | null | undefined,
+	arte: Blob,
+): Promise<Blob | null> {
+	const foto = (producto.fotosReales ?? []).find(
+		(f) => f.lado === lado && f.color === colorPrenda?.name,
+	);
+
+	if (!foto) return null;
+
+	/* QUÉ RASTERIZADOR TOCA LO DICE LA FOTO, no la forma de la plantilla.
+	
+	   Podría leerse de `producto.forma`, pero la foto es el dato más cercano: es
+	   la que trae la geometría con la que se marcó, y una foto con banda sólo se
+	   puede componer como cilindro aunque alguien cambiara la plantilla después.
+	   Sin ninguna de las dos no hay nada que proyectar. */
+	const arteUrl = URL.createObjectURL(arte);
+
+	try {
+		const mezcla = mezclaParaColor(colorPrenda?.hex) as MezclaDeTinta;
+
+		if (foto.banda) {
+			return await componerCilindro({
+				fotoUrl: foto.url,
+				arteUrl,
+				banda: foto.banda,
+				mezcla,
+			});
+		}
+
+		if (foto.esquinas?.length === 4) {
+			return await componerPrenda({
+				fotoUrl: foto.url,
+				arteUrl,
+				esquinas: foto.esquinas,
+				mezcla,
+			});
+		}
+
+		return null;
+	} catch {
+		return null;
+	} finally {
+		URL.revokeObjectURL(arteUrl);
+	}
 }

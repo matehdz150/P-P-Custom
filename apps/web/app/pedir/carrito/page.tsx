@@ -2,13 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useComprador } from "@/Contexts/CompradorContext";
 import { Campo } from "@/components/Pedir/Campo";
 import { Paso } from "@/components/Pedir/Paso";
 import {
-	type Direccion,
-	cotizarCompra,
 	consultarCotizacion,
+	cotizarCompra,
 	crearPedido,
+	type Direccion,
 	enlaceDeSeguimiento,
 } from "@/lib/api/pedir";
 import {
@@ -17,6 +18,7 @@ import {
 	piezasDe,
 } from "@/lib/carrito/almacen";
 import { useCarrito } from "@/lib/carrito/useCarrito";
+import { usePrecargarPerfil } from "@/lib/pedido/precargar";
 
 /**
  * El checkout del carrito.
@@ -79,6 +81,14 @@ export default function PedirCarritoPage() {
 		notas: "",
 	});
 	const [direccion, setDireccion] = useState<Direccion>(DIRECCION_VACIA);
+
+	/* Lo que ya sabemos de quien entró: nombre y correo del token, WhatsApp y
+	   dirección de su perfil. Es el mismo trato que da `/pedir` —el mismo hook,
+	   ver `lib/pedido/precargar`—, que es lo que evita que llegar por el carrito
+	   obligue a teclear otra vez lo que ya está guardado. */
+	const { comprador } = useComprador();
+	const perfilPuesto = usePrecargarPerfil(setContacto, setDireccion);
+
 	const [talleres, setTalleres] = useState<EstadoDeTaller[]>([]);
 	const [cotizando, setCotizando] = useState(false);
 	const [enviando, setEnviando] = useState(false);
@@ -90,7 +100,10 @@ export default function PedirCarritoPage() {
 		const porTaller = new Map<string, ArticuloDeCarrito[]>();
 
 		for (const a of articulos) {
-			porTaller.set(a.proveedorId, [...(porTaller.get(a.proveedorId) ?? []), a]);
+			porTaller.set(a.proveedorId, [
+				...(porTaller.get(a.proveedorId) ?? []),
+				a,
+			]);
 		}
 
 		return [...porTaller.entries()].map(([proveedorId, suyos]) => ({
@@ -311,7 +324,9 @@ export default function PedirCarritoPage() {
 					titulo="Tus datos"
 					abierto={paso === 1}
 					completado={paso > 1}
-					resumen={contacto.nombre ? `${contacto.nombre} · ${contacto.email}` : ""}
+					resumen={
+						contacto.nombre ? `${contacto.nombre} · ${contacto.email}` : ""
+					}
 					onEditar={() => setPaso(1)}
 				>
 					<div className="flex flex-col gap-3">
@@ -322,13 +337,22 @@ export default function PedirCarritoPage() {
 							onChange={(v) => setContacto((c) => ({ ...c, nombre: v }))}
 							requerido
 						/>
+						{/* Con sesión el correo NO se edita, igual que en `/pedir`: es
+						    el que ata la compra a la cuenta —los pedidos se buscan por
+						    correo—, y dejar cambiarlo aquí mandaría la compra al
+						    historial de otra persona. */}
 						<Campo
 							id="email"
 							etiqueta="Correo"
 							tipo="email"
 							valor={contacto.email}
 							onChange={(v) => setContacto((c) => ({ ...c, email: v }))}
-							ayuda="Ahí llega el enlace para seguir tu pedido."
+							bloqueado={Boolean(comprador)}
+							ayuda={
+								comprador
+									? "El de tu cuenta. Ahí llega el enlace para seguir tu pedido."
+									: "Ahí llega el enlace para seguir tu pedido."
+							}
 							requerido
 						/>
 						<Campo
@@ -357,22 +381,74 @@ export default function PedirCarritoPage() {
 					abierto={paso === 2}
 					completado={paso > 2}
 					resumen={talleres
-						.map((t) => `${t.nombre}: ${t.metodo === "envio" ? "envío" : "recoger"}`)
+						.map(
+							(t) =>
+								`${t.nombre}: ${t.metodo === "envio" ? "envío" : "recoger"}`,
+						)
 						.join(" · ")}
 					onEditar={() => setPaso(2)}
 				>
 					<div className="flex flex-col gap-5">
 						<div className="flex flex-col gap-3">
+							{perfilPuesto && (
+								// Se dice que viene de la cuenta y se puede editar aquí
+								// mismo: cambiarla en esta compra NO toca la guardada, y
+								// callárselo haría que alguien la "corrigiera" creyendo que
+								// arregla su perfil.
+								<p className="rounded-lg bg-gris px-3.5 py-3 text-[13px] leading-[21px] text-tinta/70">
+									Pusimos la dirección de tu cuenta. Si esta compra va a otro
+									lado, cámbiala aquí — tu cuenta se queda como está.
+								</p>
+							)}
+
 							<p className="text-[13px] font-semibold text-tinta">
 								¿A dónde mandamos lo que sí se envía?
 							</p>
 							<div className="grid grid-cols-2 gap-3">
-								<Campo id="calle" etiqueta="Calle" valor={direccion.calle} onChange={(v) => setDireccion((d) => ({ ...d, calle: v }))} requerido />
-								<Campo id="numero" etiqueta="Número" valor={direccion.numero} onChange={(v) => setDireccion((d) => ({ ...d, numero: v }))} requerido />
-								<Campo id="colonia" etiqueta="Colonia" valor={direccion.colonia} onChange={(v) => setDireccion((d) => ({ ...d, colonia: v }))} requerido />
-								<Campo id="cp" etiqueta="Código postal" valor={direccion.cp} onChange={(v) => setDireccion((d) => ({ ...d, cp: v }))} inputMode="numeric" maxLength={5} requerido />
-								<Campo id="ciudad" etiqueta="Ciudad" valor={direccion.ciudad} onChange={(v) => setDireccion((d) => ({ ...d, ciudad: v }))} requerido />
-								<Campo id="estado" etiqueta="Estado" valor={direccion.estado} onChange={(v) => setDireccion((d) => ({ ...d, estado: v }))} requerido />
+								<Campo
+									id="calle"
+									etiqueta="Calle"
+									valor={direccion.calle}
+									onChange={(v) => setDireccion((d) => ({ ...d, calle: v }))}
+									requerido
+								/>
+								<Campo
+									id="numero"
+									etiqueta="Número"
+									valor={direccion.numero}
+									onChange={(v) => setDireccion((d) => ({ ...d, numero: v }))}
+									requerido
+								/>
+								<Campo
+									id="colonia"
+									etiqueta="Colonia"
+									valor={direccion.colonia}
+									onChange={(v) => setDireccion((d) => ({ ...d, colonia: v }))}
+									requerido
+								/>
+								<Campo
+									id="cp"
+									etiqueta="Código postal"
+									valor={direccion.cp}
+									onChange={(v) => setDireccion((d) => ({ ...d, cp: v }))}
+									inputMode="numeric"
+									maxLength={5}
+									requerido
+								/>
+								<Campo
+									id="ciudad"
+									etiqueta="Ciudad"
+									valor={direccion.ciudad}
+									onChange={(v) => setDireccion((d) => ({ ...d, ciudad: v }))}
+									requerido
+								/>
+								<Campo
+									id="estado"
+									etiqueta="Estado"
+									valor={direccion.estado}
+									onChange={(v) => setDireccion((d) => ({ ...d, estado: v }))}
+									requerido
+								/>
 							</div>
 
 							<button
@@ -440,7 +516,9 @@ export default function PedirCarritoPage() {
 							})}
 
 						<div className="flex items-center justify-between border-t border-tinta/12 pt-3">
-							<span className="text-[15px] font-semibold text-tinta">Total</span>
+							<span className="text-[15px] font-semibold text-tinta">
+								Total
+							</span>
 							<span className="font-display text-[20px] font-semibold text-tinta">
 								${total.toLocaleString("es-MX")}
 							</span>

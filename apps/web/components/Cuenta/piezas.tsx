@@ -49,6 +49,48 @@ export function Vacio({
 	);
 }
 
+/**
+ * "No hay resultados", con salida.
+ *
+ * NO ES `Vacio`. Ése es para una sección que todavía no tiene nada —lleva un
+ * enlace a otra parte del sitio—; esto es para cuando SÍ hay cosas pero los
+ * filtros las escondieron todas, y entonces lo único útil es un botón que los
+ * quite. Un enlace no sirve: la salida está en esta misma pantalla.
+ *
+ * Vive aquí porque las tres secciones que filtran —pedidos, diseños y
+ * catálogo— lo necesitan igual, y tenerlo escrito tres veces era garantía de
+ * que se separaran.
+ */
+export function SinResultados({
+	titulo,
+	texto,
+	accion,
+}: {
+	titulo?: string;
+	texto: string;
+	accion: { texto: string; alPulsar: () => void };
+}) {
+	return (
+		<div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-tinta/20 px-6 py-12 text-center">
+			{titulo && (
+				<p className="font-display text-[19px] font-semibold tracking-[-0.02em] text-tinta">
+					{titulo}
+				</p>
+			)}
+			<p className="max-w-[38ch] text-[15px] leading-[24px] text-tinta/60">
+				{texto}
+			</p>
+			<button
+				type="button"
+				onClick={accion.alPulsar}
+				className="mt-1 inline-flex h-11 items-center rounded-full bg-tinta px-5 text-[15px] font-semibold text-lima"
+			>
+				{accion.texto}
+			</button>
+		</div>
+	);
+}
+
 export function Aviso({ texto }: { texto: string }) {
 	return (
 		<div

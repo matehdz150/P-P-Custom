@@ -76,6 +76,17 @@ interface DesignerContextType {
 	/** Si está en marcha "agregar al carrito". Mismo motivo que `pidiendo`. */
 	agregando: boolean;
 	setAgregando: (v: boolean) => void;
+
+	/**
+	 * Para qué se está diseñando: nulo es lo normal —un producto que va al
+	 * carrito—, y con valor se está armando una plantilla.
+	 *
+	 * Cambia LOS BOTONES DE SALIDA, no el editor: en una plantilla no existe
+	 * "pedir este diseño" porque la plantilla entera se pide después, junta.
+	 * `clave` dice a qué fila del borrador vuelve el arte; nula, se añade una.
+	 */
+	plantilla: { clave: string | null } | null;
+	setPlantilla: (p: { clave: string | null } | null) => void;
 }
 
 const DesignerContext = createContext<DesignerContextType>(
@@ -83,6 +94,14 @@ const DesignerContext = createContext<DesignerContextType>(
 );
 
 export function DesignerProvider({ children }: { children: ReactNode }) {
+	/* El lado de arranque es una SUPOSICIÓN, no un dato: `"front"` sólo existe
+	   en una prenda. Una taza tiene un lado y se llama `wrap`, así que aquí el
+	   editor arrancaba pidiendo un lienzo que no existe y se veía en blanco
+	   hasta que alguien pulsaba "Envoltura".
+	
+	   Lo corrige `ProductDesigner` en cuanto sabe los lados del producto. No se
+	   arranca vacío porque nadie llama a `initSides`: sin corrector, el editor
+	   se quedaría sin lado para siempre. */
 	const [activeSide, _setActiveSide] = useState<string>("front");
 
 	const [config, setConfig] = useState<DesignerProductConfig | null>(null);
@@ -187,6 +206,9 @@ export function DesignerProvider({ children }: { children: ReactNode }) {
 
 	const [pidiendo, setPidiendo] = useState(false);
 	const [agregando, setAgregando] = useState(false);
+	const [plantilla, setPlantilla] = useState<{ clave: string | null } | null>(
+		null,
+	);
 
 	return (
 		<DesignerContext.Provider
@@ -209,6 +231,8 @@ export function DesignerProvider({ children }: { children: ReactNode }) {
 				setPidiendo,
 				agregando,
 				setAgregando,
+				plantilla,
+				setPlantilla,
 				config,
 				setConfig,
 				notice,

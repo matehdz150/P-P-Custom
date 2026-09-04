@@ -26,7 +26,14 @@ export type LineaAPedir = {
 	 * centímetros que declaró el taller. Es descriptivo —no decide precio ni
 	 * destinatario— así que puede venir del cliente.
 	 */
-	archivos?: { lado: string; anchoPx: number; altoPx: number; dpi: number }[];
+	archivos?: {
+		lado: string;
+		anchoPx: number;
+		altoPx: number;
+		dpi: number;
+		/** Cuánto del archivo es sangrado. La ficha del taller lo resta. */
+		sangradoCm?: number;
+	}[];
 	/**
 	 * El diseño editable NO va aquí.
 	 *
@@ -75,7 +82,7 @@ export type PedidoCreado = {
 		indice: number;
 		lineaId: string;
 		lado: string;
-		tipo: "arte" | "colocacion" | "diseno";
+		tipo: "arte" | "colocacion" | "prenda" | "diseno";
 		ruta: string;
 		uploadUrl: string;
 	}[];
@@ -120,6 +127,11 @@ export type PedidoEnSeguimiento = {
 	} | null;
 	lineas: {
 		id: string;
+		/* Qué producto del catálogo es. El servidor lo guarda y lo devuelve —
+		   `paraComprador` no toca las líneas—, sólo faltaba declararlo aquí.
+		   Lo necesita quien vuelva a pedir esa línea: es con lo que se
+		   re-cotiza y se comprueba que siga publicado. */
+		productoId: string;
 		producto: string;
 		imagen: string | null;
 		colorPrenda: string | null;
@@ -225,8 +237,41 @@ export function consultarCotizacion(id: string) {
 	}>(`/publico/envios/cotizacion/${encodeURIComponent(id)}`);
 }
 
+/**
+ * Una compra del carrito con partes de VARIOS talleres.
+ *
+ * Con un solo taller la API devuelve la parte tal cual —con el folio de la
+ * compra al lado— para que el seguimiento no tenga que saber que existen las
+ * compras hasta que de verdad haya varias. Ver `comoCompra` en el servidor.
+ */
+export type CompraEnSeguimiento = {
+	id: string;
+	folio: string;
+	esCompra: true;
+	comprador: PedidoEnSeguimiento["comprador"];
+	entrega: PedidoEnSeguimiento["entrega"];
+	total: number;
+	piezas: number;
+	createdAt: string;
+	partes: PedidoEnSeguimiento[];
+};
+
+export function esCompra(
+	x: PedidoEnSeguimiento | CompraEnSeguimiento,
+): x is CompraEnSeguimiento {
+	return (x as CompraEnSeguimiento).esCompra === true;
+}
+
+/**
+ * El pedido —o la compra entera— de quien trae el enlace.
+ *
+ * ESTA RUTA RESUELVE LAS DOS COSAS: el enlace que se entrega al pagar lleva el
+ * id de la COMPRA, y los que ya circulan traen el de un pedido. La de la
+ * cuenta (`getMiPedido`) sólo conoce pedidos, así que con un id de compra
+ * responde que no existe.
+ */
 export function seguirPedido(id: string, token: string) {
-	return publico<PedidoEnSeguimiento>(
+	return publico<PedidoEnSeguimiento | CompraEnSeguimiento>(
 		`/publico/pedidos/${id}?token=${encodeURIComponent(token)}`,
 	);
 }
@@ -308,6 +353,22 @@ export async function subirArchivos(
 				await subir(destinoColocacion.uploadUrl, lado.colocacion, "image/png");
 			} catch {
 				faltaColocacion.push(lado.lado);
+			}
+		}
+
+		/* La prenda real, si el taller subió la foto de ese lado y color.
+		   NO se apunta en `faltaColocacion` ni en ninguna lista: que no esté es
+		   lo normal, no una incidencia, y avisar de ella en cada pedido enseñaría
+		   a ignorar el aviso que sí importa. */
+		const destinoPrenda = pedido.subidas.find(
+			(s) => s.indice === indice && s.lado === lado.lado && s.tipo === "prenda",
+		);
+
+		if (lado.prenda && destinoPrenda) {
+			try {
+				await subir(destinoPrenda.uploadUrl, lado.prenda, "image/png");
+			} catch {
+				// Es una referencia, no el archivo que va a máquina.
 			}
 		}
 	}

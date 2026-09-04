@@ -1,9 +1,9 @@
 "use client";
 
-import { Type, Upload } from "lucide-react";
-import { useRef, useState } from "react";
+import { Type } from "lucide-react";
+import { useState } from "react";
+import BibliotecaDeImagenes from "@/components/Designer/panels/BibliotecaDeImagenes";
 import { useDesignRules } from "../hooks/useProductConfig";
-import { useAddImageLogic } from "../DesignerSidebar/SidebarAddImage";
 import MobileAddTextPanel from "./MobileAddTextPanel";
 
 export default function MobileAddMenu({
@@ -11,9 +11,7 @@ export default function MobileAddMenu({
 }: {
 	closeDrawer: () => void;
 }) {
-	const { addImage } = useAddImageLogic();
 	const { allowImages, allowText } = useDesignRules();
-	const fileRef = useRef<HTMLInputElement | null>(null);
 
 	const [view, setView] = useState<"menu" | "text">("menu");
 
@@ -28,32 +26,13 @@ export default function MobileAddMenu({
 
 	return (
 		<div className="space-y-4">
-			{/* MI DISPOSITIVO */}
+			{/* La MISMA pieza que el editor de escritorio, no una versión corta.
+			    Antes aquí sólo se podía subir del dispositivo, así que las
+			    imágenes guardadas existían en un editor y no en el otro — y quien
+			    diseña desde el teléfono es justo quien menos ganas tiene de ir a
+			    buscar el logo en su galería. */}
 			{allowImages ? (
-				<>
-					<button
-						type="button"
-						onClick={() => fileRef.current?.click()}
-						className="w-full text-left px-4 py-6 border rounded-lg flex gap-3 items-center"
-					>
-						<Upload />
-						Mi dispositivo
-					</button>
-
-					<input
-						ref={fileRef}
-						type="file"
-						className="hidden"
-						accept="image/*"
-						onChange={(e) => {
-							const file = e.target.files?.[0];
-							if (file) {
-								addImage(file);
-								closeDrawer();
-							}
-						}}
-					/>
-				</>
+				<BibliotecaDeImagenes />
 			) : (
 				<div className="w-full px-4 py-5 border border-dashed rounded-lg text-sm text-neutral-500">
 					Este producto no permite imágenes

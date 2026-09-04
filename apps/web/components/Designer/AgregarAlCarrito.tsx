@@ -48,7 +48,11 @@ export default function AgregarAlCarrito({
 
 	async function guardar() {
 		try {
-			const { archivos, diseno } = await exportarParaPedido(sides, producto);
+			const { archivos, diseno } = await exportarParaPedido(
+				sides,
+				producto,
+				colorPrenda,
+			);
 
 			// Un archivo por lado más el diseño editable, que va como JSON.
 			const paraSubir = [
@@ -62,6 +66,13 @@ export default function AgregarAlCarrito({
 									cuerpo: a.colocacion,
 								},
 							]
+						: []),
+					/* La prenda REAL con el diseño encima, si el taller subió la
+					   foto de ese lado en ese color. Va además de `colocacion`, no
+					   en su lugar: aquélla es el mockup y sirve para cuadrar; ésta
+					   es lo que el cliente vio. */
+					...(a.prenda
+						? [{ tipo: "prenda" as const, lado: a.lado, cuerpo: a.prenda }]
 						: []),
 				]),
 				{
@@ -85,6 +96,7 @@ export default function AgregarAlCarrito({
 				lados: archivos.map((a) => ({
 					lado: a.lado,
 					anchoPx: a.anchoPx,
+					sangradoCm: a.sangradoCm,
 					altoPx: a.altoPx,
 					dpi: a.dpi,
 				})),

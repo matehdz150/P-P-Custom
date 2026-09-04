@@ -14,10 +14,14 @@ export default function Page() {
 			<Header variante="centrado" />
 			<main>
 				<Hero />
-				<Franja />
-				<Pasos />
-				<Catalogo />
+				{/* `Casos` va SEGUNDO, no quinto. Es lo que en un marketplace hace
+				    de categorías —boda, graduación, empresa—, y ahí es donde se
+				    reconoce quien llega con una ocasión en la cabeza en vez de un
+				    producto. Estaba después de tres secciones. */}
 				<Casos />
+				<Franja />
+				<Catalogo />
+				<Pasos />
 				<Proveedores />
 				<Cierre />
 			</main>

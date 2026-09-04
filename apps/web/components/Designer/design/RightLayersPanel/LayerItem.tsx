@@ -1,12 +1,12 @@
 "use client";
 
 import { FabricImage, type FabricObject, Path, Textbox } from "fabric";
-import { CurvedText } from "@/lib/fabric/CurvedText";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import { useHistory } from "@/Contexts/HistoryContext";
+import { CurvedText } from "@/lib/fabric/CurvedText";
 
 import { RemoveObjectCommand } from "@/lib/history/commands/RemoveObjectCommand";
 

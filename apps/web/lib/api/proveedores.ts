@@ -183,6 +183,20 @@ export type ProductoDeTaller = {
 	existencias?: Record<string, number>;
 	minimoAlerta?: number;
 	diasExtraSinStock?: number;
+	/**
+	 * Las fotos de la prenda real con su cuadro de impresión, por lado y color.
+	 *
+	 * Va declarado aunque el panel no lo pinte: el asistente lo lee al editar y
+	 * lo vuelve a mandar entero. Sin el campo en el tipo, cualquiera que copie
+	 * el producto campo por campo se lleva las fotos por delante sin enterarse
+	 * —el PATCH manda la lista completa, así que omitirla es borrarla—.
+	 */
+	fotosReales?: {
+		lado: string;
+		color: string;
+		url: string;
+		esquinas: { x: number; y: number }[];
+	}[];
 	createdAt: string;
 	updatedAt: string;
 };
@@ -214,6 +228,22 @@ export function actualizarMiProducto(
 		method: "PATCH",
 		body: JSON.stringify(datos),
 	});
+}
+
+/**
+ * Quita un producto, y la respuesta dice qué pasó de verdad.
+ *
+ * Un borrador se borra; cualquier otro se archiva, porque "volver a pedir" lee
+ * el producto de hoy para decirle al comprador cuál de sus líneas se cayó. La
+ * decisión la toma el servidor —el estado que ve el navegador puede estar
+ * viejo—, así que la pantalla se entera por lo que devuelve, no por lo que
+ * suponía antes de pulsar.
+ */
+export function borrarMiProducto(id: string) {
+	return pedir<{ id: string; estado: "borrado" | "archivado" }>(
+		`/proveedores/productos/${id}`,
+		{ method: "DELETE" },
+	);
 }
 
 export type OperacionExistencias = "agregar" | "quitar" | "corregir";

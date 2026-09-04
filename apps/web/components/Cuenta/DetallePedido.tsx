@@ -1,6 +1,6 @@
 "use client";
 
-import { RotateCcw } from "lucide-react";
+import { ClipboardList, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import {
 	type PedidoDelComprador,
 } from "@/lib/api/cuenta";
 import { useDatosDelPanel } from "./datos";
+import GuardarComoPlantilla from "./GuardarComoPlantilla";
 import { Aviso, Cargando } from "./piezas";
 
 /**
@@ -37,6 +38,7 @@ export default function DetalleEnPanel() {
 
 	const [pedido, setPedido] = useState<PedidoDelComprador | null>(yaLoTenemos);
 	const [fallo, setFallo] = useState<string | null>(null);
+	const [guardando, setGuardando] = useState(false);
 
 	useEffect(() => {
 		if (!id) {
@@ -84,18 +86,39 @@ export default function DetalleEnPanel() {
 
 	return (
 		<div className="max-w-[1180px]">
+			<GuardarComoPlantilla
+				abierto={guardando}
+				onAbrir={setGuardando}
+				pedido={pedido}
+			/>
 			<DetalleDePedido
 				pedido={pedido}
 				conCuenta
 				accionTrasTotal={
 					sePuedeRepetir ? (
-						<Link
-							href={`/cuenta?s=repetir&id=${encodeURIComponent(pedido.id)}`}
-							className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border-[1.5px] border-tinta bg-transparent px-4 text-[15px] font-semibold text-tinta transition-colors hover:bg-tinta hover:text-lima"
-						>
-							<RotateCcw className="size-4" aria-hidden />
-							Volver a pedir
-						</Link>
+						<div className="flex flex-col gap-2">
+							<Link
+								href={`/cuenta?s=repetir&id=${encodeURIComponent(pedido.id)}`}
+								className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border-[1.5px] border-tinta bg-transparent px-4 text-[15px] font-semibold text-tinta transition-colors hover:bg-tinta hover:text-lima"
+							>
+								<RotateCcw className="size-4" aria-hidden />
+								Volver a pedir
+							</Link>
+
+							{/* Repetir y guardar como plantilla son lo mismo con distinto
+							    horizonte: uno pide ESTO otra vez, el otro se lo queda para
+							    dentro de tres meses con otras cantidades. Por eso van
+							    juntos y la plantilla va en segundo lugar, más apagada:
+							    quien entra aquí casi siempre quiere lo primero. */}
+							<button
+								type="button"
+								onClick={() => setGuardando(true)}
+								className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full px-4 text-[14px] font-semibold text-tinta/65 transition-colors hover:text-tinta"
+							>
+								<ClipboardList className="size-4" aria-hidden />
+								Guardar como plantilla
+							</button>
+						</div>
 					) : undefined
 				}
 			/>

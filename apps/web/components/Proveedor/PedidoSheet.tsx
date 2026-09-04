@@ -169,8 +169,10 @@ export function PedidoSheet({
 											key={`${a.lineaId}-${a.lado}`}
 											ruta={a.ruta}
 											colocacion={a.colocacion}
+											prenda={a.prenda}
 											lado={a.lado}
 											folio={pedido.folio}
+											sangradoCm={a.sangradoCm}
 											anchoCm={a.anchoCm}
 											altoCm={a.altoCm}
 											dpi={a.dpi}
@@ -355,8 +357,10 @@ export function PedidoSheet({
 function Arte({
 	ruta,
 	colocacion,
+	prenda,
 	lado,
 	folio,
+	sangradoCm,
 	anchoCm,
 	altoCm,
 	dpi,
@@ -367,8 +371,12 @@ function Arte({
 }: {
 	ruta: string;
 	colocacion?: string | null;
+	/** La prenda REAL con el diseño. Casi nunca existe todavía. */
+	prenda?: string | null;
 	lado: string;
 	folio: string;
+	/** Cuánto desborda el archivo por lado, si el taller lo declaró. */
+	sangradoCm?: number;
 	anchoCm?: number;
 	altoCm?: number;
 	dpi?: number;
@@ -387,6 +395,14 @@ function Arte({
 	const [falta, setFalta] = useState(false);
 	const [sinColocacion, setSinColocacion] = useState(false);
 
+	/* La prenda real APARECE SOLA si el archivo está, y no ocupa sitio si no.
+	   La ruta se escribe siempre en la línea del pedido —comprobar en el
+	   servidor si existe costaría una llamada a S3 por lado y por pedido—, así
+	   que aquí se pide y se enseña la casilla sólo cuando carga. Hoy casi
+	   ningún producto tiene fotos de prenda: reservarle un hueco vacío en cada
+	   tarjeta sería peor que el reflujo de cuando sí llega. */
+	const [hayPrenda, setHayPrenda] = useState(false);
+
 	/* Medio centímetro de margen: por debajo es redondeo, por encima es que la
 	   plantilla y los centímetros declarados no dicen lo mismo. */
 	const desviado =
@@ -399,10 +415,16 @@ function Arte({
 
 	return (
 		<figure className="m-0 overflow-hidden rounded-lg border border-tinta/12">
-			<div className="grid grid-cols-2">
+			<div
+				className={
+					hayPrenda ? "grid grid-cols-2 md:grid-cols-3" : "grid grid-cols-2"
+				}
+			>
 				{/* Izquierda: dónde va. Derecha: qué se imprime. En ese orden
 				    porque colocar mal es el error caro: el arte se vuelve a mandar,
-				    una prenda estampada torcida se tira. */}
+				    una prenda estampada torcida se tira. La tercera, cuando la hay,
+				    es la prenda de verdad: no sirve para producir, sirve para saber
+				    qué esperaba quien pidió. */}
 				<div className="flex h-[190px] items-center justify-center border-r border-tinta/12 bg-gris p-3">
 					{colocacion && !sinColocacion ? (
 						// biome-ignore lint/performance/noImgElement: ruta /medios/… del mismo origen servida por el rewrite.
@@ -439,6 +461,23 @@ function Arte({
 						/>
 					)}
 				</div>
+
+				<div
+					className={`${
+						hayPrenda ? "flex" : "hidden"
+					} col-span-2 h-[190px] items-center justify-center border-t border-tinta/12 bg-gris p-3 md:col-span-1 md:border-l md:border-t-0`}
+				>
+					{prenda && (
+						// biome-ignore lint/performance/noImgElement: ruta /medios/… del mismo origen servida por el rewrite.
+						<img
+							src={prenda}
+							alt={`${lado} sobre la prenda`}
+							onLoad={() => setHayPrenda(true)}
+							onError={() => setHayPrenda(false)}
+							className="max-h-full max-w-full object-contain"
+						/>
+					)}
+				</div>
 			</div>
 
 			<figcaption className="border-t border-tinta/12 bg-white px-3 py-2.5">
@@ -462,6 +501,16 @@ function Arte({
 						{anchoPx && altoPx && (
 							<p className="font-mono text-[11px] text-tinta/40">
 								{anchoPx} × {altoPx} px
+							</p>
+						)}
+
+						{/* El archivo mide MÁS que el área a propósito, y hay que
+						    decirlo: quien abre el PNG y lo mide se encuentra unos
+						    milímetros de más, y sin esta línea parece un error. */}
+						{!!sangradoCm && (
+							<p className="pt-1 text-[11px] leading-[15px] text-tinta/55">
+								Incluye {sangradoCm} cm de sangrado por lado: recorta al área al
+								montarlo.
 							</p>
 						)}
 

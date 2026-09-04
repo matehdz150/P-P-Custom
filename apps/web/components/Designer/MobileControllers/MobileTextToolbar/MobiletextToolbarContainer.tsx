@@ -3,9 +3,9 @@
 import { Textbox } from "fabric";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
+import { useHistory } from "@/Contexts/HistoryContext";
 import { CurvedText } from "@/lib/fabric/CurvedText";
 import { ReplaceObjectCommand } from "@/lib/history/commands/ReplaceObjectCommand";
-import { useHistory } from "@/Contexts/HistoryContext";
 import MobileTextToolbar from "./MobileTextToolbar";
 
 export default function MobileTextToolbarContainer({

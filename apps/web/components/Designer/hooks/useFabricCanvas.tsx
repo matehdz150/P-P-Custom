@@ -118,6 +118,12 @@ export function useFabricCanvas(
 
 		for (const shape of shapes) {
 			const area = createAreaFromShape(shape);
+			/* El sangrado viaja PEGADO al objeto del área y no por otro canal: lo
+			   necesitan siete sitios distintos —el clip de cada herramienta y la
+			   exportación— y pasarlo por props obligaría a hilarlo por toda la
+			   jerarquía del editor. Aquí lo leen todos del mismo dato. */
+			(area as FabricObject & { sangradoPx?: number }).sangradoPx =
+				shape.sangradoPx;
 			c.add(area);
 			areas.push(area);
 		}

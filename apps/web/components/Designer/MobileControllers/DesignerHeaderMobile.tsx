@@ -8,7 +8,7 @@ import MobileDrawer from "./MobileDrawer";
 
 export default function DesignerHeaderMobile() {
 	const [mode, setMode] = useState<"edit" | "preview">("edit");
-	const { setPidiendo } = useDesigner();
+	const { setPidiendo, setAgregando, plantilla } = useDesigner();
 
 	return (
 		<div className="relative h-20 w-full border-b flex items-center px-4 bg-white rounded-[0.2rem]">
@@ -53,14 +53,15 @@ export default function DesignerHeaderMobile() {
 				</button>
 			</div>
 
-			{/* La salida del editor, igual que en escritorio. Antes decía
-			    "Guardar" y no tenía onClick. */}
+			{/* La salida del editor, igual que en escritorio: armando una
+			    plantilla no se pide, se agrega. Antes decía "Guardar" y no
+			    tenía onClick. */}
 			<button
 				type="button"
-				onClick={() => setPidiendo(true)}
+				onClick={() => (plantilla ? setAgregando(true) : setPidiendo(true))}
 				className="ml-auto px-3 py-1.5 bg-lima text-tinta rounded-[0.2rem] font-medium z-10 font-sora"
 			>
-				Pedir
+				{plantilla ? "Agregar" : "Pedir"}
 			</button>
 		</div>
 	);

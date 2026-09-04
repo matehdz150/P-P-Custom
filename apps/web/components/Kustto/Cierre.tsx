@@ -10,7 +10,11 @@ export default function Cierre() {
 						Trae tu idea. Nosotros la volvemos 30 playeras
 					</h2>
 				</Entrada>
-				<Entrada delay={0.07} desplazamiento={18} className="flex justify-center">
+				<Entrada
+					delay={0.07}
+					desplazamiento={18}
+					className="flex justify-center"
+				>
 					<p className="text-center text-base leading-[27px] text-tinta/70 md:max-w-[600px] md:text-lg md:leading-[30px]">
 						Abre el editor, sube tu logo y mira tu producto terminado antes de
 						gastar un peso.

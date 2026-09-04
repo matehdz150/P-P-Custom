@@ -48,11 +48,21 @@ export type LineaDePedido = {
 		ruta: string;
 		/** La prenda con el diseño encima: dónde va, no qué se imprime. */
 		colocacion?: string | null;
+		/**
+		 * La prenda REAL con el diseño encima, si el taller subió su foto.
+		 *
+		 * La ruta viene SIEMPRE; el archivo puede no existir. Comprobarlo en el
+		 * servidor costaría una llamada a S3 por lado y por pedido, así que lo
+		 * resuelve quien la pinta: si la imagen no carga, no se enseña la casilla.
+		 */
+		prenda?: string | null;
 		/** Lo que el taller declaró como área imprimible. */
 		anchoCm?: number;
 		altoCm?: number;
 		dpi?: number;
 		/** Lo que mide el archivo de verdad. Es lo que va a salir impreso. */
+		/** Cuánto desborda el archivo por lado. Ya está restado de lo real. */
+		sangradoCm?: number;
 		anchoPx?: number;
 		altoPx?: number;
 		anchoRealCm?: number;

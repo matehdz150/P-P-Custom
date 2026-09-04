@@ -95,11 +95,7 @@ export default function NombrarDiseno({
 						<div className="size-[72px] shrink-0 overflow-hidden rounded-xl border border-tinta/12 bg-gris">
 							{imagen && (
 								// biome-ignore lint/performance/noImgElement: export estático
-								<img
-									src={imagen}
-									alt=""
-									className="size-full object-contain"
-								/>
+								<img src={imagen} alt="" className="size-full object-contain" />
 							)}
 						</div>
 

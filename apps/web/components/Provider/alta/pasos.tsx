@@ -201,7 +201,7 @@ export function PasoImpresion({
 				? alta.printSides.filter((s) => s.sideKey !== sideKey)
 				: [
 						...alta.printSides,
-						{ sideKey, widthCm: 28, heightCm: 35, dpi: 300 },
+						{ sideKey, widthCm: 28, heightCm: 35, dpi: 300, sangradoCm: "" },
 					],
 		);
 	}
@@ -298,6 +298,19 @@ export function PasoImpresion({
 											onChange={(v) => editarLado(sideKey, "dpi", v)}
 											ancho="w-[74px]"
 										/>
+										{/* El sangrado va aquí y no en un paso aparte: es una
+										    medida del lado, como los centímetros y los DPI, y
+										    separarlo haría que se declarara la mitad de las
+										    veces. En blanco = sin sangrado, que es lo normal. */}
+										<span className="font-mono text-[11px] tracking-[0.7px] text-tinta/50">
+											SANGRADO
+										</span>
+										<Numero
+											valor={lado.sangradoCm}
+											onChange={(v) => editarLado(sideKey, "sangradoCm", v)}
+											ancho="w-[68px]"
+										/>
+										<Ayuda>cm</Ayuda>
 									</div>
 								</>
 							) : (
@@ -686,9 +699,9 @@ function Envio({ alta, set }: Props) {
 			<div className="flex flex-col gap-1">
 				<Etiqueta>Cuánto pesa cada talla</Etiqueta>
 				<Ayuda>
-					En gramos, la prenda sola. Con esto cotizamos el envío antes de que
-					el cliente pague. Si lo dejas vacío, tus productos sólo se podrán
-					recoger contigo.
+					En gramos, la prenda sola. Con esto cotizamos el envío antes de que el
+					cliente pague. Si lo dejas vacío, tus productos sólo se podrán recoger
+					contigo.
 				</Ayuda>
 			</div>
 
@@ -716,8 +729,8 @@ function Envio({ alta, set }: Props) {
 			<div className="flex flex-col gap-1 pt-3">
 				<Etiqueta>La caja de una pieza</Etiqueta>
 				<Ayuda>
-					En centímetros. Sirve para cotizar antes de que el paquete exista;
-					las medidas reales las confirmas tú al terminar el pedido.
+					En centímetros. Sirve para cotizar antes de que el paquete exista; las
+					medidas reales las confirmas tú al terminar el pedido.
 				</Ayuda>
 			</div>
 

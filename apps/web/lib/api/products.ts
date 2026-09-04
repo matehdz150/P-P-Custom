@@ -1,4 +1,5 @@
 import { apiFetch } from "./api";
+import type { FotoRealDePrenda } from "./catalogo";
 
 /* =========================
    TYPES
@@ -10,10 +11,40 @@ export type ProductImage = {
 };
 
 export type ProductPrintSide = {
-	sideKey: "front" | "back" | "left" | "right";
+	/**
+	 * Qué lado del producto es.
+	 *
+	 * `wrap` NO ES UN LADO MÁS: es la envoltura entera de un cilindro —una taza,
+	 * un termo— y un producto que la tiene no tiene ningún otro. La diferencia
+	 * que importa es que un lado plano se ve completo de frente y una envoltura
+	 * sólo enseña la mitad, comprimida hacia los bordes; por eso el preview de
+	 * un cilindro no lo puede hacer la homografía de `lib/prenda/componer`, que
+	 * proyecta planos, sino `lib/prenda/cilindro`.
+	 */
+	sideKey: "front" | "back" | "left" | "right" | "wrap";
 	widthCm: number;
 	heightCm: number;
 	dpi?: number;
+	/**
+	 * Cuánto tiene que desbordar el arte por cada lado, en centímetros.
+	 *
+	 * NO ES DECORACIÓN NI UN MARGEN DE SEGURIDAD: es lo contrario. El papel de
+	 * sublimación se mueve al prensar y el corte de un textil no cae al
+	 * milímetro, así que el arte tiene que seguir habiendo un poco MÁS ALLÁ del
+	 * área imprimible. Sin sangrado, ese desplazamiento deja una línea blanca en
+	 * el filo — y en una taza, donde el estampado llega al borde de la banda, se
+	 * ve siempre.
+	 *
+	 * Lo que cambia es el ARCHIVO, no lo que se cobra ni lo que se imprime: el
+	 * área sigue midiendo `widthCm × heightCm` y el PNG sale
+	 * `(width + 2·sangrado) × (height + 2·sangrado)`. Por eso la ficha del
+	 * taller lo resta antes de comparar; si no, avisaría de una desviación que
+	 * es a propósito.
+	 *
+	 * Cero o ausente = sin sangrado, que es lo correcto para un estampado que no
+	 * llega al borde.
+	 */
+	sangradoCm?: number;
 	enabled?: boolean;
 };
 
@@ -44,6 +75,15 @@ export type ProductProduction = {
 };
 
 export type ProductTemplateData = {
+	/**
+	 * Qué forma tiene el objeto. Ausente = plano.
+	 *
+	 * Un cilindro tiene UN lado —la envoltura de 360°— y su preview no lo puede
+	 * hacer la homografía de `lib/prenda/componer`, que proyecta planos. Lo
+	 * declara la PLANTILLA, no el producto: es del objeto, no de la ficha de un
+	 * taller. Ver `services/admin/src/rutas/plantillas.ts`.
+	 */
+	forma?: "plano" | "cilindro" | "cono";
 	sides: string[];
 	sideLabels: Record<string, string>;
 	mockups: Record<string, string>;
@@ -60,6 +100,15 @@ export type DesignerCustomizationRules = {
 export type DesignerProductTemplate = {
 	id: string;
 	name?: string;
+	/**
+	 * Qué forma tiene el objeto. Ausente = plano.
+	 *
+	 * Un cilindro tiene UN lado —la envoltura de 360°— y su preview no lo puede
+	 * hacer la homografía de `lib/prenda/componer`, que proyecta planos. Lo
+	 * declara la PLANTILLA, no el producto: es del objeto, no de la ficha de un
+	 * taller. Ver `services/admin/src/rutas/plantillas.ts`.
+	 */
+	forma?: "plano" | "cilindro" | "cono";
 	sides: string[];
 	sideLabels: Record<string, string>;
 	mockups: Record<string, string>;
@@ -68,6 +117,14 @@ export type DesignerProductTemplate = {
 	pricing?: ProductPricing;
 	/** Los colores en que se puede pedir la prenda. Tiñen el mockup. */
 	colors?: ProductColor[];
+	/**
+	 * Las fotos de la prenda de verdad, con el cuadro donde cae lo impreso.
+	 *
+	 * Es lo que alimenta el botón "Probar" del editor. Van por lado Y por color
+	 * —una foto no se puede teñir como el mockup—, así que puede haber colores
+	 * sin foto: ésos no tienen vista realista y no es un error.
+	 */
+	fotosReales?: FotoRealDePrenda[];
 	/** Las tallas que el taller maneja: son las que se piden desde el editor. */
 	sizes?: ProductSize[];
 	/**

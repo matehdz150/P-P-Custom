@@ -1,9 +1,9 @@
 "use client";
 
 import type { Textbox } from "fabric";
-import type { CurvedText } from "@/lib/fabric/CurvedText";
 import { Bold, Copy, Italic, Trash2 } from "lucide-react";
 import { useState } from "react";
+import type { CurvedText } from "@/lib/fabric/CurvedText";
 import { DEFAULT_COLORS } from "@/lib/fabric/defaultColors";
 import { ColorPickerButton } from "./ColorPickerButton";
 import { ColorPickerPanel } from "./ColorPickerPanel";

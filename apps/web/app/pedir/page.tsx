@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useComprador } from "@/Contexts/CompradorContext";
 import { Campo } from "@/components/Pedir/Campo";
 import { Envio } from "@/components/Pedir/Envio";
 import { Paso } from "@/components/Pedir/Paso";
 import { Resumen } from "@/components/Pedir/Resumen";
 import { getFichaDeProducto } from "@/lib/api/catalogo";
-import { getMiPerfil } from "@/lib/api/cuenta";
 import {
 	cotizarEnvio,
 	destacadas,
@@ -29,6 +28,7 @@ import {
 	borrarBorrador,
 	leerBorrador,
 } from "@/lib/pedido/borrador";
+import { usePrecargarPerfil } from "@/lib/pedido/precargar";
 import { loadProductTemplate } from "@/lib/products/loadProductsTemplate";
 
 /**
@@ -78,19 +78,6 @@ const DIRECCION_VACIA: Direccion = {
 	referencias: "",
 };
 
-/**
- * La dirección del perfil, lista para meter en el formulario.
- *
- * El perfil guarda `null` en lo opcional y aquí los campos son cadenas: un
- * `null` en un input lo vuelve no controlado y React se queja en consola.
- */
-function limpiar(d: Record<string, string | null> | null): Partial<Direccion> {
-	if (!d) return {};
-	return Object.fromEntries(
-		Object.entries(d).map(([k, v]) => [k, v ?? ""]),
-	) as Partial<Direccion>;
-}
-
 export default function PedirPage() {
 	const router = useRouter();
 
@@ -122,44 +109,10 @@ export default function PedirPage() {
 	const [direccion, setDireccion] = useState<Direccion>(DIRECCION_VACIA);
 	const [notas, setNotas] = useState("");
 
-	/* ─── Lo que ya sabemos de quien entró ─────────────────────────────────
-	   Con sesión, el checkout no vuelve a preguntar lo que ya está guardado.
-	   Se rellena UNA vez y sólo lo que esté vacío: si el perfil llega tarde
-	   —es una petición a la API— no puede pisar lo que la persona ya tecleó. */
+	/* Lo que ya sabemos de quien entró. Lo mismo hace el checkout del carrito:
+	   ver `lib/pedido/precargar`. */
 	const { comprador } = useComprador();
-	const [perfilPuesto, setPerfilPuesto] = useState(false);
-	const yaRellene = useRef(false);
-
-	useEffect(() => {
-		if (!comprador || yaRellene.current) return;
-		yaRellene.current = true;
-
-		// El nombre y el correo salen del token, así que están de inmediato.
-		setContacto((c) => ({
-			...c,
-			nombre: c.nombre || (comprador.nombre ?? ""),
-			email: c.email || comprador.email,
-		}));
-
-		getMiPerfil()
-			.then((perfil) => {
-				setContacto((c) => ({
-					...c,
-					nombre: c.nombre || (perfil.nombre ?? ""),
-					whatsapp: c.whatsapp || (perfil.whatsapp ?? ""),
-				}));
-
-				if (!perfil.direccion) return;
-
-				setDireccion((d) =>
-					d.calle.trim() ? d : { ...d, ...limpiar(perfil.direccion) },
-				);
-				setPerfilPuesto(true);
-			})
-			// Sin perfil guardado se sigue con lo del token: no tener dirección
-			// no es un fallo, es alguien que pide por primera vez.
-			.catch(() => {});
-	}, [comprador]);
+	const perfilPuesto = usePrecargarPerfil(setContacto, setDireccion);
 
 	const [errores, setErrores] = useState<Record<string, string>>({});
 	const [enviando, setEnviando] = useState(false);

@@ -1,6 +1,6 @@
 "use client";
 
-import { BookmarkPlus, Pencil, Search, Trash2 } from "lucide-react";
+import { BookmarkPlus, Pencil, Repeat2, Search, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getFichaDeProducto } from "@/lib/api/catalogo";
@@ -15,11 +15,14 @@ import {
 	type BorradorPedido,
 	borrarBorrador,
 	leerBorrador,
+	VIGENCIA_MS,
 } from "@/lib/pedido/borrador";
+import { Elemento } from "./animaciones";
+import ConfirmarBorrado from "./ConfirmarBorrado";
 import { useDatosDelPanel } from "./datos";
 import NombrarDiseno from "./NombrarDiseno";
 import { fecha } from "./Pedidos";
-import { Aviso, Cargando, Vacio } from "./piezas";
+import { Aviso, Cargando, SinResultados, Vacio } from "./piezas";
 
 /**
  * Los diseños de esta persona, en tres grupos que NO son lo mismo.
@@ -86,16 +89,26 @@ export default function Disenos() {
 				cuando: p.createdAt,
 			})),
 	);
+	/* Los más pedidos primero. `vecesPedido` estaba en los datos y no se usaba
+	   en ninguna parte de esta pantalla: un diseño que ya se pidió cinco veces
+	   se veía igual que uno guardado ayer, y es justo lo que distingue "esto
+	   funciona" de "esto lo guardé una tarde". A igualdad, el más reciente. */
+	const porUtilidad = [...disenos].sort(
+		(a, b) =>
+			b.vecesPedido - a.vecesPedido ||
+			b.ultimoPedido.localeCompare(a.ultimoPedido),
+	);
+
 	const termino = busqueda.trim().toLocaleLowerCase("es-MX");
 	const disenosFiltrados = termino
-		? disenos.filter((diseno) =>
+		? porUtilidad.filter((diseno) =>
 				[diseno.nombre, diseno.producto, diseno.colorPrenda]
 					.filter(Boolean)
 					.join(" ")
 					.toLocaleLowerCase("es-MX")
 					.includes(termino),
 			)
-		: disenos;
+		: porUtilidad;
 	const dePedidosFiltrados = termino
 		? dePedidos.filter((diseno) =>
 				[diseno.producto, diseno.folio]
@@ -134,6 +147,15 @@ export default function Disenos() {
 				/>
 			</div>
 
+			{/* Cuántos quedan al filtrar. Sin esto no se sabe si sobraron dos
+			    porque hay dos o porque la búsqueda se comió el resto. */}
+			{termino && (
+				<p aria-live="polite" className="-mt-3 text-[13px] text-tinta/50">
+					{disenosFiltrados.length + dePedidosFiltrados.length} de{" "}
+					{disenos.length + dePedidos.length}
+				</p>
+			)}
+
 			{disenosFiltrados.length > 0 && (
 				<section>
 					<Titulo>Guardados</Titulo>
@@ -143,14 +165,15 @@ export default function Disenos() {
 					</p>
 
 					<div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-						{disenosFiltrados.map((d) => (
-							<Guardado
-								key={d.id}
-								diseno={d}
-								onRenombrar={reemplazarDiseno}
-								onBorrar={quitarDiseno}
-								onFallo={setProblema}
-							/>
+						{disenosFiltrados.map((d, i) => (
+							<Elemento key={d.id} indice={i}>
+								<Guardado
+									diseno={d}
+									onRenombrar={reemplazarDiseno}
+									onBorrar={quitarDiseno}
+									onFallo={setProblema}
+								/>
+							</Elemento>
 						))}
 					</div>
 				</section>
@@ -160,7 +183,11 @@ export default function Disenos() {
 				<section>
 					<Titulo>A medio hacer</Titulo>
 					<p className="mb-3 text-[13px] text-tinta/55">
-						Guardado en este navegador. Se borra solo a las 6 horas.
+						Guardado en este navegador y sólo en este.{" "}
+						<strong className="font-semibold text-tinta">
+							{queda(borrador.creadoEn)}
+						</strong>{" "}
+						antes de que se borre solo.
 					</p>
 
 					<article className="flex items-center gap-4 rounded-xl border-[1.5px] border-lima-oscuro/40 bg-white p-4">
@@ -205,13 +232,14 @@ export default function Disenos() {
 					</p>
 
 					<div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-						{dePedidosFiltrados.map((d) => (
-							<DePedido
-								key={d.clave}
-								diseno={d}
-								onGuardado={recargar}
-								onFallo={setProblema}
-							/>
+						{dePedidosFiltrados.map((d, i) => (
+							<Elemento key={d.clave} indice={i}>
+								<DePedido
+									diseno={d}
+									onGuardado={recargar}
+									onFallo={setProblema}
+								/>
+							</Elemento>
 						))}
 					</div>
 				</section>
@@ -220,9 +248,13 @@ export default function Disenos() {
 			{termino &&
 				disenosFiltrados.length === 0 &&
 				dePedidosFiltrados.length === 0 && (
-					<p className="rounded-2xl border border-dashed border-tinta/15 px-5 py-10 text-center text-[14px] text-tinta/50">
-						No encontramos diseños que coincidan con “{busqueda}”.
-					</p>
+					<SinResultados
+						texto={`No encontramos diseños que coincidan con “${busqueda}”.`}
+						accion={{
+							texto: "Limpiar la búsqueda",
+							alPulsar: () => setBusqueda(""),
+						}}
+					/>
 				)}
 		</div>
 	);
@@ -242,6 +274,7 @@ function Guardado({
 	onFallo: (mensaje: string | null) => void;
 }) {
 	const [editando, setEditando] = useState(false);
+	const [confirmando, setConfirmando] = useState(false);
 	const [ocupado, setOcupado] = useState(false);
 
 	async function renombrar(nombre: string) {
@@ -258,27 +291,47 @@ function Guardado({
 		}
 	}
 
-	async function quitar() {
+	/* Lo llama el cuadro de confirmación, no el botón: borrar un diseño lo
+	   saca de S3 y no hay deshacer. Devuelve el problema en vez de lanzarlo
+	   para que el aviso salga DENTRO del cuadro — cerrarlo con un error de
+	   fondo dejaría a alguien creyendo que se borró. */
+	async function quitar(): Promise<string | null> {
 		setOcupado(true);
+
 		try {
 			await borrarDiseno(diseno.id);
 			onBorrar(diseno.id);
 			onFallo(null);
+			return null;
 		} catch {
-			onFallo("No pudimos quitar ese diseño.");
 			setOcupado(false);
+			return "No pudimos quitar ese diseño. Inténtalo otra vez.";
 		}
 	}
 
 	return (
 		<article
-			className={`flex h-full flex-col overflow-hidden rounded-2xl border border-tinta/10 bg-white transition-colors hover:border-tinta/25 ${ocupado ? "opacity-50" : ""}`}
+			aria-busy={ocupado}
+			className={`flex h-full flex-col overflow-hidden rounded-2xl border border-tinta/10 bg-white transition-colors hover:border-tinta/25 ${
+				ocupado ? "pointer-events-none opacity-50" : ""
+			}`}
 		>
 			<Link
 				href={enlaceParaRediseñar(diseno)}
-				className="block overflow-hidden bg-white"
+				className="relative block overflow-hidden bg-white"
 			>
 				<Lienzo src={diseno.miniatura} grande />
+
+				{/* Cuántas veces se pidió. Es el dato que decide cuál de ocho
+				    miniaturas parecidas se vuelve a pedir, y estaba en los datos
+				    sin llegar nunca a la pantalla. Desde 2: decir "1 vez" de algo
+				    que se pidió una vez no informa de nada. */}
+				{diseno.vecesPedido > 1 && (
+					<span className="absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-tinta/90 px-2.5 py-1 text-[11px] font-semibold text-lima">
+						<Repeat2 className="size-3" aria-hidden />
+						{diseno.vecesPedido} veces
+					</span>
+				)}
 			</Link>
 
 			<div className="flex flex-1 flex-col p-4">
@@ -307,31 +360,41 @@ function Guardado({
 				{/* Los tres verbos: abrirlo, renombrarlo, quitarlo. Siempre visibles y
 			    no sólo al pasar el ratón — en un teléfono no hay ratón, y ahí un
 			    control que aparece al hacer hover simplemente no existe. */}
-			<div className="mt-4 flex items-center gap-1">
-				<Link
-					href={enlaceParaRediseñar(diseno)}
-					className="inline-flex h-9 flex-1 items-center justify-center rounded-full bg-tinta px-3 text-[13px] font-semibold text-lima"
-				>
-					Volver a pedir
-				</Link>
-				<button
-					type="button"
-					onClick={() => setEditando(true)}
-					aria-label={`Cambiar el nombre de ${diseno.nombre}`}
-					className="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-tinta/55 hover:bg-gris hover:text-tinta"
-				>
-					<Pencil className="size-4" aria-hidden />
-				</button>
-				<button
-					type="button"
-					onClick={quitar}
-					aria-label={`Quitar ${diseno.nombre} de tus diseños`}
-					className="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-tinta/55 hover:bg-[rgba(192,57,43,0.1)] hover:text-[#c0392b]"
-				>
-					<Trash2 className="size-4" aria-hidden />
-				</button>
+				<div className="mt-4 flex items-center gap-1">
+					<Link
+						href={enlaceParaRediseñar(diseno)}
+						className="inline-flex h-9 flex-1 items-center justify-center rounded-full bg-tinta px-3 text-[13px] font-semibold text-lima"
+					>
+						Volver a pedir
+					</Link>
+					<button
+						type="button"
+						onClick={() => setEditando(true)}
+						aria-label={`Cambiar el nombre de ${diseno.nombre}`}
+						className="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-tinta/55 hover:bg-gris hover:text-tinta"
+					>
+						<Pencil className="size-4" aria-hidden />
+					</button>
+					<button
+						type="button"
+						onClick={() => setConfirmando(true)}
+						disabled={ocupado}
+						aria-label={`Quitar ${diseno.nombre} de tus diseños`}
+						className="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-tinta/55 hover:bg-[rgba(192,57,43,0.1)] hover:text-[#c0392b] disabled:cursor-not-allowed disabled:opacity-40"
+					>
+						<Trash2 className="size-4" aria-hidden />
+					</button>
+				</div>
 			</div>
-			</div>
+
+			<ConfirmarBorrado
+				abierto={confirmando}
+				onAbrir={setConfirmando}
+				nombre={diseno.nombre}
+				producto={diseno.producto}
+				imagen={diseno.miniatura}
+				onConfirmar={quitar}
+			/>
 		</article>
 	);
 }
@@ -432,6 +495,14 @@ function Titulo({ children }: { children: React.ReactNode }) {
 	);
 }
 
+/**
+ * La miniatura de un diseño.
+ *
+ * SIEMPRE `object-contain`, nunca `cover`. La grande recortaba a 4/3, y
+ * recortar es justo lo que no se le puede hacer a un diseño: la prenda se
+ * quedaba sin cuello o sin bajo, y con estampados altos se comía parte del
+ * arte — que es lo único que hay que reconocer aquí.
+ */
 function Lienzo({ src, grande }: { src: string | null; grande?: boolean }) {
 	const medida = grande ? "aspect-[4/3] w-full" : "h-16 w-16 rounded-lg";
 
@@ -444,10 +515,35 @@ function Lienzo({ src, grande }: { src: string | null; grande?: boolean }) {
 		<img
 			src={src}
 			alt=""
-			className={`${medida} shrink-0 ${grande ? "object-cover" : "object-contain"}`}
+			className={`${medida} shrink-0 object-contain ${grande ? "p-2" : ""}`}
 			loading="lazy"
 		/>
 	);
+}
+
+/**
+ * Cuánto le queda al borrador antes de caducar.
+ *
+ * Se dice el TIEMPO QUE QUEDA y no la vigencia. "Se borra solo a las 6 horas"
+ * obliga a hacer la resta —y a saber cuándo se empezó— para enterarse de si
+ * hay que correr; "quedan 40 min" se entiende sin pensar. La constante sale de
+ * `borrador.ts` para que no haya dos sitios que digan cuánto dura.
+ */
+function queda(creadoEn: number) {
+	const minutos = Math.max(
+		0,
+		Math.round((creadoEn + VIGENCIA_MS - Date.now()) / 60000),
+	);
+
+	if (minutos < 60) {
+		return `Qued${minutos === 1 ? "a" : "an"} ${minutos} min`;
+	}
+
+	/* Redondeado y NO truncado: con `floor`, un borrador recién empezado —al
+	   que le quedan 5 h 59 min— anunciaba "5 horas", como si la cuenta atrás ya
+	   se hubiera comido una. */
+	const horas = Math.round(minutos / 60);
+	return `Qued${horas === 1 ? "a" : "an"} ${horas} ${horas === 1 ? "hora" : "horas"}`;
 }
 
 /** "hace 2 horas". Para un borrador la hora exacta no le importa a nadie. */

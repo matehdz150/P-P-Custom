@@ -23,6 +23,14 @@ export type LadoDeArticulo = {
 	anchoPx: number;
 	altoPx: number;
 	dpi: number;
+	/**
+	 * Cuánto de ese archivo es sangrado, por lado y en cm.
+	 *
+	 * Viaja hasta la ficha del taller, que lo RESTA antes de comparar con lo
+	 * declarado: el archivo mide a propósito más que el área, y sin esto el
+	 * aviso de "revisa el área de la plantilla" saltaría en cada pedido.
+	 */
+	sangradoCm?: number;
 };
 
 export type ArticuloDeCarrito = {
@@ -173,7 +181,9 @@ export async function miniaturaPequena(
 		ctx.imageSmoothingEnabled = true;
 		ctx.imageSmoothingQuality = "high";
 
-		// Fondo blanco: la colocación lleva transparencia y en JPEG saldría negra.
+		// Fondo blanco por si acaso. La colocación ya sale con el suyo desde
+		// `exportarColocacion`, pero una miniatura vieja —o una imagen que llegue
+		// por otro camino— puede traer alfa, y en JPEG saldría negra.
 		ctx.fillStyle = "#ffffff";
 		ctx.fillRect(0, 0, lienzo.width, lienzo.height);
 		ctx.drawImage(img, 0, 0, lienzo.width, lienzo.height);

@@ -9,7 +9,12 @@ import Footer from "@/components/Kustto/Footer";
 import Header from "@/components/Kustto/Header";
 import DetalleDePedido from "@/components/Pedido/Detalle";
 import { getMiPedido } from "@/lib/api/cuenta";
-import { type PedidoEnSeguimiento, seguirPedido } from "@/lib/api/pedir";
+import {
+	type CompraEnSeguimiento,
+	esCompra,
+	type PedidoEnSeguimiento,
+	seguirPedido,
+} from "@/lib/api/pedir";
 
 /**
  * El seguimiento del pedido, para quien llega DE FUERA.
@@ -43,7 +48,9 @@ function Seguimiento() {
 	const token = parametros.get("token") ?? "";
 
 	const { comprador, cargando: cargandoSesion } = useComprador();
-	const [pedido, setPedido] = useState<PedidoEnSeguimiento | null>(null);
+	const [pedido, setPedido] = useState<
+		PedidoEnSeguimiento | CompraEnSeguimiento | null
+	>(null);
 	const [fallo, setFallo] = useState<string | null>(null);
 	const [sinAcceso, setSinAcceso] = useState(false);
 
@@ -55,6 +62,35 @@ function Seguimiento() {
 
 		if (!id) {
 			setFallo("A este enlace le falta el pedido.");
+			return;
+		}
+
+		/* CON TOKEN MANDA EL TOKEN, aunque haya sesión abierta.
+
+		   No es una preferencia: el enlace que se entrega al pagar lleva el id
+		   de la COMPRA, y la ruta de la cuenta sólo sabe de pedidos —respondía
+		   "no encontramos ese pedido en tu cuenta" justo después de pagar—. La
+		   pública resuelve las dos cosas. La de la cuenta queda de respaldo,
+		   para enlaces viejos a los que ya se les cayó el token. */
+		if (token) {
+			seguirPedido(id, token)
+				.then(setPedido)
+				.catch((e) => {
+					if (comprador) {
+						getMiPedido(id)
+							.then(setPedido)
+							.catch(() =>
+								setFallo(
+									"No encontramos ese pedido en tu cuenta. Si lo hiciste con otro correo, abre el enlace que te llegó.",
+								),
+							);
+						return;
+					}
+
+					setFallo(
+						e instanceof Error ? e.message : "No pudimos abrir tu pedido",
+					);
+				});
 			return;
 		}
 
@@ -76,12 +112,6 @@ function Seguimiento() {
 			setSinAcceso(true);
 			return;
 		}
-
-		seguirPedido(id, token)
-			.then(setPedido)
-			.catch((e) =>
-				setFallo(e instanceof Error ? e.message : "No pudimos abrir tu pedido"),
-			);
 	}, [id, token, comprador, cargandoSesion]);
 
 	if (sinAcceso) {
@@ -141,7 +171,42 @@ function Seguimiento() {
 				</Link>
 			)}
 
-			<DetalleDePedido pedido={pedido} conCuenta={Boolean(comprador)} />
+			{/* UNA COMPRA CON VARIOS TALLERES SON VARIOS PEDIDOS, y se enseñan
+			    como tales: cada taller produce y entrega lo suyo por su cuenta,
+			    así que cada parte tiene su estado, su envío y su guía. Fundirlas
+			    en una sola ficha obligaría a inventar un estado común que no
+			    existe —¿qué es "enviado" cuando una parte salió y la otra no?—.
+			    Con un solo taller la API ya devuelve la parte sola, así que este
+			    camino sólo se pisa cuando de verdad hay varias. */}
+			{esCompra(pedido) ? (
+				<>
+					<div className="pb-6">
+						<p className="text-[13px] font-semibold uppercase tracking-[0.06em] text-tinta/45">
+							Compra {pedido.folio}
+						</p>
+						<h1 className="pt-1 font-display text-[26px] font-semibold tracking-[-0.032em] text-tinta">
+							{pedido.partes.length} pedidos, uno por taller
+						</h1>
+						<p className="pt-1.5 text-[15px] leading-[24px] text-tinta/65">
+							Cada taller produce y entrega lo suyo, así que cada parte avanza a
+							su ritmo y tiene su propio seguimiento.
+						</p>
+					</div>
+
+					<div className="flex flex-col gap-10">
+						{pedido.partes.map((parte) => (
+							<section key={parte.id}>
+								<DetalleDePedido
+									pedido={parte}
+									conCuenta={Boolean(comprador)}
+								/>
+							</section>
+						))}
+					</div>
+				</>
+			) : (
+				<DetalleDePedido pedido={pedido} conCuenta={Boolean(comprador)} />
+			)}
 		</main>
 	);
 }

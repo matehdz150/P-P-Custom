@@ -1,20 +1,43 @@
-import { getPackageCategories, type Category } from "@/lib/api/categories";
-import { adminFetchServidor } from "@/lib/api/admin.servidor";
-import { CategoriesTable } from "@/components/Admin/categorias/CategoriesTable";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { CategoryFormDialog } from "@/components/Admin/categorias/CategoryFormDialog";
+"use client";
 
-export default async function CategoriesAdminPage() {
+import { Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+import { CategoriesTable } from "@/components/Admin/categorias/CategoriesTable";
+import { CategoryFormDialog } from "@/components/Admin/categorias/CategoryFormDialog";
+import { Button } from "@/components/ui/button";
+import { adminFetch } from "@/lib/api/admin";
+import { type Category, getPackageCategories } from "@/lib/api/categories";
+
+/**
+ * SE PIDE DESDE EL NAVEGADOR y no en el servidor, aunque antes fuera un
+ * componente async. El backoffice se publica como export estático: no hay
+ * servidor que renderice, y la llave que hacía posible aquello ya no existe —
+ * ahora la API se abre con el token de quien entró, que sólo el navegador
+ * tiene.
+ */
+export default function CategoriesAdminPage() {
 	// Las de producto ya viven en DynamoDB; las de paquete siguen en la API
 	// vieja hasta que migren los paquetes.
 	//
 	// Van por separado a propósito: con Promise.all, la API de Nest apagada
 	// —que es lo normal mientras dure la migración— tumbaba la página entera
 	// y las categorías de DynamoDB, que sí responden, nunca se pintaban.
-	const productCategories = await adminFetchServidor<Category[]>("/categories");
+	const [productCategories, setProductCategories] = useState<Category[] | null>(
+		null,
+	);
+	const [packageCategories, setPackageCategories] = useState<Category[] | null>(
+		null,
+	);
 
-	const packageCategories = await getPackageCategories().catch(() => null);
+	useEffect(() => {
+		adminFetch<Category[]>("/categories")
+			.then(setProductCategories)
+			.catch(() => setProductCategories([]));
+
+		getPackageCategories()
+			.then(setPackageCategories)
+			.catch(() => setPackageCategories(null));
+	}, []);
 
 	return (
 		<main className="px-6 py-10 space-y-12">
@@ -41,7 +64,7 @@ export default async function CategoriesAdminPage() {
 					/>
 				</div>
 
-				<CategoriesTable categories={productCategories} type="product" />
+				<CategoriesTable categories={productCategories ?? []} type="product" />
 			</section>
 
 			{/* ================= PACKAGE CATEGORIES ================= */}

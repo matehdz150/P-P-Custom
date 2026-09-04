@@ -40,8 +40,55 @@ export type ProductoDeCatalogo = {
 	templateId: string;
 };
 
+/**
+ * Una foto de la prenda de verdad, con el cuadro donde cae lo impreso.
+ *
+ * ES POR LADO Y POR COLOR. Al mockup se le cambia el color tiñéndolo —es una
+ * prenda clara sobre blanco que se recorta y se multiplica—, pero una foto con
+ * modelo o de una prenda oscura no admite ese tratamiento. Un color sin foto no
+ * tiene vista realista y se queda con el mockup.
+ *
+ * Las esquinas van en FRACCIONES de 0 a 1 del ancho y alto de la foto, en el
+ * orden arriba-izquierda, arriba-derecha, abajo-derecha, abajo-izquierda. En
+ * píxeles el cuadro quedaría atado a la resolución con la que se marcó.
+ */
+/**
+ * La banda visible de un cilindro, en fracciones de 0 a 1 de la foto.
+ *
+ * ES OTRA GEOMETRÍA que las cuatro esquinas, no una variante. Cuatro esquinas
+ * definen un PLANO y sirven para una playera; una taza es un cilindro y sólo
+ * enseña 180° de su envoltura, comprimidos hacia los bordes. Ver
+ * `lib/prenda/cilindro`.
+ */
+export type BandaDeCilindro = {
+	izquierda: number;
+	derecha: number;
+	arriba: number;
+	abajo: number;
+	/** Cuánto se comba el filo, en fracción del alto de la banda. */
+	bombeo: number;
+	/** Qué punto de la envoltura mira a la cámara, de 0 a 1. */
+	centro: number;
+};
+
+/**
+ * La foto real del producto con dónde cae lo impreso.
+ *
+ * LLEVA UNA COSA U OTRA según la forma de la plantilla: `esquinas` si es
+ * plano, `banda` si es un cilindro. No las dos, y nunca ninguna — una foto sin
+ * geometría no se puede proyectar y sería una foto suelta.
+ */
+export type FotoRealDePrenda = {
+	lado: string;
+	color: string;
+	url: string;
+	esquinas?: { x: number; y: number }[];
+	banda?: BandaDeCilindro;
+};
+
 /** La ficha trae además lo que el editor necesita para montar el lienzo. */
 export type FichaDeProducto = ProductoDeCatalogo & {
+	fotosReales?: FotoRealDePrenda[];
 	customizationRules: {
 		allowText?: boolean;
 		allowImages?: boolean;
@@ -94,16 +141,63 @@ async function publico<T>(ruta: string): Promise<T> {
  * días) siempre se aplicaron en cliente, así que traerlos de una vez es a la
  * vez más simple y menos peticiones.
  */
-export function getCatalogo() {
-	return publico<ProductoDeCatalogo[]>("/publico/catalogo");
+export async function getCatalogo() {
+	const productos = await publico<ProductoDeCatalogo[]>("/publico/catalogo");
+	recuerdo.catalogo = productos;
+	return productos;
 }
 
-export function getFichaDeProducto(id: string) {
-	return publico<FichaDeProducto>(`/publico/catalogo/${id}`);
+/**
+ * Lo último que se trajo, para pintar sin rueda.
+ *
+ * Tres pantallas lo piden casi a la vez —el catálogo del panel, el cajón que
+ * elige productos para una plantilla y la lista de plantillas, que necesita
+ * las miniaturas— y el cajón además se abre una vez por producto que se
+ * agrega. Sin esto, armar un kit de cinco eran cinco ruedas girando para
+ * enseñar siempre lo mismo.
+ *
+ * NO ES UNA CACHÉ CON CADUCIDAD: se pinta lo recordado y se vuelve a pedir por
+ * detrás, así que lo que se publicó hace un minuto aparece igual — sólo que un
+ * instante después. Vive en memoria, así que recargar lo tira.
+ */
+const recuerdo: {
+	catalogo: ProductoDeCatalogo[] | null;
+	categorias: CategoriaPublica[] | null;
+} = { catalogo: null, categorias: null };
+
+export const catalogoRecordado = () => recuerdo.catalogo;
+export const categoriasRecordadas = () => recuerdo.categorias;
+
+/** Los productos por id, para resolver tallas, precio o foto de un guardado. */
+export function porIdDeProducto(productos: ProductoDeCatalogo[] | null) {
+	return new Map((productos ?? []).map((p) => [p.id, p]));
 }
 
-export function getCategoriasPublicas() {
-	return publico<CategoriaPublica[]>("/publico/categorias");
+/**
+ * Las fichas ya traídas, por id.
+ *
+ * El `next: { revalidate }` de `publico` NO existe en el navegador: es cosa
+ * del servidor de Next, y desde el cliente cada llamada sale a la red. La
+ * ficha se abre y se cierra —se compara un producto con otro y se vuelve al
+ * primero—, así que sin esto una tarde de escaparate son diez peticiones para
+ * enseñar tres productos.
+ *
+ * Vive en memoria y no caduca, como `recuerdo`: recargar lo tira.
+ */
+const fichas = new Map<string, FichaDeProducto>();
+
+export const fichaRecordada = (id: string) => fichas.get(id) ?? null;
+
+export async function getFichaDeProducto(id: string) {
+	const ficha = await publico<FichaDeProducto>(`/publico/catalogo/${id}`);
+	fichas.set(id, ficha);
+	return ficha;
+}
+
+export async function getCategoriasPublicas() {
+	const categorias = await publico<CategoriaPublica[]>("/publico/categorias");
+	recuerdo.categorias = categorias;
+	return categorias;
 }
 
 export type ResultadoDeBusqueda = {
@@ -182,7 +276,7 @@ export function aProductoViejo(f: FichaDeProducto): Product {
 			order: i.order ?? orden,
 		})),
 		printSides: (f.printSides ?? []).map((s) => ({
-			sideKey: s.sideKey as "front" | "back" | "left" | "right",
+			sideKey: s.sideKey as "front" | "back" | "left" | "right" | "wrap",
 			widthCm: s.widthCm,
 			heightCm: s.heightCm,
 		})),
