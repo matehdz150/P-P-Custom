@@ -96,7 +96,14 @@ export async function listar(quien: Identidad) {
 		ScanIndexForward: false,
 	});
 
-	return items.map(paraComprador);
+	/* SÓLO LOS PEDIDOS. La compra del carrito vive en la MISMA partición que
+	   sus partes —a propósito, para poder listarla algún día— y sin filtrar se
+	   colaba en la lista como una fila más: una sin líneas, al lado de los
+	   pedidos que sí las tienen. Se distinguen por el `pk`, que es `ORDER#` en
+	   un pedido y `PURCHASE#` en una compra. */
+	return items
+		.filter((i) => String(i.pk ?? "").startsWith("ORDER#"))
+		.map(paraComprador);
 }
 
 export async function obtener(quien: Identidad, id: string) {
@@ -155,6 +162,37 @@ export async function repetir(quien: Identidad, id: string) {
 }
 
 /**
+ * Lo que costaría HOY una pieza de este producto con estos lados.
+ *
+ * VIVE AQUÍ Y SE EXPORTA porque lo necesitan los tres caminos al carrito
+ * —repetir un pedido, cargar una plantilla y una plantilla con arte propio— y
+ * tiene que dar exactamente lo mismo que cobra el checkout (`aLinea` en
+ * services/admin): el primer lado va en el precio base y cada lado extra se
+ * cobra aparte. Si se separan, el total del carrito no cuadra con el cobro.
+ *
+ * EL PRECIO ESTÁ EN `pricing.basePrice`, NO en `basePrice`. Leerlo del sitio
+ * equivocado no falla ni avisa: devuelve 0, y el carrito enseña un total de
+ * cero pesos que nadie relaciona con una propiedad mal escrita. Ya pasó, con
+ * las plantillas.
+ */
+export function precioDeHoy(
+	producto: Record<string, any>,
+	cuantosLados: number,
+) {
+	const precios = (producto.pricing ?? {}) as Record<
+		string,
+		number | undefined
+	>;
+	const base = Number(precios.basePrice ?? 0);
+	const porLados =
+		cuantosLados > 1
+			? (cuantosLados - 1) * Number(precios.perSidePrice ?? 0)
+			: 0;
+
+	return base + porLados;
+}
+
+/**
  * Una línea del pedido viejo contra el producto de hoy.
  *
  * `estado` es lo que el front pinta, y son cuatro casos porque cada uno se
@@ -197,17 +235,7 @@ async function compararLinea(l: Record<string, any>) {
 		};
 	}
 
-	const precios = (Item.pricing ?? {}) as Record<string, number | undefined>;
-	const base = Number(precios.basePrice ?? 0);
-	// Mismo cálculo que `aLinea` en services/admin: el primer lado va en el
-	// precio base y cada lado extra se cobra aparte. Si los dos se separan, el
-	// total que se enseña aquí no es el que se cobra al pedir.
-	const porLados =
-		comun.lados.length > 1
-			? (comun.lados.length - 1) * Number(precios.perSidePrice ?? 0)
-			: 0;
-
-	const unitario = base + porLados;
+	const unitario = precioDeHoy(Item, comun.lados.length);
 	const importe = unitario * piezas;
 	const dias = diasDeHoy(Item, comun.colorPrenda, tallas);
 
@@ -282,7 +310,10 @@ export async function alCarrito(quien: Identidad, id: string, cuerpo: unknown) {
 		new GetCommand({ TableName: TABLA, Key: llaves.pedido(id) }),
 	);
 
-	if (!Item || String(Item.comprador?.email ?? "").toLowerCase() !== correoDe(quien)) {
+	if (
+		!Item ||
+		String(Item.comprador?.email ?? "").toLowerCase() !== correoDe(quien)
+	) {
 		throw noEncontrado("No encontramos ese pedido");
 	}
 
@@ -290,7 +321,8 @@ export async function alCarrito(quien: Identidad, id: string, cuerpo: unknown) {
 		quiere.has(String(l.id)),
 	);
 
-	if (lineas.length === 0) throw noEncontrado("Ese pedido no tiene esas líneas");
+	if (lineas.length === 0)
+		throw noEncontrado("Ese pedido no tiene esas líneas");
 
 	/* Se vuelve a comparar contra el catálogo AQUÍ, aunque el front ya lo hizo
 	   al enseñar la pantalla. Entre que se miró y se pulsó pudo archivarse un
@@ -308,48 +340,10 @@ export async function alCarrito(quien: Identidad, id: string, cuerpo: unknown) {
 		}
 
 		const original = lineas.find((l) => String(l.id) === linea.lineaId);
-		const arte = (original?.arte ?? []) as Record<string, any>[];
 
-		/* Un id nuevo por artículo, no el del pedido viejo: si dos repeticiones
-		   compartieran carpeta, borrar el carrito de una borraría el arte de la
-		   otra, y `carritos/` caduca a los 30 días. */
-		const carritoId = randomUUID();
+		const articulo = await aArticuloDeCarrito(id, linea, original);
 
-		const lados = [];
-
-		for (const a of arte) {
-			const lado = String(a.lado ?? "");
-			if (!lado) continue;
-
-			/* El arte de producción es lo único que bloquea: sin él no hay nada
-			   que imprimir. La colocación es una referencia para el taller y el
-			   diseño editable sólo sirve para volver a abrirlo, así que si
-			   faltan se sigue — es la misma regla que al subir desde el editor. */
-			const hayArte = await copiar(
-				`medios/pedidos/${id}/${linea.lineaId}-${lado}.png`,
-				`carritos/${carritoId}/${lado}-arte.png`,
-			);
-
-			if (!hayArte) continue;
-
-			await copiar(
-				`medios/pedidos/${id}/${linea.lineaId}-${lado}-colocacion.png`,
-				`carritos/${carritoId}/${lado}-colocacion.png`,
-			);
-
-			lados.push({
-				lado,
-				/* Los píxeles del archivo, no los centímetros del área. El área
-				   se relee del producto al pedir —puede haber cambiado—, pero el
-				   tamaño real impreso sale de cuántos píxeles tiene el arte que
-				   se copió, y ése es exactamente el de entonces. */
-				anchoPx: Math.trunc(Number(a.anchoPx ?? 0)),
-				altoPx: Math.trunc(Number(a.altoPx ?? 0)),
-				dpi: Math.trunc(Number(a.dpi ?? 0)) || 300,
-			});
-		}
-
-		if (lados.length === 0) {
+		if (!articulo) {
 			descartadas.push({
 				producto: linea.producto,
 				porque: "Ya no conservamos los archivos de ese diseño",
@@ -357,24 +351,7 @@ export async function alCarrito(quien: Identidad, id: string, cuerpo: unknown) {
 			continue;
 		}
 
-		await copiar(
-			`medios/pedidos/${id}/${linea.lineaId}-diseno.json`,
-			`carritos/${carritoId}/diseno.json`,
-		);
-
-		articulos.push({
-			carritoId,
-			productoId: linea.productoId,
-			nombre: linea.producto,
-			proveedorId: linea.proveedorId,
-			colorPrenda: linea.colorPrenda,
-			lados,
-			tallas: linea.tallas,
-			/* Para el resumen mientras decide, y es el precio de HOY: enseñar el
-			   de entonces haría que el total del carrito no cuadre con el cobro. */
-			precioUnitario: linea.unitario ?? 0,
-			miniatura: linea.miniatura,
-		});
+		articulos.push(articulo);
 	}
 
 	if (articulos.length === 0) {
@@ -382,4 +359,89 @@ export async function alCarrito(quien: Identidad, id: string, cuerpo: unknown) {
 	}
 
 	return { articulos, descartadas };
+}
+
+/**
+ * Copia el arte de una línea de pedido a `carritos/` y arma el artículo.
+ *
+ * VIVE AQUÍ Y NO EN QUIEN LO LLAMA porque lo usan dos caminos: repetir un
+ * pedido y cargar una plantilla. Son la misma operación —sacar arte duradero
+ * de `medios/pedidos/` a la carpeta efímera del carrito— y tenerla escrita dos
+ * veces era garantía de que una de las dos se quedara sin copiar algo.
+ *
+ * Devuelve `null` cuando no hay arte de producción que copiar: sin él no hay
+ * nada que imprimir, y meterlo en el carrito sólo movería el fallo al final
+ * del checkout.
+ */
+export async function aArticuloDeCarrito(
+	pedidoId: string,
+	linea: Record<string, any>,
+	original: Record<string, any> | undefined,
+) {
+	const arte = (original?.arte ?? []) as Record<string, any>[];
+
+	/* Un id nuevo por artículo, no el del pedido viejo: si dos repeticiones
+	   compartieran carpeta, borrar el carrito de una borraría el arte de la
+	   otra, y `carritos/` caduca a los 30 días. */
+	const carritoId = randomUUID();
+
+	const lados = [];
+	for (const a of arte) {
+		const lado = String(a.lado ?? "");
+		if (!lado) continue;
+
+		/* El arte de producción es lo único que bloquea: sin él no hay nada
+			   que imprimir. La colocación es una referencia para el taller y el
+			   diseño editable sólo sirve para volver a abrirlo, así que si
+			   faltan se sigue — es la misma regla que al subir desde el editor. */
+		const hayArte = await copiar(
+			`medios/pedidos/${pedidoId}/${linea.lineaId}-${lado}.png`,
+			`carritos/${carritoId}/${lado}-arte.png`,
+		);
+
+		if (!hayArte) continue;
+
+		await copiar(
+			`medios/pedidos/${pedidoId}/${linea.lineaId}-${lado}-colocacion.png`,
+			`carritos/${carritoId}/${lado}-colocacion.png`,
+		);
+
+		// La prenda real del pedido viejo, si la hubo. Como la colocación: si
+		// falta se sigue, porque no es lo que va a máquina.
+		await copiar(
+			`medios/pedidos/${pedidoId}/${linea.lineaId}-${lado}-prenda.png`,
+			`carritos/${carritoId}/${lado}-prenda.png`,
+		);
+
+		lados.push({
+			lado,
+			/* Los píxeles del archivo, no los centímetros del área. El área
+				   se relee del producto al pedir —puede haber cambiado—, pero el
+				   tamaño real impreso sale de cuántos píxeles tiene el arte que
+				   se copió, y ése es exactamente el de entonces. */
+			anchoPx: Math.trunc(Number(a.anchoPx ?? 0)),
+			altoPx: Math.trunc(Number(a.altoPx ?? 0)),
+			dpi: Math.trunc(Number(a.dpi ?? 0)) || 300,
+		});
+	}
+
+	if (lados.length === 0) return null;
+
+	await copiar(
+		`medios/pedidos/${pedidoId}/${linea.lineaId}-diseno.json`,
+		`carritos/${carritoId}/diseno.json`,
+	);
+	return {
+		carritoId,
+		productoId: linea.productoId,
+		nombre: linea.producto,
+		proveedorId: linea.proveedorId,
+		colorPrenda: linea.colorPrenda,
+		lados,
+		tallas: linea.tallas,
+		/* Para el resumen mientras decide, y es el precio de HOY: enseñar el
+			   de entonces haría que el total del carrito no cuadre con el cobro. */
+		precioUnitario: linea.unitario ?? 0,
+		miniatura: linea.miniatura,
+	};
 }

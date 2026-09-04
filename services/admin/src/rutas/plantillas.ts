@@ -26,7 +26,30 @@ type Area = {
 	height: number;
 };
 
+/**
+ * Qué forma tiene el objeto, que NO es lo mismo que cuántos lados tiene.
+ *
+ * VIVE EN LA PLANTILLA Y NO EN EL PRODUCTO a propósito: ser un cilindro es una
+ * propiedad del OBJETO. Si viviera en el producto, dos talleres que usan la
+ * misma plantilla de taza podrían discrepar sobre si es un cilindro, y eso no
+ * significa nada.
+ *
+ * DECIDE COSAS QUE LA PLANTILLA YA DECIDE: un cilindro tiene UN lado —la
+ * envoltura entera— y su preview no lo puede hacer la homografía de
+ * `lib/prenda/componer`, que proyecta planos, sino `lib/prenda/cilindro`.
+ *
+ * `cono` SE ACEPTA Y TODAVÍA NO SE USA. Está aquí desde el primer día porque
+ * un vaso de tumbler casi siempre se estrecha, y ahí el dibujo plano deja de
+ * ser un rectángulo: es un sector de corona circular. Meterle un rectángulo
+ * saca el estampado torcido. Tenerlo en el enum desde ahora es un valor más;
+ * añadirlo después es migrar todas las plantillas.
+ */
+type FormaDePlantilla = "plano" | "cilindro" | "cono";
+
+const FORMAS: FormaDePlantilla[] = ["plano", "cilindro", "cono"];
+
 type DatosPlantilla = {
+	forma?: FormaDePlantilla;
 	sides: string[];
 	sideLabels: Record<string, string>;
 	mockups: Record<string, string>;
@@ -163,6 +186,24 @@ function validar(cuerpo: unknown) {
 		throw malaPeticion("La plantilla necesita al menos un lado");
 	}
 
+	/* Ausente es `plano`: es lo que eran todas las plantillas antes de que esto
+	   existiera, y reescribirlas para ponérselo sería tocar datos buenos. */
+	const forma = (data.forma ?? "plano") as FormaDePlantilla;
+
+	if (!FORMAS.includes(forma)) {
+		throw malaPeticion(`Forma desconocida: ${forma}. Usa ${FORMAS.join(", ")}.`);
+	}
+
+	/* UN CILINDRO TIENE UN LADO. No es una restricción de forma: la envoltura
+	   ES el objeto entero, y una taza con "delante" y "detrás" no significa
+	   nada. Se comprueba aquí y no sólo en el asistente porque el asistente es
+	   una pantalla y esto es el modelo. */
+	if (forma !== "plano" && data.sides.length !== 1) {
+		throw malaPeticion(
+			"Un cilindro tiene un solo lado: la envoltura entera. Deja sólo uno.",
+		);
+	}
+
 	for (const lado of data.sides) {
 		if (!data.mockups?.[lado]) {
 			throw malaPeticion(`El lado "${lado}" no tiene mockup`);
@@ -172,5 +213,5 @@ function validar(cuerpo: unknown) {
 		}
 	}
 
-	return { id, name, data };
+	return { id, name, data: { ...data, forma } };
 }

@@ -11,10 +11,12 @@
 #
 # QUÉ SE QUEDA FUERA, Y POR QUÉ
 #
-#   El ADMIN no se publica. No es una limitación técnica que haya que superar:
-#   el proxy `/api/admin/*` lleva la llave compartida puesta, y publicarlo
-#   sería dejar esa llave al alcance de quien encuentre la URL. Se usa en
-#   local con `pnpm --filter web dev` hasta que tenga login propio.
+#   El ADMIN no se publica AQUÍ, pero ya no es que no se publique: vive en su
+#   propio dominio, `backoffice.kustto.com.mx`, con su propio bucket y su
+#   propia distribución (`infra/backoffice.sh` + `infra/sitio-backoffice.sh`).
+#   Sigue fuera de este build por lo mismo que está en otro dominio: que
+#   publicar la tienda no publique el panel de administración por accidente, y
+#   que un XSS en cualquier pantalla pública no alcance sus tokens.
 #
 #   `/proveedores/[slug]` y `/package/[id]` tampoco. Leen de la API de Nest,
 #   que no se despliega: publicarlas sería publicar dos páginas que no cargan.
@@ -41,7 +43,6 @@ APARTE="$(mktemp -d)"
 # Las rutas que no se publican, con su ruta relativa dentro de apps/web.
 FUERA=(
   "app/admin"
-  "app/api"
   "app/proveedores/[slug]"
   "app/package/[id]"
 )
@@ -68,19 +69,35 @@ for RUTA in "${FUERA[@]}"; do
   fi
 done
 
-echo "Construyendo el sitio (sin el admin)…"
-# Se borra la caché del servidor de desarrollo antes de construir.
+# La caché se borra ANTES de construir.
 #
-# NO es por limpieza: ahí dentro Next deja los tipos que genera POR RUTA,
-# incluidas las del admin que este script aparta, y el build de export falla
-# con un "Cannot find name" señalando un archivo que ya no existe.
+# No es por limpieza: ahí dentro Next deja los tipos que genera POR RUTA,
+# incluidas las que este script aparta, y el build de export falla con un
+# "Cannot find name" señalando un archivo que ya no existe.
+#
+# Se intenta dos veces porque el servidor de desarrollo, si está levantado,
+# reescribe `.next/dev` mientras se borra y `rm -rf` sale con "Directory not
+# empty". Si a la segunda sigue ahí, se dice qué pasa en vez de dejar un
+# "Directory not empty" que no explica nada.
+limpiar_next() {
+  rm -rf "${WEB}/.next" "${WEB}/out" 2>/dev/null && return 0
+
+  sleep 2
+  rm -rf "${WEB}/.next" "${WEB}/out" 2>/dev/null && return 0
+
+  echo "No pude borrar ${WEB}/.next: algo lo está escribiendo." >&2
+  echo "Casi seguro es el servidor de desarrollo. Párala y vuelve a correr esto." >&2
+  exit 1
+}
+
 #
 # Se intentó darle al export su propia carpeta con `distDir`, y salió peor:
 # con `distDir`, `output: export` escribe el HTML DENTRO de esa carpeta en vez
 # de en `out/`, así que este script siguió subiendo un `out/` viejo y dos
 # publicaciones no publicaron nada. Si vuelves a tocar esto, comprueba la
 # fecha de `apps/web/out/index.html` después de construir.
-rm -rf "${WEB}/.next" "${WEB}/out"
+echo "Construyendo el sitio (sin el admin)…"
+limpiar_next
 
 (cd "$WEB" && KUSTTO_EXPORT=1 pnpm build 2>&1 | tail -20)
 

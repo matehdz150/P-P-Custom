@@ -6,9 +6,12 @@ import {
 } from "./lib/http.js";
 import * as carrito from "./rutas/carrito.js";
 import * as disenos from "./rutas/disenos.js";
+import * as imagenes from "./rutas/imagenes.js";
+import * as favoritos from "./rutas/favoritos.js";
 import type { Identidad } from "./rutas/pedidos.js";
 import * as pedidos from "./rutas/pedidos.js";
 import * as perfil from "./rutas/perfil.js";
+import * as plantillas from "./rutas/plantillas.js";
 
 /**
  * La API de la cuenta del comprador.
@@ -83,6 +86,18 @@ router.post("/cuenta/pedidos/:id/repetir", (p) =>
 /* ─── Diseños guardados ─────────────────────────────────────────────────
    Un diseño se GUARDA ascendiendo una línea de pedido que ya existe, no
    desde el editor: así quien compra una vez no ve un concepto nuevo. */
+/* ─── La biblioteca de imágenes ─────────────────────────────────────────
+   Lo que el comprador sube en el editor, para no volver a buscar el mismo
+   logo en su disco cada vez. Ver `rutas/imagenes.ts`. */
+router.get("/cuenta/imagenes", (p) => imagenes.listar(quien(p)));
+router.post("/cuenta/imagenes/subidas", (p) =>
+	imagenes.firmarSubida(quien(p), p.cuerpo),
+);
+router.post("/cuenta/imagenes", (p) => imagenes.confirmar(quien(p), p.cuerpo));
+router.delete("/cuenta/imagenes/:id", (p) =>
+	imagenes.borrar(quien(p), p.params.id),
+);
+
 router.get("/cuenta/disenos", (p) => disenos.listar(quien(p)));
 router.post("/cuenta/disenos", (p) => disenos.guardar(quien(p), p.cuerpo));
 router.patch("/cuenta/disenos/:id", (p) =>
@@ -91,6 +106,36 @@ router.patch("/cuenta/disenos/:id", (p) =>
 router.delete("/cuenta/disenos/:id", (p) =>
 	disenos.borrar(quien(p), p.params.id),
 );
+
+/* PATCH y no PUT: la API Gateway declara GET, POST, PATCH y DELETE sobre
+   `/cuenta/{proxy+}` y PUT no está entre ellos. Añadirlo obligaría a tocar
+   infraestructura sin ganar nada — igual que con el carrito. */
+/* Las plantillas: la receta de un pedido que se repite. Se editan enteras
+   —`PATCH` con todo el contenido— porque la pantalla tiene delante los
+   productos y sus cantidades y manda el resultado; un campo por llamada sería
+   una petición por cada "+1". */
+router.get("/cuenta/plantillas", (p) => plantillas.listar(quien(p)));
+router.post("/cuenta/plantillas", (p) => plantillas.crear(quien(p), p.cuerpo));
+router.patch("/cuenta/plantillas/:id", (p) =>
+	plantillas.actualizar(quien(p), p.params.id, p.cuerpo),
+);
+router.delete("/cuenta/plantillas/:id", (p) =>
+	plantillas.borrar(quien(p), p.params.id),
+);
+/* Convertirla en artículos de carrito. `POST` y no `GET` porque no es una
+   consulta: copia archivos en S3 y anota el uso de la plantilla. */
+router.post("/cuenta/plantillas/:id/carrito", (p) =>
+	plantillas.alCarrito(quien(p), p.params.id),
+);
+/* Firma las subidas del arte de una plantilla. Detrás de sesión —a diferencia
+   de la del carrito, que es pública— porque escribe en un sitio que NO caduca
+   y va bajo la carpeta del propio `sub`. */
+router.post("/cuenta/plantillas/subidas", (p) =>
+	plantillas.firmarSubidas(quien(p), p.cuerpo),
+);
+
+router.get("/cuenta/favoritos", (p) => favoritos.obtener(quien(p)));
+router.patch("/cuenta/favoritos", (p) => favoritos.guardar(quien(p), p.cuerpo));
 
 router.get("/cuenta/perfil", (p) => perfil.obtener(quien(p)));
 router.patch("/cuenta/perfil", (p) => perfil.guardar(quien(p), p.cuerpo));

@@ -1,23 +1,42 @@
 # Dónde nos quedamos
 
-_Última actualización: 3 de septiembre de 2026._
+_Última actualización: 4 de septiembre de 2026._
 
 Este archivo es el traspaso entre sesiones: lo que **no** se deduce leyendo el
 código. Para el mapa del proyecto ve a `README.md`; para el AWS, a
 `infra/README.md`. Si algo de aquí ya se hizo, bórralo — este documento sólo
 sirve si se mantiene corto y cierto.
 
-**Lo último que se hizo, por si sólo lees esto:** el **panel del comprador es
-ya un dashboard completo** —sin cabecera ni pie del sitio, sidebar fijo, y el
-detalle del pedido se abre dentro— y con él **repetir un pedido y guardar
-diseños con nombre**, que es el flujo de la empresa que pide su logo cada mes.
-Backend desplegado y probado contra AWS; el aspecto **no está mirado** (ver
-"Lo que quedó sin comprobar").
+**Lo último que se hizo, por si sólo lees esto:** el **backoffice ya está
+publicado** en `backoffice.kustto.com.mx`, con su propio pool de Cognito
+(`kustto-admins`), sus rutas `/admin/*` detrás de un autorizador JWT y **sin la
+llave compartida**, que se eliminó. Ver "El backoffice tiene dominio y puerta
+propios". Las cuentas se crean con `bash infra/crear-admin.sh correo`.
+
+Antes: la **previsualización sobre
+la prenda real** —el taller sube una foto por lado y color y marca las cuatro
+esquinas donde imprime; el botón "Probar" del editor proyecta el diseño encima
+y se puede descargar en PNG—, el **borrado de productos del taller**, el
+**cajón de detalle** en el catálogo del panel, la **portada del panel sin
+pedidos** y las **animaciones de entrada y salida** en todo `/cuenta`.
+**Todo desplegado** el 4 de septiembre: las dos Lambdas y el sitio.
+
+Antes: las **plantillas** —un paquete de productos con sus cantidades, guardado
+para volver a pedirlo—, con su pantalla para crear y editar, el catálogo en un
+cajón y el editor sabiendo que diseña PARA una plantilla. Y con ellas salieron
+**tres fallos del carrito** al usarlo de verdad: el total en $0, el checkout
+del carrito sin precargar el perfil, y el enlace de seguimiento que no abría
+después de pagar. Los tres arreglados y desplegados.
+
+Antes: el **panel del comprador como dashboard completo** —sin cabecera ni pie
+del sitio, sidebar fijo, y el detalle del pedido dentro— con **repetir un
+pedido y guardar diseños con nombre**. Backend probado contra AWS; el aspecto
+**no está mirado** (ver "Lo que quedó sin comprobar").
 
 Antes: el **carrito de varios talleres**, completo —se agrega desde el editor,
 se ve en `/carrito`, y `/pedir/carrito` cobra una compra que se parte en un
-pedido por taller—, con sus dos pantallas rediseñadas. De ese bloque sólo falta
-el **seguimiento y los correos de la COMPRA**: hoy los avisos salen por parte.
+pedido por taller—, con sus dos pantallas rediseñadas. De ese bloque ya sólo
+faltan los **correos de la COMPRA**: hoy los avisos salen por parte.
 
 Antes: el sitio publicado en **https://kustto.com.mx** (S3 + CloudFront,
 export estático, con el admin deliberadamente fuera), los envíos con Skydropx,
@@ -697,31 +716,103 @@ Comprueba siempre contra la API, no contra `localhost:3000`.
 
 ---
 
-## La decisión abierta: mockups de verdad
+## La prenda real: decidido y construido (4 de septiembre)
 
-**Hoy el mockup es un dibujo de línea, no una fotografía**, y trae el recuadro
-punteado del área y una marca de agua **incrustados en el PNG**. Por eso la
-referencia de colocación que recibe el taller sale con el punteado dentro.
+La pregunta de "cómo enseñar el diseño sobre algo que no sea un dibujo" ya
+tiene respuesta, y no fue la que estaba escrita aquí.
 
-No se puede hacer una previsualización realista con eso. Ninguna técnica de
-composición convierte un dibujo vectorial en una foto.
+**Lo que se descartó, y por qué.** La idea anterior era una foto de prenda
+clara sobre fondo blanco, teñida con `recortarPrenda` + `tenirPrenda` como el
+mockup: una foto por lado cubriría todos los colores. Se descartó al plantearlo
+en serio: ese teñido **no admite una foto con modelo** —le teñiría la cara— ni
+una prenda ya oscura. Se eligió **una foto por lado Y por color**, que cuesta
+más trabajo al taller y permite modelo, contexto y prendas negras.
 
-**Lo que falta es material, no código.** Hace falta una foto por prenda y por
-lado, sin guías ni marcas incrustadas y con fondo liso. En cuanto haya una:
+**El modelo.** Cada producto lleva `fotosReales: [{ lado, color, url,
+esquinas }]`.
 
-- `lib/fabric/prenda.ts` **ya resuelve lo difícil**. `recortarPrenda` separa la
-  prenda del fondo y la deja en gris, y ese gris **es** el mapa de pliegues,
-  costuras y sombras. `tenirPrenda` ya lo multiplica para teñir.
-- El realismo sale de multiplicar ese sombreado **encima del arte**: sobre una
-  prenda blanca el multiply no hace nada salvo donde hay sombra, que es
-  justo el efecto de tinta sobre tela.
-- Un mapa de desplazamiento —para que el arte se deforme siguiendo las
-  arrugas— es el paso siguiente, y sólo vale la pena si con el sombreado sigue
-  viéndose plano.
+- Las **esquinas van en fracciones de 0 a 1** del ancho y alto de la foto, en
+  el orden arriba-izquierda, arriba-derecha, abajo-derecha, abajo-izquierda. En
+  píxeles quedarían atadas a la resolución con la que se marcaron y bastaría
+  recomprimir la foto para descuadrar el estampado. La Lambda rechaza cualquier
+  cosa fuera del `[0,1]`, que además es como se detecta que llegaron en píxeles.
+- **Son cuatro puntos y no un rectángulo** a propósito: sobre una prenda de
+  verdad la tela cae y el torso va en ángulo, y un rectángulo recto se lee como
+  calcomanía pegada.
+- La **ruta tiene que ser nuestra** (`/medios/…`). Misma regla que los mockups:
+  la composición pasa por un lienzo y una imagen de otro origen lo contamina.
 
-Descartado a propósito: servicios externos tipo Printful o Placeit (mandarían
-el arte del cliente a un tercero y cobran por render) y renderizar en el
-servidor (el navegador ya tiene el lienzo y los píxeles).
+**Dónde está el código.**
+
+| qué | dónde |
+| --- | --- |
+| la homografía para pintar (CSS `matrix3d`) | `lib/prenda/perspectiva.ts` |
+| la misma, rasterizada a PNG | `lib/prenda/componer.ts` |
+| el taller marca las esquinas | `components/Provider/alta/PasoPrenda.tsx` |
+| el modo "Probar" del editor | `components/Designer/VistaDeLaPrenda.tsx` |
+
+**Para mirar es CSS; para guardar, un lienzo.** En pantalla la proyección cabe
+en las dos filas que `matrix3d` reserva a la perspectiva y la hace la GPU,
+gratis por fotograma. Eso **no se puede exportar** —el navegador no deja leer
+píxeles de una capa transformada—, así que descargar rehace la composición
+recorriendo los píxeles del destino e invirtiendo la matriz. Se evaluó partir
+el cuadrilátero en triángulos (más rápido) y se descartó: deja costuras finas
+que hay que ir tapando dilatando triángulos.
+
+**La mezcla depende del color de la tela.** `multiply` es lo que hace que se
+vea impreso —deja pasar pliegues y sombras—, pero multiplicar por blanco no
+cambia nada: sobre una prenda oscura una tinta clara desaparecería. Tela clara
+va con `multiply`, tela oscura encima sin mezclar. Sin color reconocible se
+trata como oscura, que es la caída segura.
+
+**Lo que FALTA de esto:**
+
+- ~~El pedido sigue guardando la composición sobre el MOCKUP.~~ — **hecho** el
+  4 de septiembre: el pedido lleva ya los tres archivos. Ver "La prenda real
+  llega al taller".
+- **Sólo está en el editor de escritorio.** El editor móvil tiene su propia
+  cabecera y no lleva el par Editar/Probar.
+- **Ningún producto tiene fotos todavía.** Hasta que un taller suba la primera,
+  "Probar" cae al mockup con su aviso. El paso del alta es opcional a propósito:
+  obligar a dieciséis fotos antes de enviar a revisión frenaría cualquier alta.
+
+Descartado a propósito, y sigue descartado: servicios externos tipo Printful o
+Placeit (mandarían el arte del cliente a un tercero y cobran por render) y
+renderizar en el servidor (el navegador ya tiene el lienzo y los píxeles).
+
+---
+
+## El taller ya puede quitar productos (4 de septiembre)
+
+`DELETE /proveedores/productos/:id`, y hace **dos cosas distintas** según dónde
+esté el producto:
+
+- **`borrador` se borra de verdad**, con su candado de slug. Nunca estuvo en el
+  catálogo, así que no puede haber un pedido, un carrito, un favorito ni una
+  plantilla apuntándole. Y **no se vuelve a `borrador`**: `actualizar` conserva
+  el estado previo o manda a revisión, y el admin sólo pone `activo`,
+  `rechazado` o `archivado`. O sea que "está en borrador" equivale a "nunca se
+  publicó", y eso alcanza para decidir sin ir a buscar pedidos.
+- **Todo lo demás se archiva.** Sale del catálogo (se reescribe `gsi2`, que es
+  de donde el catálogo público saca su lista) y desaparece de la lista del
+  taller, pero la fila se queda: "volver a pedir" lee el producto de HOY para
+  poder decirle al comprador cuál de sus líneas se cayó, y sin la fila esa
+  pantalla pierde el nombre.
+
+**Las fotos no se borran de S3.** Las referencia el histórico de pedidos; un
+objeto huérfano cuesta céntimos y una miniatura rota en un pedido de hace tres
+meses no se deshace.
+
+El candado del slug se suelta **después y por separado**, no en una transacción:
+un candado que sobra sólo hace que el siguiente producto con ese nombre reintente
+con sufijo, mientras que meterlos juntos dejaría al taller sin poder borrar su
+borrador si el candado está raro.
+
+La ruta `DELETE` **ya existía** en API Gateway (el script la crea en su bucle),
+así que no hubo cambio de infraestructura.
+
+Para recuperar un archivado no hay botón: se abre desde "Ver archivados" en la
+lista y se manda otra vez a revisión con el botón que ya trae el asistente.
 
 ---
 
@@ -1271,20 +1362,662 @@ CloudFront y un número metido en el HTML se cachearía con el de una persona.
 4. ~~El checkout multi-parte~~ — **hecho**: el backend y la pantalla
    `/pedir/carrito`, que agrupa por taller y cotiza el envío de cada uno.
    `/pedir` sigue vivo para el checkout de un solo producto.
-5. **Seguimiento y correos** de la compra. Es lo único que queda del carrito:
-   hoy los avisos salen por PEDIDO —o sea por parte— y no hay nada que hable
-   de la compra entera salvo el correo de confirmación.
+5. **Seguimiento y correos** de la compra. La PANTALLA ya está (3 de
+   septiembre): `/pedido?id=<compra>&token=…` abre la compra y pinta una
+   sección por taller. Faltan **los correos**: hoy los avisos salen por PEDIDO
+   —o sea por parte—, así que una compra de dos talleres manda dos de cada
+   cosa sin decir que son la misma compra.
 6. **El panel del taller** casi no cambia: ya ve sólo lo suyo. Sólo enseñar de
    qué compra viene su parte.
 
 ---
 
+## Plantillas: el paquete que se vuelve a pedir (3 de septiembre)
+
+Una plantilla guarda **una combinación** —el kit de bienvenida: playera, tote
+y termo, con estas cantidades— para volver a pedirla sin armarla de cero. No es
+"repetir" con otro nombre: repetir clona un pedido tal cual, y una plantilla es
+una receta que se ajusta entre una vez y otra, y que puede mezclar líneas de
+pedidos DISTINTOS.
+
+El backend ya existía. Lo que se hizo fue la pantalla, y por el camino salieron
+tres cosas que estaban rotas de raíz.
+
+### El editor tenía que saber para qué se diseña
+
+Ponerle diseño a un producto de la plantilla abría `/design/<id>` a secas, y
+ese editor **agrega al carrito**: la plantilla se quedaba a medias sin decirlo.
+Ahora la URL lleva `?plantilla=<clave>` y el `DesignerContext` guarda ese
+destino, así que **la barra de abajo cambia de botones** —"Agregar a la
+plantilla", y desaparece "Pedir este diseño"— y la flecha de volver regresa a
+la plantilla, no al catálogo. El editor es EL MISMO; lo único que cambia es la
+salida y a qué prefijo de S3 sube el arte (`medios/plantillas/`, que no caduca,
+en vez de `carritos/`, que se limpia a los 30 días).
+
+### El arte volvía como fila NUEVA, y duplicaba el producto
+
+`agregarAlBorrador` sólo sabía añadir. Al darle "Ponerle diseño" a un producto
+que ya estaba en la lista, el arte volvía como una fila más: te quedaba el
+hueco vacío **y** una copia con diseño. Por eso cada fila del borrador tiene
+ahora una `clave` local que viaja en la URL, y `guardarEnBorrador` pega el
+diseño encima de ESA fila **respetándole las tallas** que ya se ajustaron.
+
+### No se podía pedir un kit
+
+La fila nacía con una talla y sólo tenía `−` y `+`. "Cinco chicas y diez
+medianas" —que es media razón de ser de una plantilla— no cabía. Se añadió
+`+ Talla` (las que el producto tiene y no están puestas) y `−` en 1 quita esa
+talla, si queda otra.
+
+### Editar una guardada es la MISMA pantalla
+
+`ArmarPlantilla` sirve para crear y para editar: sólo cambian de dónde salen
+los productos al abrir y a qué llamada se manda al guardar. El borrador lleva
+`plantillaId` para no mezclar dos cosas a medias, y **manda sobre lo guardado
+sólo si es de esa misma plantilla** —es lo que quedó del paso por el editor y
+tirarlo sería perder el diseño recién hecho—. La siembra corre **una vez por
+plantilla**, no cada vez que cambia la referencia del objeto: la lista de
+arriba puede volver a pedirse y volver a sembrar borraría lo editado.
+
+`rutaDelBorrador()` decide a dónde vuelve el editor (`&nueva=1` o
+`&editar=<id>`). Con la ruta equivocada el arte sube bien y aterriza en una
+pantalla que no lo enseña, que se lee como si se hubiera perdido.
+
+### El diseño costó cuatro vueltas, y la que quedó es la aburrida
+
+Se probó: bloque de color con tres pasos numerados, barra oscura propia, y
+**dos columnas con el catálogo fijo a la izquierda**. Las tres se descartaron
+por lo mismo: la pantalla dejaba de parecerse al resto del panel. Con dos
+columnas era peor —dos rejillas de tarjetas compitiendo, sin saber cuál estabas
+construyendo—.
+
+Lo que quedó es el patrón de `Ajustes`: párrafo de una línea arriba, dos
+tarjetas blancas (`Qué lleva`, `Cómo se llama`), campos de 52 px y el botón
+píldora al final con "Nada se guarda hasta que lo confirmes". El catálogo
+vuelve a abrirse en un **cajón** (`components/ui/drawer`), con buscador y
+categorías, y **se cierra al elegir**: ver la pieza caer en la lista es lo que
+explica qué pasó.
+
+**Si vas a tocar esta pantalla, no le pongas cabecera propia.** La vista se
+adueña de la del panel con `useCabeceraDelPanel` (`components/Cuenta/pantalla`)
+— mismo tipo de 55 px, misma flecha que el detalle de un pedido — y pone
+"Nueva plantilla". Antes decía "Plantillas" encima de la pantalla de crear una,
+que es un título mintiendo mientras ocupa media pantalla en un teléfono.
+
+### La tarjeta de producto es un control, no un contenedor
+
+`ElegirDelCatalogo` envolvía la tarjeta entera en un `<button>`, y la tarjeta
+trae dentro un `<a>` a diseñar y el corazón de favoritos. Además de ser HTML
+inválido —React lo gritaba en consola—, **el enlace de dentro ganaba el clic**:
+elegir un producto te llevaba al editor en modo carrito en vez de agregarlo.
+Ahora `TarjetaProducto` acepta `onElegir` y con él la ficha se dibuja como
+`<button>`, sin enlace dentro; el corazón sólo aparece si le pasas `onFavorito`.
+
+El catálogo entero (buscador, categorías, favoritos, rejilla) vive en
+`components/Cuenta/ExplorarCatalogo` y lo usan la sección Catálogo del panel y
+el cajón. Su rejilla es `auto-fill` y no `md:grid-cols-3`: mira el ancho que
+hay, no el de la ventana.
+
+---
+
+## Tres fallos del carrito que salieron al usarlo (3 de septiembre)
+
+### El total salía en $0 — `pricing.basePrice`, no `basePrice`
+
+Cargar una plantilla al carrito metía los artículos bien y el total quedaba en
+cero. **El precio del producto está en `Item.pricing.basePrice`**; el código de
+plantillas leía `producto.basePrice`, que no existe. No falla ni avisa:
+devuelve 0.
+
+Había dos sitios mal, y el segundo era peor porque no se veía: en el camino de
+"plantilla hecha desde un pedido", el `?? linea.unitario` de respaldo tapaba el
+error y entregaba **el precio de hace meses** mientras el comentario prometía
+el de hoy. Y a los dos les faltaba el recargo por lados: el checkout cobra
+`basePrice + (lados − 1) × perSidePrice` (`aLinea` en services/admin).
+
+Ahora hay **una sola función**, `precioDeHoy(producto, cuantosLados)`, exportada
+desde `services/compradores/src/rutas/pedidos.ts`, que usan los tres caminos al
+carrito —repetir, cargar una plantilla y la plantilla con arte propio—.
+**Desplegada y verificada** bajando el zip de la Lambda, no el local.
+
+### El checkout del carrito no precargaba nada
+
+`/pedir` rellenaba nombre, correo, WhatsApp y dirección de quien tenía sesión;
+`/pedir/carrito` no. Con los datos en la cuenta, llegar por el carrito obligaba
+a teclear la dirección entera otra vez. Se sacó a `lib/pedido/precargar` y
+ahora los dos checkouts llaman al mismo `usePrecargarPerfil`. De paso, el
+**correo se bloquea con sesión** también en el del carrito: los pedidos se
+buscan por correo (`gsi3`), y dejarlo editable mandaba la compra al historial
+de otra persona.
+
+### El enlace de seguimiento no abría después de pagar
+
+`/pedido?id=…&token=…` respondía "no encontramos ese pedido en tu cuenta" justo
+después de comprar desde el carrito. **El enlace lleva el id de la COMPRA**, y
+la pantalla, al ver sesión abierta, iba a la ruta de la cuenta — que sólo sabe
+de pedidos—. La ruta pública con token resuelve las dos cosas. Ahora **manda el
+token cuando lo hay**, y la de la cuenta queda de respaldo para enlaces viejos.
+
+Del mismo origen salió otro: la compra vive en la **misma partición gsi3** que
+sus partes (`COMPRA#<fecha>#<id>` contra `<fecha>#<id>`), y `listar()` no
+filtraba: la lista de pedidos de la cuenta enseñaba la compra como una fila más,
+sin líneas. Ahora se filtra por `pk` (`ORDER#` contra `PURCHASE#`).
+
+Y la pantalla de seguimiento ya sabe pintar una compra de **varios talleres**:
+una sección por parte, cada una con su estado, su envío y su guía. Fundirlas
+obligaría a inventar un estado común que no existe —¿qué es "enviado" cuando
+una parte salió y la otra no?—. Con un solo taller la API sigue devolviendo la
+parte sola, así que ese camino sólo se pisa cuando de verdad hay varias.
+
+**Falta desplegar**: la Lambda de compradores lleva el filtro de `listar()`
+(`bash infra/lambda-compradores.sh`) y el front, todo lo demás
+(`bash infra/sitio.sh`).
+
+---
+
+## El panel del comprador, esta tanda (4 de septiembre)
+
+**La portada sin pedidos dejó de ser un recuadro punteado.** Quien se registra
+aterriza justo ahí, y lo que veía era el sitio contestando "no tienes nada" a
+alguien que todavía no había podido tener nada. Ahora ocupa el sitio del pedido
+en curso —tarjeta oscura, mismo radio, mismo hueco— para que la pantalla no se
+reorganice con el primer pedido, y **la rejilla de productos es el atajo**: cada
+ficha abre el editor de ese producto. Mandar sólo a `?s=catalogo` es pedirle a
+quien acaba de entrar que empiece por buscar. Está en `Inicio.tsx`,
+componente `Bienvenida`.
+
+**El catálogo abre un cajón de detalle** (`FichaEnSheet.tsx`) en vez de ir
+derecho al editor: mirar catálogo es comparar, y con una ruta aparte cada
+comparación cuesta dos navegaciones y se pierden los filtros y el scroll. Abre
+con lo que ya trae la lista y **completa después** lo único que falta —los
+nombres de los lados imprimibles, el precio del lado extra—, porque una rueda
+sobre el cajón entero cambiaría un cajón instantáneo por uno lento a cambio de
+un dato secundario. Las fichas se recuerdan en memoria: el `next: { revalidate }`
+de `publico()` **no existe en el navegador** y sin la caché comparar tres
+productos yendo y viniendo son diez peticiones.
+
+El cajón NO abre en el cajón de armar plantillas: ahí la tarjeta selecciona, y
+meter un detalle de por medio convertiría cada producto de un kit en dos clics.
+
+**Animaciones de entrada y salida en todo `/cuenta`** (`Cuenta/animaciones.tsx`).
+Tres cosas que no hay que deshacer:
+
+- **No es el ritmo de las landings.** `Animaciones/Entrada` dura 0.68 s; aquí se
+  cambia de sección quince veces por sesión y a esa frecuencia lo mismo se
+  siente como que la aplicación va lenta. Entrada 0.26 s, salida 0.14 s.
+- **El escalonado se corta en el octavo.** Con `staggerChildren` el retraso
+  crece sin fin: treinta pedidos a 35 ms son más de un segundo hasta el último.
+- **`<MotionConfig reducedMotion="user">` está en la raíz del panel**, una sola
+  vez. Comprobarlo pieza por pieza sería asegurarse de que alguna se queda sin
+  ello.
+
+Las filas de la tabla de pedidos se animan con `motion.tr` y no con un
+envoltorio: entre `<tbody>` y `<tr>` no cabe un `<div>` —el navegador lo saca de
+la tabla y la fila se desmonta.
+
+---
+
+## El backoffice tiene dominio y puerta propios (4 de septiembre)
+
+El admin ya no es "eso que sólo corre en local". Vive en
+**https://backoffice.kustto.com.mx**, con su bucket, su distribución y su
+propio pool de Cognito.
+
+### Lo que había, y por qué bloqueaba todo
+
+El admin del navegador llamaba a `/api/admin/*`, un route handler de Next que
+agregaba `x-clave-admin` del lado del servidor. En la API Gateway las rutas de
+admin eran el `$default` **sin autorizador**: la única puerta era esa llave. El
+propio archivo lo decía —"⚠️ MIENTRAS NO HAYA LOGIN, ESTE PROXY ES UNA PUERTA
+ABIERTA"— y por eso `sitio.sh` apartaba el admin del build.
+
+Publicarlo tal cual habría dejado la llave en el bundle: una página estática no
+puede guardar un secreto.
+
+### Cómo quedó
+
+**Un TERCER pool**, `kustto-admins` (`infra/cognito-admin.sh`). El autorizador
+JWT valida emisor y audiencia, no grupos: con un pool compartido, el token de
+cualquier comprador registrado pasaría el autorizador de `/admin/*`. Con uno
+por público es imposible por construcción, que es el mismo argumento por el que
+compradores y talleres ya no lo comparten.
+
+Sin autoregistro: las cuentas se crean con `bash infra/crear-admin.sh correo`,
+que deja que Cognito genere y mande la contraseña temporal — una elegida por
+nosotros acabaría en el historial del terminal.
+
+**Las rutas de admin se movieron a `/admin/{proxy+}`** con ese autorizador,
+como `/cuenta/*` y `/proveedores/*`. Un método por ruta y nunca `ANY`, por lo
+del preflight. El prefijo lo quita el handler en un solo sitio, así que el
+router sigue registrando `/templates`, `/productos`…
+
+**La llave murió.** La Lambda ya no la acepta y se borraron
+`app/api/admin/[...ruta]/route.ts` y `lib/api/admin.servidor.ts`. Lo que no
+cuelgue de `/admin/` y no esté en `ABIERTAS` contesta **404** — ni 401 ni 403:
+distinguirlos le diría a quien prueba rutas cuáles existen.
+
+Comprobado contra la API desplegada, no en local:
+
+| | |
+|---|---|
+| `/admin/*` sin token | 401 |
+| `/admin/*` con token basura | 401 |
+| `/templates` (ruta vieja) | 404 |
+| `/templates` **con la llave vieja** | 404 |
+| `/publico/catalogo` | 200 |
+| preflight de `/admin/*` | 204 |
+
+### El subdominio no es estética
+
+Una ruta de `kustto.com.mx` compartiría origen con la tienda, y con él
+`localStorage`, las cookies y el alcance de un XSS: un fallo en el editor o en
+una dependencia alcanzaría los tokens del backoffice. En otro subdominio son
+dos almacenes distintos y lo garantiza el navegador. Y separa el despliegue:
+publicar la tienda no puede publicar el panel por accidente.
+
+`infra/backoffice.sh` crea todo —incluido el **certificado**, que hubo que
+pedir aparte: el del sitio cubre `kustto.com.mx` y `www`, y un certificado de
+ACM es inmutable—. Comparte con `frontend.sh` el OAC y la función de URLs
+bonitas: son mecanismos, no permisos.
+
+`infra/sitio-backoffice.sh` publica. Es el gemelo de `sitio.sh` con la
+selección al revés: sube `out/admin/**` y `out/_next/**`, y nada de la tienda.
+
+### Tres cosas que costaron
+
+**`app/admin/paquetes/[id]` no se podía exportar.** Una ruta dinámica exige
+conocer sus URLs en el build. Pasó a `?id=`, como el seguimiento de pedidos.
+
+**`app/admin/categorias/page.tsx` era un componente async de servidor.** Sin
+servidor y sin llave, no había forma de que siguiera siéndolo: ahora pide desde
+el navegador con el token.
+
+**El login se compartió, no se copió.** `lib/auth/pool.ts` es una fábrica
+—entrar, resolver el reto de contraseña temporal, renovar— y `cognito.ts`
+(talleres) y `admin.ts` (backoffice) sólo le pasan su id de cliente y su llave
+de `localStorage`. Cada pool con la suya: compartirla haría que entrar al
+backoffice cerrara la sesión del taller en la misma máquina.
+
+### Lo que se rompió al publicarlo, y cómo (4 de septiembre)
+
+Nada de esto se vio al desplegar. Salió al usar el panel.
+
+**CORS: subir un mockup moría en el preflight.** El navegador sube DIRECTO a
+S3 con una URL prefirmada —el archivo nunca pasa por la API— y la lista de
+`AllowedOrigins` del bucket no tenía el backoffice. Está en `infra/cors.sh` y
+ahora incluye los cuatro orígenes. El error señalaba a S3, que es donde no
+está la causa: el preflight de un PUT prefirmado es una petición que nadie
+escribe en el código de la app y no aparece buscando.
+
+**La política del bucket de contenido dejó fuera al sitio público, y eso fue
+culpa del despliegue del backoffice.** `frontend-politica.py` guardaba UN
+`AWS:SourceArn` y borraba la sentencia por `Sid` antes de escribir la suya: al
+correr `backoffice.sh`, `kustto-publico-prod` pasó a confiar sólo en la
+distribución nueva. Las imágenes de la tienda siguieron viéndose un rato por
+la caché de CloudFront. Ahora la condición lleva una LISTA que se une, así que
+las dos distribuciones conviven; comprobado: el bucket de contenido tiene dos
+y cada sitio el suyo.
+
+**`frontend.sh` no podía ACTUALIZAR la distribución, sólo crearla.** Se
+descubrió al intentar reparar lo anterior. `create-distribution` acepta que
+falten campos y les pone el valor por defecto; `update-distribution` los exige
+y responde `IllegalUpdate: <campo> is missing for the resource` — **uno cada
+vez**, así que hay que descubrirlos de a uno. Eran cinco: `Logging`,
+`OriginGroups`, `Restrictions`, `WebACLId`, `ContinuousDeploymentPolicyId` y
+`Staging`. Ya están en `frontend-config.py` y los dos scripts corren de nuevo
+sin tocar nada.
+
+**Faltaban `icon.svg` y `apple-icon.png` en el bucket del backoffice.** Next
+los inyecta en el `<head>` de TODAS las páginas con ruta absoluta a la raíz, y
+`sitio-backoffice.sh` sólo subía `out/admin` y `out/_next`. Cada pantalla del
+panel pedía `/icon.svg` y recibía 403. Se suben esos tres archivos —con
+`404.html`, que es a donde CloudFront manda los errores— enumerados uno por
+uno: sincronizar la raíz entera publicaría las imágenes de la tienda en el
+otro dominio.
+
+**Sigue fallando, y no es del backoffice:** alguna pantalla del admin llama a
+`/products` de la API de Nest y recibe 503. Es la sección de paquetes, que
+nunca migró.
+
+### Lo que hay que saber para tocarlo
+
+- **El guardia del front NO es la seguridad.** `app/admin/Guardia.tsx` sólo
+  evita enseñar un panel vacío. Lo que cierra el backoffice es el autorizador
+  de la API: sin token no hay un solo dato, se pinte lo que se pinte.
+- **`services/admin/.clave-admin` ya no sirve para nada.** Bórralo.
+- **La sección de paquetes sigue hablándole a la API de Nest**, que no se
+  despliega. Se publica porque compila, pero no carga nada: en la consola se
+  ve como `ApiError: API 503 en /products`.
+- Sesión corta a propósito: 1 hora de acceso y **1 día** de refresco, contra
+  los 30 días de un comprador.
+
+---
+
+## El catálogo va en vivo y las páginas horneadas: se rompe solo (4 de septiembre)
+
+Un taller dio de alta una gorra, salió en el catálogo, y al pulsarla
+`/design/<id>` contestó **404**. Al mirarlo, **los dos productos publicados
+daban 404**: el sitio se había construido cuando el catálogo tenía otros tres.
+
+**No es que el producto falte, es que se ve y se rompe.** El catálogo se pide
+en vivo a la API —así que lo nuevo aparece al instante— pero `/design/<id>` y
+`/product/<id>` se pre-generan en el build con `generateStaticParams`
+(`lib/build/parametros.ts`). Entre una publicación y la siguiente, todo lo que
+el taller dé de alta es una tarjeta que lleva a ninguna parte.
+
+Se arregló republicando (`bash infra/sitio.sh`), y **eso hay que hacerlo cada
+vez que se aprueba un producto**. Mientras no se arregle de raíz, aprobar un
+producto sin republicar deja la tienda enseñando algo que no se puede abrir.
+
+**La salida buena no es acordarse.** `/design/<id>` no lo indexa nadie —es una
+aplicación, no contenido— así que no tiene por qué pre-generarse: puede
+resolverlo el navegador leyendo el id de la ruta, con la función de CloudFront
+mandando `/design/*` a una sola página. Horneado se queda `/product/<id>`, que
+sí es lo que ve Google. Con eso, aprobar un producto lo vuelve utilizable al
+instante y sólo su ficha pública espera al siguiente despliegue.
+
+---
+
+## La prenda real llega al taller, y el cliente tiene biblioteca (4 de septiembre)
+
+### El pedido ya lleva la foto de la prenda
+
+Era lo que quedaba pendiente de "La prenda real": el pedido guardaba la
+composición sobre el MOCKUP y nada más. Ahora, por cada lado, salen **tres**
+archivos en vez de dos:
+
+| | qué es | para qué |
+|---|---|---|
+| `arte` | recortado al área, transparente, a los DPI | va a máquina |
+| `colocacion` | la prenda dibujada con el diseño encima | comprobar **dónde** va |
+| `prenda` | la FOTO REAL con el diseño proyectado | ver **qué esperaba** quien pidió |
+
+**Va ADEMÁS de `colocacion`, no en su lugar.** El mockup es un dibujo de línea
+y sirve para cuadrar la posición con geometría limpia; la foto real tiene
+pliegues y caída, y sirve para otra pregunta. Sustituir una por otra habría
+perdido la que usa el taller para producir.
+
+Se compone en el navegador con `componerPrenda`, el mismo rasterizador que ya
+usaba la descarga — el `ESTADO` anterior decía que era "enchufarlo donde hoy
+corre `exportarColocacion`", y fue eso.
+
+**Es OPCIONAL en toda la cadena, y tiene que seguir siéndolo.** Hay una foto
+por lado Y por color, el paso del alta es opcional y hoy casi ningún producto
+las tiene. Así que:
+
+- `sobreLaPrendaReal` devuelve nulo sin drama si no hay foto, y también si
+  componer falla: recorre píxeles y puede quedarse sin memoria.
+- La copia del carrito al pedido va con `false` (no obligatoria). Un pedido ya
+  cobrado no se puede caer porque falte una imagen de referencia.
+- La **ruta se escribe siempre** en la línea; el archivo puede no existir.
+  Comprobarlo en el servidor costaría una llamada a S3 por lado y por pedido,
+  así que lo resuelve la ficha del taller: si la imagen no carga, la casilla no
+  se enseña. Por eso la tarjeta pasa de dos columnas a tres sola.
+
+Toca los tres servicios: los topes de `firmarSubidas` (de 14 a 20 archivos por
+subida — son tres por lado), la copia al comprar, `aLinea`, el firmado del
+camino de `/pedir`, y repetir un pedido y cargar una plantilla, que también se
+la llevan.
+
+### La biblioteca de imágenes del comprador
+
+Quien pide para su empresa sube el MISMO logo cada vez, y el editor lo olvidaba
+al cerrarse. Ahora lo que se sube queda en `medios/imagenes/<sub>/` —que **no
+caduca**, al revés que `carritos/`— y la próxima vez está a un clic.
+
+- **Pide sesión, y no es una limitación que superar**: sin cuenta no hay dónde
+  colgar la biblioteca. Quien diseña sin entrar sube archivos como siempre; lo
+  único que no tiene es memoria, y el panel lo dice invitando a entrar.
+- **Guardar no puede romper diseñar.** La imagen entra al lienzo ANTES de
+  intentar subirla: si la biblioteca falla, lo que la persona vino a hacer ya
+  está hecho.
+- **La URL es relativa (`/medios/…`), nunca la de S3.** El editor mete la
+  imagen en un lienzo y luego lo exporta: otra procedencia lo contamina y
+  `toDataURL` lanza `SecurityError`, o sea que el pedido se queda sin archivo
+  de producción. Por lo mismo el `<img>` va con `crossOrigin="anonymous"`.
+- **SVG no se acepta.** No es cosa del lienzo: un SVG puede traer `<script>` y
+  esto se sirve desde NUESTRO origen, donde vive la sesión de todo el mundo.
+- **Borrar borra también el objeto de S3**, y es el único prefijo donde la
+  Lambda de compradores puede borrar. Son archivos personales que alguien pidió
+  quitar; dejarlos ahí después de decir "borrada" sería mentir. No toca ningún
+  pedido: lo que va a máquina se copió a `medios/pedidos/` al comprar.
+- Tope: 15 MB por imagen, 60 por cuenta.
+
+El panel es **el mismo en escritorio y en móvil** (`BibliotecaDeImagenes`).
+De paso se cayeron los botones de **Dropbox y Google Drive** del panel de
+escritorio: no tenían `onClick` desde siempre.
+
+**Desplegado**: las dos Lambdas y el sitio.
+
+---
+
+## La página de "no existe" ya explica qué pasó (4 de septiembre)
+
+Un diseño guardado de un producto que el taller quitó llevaba a `/design/<id>`
+y salía el 404 de Next: **"This page could not be found"**, en inglés y sin
+decir nada. A quien llega ahí desde SU diseño eso no le explica por qué.
+
+`app/not-found.tsx` mira la ruta y cambia el texto: en `/design/*` o
+`/product/*` dice **"Este producto ya no está disponible"**, con el matiz que
+importa —la copia guardada sigue ahí, lo que ya no se puede es pedirla— y una
+salida a Mis diseños además del catálogo.
+
+**NO distingue por qué falta, a propósito.** Llegar ahí tiene dos causas que
+desde el navegador se ven igual: el taller quitó el producto, o el producto es
+más nuevo que el sitio (las páginas se hornean y el catálogo va en vivo — ver
+la sección de arriba). Sin preguntarle a la API no hay forma de saber cuál, y
+la respuesta es la misma. Prometer un diagnóstico que no se tiene es peor.
+
+**El editor también podía quedarse colgado.** Si la página SÍ se horneó pero el
+producto ya no está en la API, `loadProductTemplate` rechazaba y no lo cogía
+nadie: la rueda giraba para siempre. Ahora se llama a `notFound()` — y no un
+`router.replace`, porque la página de error mira la ruta para decidir el texto
+y navegar a otro sitio le quitaría justo ese dato.
+
+**Lo que se acepta:** la página se pre-renderiza sin URL, así que el HTML sale
+con el texto genérico y el específico aparece al hidratar. Un parpadeo de un
+fotograma, y el texto genérico nunca es falso.
+
+---
+
+## Tazas y termos: el motor está, la cadena no (4 de septiembre)
+
+### Por qué no valía lo que ya había
+
+`componerPrenda` invierte una **homografía**: cuatro esquinas definen un
+**plano**, y sobre una playera eso es correcto. Una taza es un **cilindro**.
+Con la homografía el arte queda como calcomanía pegada plana — las letras de
+los extremos no se comprimen y el diseño no se curva hacia el borde. Falla
+justo donde se mira.
+
+Y CSS tampoco: `matrix3d` es proyectiva, o sea planos. **El preview en vivo de
+un cilindro no puede ser CSS**, tiene que ser un lienzo que se repinta. Ésa es
+la diferencia de fondo con la prenda, no la matemática.
+
+### El rasterizador, que ya está (`lib/prenda/cilindro.ts`)
+
+De frente un cilindro enseña **180° de sus 360°**, comprimidos hacia los
+bordes. Para un píxel a la fracción horizontal `u` del cuerpo visible:
+
+```
+θ  = asin(2u − 1)          el ángulo sobre el cilindro, de −90° a +90°
+sx = centro + θ / 2π       la columna del arte, en fracción de 0 a 1
+```
+
+`asin` es lo que produce la compresión. **Comprobado numéricamente**: el span
+visible da exactamente 0.5 —medio wrap— y el 10% de foto del borde cubre
+0.1024 del arte contra 0.0319 en el centro, o sea **3.2× más comprimido**.
+
+Dos detalles que no son adorno:
+
+- **En horizontal el muestreo ENVUELVE, en vertical recorta.** El arte da la
+  vuelta: su borde derecho continúa en el izquierdo. Arriba y abajo se acaba la
+  taza.
+- **`bombeo`**: el filo de una taza fotografiada de frente es una elipse, no
+  una recta, y la banda impresa la sigue. Se aplica con `cos θ`, que vale 1 en
+  el centro y 0 en los bordes.
+
+`sideKey` acepta ya `"wrap"`. **Un producto con envoltura no tiene ningún otro
+lado**: no es un lado más.
+
+### El sangrado, de punta a punta (4 de septiembre)
+
+Lo que bloqueaba vender una taza. El papel de sublimación se mueve al prensar,
+así que el arte tiene que seguir habiendo **más allá** del área imprimible; sin
+eso queda una línea blanca en el filo, y en una taza el estampado llega al
+borde siempre.
+
+**Dónde estaba la trampa.** No era ampliar el recorte al exportar:
+`makeAreaClip` recortaba los objetos **al área exacta**, así que fuera de ella
+no existía ni un píxel y ampliar el recorte sólo habría añadido vacío. El
+sangrado sirve porque el cliente PUEDE pintar en él.
+
+La cadena, y por qué cada eslabón está donde está:
+
+| dónde | qué hace |
+|---|---|
+| `printSides.sangradoCm` | lo declara el taller, en el alta, junto al ancho y los DPI |
+| `loadProductTemplate` | lo pasa a **píxeles** y se lo pega a cada área |
+| `makeAreaClip` | recorta al área **+ sangrado**, así que se puede pintar ahí |
+| `exportarArteDeLado` | recorta al área + sangrado, con el multiplicador del ÁREA |
+| ficha del taller | lo **resta** antes de comparar, y lo dice en pantalla |
+
+**El multiplicador sale del área, no del recorte.** Es lo que mantiene la
+escala: el estampado tiene que medir los centímetros declarados; lo que crece
+es el archivo, no lo impreso.
+
+**La ficha lo resta o el aviso miente.** Sin eso, "revisa el área de la
+plantilla" saltaría en cada pedido con sangrado, y un aviso que salta siempre
+se aprende a ignorar. Además lo enseña: quien abre el PNG y lo mide se
+encuentra milímetros de más, y sin decirlo parece un error.
+
+**Comprobado numéricamente** con una taza real (20 × 8.5 cm, 3 mm, 300 dpi):
+
+```
+archivo   2433 × 1075 px  =  20.6 × 9.1 cm   ← desborda, correcto
+la ficha                     20.0 × 8.5 cm   ← lo declarado, sin aviso falso
+```
+
+**Con tope de 2 cm**, y no por gusto: ese número dimensiona el ARCHIVO. Un 100
+mal tecleado no da un aviso, da un PNG de cientos de megas que revienta el tope
+de subida **después** de que el cliente pagó.
+
+**Cero es una respuesta legítima y es la común.** Un estampado que no llega al
+borde no lleva sangrado, y ponerlo por defecto haría desbordar arte que luego
+se recorta contra la prenda.
+
+### La forma se declara en la PLANTILLA (4 de septiembre)
+
+`data.forma: "plano" | "cilindro" | "cono"`, elegida en el paso de **Identidad**
+del asistente de mockups — antes que los lados y antes que el área.
+
+**POR QUÉ EN LA PLANTILLA Y NO EN EL PRODUCTO.** Ser un cilindro es una
+propiedad del OBJETO. Si viviera en el producto, dos talleres que usan la misma
+plantilla de taza podrían discrepar sobre si es un cilindro, y eso no significa
+nada.
+
+**POR QUÉ EN IDENTIDAD Y NO MÁS ADELANTE.** Decide qué pregunta el paso
+siguiente: un cilindro tiene UN lado —la envoltura de 360°— así que elegirlo
+**salta el paso de Lados** en vez de pedir que alguien escriba "wrap" a mano y
+se acuerde de borrar "front". Elegir la forma repone los lados sola.
+
+El salto va en las DOS navegaciones. Sólo hacia adelante dejaría una pantalla a
+la que se llega retrocediendo. Y el número de pasos no cambia: recalcular los
+índices habría obligado a tocar `sideIndex`, `isReview` y las dos
+navegaciones, que es donde se cuela un paso inalcanzable.
+
+**El servidor lo comprueba, no sólo el asistente.** Una plantilla no plana con
+más de un lado se rechaza: el asistente es una pantalla y esto es el modelo.
+Ausente = `plano`, que es lo que eran todas las plantillas de antes; no hay que
+migrar nada.
+
+**`cono` se puede guardar y todavía NO se dibuja.** Un vaso que se estrecha no
+se despliega en un rectángulo sino en un **sector de corona circular**; meterle
+un rectángulo saca el estampado torcido y las horizontales dejan de serlo. Está
+en el enum desde el primer día porque añadirlo después es migrar todas las
+plantillas, y la tarjeta del asistente lo dice en voz alta.
+
+**Lo que la forma decide HOY**: el modo "Probar" **no proyecta** sobre la foto
+real si el producto no es plano. La proyección de ahí es una homografía —cuatro
+esquinas son un plano— y sobre una taza saldría como calcomanía pegada. Cae al
+mockup con su aviso, igual que un producto sin fotos. Enseñar un preview
+mentiroso en la pantalla que existe para no mentir habría sido peor que no
+tenerla.
+
+Las guías del wrap —costura, zona del asa— **vienen dibujadas en el propio
+mockup** y no hacen falta como datos todavía. Volverlas datos vale la pena sólo
+cuando se quiera AVISAR ("esto queda detrás del asa"), no para dibujarlas.
+
+### El preview cilíndrico, enchufado (4 de septiembre)
+
+Los tres pasos que faltaban. Una taza con foto ya se ve como una taza.
+
+**La foto lleva UNA geometría, no dos.** `fotosReales` gana `banda` y
+`esquinas` pasa a opcional: cuatro esquinas si el producto es plano, una banda
+si es un cilindro. El servidor rechaza que vengan las dos —"es una cosa o la
+otra"— y que no venga ninguna.
+
+**QUIÉN DECIDE QUÉ RASTERIZADOR: LA FOTO, NO LA PLANTILLA.** Está escrito igual
+en los tres sitios que componen —la vista, la descarga y `exportarParaPedido`—
+y es a propósito: la foto trae la geometría con la que se marcó, así que una
+foto de banda sólo se puede componer como cilindro **aunque alguien cambie la
+forma de la plantilla después**. `forma` decide qué se PIDE en el alta; la foto
+decide qué se PINTA. Por eso `VistaDeLaPrenda` ya no recibe `forma`.
+
+**El paso del alta es el mismo, con otro marcador.** `PasoPrenda` recibe la
+forma y enseña `MarcarCuadro` o `MarcarBanda`: la pregunta es la misma —dónde
+cae lo impreso— y lo que cambia es la respuesta. La banda son cuatro bordes
+arrastrables y dos deslizadores (curvatura del filo, qué parte mira al frente).
+
+**Las guías verticales del marcador no son adorno.** Se dibujan en las
+posiciones que ocupan columnas repartidas por igual en la ENVOLTURA —la inversa
+de `θ = asin(2u − 1)`— así que se ven apretarse hacia los bordes. Es la única
+forma de comprobar de un vistazo que la banda cubre el cuerpo: si las guías del
+borde caen sobre el fondo, sobra banda.
+
+**"Probar" rasteriza UNA VEZ, y con eso basta.** Aquí se cae lo que llamé "lo
+caro": el preview en vivo sobre lienzo **no hace falta**. `matrix3d` no puede
+con un cilindro, pero "Probar" es una vista aparte y no el lienzo de edición —
+nadie arrastra nada mientras la mira. Se compone al entrar y se enseña el PNG.
+Repintar por fotograma sólo haría falta para ver la taza girar, que no es lo
+que esa pantalla contesta.
+
+Dentro: se rehace sólo al cambiar arte, color o foto; mientras compone se
+enseña la foto sola —parpadear a blanco para volver con lo mismo se lee como un
+fallo—; y se descarta el resultado si el efecto ya se volvió a disparar, porque
+una composición lenta puede llegar después de una rápida y pintar el color
+anterior.
+
+**Lo que queda**: nadie ha subido todavía una foto de taza, así que esto no se
+ha visto funcionando de punta a punta. Y `cono` sigue guardándose sin dibujarse.
+
+### Lo que FALTA, y en qué orden
+
+1. ~~El sangrado~~ · ~~el paso del alta~~ · ~~enchufar el rasterizador~~ —
+   **hechos** el 4 de septiembre.
+2. **Que un taller suba la primera foto de taza.** Sin ella no hay banda que
+   marcar ni preview que enseñar. Es el mismo punto 0 que ya estaba para las
+   playeras.
+3. **El cono.** Se guarda y no se dibuja: un vaso que se estrecha se despliega
+   en un sector de corona circular, no en un rectángulo. Necesita otro
+   rasterizador y un dato más en la banda.
+
+### Decidido, para no volver a discutirlo
+
+**El asa va FIJA y la declara el taller**, no la elige el cliente. Elegirla
+obligaría a rotar el arte respecto de la costura, que es otra cosa. Se puede
+añadir después sin deshacer nada: `centro` de `BandaCilindrica` es justo el
+grado de libertad que haría falta.
+
+---
+
 ## Lo que sigue, en orden
 
-0. **Mirar el panel del comprador con una sesión abierta.** Está construido,
-   compila y su backend está probado, pero **nadie ha visto cómo se ve**. Es lo
-   más barato de la lista y lo más probable que tenga algo roto: la lista de
-   qué mirar está en "Lo que quedó sin comprobar", arriba.
+0. **Que un taller suba las primeras fotos de prenda real.** Todo el camino
+   está construido y desplegado, pero sin una sola foto en la tabla "Probar"
+   sigue cayendo al mockup y nadie ha visto la proyección con una foto de
+   verdad. Es lo más barato de la lista y lo que valida el trabajo más grande
+   de la tanda anterior. Ver "La prenda real".
 1. **El perfil del taller, obligatorio de verdad.** Un taller sin dirección de
    recolección desaparece del checkout con envío —`leerOrigen` no cotiza y al
    comprador le sale "este taller no envía todavía"— y uno sin teléfono no puede
@@ -1309,12 +2042,21 @@ CloudFront y un número metido en el HTML se cachearía con el de una persona.
 5. **El panel en móvil.** La barra lateral es `fixed w-[236px]` con el contenido
    en `ml-[236px]` y **ni un breakpoint**: en un teléfono quedan 154 px útiles.
    Quien produce está en el taller, no en un escritorio.
-6. **Login de admin.** El proxy `/api/admin/*` sigue siendo una puerta abierta.
-   Mientras no exista, el admin se queda fuera del sitio público (ver arriba).
+6. ~~**Login de admin.**~~ — **hecho** (4 de septiembre): pool propio, rutas
+   `/admin/*` detrás de un autorizador JWT y el panel publicado en
+   `backoffice.kustto.com.mx`. La llave compartida ya no existe.
 
 ---
 
 ## Cosas que hay que limpiar
+
+- **CORS acepta los puertos 3000, 3001 y 3002 de desarrollo**, no sólo el
+  3000. Next salta al siguiente cuando el anterior está ocupado —y lo está en
+  cuanto queda un `pnpm dev` colgado o se levantan dos a la vez—, así que el
+  navegador pasa a pedir desde otro puerto y la API contesta un preflight sin
+  cabeceras. El error que sale es **"Failed to fetch"**, que no menciona ni el
+  puerto ni CORS. Si algún día hace falta un cuarto, está en `infra/cors.sh` y
+  `infra/lambda-admin.sh`; correr los dos scripts basta.
 
 - **Faltan mockups, y en producción se nota.** El frente de `tshirt` ya está
   arreglado —apunta a `mockups/tshirt/front-8cdcbb1aa538.png`, que sí existe—
@@ -1371,8 +2113,8 @@ CloudFront y un número metido en el HTML se cachearía con el de una persona.
 ## Si vienes de otra máquina
 
 1. Clona y sigue "Puesta en marcha en una máquina nueva" del `README.md`.
-2. Los secretos (`services/admin/.clave-admin`, `infra/.cognito`,
-   `infra/.cognito-compradores`, `infra/.websocket`, el `.env` del front) **se
+2. Los secretos (`infra/.cognito`, `infra/.cognito-compradores`,
+   `infra/.cognito-admin`, `infra/.websocket`, el `.env` del front) **se
    recuperan de AWS**, no hay que llevarlos a mano: los `.cognito*` y
    `.websocket` los reescriben sus scripts, que son idempotentes.
    **`infra/.skydropx` e `infra/.google` NO se recuperan** —son credenciales de

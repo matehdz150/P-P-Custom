@@ -32,7 +32,13 @@ def main() -> None:
     p.add_argument("--oac", required=True)
     p.add_argument("--funcion", required=True)
     p.add_argument("--comentario", required=True)
+    # El backoffice vive en un subdominio y no tiene `www.`: pedir un alias
+    # que no está en el certificado hace que CloudFront rechace la
+    # distribución entera con un error que no menciona el `www`.
+    p.add_argument("--sin-www", action="store_true")
     a = p.parse_args()
+
+    alias = [a.dominio] if a.sin_www else [a.dominio, f"www.{a.dominio}"]
 
     origen_sitio = f"{a.sitio}.s3.us-east-1.amazonaws.com"
     origen_publico = f"{a.publico}.s3.us-east-1.amazonaws.com"
@@ -85,10 +91,7 @@ def main() -> None:
         "CallerReference": a.comentario,
         "Comment": a.comentario,
         "Enabled": True,
-        "Aliases": {
-            "Quantity": 2,
-            "Items": [a.dominio, f"www.{a.dominio}"],
-        },
+        "Aliases": {"Quantity": len(alias), "Items": alias},
         "DefaultRootObject": "index.html",
         "Origins": {
             "Quantity": 2,
@@ -135,6 +138,27 @@ def main() -> None:
         # Todas las regiones: los clientes están en México, y las clases
         # baratas dejan fuera justo los nodos de aquí. Con este tráfico la
         # diferencia de precio es de centavos y la de latencia no.
+        # ── Los campos que sólo exige ACTUALIZAR ────────────────────────
+        #
+        # Vacíos y apagados, pero PRESENTES. `create-distribution` acepta que
+        # falten y les pone el valor por defecto; `update-distribution` NO, y
+        # responde `IllegalUpdate: <campo> is missing for the resource` — uno
+        # cada vez, así que hay que descubrirlos de a uno. Sin ellos este
+        # script sólo servía la PRIMERA vez, y eso se descubrió el día que
+        # hizo falta actualizar de verdad.
+        "Logging": {
+            "Enabled": False,
+            "IncludeCookies": False,
+            "Bucket": "",
+            "Prefix": "",
+        },
+        "OriginGroups": {"Quantity": 0},
+        "Restrictions": {
+            "GeoRestriction": {"RestrictionType": "none", "Quantity": 0}
+        },
+        "WebACLId": "",
+        "ContinuousDeploymentPolicyId": "",
+        "Staging": False,
         "PriceClass": "PriceClass_All",
         "HttpVersion": "http2and3",
         "IsIPV6Enabled": True,

@@ -443,6 +443,14 @@ async function copiarDelCarrito(
 			`medios/pedidos/${pedidoId}/${lineaId}-${lado}-colocacion.png`,
 			false,
 		);
+		/* La prenda real, si el taller subió la foto de ese lado y color. NO es
+		   obligatoria —hoy casi ningún producto tiene fotos— así que va con
+		   `false`: que falte no puede tumbar un pedido ya cobrado. */
+		await copiar(
+			`carritos/${carritoId}/${lado}-prenda.png`,
+			`medios/pedidos/${pedidoId}/${lineaId}-${lado}-prenda.png`,
+			false,
+		);
 	}
 
 	await copiar(
@@ -746,6 +754,19 @@ function aLinea(l: Cuerpo, producto: Cuerpo, pedidoId: string) {
 				 * qué parte de la playera cae.
 				 */
 				colocacion: `/medios/pedidos/${pedidoId}/${lineaId}-${lado}-colocacion.png`,
+				/**
+				 * La prenda REAL con el diseño encima: lo que vio quien compró.
+				 *
+				 * Va además de `colocacion` y no en su lugar. Aquélla es el mockup
+				 * —un dibujo de línea— y sirve para cuadrar dónde cae el estampado
+				 * con geometría limpia; ésta tiene pliegues y caída y sirve para
+				 * saber qué esperaba el cliente. Son dos preguntas distintas.
+				 *
+				 * La ruta se escribe siempre; el archivo puede no existir, y por eso
+				 * quien la enseñe tiene que aguantar un 404 sin romperse. Comprobar
+				 * aquí si está costaría una llamada a S3 por lado y por pedido.
+				 */
+				prenda: `/medios/pedidos/${pedidoId}/${lineaId}-${lado}-prenda.png`,
 				...medidas,
 				...real,
 			};
@@ -792,12 +813,21 @@ function medidaRealDelArchivo(l: Cuerpo, lado: string, dpi: number) {
 
 	const aCm = (px: number) => Math.round((px / dpi) * 2.54 * 10) / 10;
 
+	/* EL SANGRADO SE RESTA. El archivo mide a propósito más que el área: el
+	   papel se mueve al prensar y el arte tiene que desbordar. Sin restarlo,
+	   "lo que va a medir impreso" incluiría el desbordamiento y la comparación
+	   con lo declarado avisaría de una desviación buscada — en cada pedido, que
+	   es como se enseña a ignorar un aviso. */
+	const sangradoCm = Number(suyo?.sangradoCm ?? 0) || 0;
+
 	return {
 		anchoPx,
 		altoPx,
 		/** Lo que va a medir impreso. Es lo que el taller tiene que comprobar. */
-		anchoRealCm: aCm(anchoPx),
-		altoRealCm: aCm(altoPx),
+		anchoRealCm: Math.round((aCm(anchoPx) - sangradoCm * 2) * 10) / 10,
+		altoRealCm: Math.round((aCm(altoPx) - sangradoCm * 2) * 10) / 10,
+		/** Se enseña aparte: el taller tiene que saber que el archivo desborda. */
+		sangradoCm: sangradoCm || undefined,
 	};
 }
 
@@ -947,6 +977,18 @@ async function firmarArte(conIndice: { indice: number; linea: Linea }[]) {
 				lado: a.lado,
 				tipo: "colocacion" as const,
 				ruta: a.colocacion,
+				contentType: "image/png",
+			},
+			/* La prenda real. Se firma SIEMPRE aunque casi nunca haya foto: el
+			   navegador decide si la usa, y firmar de más cuesta una cadena
+			   mientras que no firmarla obligaría a otra vuelta al servidor
+			   justo después de cobrar. */
+			{
+				indice,
+				lineaId: l.id,
+				lado: a.lado,
+				tipo: "prenda" as const,
+				ruta: a.prenda,
 				contentType: "image/png",
 			},
 		]),

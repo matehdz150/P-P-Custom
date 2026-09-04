@@ -18,10 +18,21 @@ cd "$(dirname "$0")/.."
 source infra/aws.sh
 
 PUBLICO="${KUSTTO_BUCKET_PUBLICO:-kustto-publico-prod}"
-# El de desarrollo y los dos del sitio publicado. Si falta el de producción,
-# el navegador bloquea la subida del arte al pedir y del alta de productos, y
-# el fallo se ve como "no se pudo subir" sin más pista.
-ORIGENES="${KUSTTO_ORIGENES:-http://localhost:3000,https://kustto.com.mx,https://www.kustto.com.mx}"
+# El de desarrollo, los dos del sitio publicado y el BACKOFFICE. Si falta
+# alguno, el navegador bloquea la subida —el arte al pedir, las fotos del alta
+# de productos, los mockups del admin— y el fallo se ve como "no se pudo
+# subir" sin más pista, o como un error de CORS que señala a S3 y no a esta
+# lista.
+#
+# El backoffice se olvidó al publicarlo y costó: subir un mockup moría en el
+# preflight del PUT prefirmado, que es una petición que el navegador hace sin
+# que nadie la escriba y no aparece en el código de la app.
+# TRES PUERTOS DE DESARROLLO, no uno. Next salta al siguiente cuando el 3000
+# está ocupado —y lo está en cuanto queda un `pnpm dev` colgado o se levantan
+# dos a la vez—, así que el navegador pasa a pedir desde el 3001 y la API le
+# contesta un preflight sin cabeceras. El error que sale es "Failed to fetch",
+# que no menciona ni el puerto ni CORS. Ya pasó con el backoffice.
+ORIGENES="${KUSTTO_ORIGENES:-http://localhost:3000,http://localhost:3001,http://localhost:3002,https://kustto.com.mx,https://www.kustto.com.mx,https://backoffice.kustto.com.mx}"
 
 # AllowedOrigins acepta varios separados por coma en la variable.
 lista=$(printf '"%s",' ${ORIGENES//,/ } | sed 's/,$//')

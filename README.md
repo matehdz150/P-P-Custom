@@ -90,22 +90,12 @@ Debe responder con la cuenta `218897024535`.
 
 ### 3. Los secretos que NO viajan en el repo
 
-Tres archivos están en `.gitignore` y hay que recuperarlos. **Ninguno hay que
-inventarlo: los tres se recuperan de AWS.**
+Varios archivos están en `.gitignore` y hay que recuperarlos. **Ninguno hay que
+inventarlo: se recuperan de AWS.**
 
-**`services/admin/.clave-admin`** — la llave compartida del admin. Vive como
-variable de entorno de la Lambda, y desplegar la recupera sola: si la función
-ya existe, su llave gana y el archivo se reescribe con ella.
-
-```bash
-bash infra/lambda-admin.sh
-```
-
-Si prefieres sólo leerla, sin desplegar nada:
-
-```bash
-aws lambda get-function-configuration --function-name kustto-admin --profile kustto-admin --region us-east-1 --query "Environment.Variables.KUSTTO_CLAVE_ADMIN" --output text > services/admin/.clave-admin
-```
+Si te encuentras un `services/admin/.clave-admin`, **bórralo**: era la llave
+compartida del admin y ya no existe. El backoffice se abre con un token del
+pool `kustto-admins` (ver abajo).
 
 **`infra/.cognito`** — los identificadores del pool. El script es idempotente:
 si el pool ya existe no crea nada, sólo lo busca y reescribe el archivo.
@@ -125,10 +115,9 @@ bash infra/websocket.sh
 anterior:
 
 ```
-# La API de admin en AWS. La llave NO lleva prefijo NEXT_PUBLIC a propósito:
-# así se queda del lado del servidor y nunca entra al bundle del navegador.
-KUSTTO_ADMIN_API=https://kd8ydpp2c6.execute-api.us-east-1.amazonaws.com
-KUSTTO_CLAVE_ADMIN=<el contenido de services/admin/.clave-admin>
+# El pool del backoffice. Lo escribe infra/cognito-admin.sh en
+# infra/.cognito-admin. No es secreto: el navegador habla directo con Cognito.
+NEXT_PUBLIC_ADMIN_CLIENTE=<el de infra/.cognito-admin>
 
 # Cognito y la API de proveedores. Estos SÍ llevan NEXT_PUBLIC: el navegador
 # habla directo con Cognito, y ni el id del pool ni el del cliente son
@@ -220,10 +209,11 @@ migrations/            SQL generado por drizzle-kit.
   Sólo devuelve productos aprobados. Si necesitas leer catálogo, es este.
 - `api.ts` (`apiFetch`) → la API de Nest. Sólo quedan ahí los paquetes y las
   cuentas de comprador.
-- `admin.ts` (`adminFetch`) → la Lambda de admin, **pasando por
-  `/api/admin/*`**, un route handler de Next que agrega la llave del lado
-  del servidor. Nunca le pegues directo a API Gateway desde el navegador con
-  la llave: cualquier `NEXT_PUBLIC_*` queda incrustada en el bundle.
+- `admin.ts` (`adminFetch`) → la Lambda de admin, **directo a API Gateway bajo
+  `/admin/*`**, con el token del pool `kustto-admins` en la cabecera. Antes
+  pasaba por un route handler de Next que agregaba una llave compartida; se
+  quitó al publicar el backoffice, porque una página estática no puede guardar
+  un secreto.
 - `proveedores.ts` → la Lambda de proveedores, directo a API Gateway. Aquí
   sí va directo porque el permiso lo lleva el token del propio proveedor, no
   un secreto nuestro.
@@ -255,14 +245,15 @@ devuelve `LastEvaluatedKey`; quien no lo lee recibe una respuesta a medias
 **sin error de por medio**. Ya pasó: el catálogo y las bandejas perdían filas
 en silencio. El helper sigue las páginas y avisa en el log si corta.
 
-**`apps/web/app/api/admin/[...ruta]/route.ts`** — ese puente es **una puerta
-abierta mientras no haya login de admin**. Reenvía cualquier petición con la
-llave puesta. Sirve para trabajar en local; no debe desplegarse público sin
-una sesión de por medio.
+**`apps/web/app/admin/Guardia.tsx`** — **no es la seguridad del backoffice**.
+Sólo evita enseñar un panel vacío a quien no ha entrado. Lo que de verdad lo
+cierra es el autorizador JWT de `/admin/*` en la API Gateway: sin token no hay
+un solo dato, se pinte lo que se pinte en el navegador.
 
-**`apps/web/lib/api/admin.servidor.ts`** — importa `server-only`. Si alguien
-lo importa desde un componente cliente, **falla la compilación** en vez de
-filtrar la llave al bundle. Eso es intencional.
+**`apps/web/lib/auth/pool.ts`** — la fábrica de sesiones de Cognito. Los tres
+pools la comparten y cada uno le pasa su id de cliente y su llave de
+`localStorage`. **No la compartas entre pools**: entrar al backoffice cerraría
+la sesión del taller en la misma máquina.
 
 **Los mockups tienen que servirse desde el mismo origen que el sitio.** El
 teñido de prenda (`lib/fabric/prenda.ts`) hace `getImageData()` sobre ellos;
@@ -345,9 +336,10 @@ En orden, de lo más útil a lo más lejano. El detalle y el porqué están en
    Con él, `entregado` lo pone la paquetería en vez de una persona.
 8. **Fotos de mockup de verdad.** Sin ellas no hay previsualización realista, y
    la plantilla actual es un dibujo de línea con las guías incrustadas.
-9. **Login de admin.** El proxy `/api/admin/*` sigue siendo una puerta
-   abierta. Ya no impide desplegar el front —el sitio está publicado y el
-   admin se aparta al construir— pero es lo que lo mantiene fuera.
+9. ~~**Login de admin.**~~ — **hecho** (4 de septiembre). El backoffice vive
+   en **https://backoffice.kustto.com.mx** con su propio pool
+   (`kustto-admins`), sus rutas `/admin/*` detrás de un autorizador JWT y sin
+   la llave compartida, que se eliminó.
 10. ~~CloudFront + OAC~~ y ~~el carrito de varios talleres~~ — **hechos**
     (3 de septiembre). El sitio vive en **https://kustto.com.mx**. Sigue
     pendiente lo que aquello destapaba: la partición caliente de

@@ -50,7 +50,7 @@ export const muyRapido = (m: string) => new ErrorHttp(429, m);
 
 const CORS = {
 	"access-control-allow-origin": process.env.KUSTTO_ORIGEN ?? "*",
-	"access-control-allow-headers": "content-type,x-clave-admin",
+	"access-control-allow-headers": "content-type,authorization",
 	"access-control-allow-methods": "GET,POST,PATCH,DELETE,OPTIONS",
 };
 

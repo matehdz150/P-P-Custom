@@ -1,5 +1,6 @@
 import { randomBytes, randomUUID } from "node:crypto";
 import {
+	DeleteCommand,
 	GetCommand,
 	QueryCommand,
 	TransactWriteCommand,
@@ -56,6 +57,10 @@ const CAMPOS = [
 	   sí. Por variante serían sesenta casillas para obtener el mismo dato. */
 	"pesoPorTalla",
 	"caja",
+	/* ─── La prenda de verdad ───────────────────────────────────────────────
+	   Fotos reales con el cuadro donde cae lo impreso, para poder enseñar el
+	   diseño sobre la prenda y no sobre el mockup. Ver `validarFotosReales`. */
+	"fotosReales",
 ] as const;
 
 type Cuerpo = Record<string, unknown>;
@@ -172,6 +177,104 @@ export async function actualizar(
 	);
 
 	return sinLlaves(Attributes ?? {});
+}
+
+/**
+ * Quitar un producto. Son DOS cosas distintas según dónde esté.
+ *
+ * UN BORRADOR SE BORRA DE VERDAD. Nunca estuvo en el catálogo, así que no
+ * puede haber un pedido, un carrito, un favorito ni una plantilla apuntándole
+ * —lo público filtra por `activo` y el checkout lo vuelve a comprobar antes de
+ * cobrar—. Y no se llega a `borrador` de vuelta: `actualizar` conserva el
+ * estado previo o manda a revisión, y el admin sólo pone `activo`,
+ * `rechazado` o `archivado`. O sea que "está en borrador" es exactamente
+ * "nunca se publicó", y por eso alcanza para decidir sin ir a buscar pedidos.
+ *
+ * TODO LO DEMÁS SE ARCHIVA. Sale del catálogo igual y desaparece de la lista
+ * del taller, pero la fila se queda. El pedido guarda el nombre y la foto de
+ * cuando se hizo, así que el histórico no depende de esto; lo que sí lee el
+ * producto de hoy es "volver a pedir", para poder decir CUÁL de las líneas se
+ * cayó. Sin la fila, esa pantalla pierde el nombre y enseña un hueco.
+ *
+ * LAS FOTOS NO SE TOCAN. Viven en `medios/productos/<taller>/` y las referencia
+ * el histórico de pedidos: un objeto huérfano cuesta céntimos, y una miniatura
+ * rota en un pedido de hace tres meses no se puede deshacer.
+ */
+export async function borrar(proveedorId: string, id: string) {
+	const previo = await suyoOFalla(proveedorId, id);
+
+	if (previo.estado !== "borrador") {
+		return archivar(id);
+	}
+
+	await dynamo.send(
+		new DeleteCommand({
+			TableName: TABLA,
+			Key: llaves.producto(id),
+			ConditionExpression: "attribute_exists(pk)",
+		}),
+	);
+
+	/* El candado del slug se suelta DESPUÉS y por separado, no en una
+	   transacción con el borrado de arriba. Los dos fallos posibles no cuestan
+	   lo mismo: un candado que sobra sólo hace que `escribirConSlug` reintente
+	   con sufijo la próxima vez que alguien use ese nombre —nadie se entera—,
+	   mientras que meterlos juntos significa que un candado raro deja al taller
+	   sin poder borrar su propio borrador. */
+	const slug = String(previo.slug ?? "");
+	if (slug) {
+		try {
+			await dynamo.send(
+				new DeleteCommand({
+					TableName: TABLA,
+					Key: llaves.slugDeProducto(slug),
+					// Sólo si el candado es de ESTE producto. Sin la condición, un
+					// slug reaprovechado por otro se quedaría sin defensa.
+					ConditionExpression: "productId = :id",
+					ExpressionAttributeValues: { ":id": id },
+				}),
+			);
+		} catch (error) {
+			if (!esConflicto(error)) throw error;
+		}
+	}
+
+	return { id, estado: "borrado" as const };
+}
+
+/**
+ * Fuera del catálogo, pero la fila se queda.
+ *
+ * El índice de estados vive en el ítem: si no se reescribe aquí, la bandeja
+ * del admin sigue enseñando el producto donde estaba. Es la misma razón por la
+ * que `actualizar` lo reescribe, y por la que las dos se tienen que mover
+ * juntas.
+ */
+async function archivar(id: string) {
+	const ahora = new Date().toISOString();
+	const indice = llaves.productoPorEstado("archivado", ahora);
+
+	await dynamo.send(
+		new UpdateCommand({
+			TableName: TABLA,
+			Key: llaves.producto(id),
+			UpdateExpression:
+				"SET #estado = :estado, #updatedAt = :ahora, gsi2pk = :gsi2pk, gsi2sk = :gsi2sk",
+			ExpressionAttributeNames: {
+				"#estado": "estado",
+				"#updatedAt": "updatedAt",
+			},
+			ExpressionAttributeValues: {
+				":estado": "archivado" satisfies Estado,
+				":ahora": ahora,
+				":gsi2pk": indice.gsi2pk,
+				":gsi2sk": indice.gsi2sk,
+			},
+			ConditionExpression: "attribute_exists(pk)",
+		}),
+	);
+
+	return { id, estado: "archivado" as const };
 }
 
 /* ─── Lo que sostiene todo lo de arriba ─────────────────────────────────── */
@@ -364,8 +467,193 @@ function validar(c: Cuerpo) {
 
 	validarExistencias(datos);
 	validarEnvio(datos);
+	validarFotosReales(datos);
 
 	return datos;
+}
+
+/**
+ * Las fotos de la prenda de verdad, con el cuadro donde cae lo impreso.
+ *
+ * PARA QUÉ. Hasta ahora el diseño se veía sobre el mockup —un dibujo plano de
+ * la prenda— y eso no contesta la pregunta con la que alguien paga: cómo va a
+ * quedar. Con una foto real y el cuadro marcado, el arte se puede proyectar
+ * encima y verse sobre la tela.
+ *
+ * UNA FOTO POR LADO **Y POR COLOR**, y no una sola tintable. Al mockup se le
+ * puede cambiar el color porque es una prenda clara sobre fondo blanco que se
+ * recorta y se multiplica; una foto con modelo, con contexto o de una prenda
+ * ya oscura no admite ese tratamiento —teñiría también la cara—. Así que la
+ * llave es el par, y un color sin foto sencillamente no tiene vista realista.
+ *
+ * LAS ESQUINAS VAN EN FRACCIONES DE 0 A 1, nunca en píxeles. La misma foto se
+ * pinta a 700 px en el editor, a 120 en una miniatura y a lo que mida la
+ * pantalla del teléfono; guardar píxeles ataría el cuadro a la resolución con
+ * la que se marcó y bastaría recomprimir la foto para descuadrarlo.
+ *
+ * SON CUATRO Y EN ORDEN —arriba-izquierda, arriba-derecha, abajo-derecha,
+ * abajo-izquierda—, no un rectángulo: sobre una prenda de verdad la tela cae y
+ * el torso va en ángulo, y un rectángulo recto se lee como calcomanía pegada.
+ * Cuatro puntos permiten la perspectiva y marcarlos cuesta lo mismo.
+ *
+ * LA RUTA TIENE QUE SER NUESTRA (`/medios/…`). Es la misma regla que los
+ * mockups: la composición se hace en un lienzo del navegador, y una imagen de
+ * otro origen lo contamina —`getImageData` revienta y la vista se apaga sin
+ * decir nada—. Además evita que un cuerpo manipulado cuelgue una imagen ajena
+ * dentro de la ficha pública.
+ */
+function validarFotosReales(datos: Cuerpo) {
+	if (datos.fotosReales === undefined) return;
+
+	const crudas = datos.fotosReales;
+	if (!Array.isArray(crudas)) {
+		throw malaPeticion("Las fotos de la prenda tienen que venir en una lista");
+	}
+
+	// Lados por colores: un catálogo razonable no pasa de aquí ni de lejos, y
+	// el tope evita que un cuerpo enorme se guarde entero en el ítem.
+	if (crudas.length > 60) {
+		throw malaPeticion("Demasiadas fotos de prenda en un solo producto");
+	}
+
+	const vistas = new Set<string>();
+	const limpias = crudas.map((cruda) => {
+		const f = (cruda ?? {}) as Cuerpo;
+
+		const lado = String(f.lado ?? "").trim();
+		const color = String(f.color ?? "").trim();
+		const url = String(f.url ?? "").trim();
+
+		if (!lado) throw malaPeticion("Una foto de prenda no dice de qué lado es");
+		if (!color) {
+			throw malaPeticion(`La foto del lado "${lado}" no dice de qué color es`);
+		}
+		if (!url.startsWith("/medios/")) {
+			throw malaPeticion(
+				`La foto de "${color}" no está en nuestro almacén: sólo se admiten rutas /medios/`,
+			);
+		}
+
+		const llave = `${lado}|${color}`;
+		if (vistas.has(llave)) {
+			throw malaPeticion(`Hay dos fotos para "${color}" en el mismo lado`);
+		}
+		vistas.add(llave);
+
+		/* DOS GEOMETRÍAS, UNA POR FOTO, y nunca las dos.
+		
+		   Cuatro esquinas definen un PLANO y sirven para una playera; una taza
+		   es un cilindro y sólo enseña 180° de su envoltura, comprimidos hacia
+		   los bordes. No son variantes de lo mismo, y aceptar las dos a la vez
+		   dejaría que la foto dijera una cosa y el preview pintara la otra.
+		
+		   Cuál toca lo decide la FORMA de la plantilla, y eso lo sabe el alta.
+		   Aquí sólo se comprueba que venga exactamente una. */
+		const banda = f.banda as Cuerpo | undefined;
+		const esquinas = Array.isArray(f.esquinas) ? f.esquinas : [];
+
+		if (banda) {
+			if (esquinas.length > 0) {
+				throw malaPeticion(
+					`La foto de "${color}" trae banda y esquinas a la vez: es una cosa o la otra`,
+				);
+			}
+
+			return { lado, color, url, banda: validarBanda(banda, color) };
+		}
+
+		if (esquinas.length !== 4) {
+			throw malaPeticion(
+				`El cuadro de impresión de "${color}" tiene que llevar cuatro esquinas`,
+			);
+		}
+
+		return {
+			lado,
+			color,
+			url,
+			esquinas: esquinas.map((punto, i) => {
+				const p = (punto ?? {}) as Cuerpo;
+				const x = Number(p.x);
+				const y = Number(p.y);
+
+				// Fuera del [0,1] el cuadro se sale de la foto: o se marcó sobre otra
+				// imagen, o llegó en píxeles. Las dos son un cuadro que no sirve.
+				if (!Number.isFinite(x) || !Number.isFinite(y)) {
+					throw malaPeticion(
+						`La esquina ${i + 1} del cuadro de "${color}" no es un punto`,
+					);
+				}
+				if (x < 0 || x > 1 || y < 0 || y > 1) {
+					throw malaPeticion(
+						`La esquina ${i + 1} del cuadro de "${color}" cae fuera de la foto`,
+					);
+				}
+
+				return { x, y };
+			}),
+		};
+	});
+
+	datos.fotosReales = limpias;
+}
+
+/**
+ * La banda visible de un cilindro.
+ *
+ * TODO EN FRACCIONES DE 0 A 1, igual que las esquinas y por lo mismo: la misma
+ * foto se pinta a 700 px en el editor y a 120 en una miniatura, así que en
+ * píxeles bastaría recomprimirla para descuadrar el estampado. Fuera del rango
+ * también es como se detecta que llegaron en píxeles.
+ *
+ * `bombeo` es la excepción y se admite negativo: la foto puede estar tomada
+ * desde abajo, y entonces el filo se comba al revés. Se acota igual para que un
+ * valor absurdo no mande la banda fuera de la imagen.
+ *
+ * SE EXIGE QUE LA BANDA TENGA ÁREA. Con `izquierda >= derecha` o
+ * `arriba >= abajo` el rasterizador devuelve la foto sola sin decir nada, y el
+ * taller creería que subió mal la imagen.
+ */
+function validarBanda(b: Cuerpo, color: string) {
+	const fraccion = (nombre: string, min = 0, max = 1) => {
+		const v = Number(b[nombre]);
+
+		if (!Number.isFinite(v)) {
+			throw malaPeticion(`A la banda de "${color}" le falta ${nombre}`);
+		}
+		if (v < min || v > max) {
+			throw malaPeticion(
+				`El valor de ${nombre} en la banda de "${color}" cae fuera de la foto`,
+			);
+		}
+
+		return v;
+	};
+
+	const izquierda = fraccion("izquierda");
+	const derecha = fraccion("derecha");
+	const arriba = fraccion("arriba");
+	const abajo = fraccion("abajo");
+
+	if (!(derecha > izquierda)) {
+		throw malaPeticion(
+			`La banda de "${color}" no tiene ancho: el borde derecho va después del izquierdo`,
+		);
+	}
+	if (!(abajo > arriba)) {
+		throw malaPeticion(
+			`La banda de "${color}" no tiene alto: el borde de abajo va después del de arriba`,
+		);
+	}
+
+	return {
+		izquierda,
+		derecha,
+		arriba,
+		abajo,
+		bombeo: fraccion("bombeo", -0.5, 0.5),
+		centro: fraccion("centro"),
+	};
 }
 
 /**

@@ -14,7 +14,9 @@ pnpm-lock.yaml
 services/admin/.clave-admin
 infra/.cognito
 infra/.cognito-compradores
+infra/.cognito-admin
 infra/.websocket
+infra/.backoffice
 
 # Este SÍ es un secreto de verdad, y no se recupera de AWS: el secreto del
 # cliente de OAuth lo guarda Google y sólo se enseña al crearlo. Si se pierde,

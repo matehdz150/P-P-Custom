@@ -20,6 +20,8 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--dominio", required=True)
     p.add_argument("--destino", required=True)
+    # Ver `frontend-config.py`: el backoffice no tiene `www.`.
+    p.add_argument("--sin-www", action="store_true")
     a = p.parse_args()
 
     def alias(nombre):
@@ -38,10 +40,11 @@ def main() -> None:
             },
         }
 
-    lote = {
-        "Comment": "Sitio de Kustto en CloudFront",
-        "Changes": [alias(a.dominio), alias(f"www.{a.dominio}")],
-    }
+    cambios = [alias(a.dominio)]
+    if not a.sin_www:
+        cambios.append(alias(f"www.{a.dominio}"))
+
+    lote = {"Comment": "Sitio de Kustto en CloudFront", "Changes": cambios}
 
     print(json.dumps(lote))
 

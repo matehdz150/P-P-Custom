@@ -120,6 +120,11 @@ export async function obtener(id: string) {
 		templateSides: producto.templateSides ?? [],
 		pricing: producto.pricing ?? {},
 		production: producto.production ?? {},
+		/* Las fotos de la prenda real con su cuadro de impresión. Van SÓLO en la
+		   ficha y no en el listado: las usa el editor para enseñar el diseño
+		   puesto, y en el catálogo serían decenas de cuadros de cuatro puntos
+		   que nadie mira, multiplicados por cada producto. */
+		fotosReales: producto.fotosReales ?? [],
 		plantilla,
 		taller: taller ?? null,
 	};

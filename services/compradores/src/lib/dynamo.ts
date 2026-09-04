@@ -103,6 +103,19 @@ export const llaves = {
 	carrito: (sub: string) => ({ pk: `CUSTOMER#${sub}`, sk: "CART" }),
 
 	/**
+	 * Los favoritos de quien tiene sesión.
+	 *
+	 * Cuelga del mismo `CUSTOMER#` que el perfil y el carrito, en otro `sk`, y
+	 * guarda LA LISTA ENTERA en un solo ítem — no un ítem por producto.
+	 *
+	 * Son unas decenas de ids como mucho y siempre se leen completos: de una
+	 * pieza es un `GetItem` y un `PutItem`, y la fusión al entrar es juntar dos
+	 * listas. Uno por producto obligaría a un `Query` para leerlos y a un
+	 * `DeleteItem` por cada corazón que se apaga, sin ganar nada.
+	 */
+	favoritos: (sub: string) => ({ pk: `CUSTOMER#${sub}`, sk: "FAVS" }),
+
+	/**
 	 * Un diseño guardado: el logo al que su dueño le puso nombre.
 	 *
 	 * CUELGA DEL MISMO `CUSTOMER#` que el perfil y el carrito, en otro `sk`. No
@@ -116,10 +129,65 @@ export const llaves = {
 		sk: `DESIGN#${id}`,
 	}),
 
+	/**
+	 * Una plantilla: la receta de un pedido que se repite.
+	 *
+	 * "Estos productos, con este arte, en estas cantidades" — el kit de
+	 * bienvenida de una empresa, el set de una graduación. Cuelga del mismo
+	 * `CUSTOMER#` que todo lo demás, en su propio prefijo, y se lista igual
+	 * que los diseños: `begins_with(sk, "TEMPLATE#")`.
+	 *
+	 * NO GUARDA ARTE, apunta a diseños guardados. El arte de una plantilla
+	 * tiene que durar años y el del carrito caduca a los 30 días
+	 * (`carritos/` en infra/buckets.sh); los diseños guardados ya viven en
+	 * `medios/disenos/` para siempre. Referenciarlos evita un cuarto sitio
+	 * donde el mismo PNG puede existir y quedarse viejo.
+	 */
+	plantilla: (sub: string, id: string) => ({
+		pk: `CUSTOMER#${sub}`,
+		sk: `TEMPLATE#${id}`,
+	}),
+
+	/** El prefijo con el que se listan. Espejo del `sk` de arriba. */
+	plantillasDe: (sub: string) => ({
+		pk: `CUSTOMER#${sub}`,
+		prefijo: "TEMPLATE#",
+	}),
+
 	/** El prefijo con el que se listan. Espejo del `sk` de arriba. */
 	disenosDe: (sub: string) => ({
 		pk: `CUSTOMER#${sub}`,
 		prefijo: "DESIGN#",
+	}),
+
+	/**
+	 * Una imagen de la biblioteca del comprador.
+	 *
+	 * QUÉ RESUELVE. Quien pide camisetas para su empresa sube el MISMO logo
+	 * cada vez, y hasta ahora el editor lo olvidaba en cuanto se cerraba: el
+	 * archivo iba al lienzo y de ahí al arte del pedido, sin quedar en ninguna
+	 * parte donde volver a encontrarlo. Con esto, subir una imagen la deja
+	 * guardada y la siguiente vez está a un clic.
+	 *
+	 * NO ES UN DISEÑO GUARDADO, y por eso no cuelga de `DESIGN#`. Un diseño es
+	 * un lienzo entero para UN producto —con su texto, su colocación y sus
+	 * medidas—; esto es una imagen suelta que sirve para cualquiera. Meterlas
+	 * en el mismo prefijo obligaría a distinguirlas al listar y a que "mis
+	 * diseños" enseñara logos sueltos.
+	 *
+	 * Cuelga del mismo `CUSTOMER#` que todo lo demás, por la misma razón que
+	 * los diseños: los tres índices están ocupados y un cuarto obligaría a
+	 * replantear el reparto entero.
+	 */
+	imagen: (sub: string, id: string) => ({
+		pk: `CUSTOMER#${sub}`,
+		sk: `IMAGE#${id}`,
+	}),
+
+	/** El prefijo con el que se listan. Espejo del `sk` de arriba. */
+	imagenesDe: (sub: string) => ({
+		pk: `CUSTOMER#${sub}`,
+		prefijo: "IMAGE#",
 	}),
 
 	/**

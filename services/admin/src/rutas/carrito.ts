@@ -48,17 +48,24 @@ const VIGENCIA = 900;
 const MAXIMO = {
 	arte: 25 * 1024 * 1024,
 	colocacion: 25 * 1024 * 1024,
+	/* La prenda real con el diseño encima. Sale de una foto de estudio
+	   reescalada a 1600 px de ancho, así que pesa menos que el arte; el mismo
+	   tope evita tener que pensarlo dos veces. */
+	prenda: 25 * 1024 * 1024,
 	diseno: 10 * 1024 * 1024,
 } as const;
 
-/** Un pedido con seis lados y su diseño son trece archivos; catorce da aire. */
-const MAXIMO_ARCHIVOS = 14;
+/* Tres archivos por lado —arte, colocación y prenda real— más el diseño. Con
+   seis lados son diecinueve; veinte da aire. Eran catorce cuando los archivos
+   por lado eran dos. */
+const MAXIMO_ARCHIVOS = 20;
 
 type Tipo = keyof typeof MAXIMO;
 
 const TIPOS: Record<Tipo, string> = {
 	arte: "image/png",
 	colocacion: "image/png",
+	prenda: "image/png",
 	diseno: "application/json",
 };
 

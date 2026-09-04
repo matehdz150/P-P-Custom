@@ -7,10 +7,15 @@
 # Es idempotente: la primera vez crea todo, las siguientes solo actualiza el
 # código. Se puede correr en cada cambio.
 #
-# LA LLAVE DE ADMIN
-#   Se genera sola la primera vez y se guarda en services/admin/.clave-admin,
-#   que está en .gitignore. Nunca se imprime en pantalla ni viaja al repo.
-#   El front la manda en el header x-clave-admin.
+# CÓMO SE AUTENTICA EL ADMIN
+#   Con un token del pool `kustto-admins`, validado por la API Gateway en las
+#   rutas `/admin/{proxy+}`. Este script crea ese autorizador y esas rutas.
+#
+#   ANTES ERA UNA LLAVE COMPARTIDA (`x-clave-admin`) que guardaba un route
+#   handler de Next. Se quitó al publicar el backoffice: una página estática no
+#   puede guardar un secreto, y una credencial permanente que abre toda la API
+#   no puede viajar al navegador. Si ves `services/admin/.clave-admin` por ahí,
+#   ya no sirve para nada: bórralo.
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -26,18 +31,22 @@ ORIGEN="${KUSTTO_ORIGEN:-http://localhost:3000}"
 # en su dominio: el de desarrollo y los dos de produccion. Se manda como JSON
 # y no con la forma corta del CLI porque ahi las comas separan CLAVES, y una
 # lista de origenes se interpretaria como otros campos.
-ORIGENES="${KUSTTO_ORIGENES:-http://localhost:3000,https://kustto.com.mx,https://www.kustto.com.mx}"
+# TRES PUERTOS DE DESARROLLO, no uno. Next salta al siguiente cuando el 3000
+# está ocupado —y lo está en cuanto queda un `pnpm dev` colgado o se levantan
+# dos a la vez—, así que el navegador pasa a pedir desde el 3001 y la API le
+# contesta un preflight sin cabeceras. El error que sale es "Failed to fetch",
+# que no menciona ni el puerto ni CORS. Ya pasó con el backoffice.
+ORIGENES="${KUSTTO_ORIGENES:-http://localhost:3000,http://localhost:3001,http://localhost:3002,https://kustto.com.mx,https://www.kustto.com.mx,https://backoffice.kustto.com.mx}"
 CORS_JSON=$(python3 - "$ORIGENES" <<'PYCORS'
 import json, sys
 print(json.dumps({
     "AllowOrigins": sys.argv[1].split(","),
     "AllowMethods": ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
-    "AllowHeaders": ["content-type", "x-clave-admin", "authorization"],
+    "AllowHeaders": ["content-type", "authorization"],
     "MaxAge": 300,
 }))
 PYCORS
 )
-ARCHIVO_CLAVE="services/admin/.clave-admin"
 
 # Las paqueterías que se pueden OFRECER en el checkout.
 #
@@ -106,11 +115,10 @@ fi
 # aporta lo que falte.
 if [ "$EXISTE" = "1" ]; then
   VIVAS=$(aws_ lambda get-function-configuration --function-name "$FUNCION" \
-    --query "[Environment.Variables.KUSTTO_CLAVE_ADMIN, Environment.Variables.KUSTTO_POOL_ID, Environment.Variables.KUSTTO_WS_ENDPOINT]" \
+    --query "[Environment.Variables.KUSTTO_POOL_ID, Environment.Variables.KUSTTO_WS_ENDPOINT]" \
     --output text)
-  CLAVE_VIVA=$(echo "$VIVAS" | cut -f1)
-  POOL_VIVO=$(echo "$VIVAS" | cut -f2)
-  WS_VIVO=$(echo "$VIVAS" | cut -f3)
+  POOL_VIVO=$(echo "$VIVAS" | cut -f1)
+  WS_VIVO=$(echo "$VIVAS" | cut -f2)
 
   # Skydropx igual que todo lo demás: si la función ya las trae y el repo no,
   # mandan las suyas. `update-function-configuration` sustituye el entorno
@@ -139,13 +147,6 @@ if [ "$EXISTE" = "1" ]; then
     fi
   fi
 
-  if [ -n "$CLAVE_VIVA" ] && [ "$CLAVE_VIVA" != "None" ]; then
-    if [ -f "$ARCHIVO_CLAVE" ] && [ "$(cat "$ARCHIVO_CLAVE")" != "$CLAVE_VIVA" ]; then
-      echo "Aviso: $ARCHIVO_CLAVE no coincidía con la llave de la función. Gana la de la función."
-    fi
-    printf '%s' "$CLAVE_VIVA" > "$ARCHIVO_CLAVE"
-  fi
-
   if [ -z "$POOL_ID" ] && [ -n "$POOL_VIVO" ] && [ "$POOL_VIVO" != "None" ]; then
     POOL_ID="$POOL_VIVO"
   fi
@@ -157,13 +158,6 @@ if [ "$EXISTE" = "1" ]; then
     WS_ENDPOINT="$WS_VIVO"
   fi
 fi
-
-# Sólo se inventa una llave cuando no hay ninguna en ningún lado.
-if [ ! -f "$ARCHIVO_CLAVE" ]; then
-  head -c 32 /dev/urandom | base64 | tr -d '/+=' | head -c 40 > "$ARCHIVO_CLAVE"
-  echo "Llave de admin generada en $ARCHIVO_CLAVE (no se sube al repo)."
-fi
-CLAVE=$(cat "$ARCHIVO_CLAVE")
 
 # ── El rol ─────────────────────────────────────────────────────────────────
 if ! aws_ iam get-role --role-name "$ROL" >/dev/null 2>&1; then
@@ -238,7 +232,7 @@ fi
 
 # Una variable vacía al final rompe el parser del CLI ("Expected: ',',
 # received: 'EOF'"), así que las que no tienen valor no se mandan.
-PARES="KUSTTO_TABLA=$TABLA,KUSTTO_BUCKET_PUBLICO=$PUBLICO,KUSTTO_CLAVE_ADMIN=$CLAVE,KUSTTO_ORIGEN=$ORIGEN"
+PARES="KUSTTO_TABLA=$TABLA,KUSTTO_BUCKET_PUBLICO=$PUBLICO,KUSTTO_ORIGEN=$ORIGEN"
 if [ -n "$POOL_ID" ]; then
   PARES="$PARES,KUSTTO_POOL_ID=$POOL_ID"
 else
@@ -309,10 +303,79 @@ else
     --cors-configuration "$CORS_JSON" >/dev/null
 fi
 
+# ── Las rutas del backoffice ───────────────────────────────────────────────
+#
+# Todo lo que exige ser administrador cuelga de `/admin/*` y va detrás de un
+# autorizador JWT del pool `kustto-admins`. Lo demás sigue cayendo en
+# `$default`, que la Lambda sólo atiende para las rutas de `/publico/`.
+#
+# Sin `infra/.cognito-admin` esto se salta con un aviso en vez de fallar: el
+# resto del despliegue —la Lambda, el catálogo público, los pedidos— no depende
+# del backoffice y no tiene por qué caerse con él.
+
+if [ -f infra/.cognito-admin ]; then
+  # shellcheck disable=SC1091
+  source infra/.cognito-admin
+
+  AUTORIZADOR=$(aws_ apigatewayv2 get-authorizers --api-id "$API_ID" \
+    --query "Items[?Name=='cognito-admin'].AuthorizerId | [0]" --output text)
+
+  if [ "$AUTORIZADOR" = "None" ] || [ -z "$AUTORIZADOR" ]; then
+    echo "Creando autorizador JWT de admins…"
+    AUTORIZADOR=$(aws_ apigatewayv2 create-authorizer --api-id "$API_ID" \
+      --name cognito-admin \
+      --authorizer-type JWT \
+      --identity-source '$request.header.Authorization' \
+      --jwt-configuration "Audience=${KUSTTO_ADMIN_CLIENTE},Issuer=https://cognito-idp.${REGION}.amazonaws.com/${KUSTTO_ADMIN_POOL}" \
+      --query AuthorizerId --output text)
+  fi
+
+  INTEGRACION=$(aws_ apigatewayv2 get-integrations --api-id "$API_ID" \
+    --query "Items[?contains(IntegrationUri, ':function:${FUNCION}')].IntegrationId | [0]" \
+    --output text)
+
+  if [ "$INTEGRACION" = "None" ] || [ -z "$INTEGRACION" ]; then
+    echo "No encontré la integración de $FUNCION en la API." >&2
+    exit 1
+  fi
+
+  # Un método por ruta, y NUNCA `ANY`.
+  #
+  # `ANY` incluye OPTIONS, así que el preflight del navegador caería en la ruta
+  # con autorizador — y un preflight no lleva Authorization, por diseño.
+  # Resultado: 401 sin cabeceras CORS y un "Failed to fetch" que no dice nada.
+  # Dejando OPTIONS sin ruta, API Gateway lo contesta solo. Ya pasó con
+  # /proveedores/*; que no vuelva a pasar aquí.
+  for METODO in GET POST PATCH DELETE; do
+    RUTA="$METODO /admin/{proxy+}"
+    EXISTE=$(aws_ apigatewayv2 get-routes --api-id "$API_ID" \
+      --query "Items[?RouteKey=='${RUTA}'].RouteId | [0]" --output text)
+
+    if [ "$EXISTE" = "None" ] || [ -z "$EXISTE" ]; then
+      echo "Creando ruta $RUTA…"
+      aws_ apigatewayv2 create-route --api-id "$API_ID" \
+        --route-key "$RUTA" \
+        --target "integrations/${INTEGRACION}" \
+        --authorization-type JWT \
+        --authorizer-id "$AUTORIZADOR" >/dev/null
+    else
+      # Se reafirma en cada corrida: una ruta que quedara sin autorizador
+      # —creada a mano, o de una versión anterior de este script— es el
+      # backoffice abierto al mundo, y no se vería desde fuera.
+      aws_ apigatewayv2 update-route --api-id "$API_ID" \
+        --route-id "$EXISTE" \
+        --authorization-type JWT \
+        --authorizer-id "$AUTORIZADOR" >/dev/null
+    fi
+  done
+else
+  echo "Aviso: sin infra/.cognito-admin. Corre infra/cognito-admin.sh o el backoffice se queda sin puerta."
+fi
+
 URL=$(aws_ apigatewayv2 get-api --api-id "$API_ID" --query ApiEndpoint --output text)
 
 echo
 echo "Listo."
 echo "  función : $FUNCION ($(du -h services/admin/admin.zip | cut -f1))"
 echo "  API     : $URL"
-echo "  llave   : en $ARCHIVO_CLAVE"
+echo "  admin   : $URL/admin/*  (exige token del pool de admins)"

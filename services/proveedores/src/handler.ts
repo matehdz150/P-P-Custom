@@ -202,6 +202,11 @@ router.patch("/proveedores/productos/:id", (p) =>
 router.patch("/proveedores/productos/:id/existencias", (p) =>
 	productos.moverExistencias(quien(p), p.params.id, p.cuerpo),
 );
+// Borra el borrador y archiva todo lo demás; la respuesta dice cuál de las dos
+// pasó. Ver el comentario de `borrar`.
+router.delete("/proveedores/productos/:id", (p) =>
+	productos.borrar(quien(p), p.params.id),
+);
 
 /* Los pedidos los escribe el cliente por la ruta pública; el taller sólo ve
    los suyos y los mueve de estado. */

@@ -390,23 +390,32 @@ lee por el correo verificado y no se parte.
 
 ---
 
-## La autorización, en dos sabores
+## La autorización: un pool por público, un autorizador por prefijo
 
-**Admin: llave compartida.** El header `x-clave-admin` se compara en tiempo
-constante (`exigirLlave` en `services/admin/src/handler.ts`) — una
-comparación normal con `===` filtra por cuánto tarda en fallar. La llave la
-genera `lambda-admin.sh` sola la primera vez, la guarda en
-`services/admin/.clave-admin` (en `.gitignore`) y la pone como variable de
-entorno de la Lambda. Nunca se imprime en pantalla.
+**Los tres van por autorizador JWT de API Gateway.** El token lo valida la
+plataforma —firma, caducidad, emisor y audiencia— **antes** de invocar la
+función. Una petición sin token válido nunca llega a ejecutar código nuestro,
+ni se paga. Los handlers sólo leen `sub` de las claims; no verifican nada.
 
-Es temporal y sabemos por qué es insuficiente: no distingue personas, no se
-revoca por usuario y vive en un proxy que la pone a cualquiera que alcance el
-servidor de Next.
+| Prefijo | Autorizador | Pool |
+|---|---|---|
+| `/proveedores/*` | `cognito-proveedores` | talleres |
+| `/cuenta/*` | `cognito-compradores` | compradores |
+| `/admin/*` | `cognito-admin` | `kustto-admins` |
+| todo lo demás (`$default`) | ninguno | sólo se atiende `/publico/*` |
 
-**Proveedores: autorizador JWT de API Gateway.** El token lo valida la
-plataforma —firma, caducidad, audiencia— **antes** de invocar la función.
-Una petición sin token válido nunca llega a ejecutar código nuestro, ni se
-paga. El handler sólo lee `sub` de las claims; no verifica nada.
+**TRES POOLS Y NO UNO CON GRUPOS.** El autorizador valida emisor y audiencia,
+**no** grupos. Con un pool compartido, el token de cualquier comprador
+registrado pasaría el autorizador de `/admin/*` y lo único que lo separaría del
+backoffice serían comprobaciones dentro del handler — o sea, que alguien se
+acuerde. Con un pool por público es imposible por construcción.
+
+**La llave compartida del admin murió** (4 de septiembre). Era el header
+`x-clave-admin`, comparado en tiempo constante, que ponía un route handler de
+Next. No distinguía personas, no se revocaba por usuario y no podía viajar a
+una página estática. Lo que no cuelga de `/admin/` y no está en `ABIERTAS`
+—la lista de `services/admin/src/handler.ts`— responde **404**: ni 401 ni 403,
+para no decirle a quien prueba rutas cuáles existen.
 
 ### La trampa del `ANY` (ya resuelta, no la reintroduzcas)
 
@@ -616,7 +625,8 @@ inmediato falla con un error que parece de permisos y no lo es.
 
 | Archivo | Cómo se recupera |
 |---|---|
-| `services/admin/.clave-admin` | `bash infra/lambda-admin.sh` lo rehace con la llave que ya tiene la función |
+| `infra/.cognito-admin` | `bash infra/cognito-admin.sh` — idempotente; los ids no son secretos |
+| `infra/.backoffice` | `bash infra/backoffice.sh` — idempotente |
 | `infra/.cognito` | `bash infra/cognito.sh` — idempotente, no crea nada nuevo |
 | `infra/.websocket` | `bash infra/websocket.sh` — idempotente; los ids no son secretos |
 | `infra/.cognito-compradores` | `bash infra/cognito-compradores.sh` — idempotente; tampoco son secretos |
@@ -662,12 +672,13 @@ está fuera del repo sólo porque es un archivo generado.
 > seguir devolviendo 200 por ahí durante horas. Ya tapó un 404 real.
 
 ```bash
-# El admin exige llave
-curl -s -o /dev/null -w "%{http_code}\n" https://kd8ydpp2c6.execute-api.us-east-1.amazonaws.com/templates
+# El admin exige token del pool de admins
+curl -s -o /dev/null -w "%{http_code}\n" https://kd8ydpp2c6.execute-api.us-east-1.amazonaws.com/admin/templates
 # -> 401
 
-# Con llave, lista plantillas
-curl -s -H "x-clave-admin: $(cat services/admin/.clave-admin)" https://kd8ydpp2c6.execute-api.us-east-1.amazonaws.com/templates
+# La ruta vieja ya no existe, ni con la llave de antes
+curl -s -o /dev/null -w "%{http_code}\n" https://kd8ydpp2c6.execute-api.us-east-1.amazonaws.com/templates
+# -> 404
 
 # Proveedores rechaza sin token, y también rechaza la llave de admin
 curl -s -o /dev/null -w "%{http_code}\n" https://kd8ydpp2c6.execute-api.us-east-1.amazonaws.com/proveedores/yo

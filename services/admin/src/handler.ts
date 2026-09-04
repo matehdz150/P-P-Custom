@@ -2,6 +2,7 @@ import {
 	crearRouter,
 	json,
 	noAutorizado,
+	noEncontrado,
 	respuestaDeError,
 } from "./lib/http.js";
 import * as carrito from "./rutas/carrito.js";
@@ -89,11 +90,30 @@ router.get("/publico/pedidos/:id", (p) =>
 );
 
 /**
- * Rutas que NO piden la llave de admin.
+ * El prefijo de todo lo que exige ser administrador.
+ *
+ * LO PROTEGE LA API GATEWAY, no esta Lambda. Las rutas `/admin/{proxy+}` van
+ * detrás de un autorizador JWT del pool `kustto-admins`, así que aquí llega
+ * sólo lo que ya trae un token válido de ESE pool — ni de compradores ni de
+ * talleres, porque el autorizador valida emisor y audiencia.
+ *
+ * ANTES ERA UNA LLAVE COMPARTIDA en el header `x-clave-admin`, guardada por un
+ * route handler de Next que hacía de puente. Se quitó al publicar el
+ * backoffice: una página estática no puede guardar un secreto, y una
+ * credencial permanente que abre toda la API no puede viajar al navegador.
+ */
+const ADMIN = "/admin";
+
+/**
+ * Rutas abiertas, las únicas que se atienden fuera de `/admin/*`.
  *
  * Leer un mockup es público por definición —lo pide el navegador de
  * cualquiera que abra el editor— y en producción ni siquiera pasa por aquí,
  * lo sirve CloudFront.
+ *
+ * ESTA LISTA ES AHORA LA FRONTERA ENTERA. Mientras existió la llave, algo que
+ * se colara fuera de ella seguía pidiendo un secreto; hoy lo que no esté aquí
+ * y no cuelgue de `/admin/` no se atiende. Por eso van enumeradas una por una.
  */
 const ABIERTAS = [
 	/^GET \/publico\//,
@@ -149,8 +169,17 @@ export async function handler(evento: any) {
 			return await subidas.leerPublico(ruta.slice("/publico/".length));
 		}
 
-		if (!ABIERTAS.some((r) => r.test(`${metodo} ${ruta}`))) {
-			exigirLlave(headers["x-clave-admin"]);
+		/* Se decide ANTES de mirar el cuerpo, y son tres casos que no se
+		   solapan: lo de admin, lo abierto, y todo lo demás — que no existe. */
+		const esDeAdmin = ruta === ADMIN || ruta.startsWith(`${ADMIN}/`);
+
+		if (esDeAdmin) {
+			exigirAdministrador(evento);
+		} else if (!ABIERTAS.some((r) => r.test(`${metodo} ${ruta}`))) {
+			/* NI 401 NI 403: un 404. Distinguirlos le diría a quien prueba rutas
+			   cuáles existen, y esta Lambda tiene detrás el catálogo entero, los
+			   talleres y los pedidos. Que se parezca a una ruta que no está. */
+			throw noEncontrado("No encontramos esa ruta");
 		}
 
 		const cuerpoCrudo = evento?.isBase64Encoded
@@ -159,7 +188,10 @@ export async function handler(evento: any) {
 
 		return await router.resolver({
 			metodo,
-			ruta,
+			// El router sigue registrando `/templates`, `/productos`… El prefijo
+			// es cosa de la API Gateway y se quita aquí, en un solo sitio: meterlo
+			// en cada `router.get` era pedir que alguien lo olvidara.
+			ruta: esDeAdmin ? ruta.slice(ADMIN.length) || "/" : ruta,
 			query: evento?.queryStringParameters ?? {},
 			cuerpo: cuerpoCrudo ? JSON.parse(cuerpoCrudo) : undefined,
 			cuerpoCrudo,
@@ -171,21 +203,18 @@ export async function handler(evento: any) {
 }
 
 /**
- * Comparación en tiempo constante para que la llave no se pueda adivinar
- * midiendo cuánto tarda en fallar.
+ * Que la petición venga de un administrador de verdad.
+ *
+ * NO VALIDA EL TOKEN: eso ya lo hizo la API Gateway con el autorizador JWT, y
+ * repetirlo aquí sería escribir a mano una verificación de firma que ya está
+ * hecha y probada. Lo que se comprueba es que el autorizador HAYA CORRIDO —si
+ * no hay claims, la ruta quedó colgada sin autorizador— porque una Lambda que
+ * confía en un guardia que no existe está abierta y no lo parece.
  */
-function exigirLlave(recibida: string | undefined) {
-	const esperada = process.env.KUSTTO_CLAVE_ADMIN;
+function exigirAdministrador(evento: any) {
+	const claims =
+		evento?.requestContext?.authorizer?.jwt?.claims ??
+		evento?.requestContext?.authorizer?.claims;
 
-	// Sin llave configurada la Lambda no atiende: mejor caída que abierta.
-	if (!esperada) throw noAutorizado("El admin no tiene llave configurada");
-	if (!recibida) throw noAutorizado();
-
-	const a = Buffer.from(recibida);
-	const b = Buffer.from(esperada);
-	if (a.length !== b.length) throw noAutorizado();
-
-	let diferencia = 0;
-	for (let i = 0; i < a.length; i++) diferencia |= a[i] ^ b[i];
-	if (diferencia !== 0) throw noAutorizado();
+	if (!claims?.sub) throw noAutorizado("El token no trae identidad");
 }

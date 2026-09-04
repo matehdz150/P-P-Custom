@@ -68,6 +68,18 @@ fi
 # vuelva a subir. Ese prefijo caduca a los 30 días, así que lo peor que puede
 # dejar un fallo a medias es basura que se limpia sola.
 #
+# `medios/imagenes/*` ES LA BIBLIOTECA DEL COMPRADOR: lo que sube en el editor
+# para no volver a buscar el mismo logo. Es el ÚNICO prefijo donde esta función
+# puede BORRAR, y a propósito: son archivos personales que alguien pidió quitar,
+# y dejarlos en S3 después de decir "borrada" sería mentirle. En cualquier otro
+# sitio borrar destruiría el registro de algo que se produjo.
+#
+# `medios/plantillas/*` ES EL ÚNICO SITIO DONDE ESTA FUNCIÓN PUEDE PONER ARTE
+# QUE DURE. Hacía falta para las plantillas: se arma una eligiendo del catálogo
+# y diseñando, SIN pedir nada, así que el arte no puede vivir en `carritos/`
+# —que caduca a los 30 días— ni en `medios/pedidos/`, que sólo existe después
+# de comprar. Lee y escribe: escribe al diseñar, lee al cargarla en el carrito.
+#
 # SÓLO en `medios/disenos/*`. Guardar un diseño copia el arte de un pedido a
 # la carpeta de diseños, así que necesita leer el origen; lo que no puede
 # hacer nunca es tocar el arte de un pedido ya hecho.
@@ -106,6 +118,16 @@ aws_ iam put-role-policy --role-name "$ROL" --policy-name datos \
         \"Effect\": \"Allow\",
         \"Action\": [\"s3:PutObject\"],
         \"Resource\": \"arn:aws:s3:::${PUBLICO}/carritos/*\"
+      },
+      {
+        \"Effect\": \"Allow\",
+        \"Action\": [\"s3:PutObject\", \"s3:GetObject\"],
+        \"Resource\": \"arn:aws:s3:::${PUBLICO}/medios/plantillas/*\"
+      },
+      {
+        \"Effect\": \"Allow\",
+        \"Action\": [\"s3:PutObject\", \"s3:DeleteObject\"],
+        \"Resource\": \"arn:aws:s3:::${PUBLICO}/medios/imagenes/*\"
       }
     ]
   }"

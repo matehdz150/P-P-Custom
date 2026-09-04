@@ -1,3 +1,5 @@
 KUSTTO_DOMINIO=kustto.com.mx
 KUSTTO_BUCKET_CORREO=kustto-correo-prod
 KUSTTO_PREFIJO_CORREO=entrada/
+KUSTTO_REMITENTE=buzon@kustto.com.mx
+KUSTTO_DESTINO=matehdz150@gmail.com
