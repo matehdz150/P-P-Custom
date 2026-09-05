@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Footer from "@/components/Kustto/Footer";
 import Header from "@/components/Kustto/Header";
+import { getFichaDeProducto } from "@/lib/api/catalogo";
 
 /**
  * La página que sale cuando una URL no existe.
@@ -22,26 +23,69 @@ import Header from "@/components/Kustto/Header";
  *   - **El producto es más nuevo que el sitio.** Las páginas de producto se
  *     hornean al construir (`lib/build/parametros.ts`) y el catálogo se pide
  *     en vivo, así que entre una publicación y la siguiente hay productos que
- *     se ven y no se pueden abrir. Eso sí es un fallo nuestro, y está apuntado.
+ *     se ven y no se pueden abrir. Eso sí es un fallo nuestro.
  *
- * NO SE DISTINGUEN, y no se intenta: desde aquí no hay forma de saber cuál de
- * los dos es sin preguntarle a la API, y la respuesta —"vuelve al catálogo"—
- * es la misma. Prometer un diagnóstico que no se tiene es peor que no darlo.
+ * AHORA SÍ SE DISTINGUEN, PREGUNTÁNDOLE A LA API. Antes no se intentaba —el
+ * comentario decía que la respuesta era la misma en los dos casos— y era falso:
+ * si el producto SIGUE VIVO, la respuesta correcta no es "vuelve al catálogo",
+ * es enseñárselo. Así que aquí se pide la ficha y, si contesta, se manda a la
+ * ruta de red (`/product/?id=` o `/design/?id=`), que no tiene segmento
+ * dinámico y por lo tanto existe siempre. El mensaje de abajo queda para lo que
+ * de verdad ya no está.
+ *
+ * SE PIERDE LA URL BONITA mientras tanto, y se acepta: `/product/<id>` vuelve a
+ * funcionar en el siguiente despliegue, y un producto de hace diez minutos no
+ * lo ha indexado nadie. Entre una URL fea y una pantalla de error, la fea.
  *
  * LA RUTA SE LEE DE `window` tras montar, no con `useSearchParams` ni con
  * `usePathname` en el render: esta página se pre-renderiza en el build, donde
  * no hay URL, y el texto tiene que decidirse en el navegador.
  */
+
+/** `/product/<id>` y `/design/<id>`, con su ruta de red y el id en el medio. */
+const REDES = [
+	{ prefijo: "/product/", destino: "/product/" },
+	{ prefijo: "/producto/", destino: "/product/" },
+	{ prefijo: "/design/", destino: "/design/" },
+];
+
 export default function NoEncontrada() {
 	const [esDeProducto, setEsDeProducto] = useState(false);
 
 	useEffect(() => {
 		const ruta = window.location.pathname;
-		setEsDeProducto(
-			ruta.startsWith("/design/") ||
-				ruta.startsWith("/product/") ||
-				ruta.startsWith("/producto/"),
-		);
+		const red = REDES.find((r) => ruta.startsWith(r.prefijo));
+		if (!red) return;
+
+		setEsDeProducto(true);
+
+		/* El id es lo que queda entre el prefijo y la barra final: el sitio se
+		   exporta con `trailingSlash`, así que la ruta llega como
+		   `/product/<id>/` y quedarse con el segmento crudo metería una barra
+		   dentro del id. */
+		const id = ruta.slice(red.prefijo.length).replace(/\/+$/, "");
+		if (!id) return;
+
+		let vivo = true;
+
+		getFichaDeProducto(id)
+			.then(() => {
+				// `replace` y no `push`: esta página no debería quedarse en el
+				// historial, o el botón de atrás devuelve al error.
+				if (vivo) {
+					window.location.replace(
+						`${red.destino}?id=${encodeURIComponent(id)}`,
+					);
+				}
+			})
+			/* Si la API dice que no existe —o no contesta— nos quedamos con el
+			   mensaje de siempre. Es el caso del producto retirado, que es normal
+			   y no un fallo. */
+			.catch(() => {});
+
+		return () => {
+			vivo = false;
+		};
 	}, []);
 
 	return (

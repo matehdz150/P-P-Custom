@@ -13,16 +13,19 @@ import { getCatalogo, getCategoriasPublicas } from "@/lib/api/catalogo";
  * hasta que se vuelve a construir y subir**. No es que falte: es que se ve, se
  * puede pulsar y se rompe.
  *
- * Ya pasó (4 de septiembre): un taller dio de alta una gorra, salió en el
- * catálogo y `/design/<id>` contestó 404. Y no era sólo la nueva — los dos
- * productos publicados daban 404, porque el sitio se había construido cuando
- * el catálogo tenía otros.
+ * Ya pasó dos veces el 4 de septiembre: una gorra, y después un termo aprobado
+ * 54 minutos DESPUÉS de subir el sitio — se veía en el catálogo y su ficha
+ * contestaba "este producto ya no está disponible", que además es mentira.
  *
- * Es el precio de tener URLs indexables por producto en vez de `?id=`. La
- * salida buena no es acordarse de republicar: es que `/design/<id>` deje de
- * pre-generarse —no lo indexa nadie, es una aplicación— y lo resuelva el
- * navegador leyendo el id de la ruta, dejando horneado sólo `/product/<id>`,
- * que sí es contenido.
+ * YA NO SE ROMPE, aunque esto siga igual. `app/not-found.tsx` le pregunta a la
+ * API por el id de la URL: si el producto vive, manda a `/product/?id=` o a
+ * `/design/?id=` —rutas sin segmento dinámico, que existen siempre— y la ficha
+ * se resuelve en el navegador. Lo que se pierde hasta el siguiente despliegue
+ * es la URL bonita, no la página.
+ *
+ * Sigue haciendo falta republicar para que `/product/<id>` vuelva a ser HTML
+ * indexable: eso es el precio de tener URLs por producto en vez de `?id=`, y
+ * ése sí se paga a propósito.
  *
  * Si el catálogo no responde, el build FALLA a propósito. Publicar un sitio
  * sin productos porque hubo un hipo de red es peor que no publicar.
