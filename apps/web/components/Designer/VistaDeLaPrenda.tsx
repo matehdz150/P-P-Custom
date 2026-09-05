@@ -48,6 +48,18 @@ export type VistaActual = {
 	nombre: string;
 };
 
+/**
+ * Si una foto trae con qué proyectar encima.
+ *
+ * LO DICE LA FOTO, no la forma de la plantilla: trae `esquinas` si se marcó
+ * como plana y `banda` si se marcó como cilindro. Leerlo de la foto es lo
+ * correcto aunque parezca dar igual — una marcada como banda sólo se puede
+ * componer como cilindro, aunque alguien cambiara la plantilla después.
+ */
+function seProyecta(f: FotoRealDePrenda) {
+	return !!f.banda || f.esquinas?.length === 4;
+}
+
 export default function VistaDeLaPrenda({
 	fotosReales,
 	sideLabels,
@@ -74,7 +86,9 @@ export default function VistaDeLaPrenda({
 	const { sides, activeSide, colores, colorPrenda, setColorPrenda } =
 		useDesigner();
 
-	const [lado, setLado] = useState(activeSide);
+	/* Qué VISTA está elegida, no qué lado: con varias fotos por lado el lado ya
+	   no la identifica. La llave junta lado y URL de la foto. */
+	const [elegida, setElegida] = useState<string | null>(null);
 	const [arte, setArte] = useState<Record<string, string | null>>({});
 	const [mockups, setMockups] = useState<Record<string, string | null>>({});
 
@@ -99,30 +113,44 @@ export default function VistaDeLaPrenda({
 	}, []);
 
 	const conDiseno = Object.keys(sides).filter((s) => arte[s]);
-	/* Si el lado que se estaba editando no lleva nada, se enseña el primero que
-	   sí: entrar a "Probar" y encontrar una prenda vacía no dice nada. */
-	const visto = arte[lado] ? lado : (conDiseno[0] ?? lado);
 
-	/* QUÉ SE PUEDE PROYECTAR LO DICE LA FOTO, no la forma de la plantilla.
+	/* UNA ENTRADA POR FOTO, no por lado. Un taller puede subir varias de la
+	   misma combinación —la taza de frente, de perfil, en una mano— y todas son
+	   vistas que el comprador quiere ver. Un lado con diseño y sin foto de este
+	   color entra igual, con `foto` vacía: ahí se cae al mockup con su aviso, y
+	   esconderlo dejaría un lado dibujado fuera de la lista sin explicación. */
+	type Vista = {
+		lado: string;
+		foto?: FotoRealDePrenda;
+		clave: string;
+		i: number;
+	};
 
-	   La foto trae la geometría con la que se marcó: `esquinas` si el producto
-	   es plano, `banda` si es un cilindro. Leerlo de la foto y no de la
-	   plantilla es lo correcto aunque parezca dar igual — una foto marcada como
-	   banda sólo se puede componer como cilindro, aunque alguien cambiara la
-	   forma de la plantilla después.
+	const vistas = conDiseno.flatMap<Vista>((s) => {
+		const suyas = fotosReales.filter(
+			(f) => f.lado === s && f.color === colorPrenda?.name && seProyecta(f),
+		);
 
-	   Sin ninguna de las dos no hay nada que proyectar y se cae al mockup con
-	   su aviso, igual que un producto sin fotos. */
-	const encontrada = fotosReales.find(
-		(f) => f.lado === visto && f.color === colorPrenda?.name,
-	);
+		return suyas.length > 0
+			? suyas.map((f, i) => ({ lado: s, foto: f, clave: `${s}|${f.url}`, i }))
+			: [{ lado: s, foto: undefined, clave: `${s}|mockup`, i: 0 }];
+	});
 
-	const foto =
-		encontrada?.banda || encontrada?.esquinas?.length === 4
-			? encontrada
-			: undefined;
+	/* La elegida, con dos caídas: lo que se estaba editando, y si eso tampoco
+	   está —porque se cambió de color y esa foto no existe para el nuevo— la
+	   primera que haya. Entrar a "Probar" y encontrar la lista sin nada
+	   seleccionado no dice nada. */
+	const activa =
+		vistas.find((v) => v.clave === elegida) ??
+		vistas.find((v) => v.lado === activeSide) ??
+		vistas[0];
+
+	const visto = activa?.lado ?? activeSide;
+	const foto = activa?.foto;
 
 	const dibujo = arte[visto];
+	/** Cuántas vistas tiene el lado que se está mirando. Sólo para nombrarlas. */
+	const vistasDelLado = vistas.filter((v) => v.lado === visto).length;
 	const etiqueta = sideLabels[visto] ?? visto;
 
 	/* Sólo se puede descargar la composición sobre una foto REAL: el respaldo
@@ -137,7 +165,11 @@ export default function VistaDeLaPrenda({
 						esquinas: foto.esquinas ?? [],
 						banda: foto.banda,
 						mezcla: mezclaParaColor(colorPrenda?.hex) as MezclaDeTinta,
-						nombre: `${etiqueta}-${colorPrenda?.name ?? ""}`,
+						/* El número de la vista entra en el nombre cuando hay varias
+						   del mismo lado: si no, descargar la taza de frente y la de
+						   perfil daría dos archivos llamados igual y el segundo se
+						   guardaría como "(1)". */
+						nombre: `${etiqueta}${vistasDelLado > 1 ? `-${(activa?.i ?? 0) + 1}` : ""}-${colorPrenda?.name ?? ""}`,
 					}
 				: null,
 		);
@@ -145,7 +177,16 @@ export default function VistaDeLaPrenda({
 		   render del armazón —`product.sideLabels ?? {}`—, así que tenerlo de
 		   dependencia dispararía el efecto siempre; y como `onVista` guarda un
 		   objeto nuevo cada vez, el render volvería a empezar. Bucle infinito. */
-	}, [foto, dibujo, colorPrenda?.hex, colorPrenda?.name, etiqueta, onVista]);
+	}, [
+		foto,
+		dibujo,
+		colorPrenda?.hex,
+		colorPrenda?.name,
+		etiqueta,
+		activa?.i,
+		vistasDelLado,
+		onVista,
+	]);
 
 	return (
 		<div className="absolute inset-0 z-30 flex bg-hueso-suave">
@@ -196,46 +237,51 @@ export default function VistaDeLaPrenda({
 						Vistas
 					</h2>
 
-					{conDiseno.length === 0 ? (
+					{vistas.length === 0 ? (
 						<p className="text-[13px] leading-[20px] text-tinta/55">
 							Aquí aparecen los lados que ya tienen diseño.
 						</p>
 					) : (
 						<div className="grid grid-cols-2 gap-3">
-							{conDiseno.map((s) => {
-								const suya = fotosReales.find(
-									(f) => f.lado === s && f.color === colorPrenda?.name,
-								);
-								const activa = s === visto;
+							{vistas.map((v) => {
+								const puesta = v.clave === activa?.clave;
+								/* El nombre del lado basta cuando hay una sola foto suya; con
+								   varias hace falta distinguirlas, y numerarlas es lo único
+								   honesto —el taller no les pone nombre—. */
+								const cuantas = vistas.filter((o) => o.lado === v.lado).length;
+								const etiqueta =
+									cuantas > 1
+										? `${sideLabels[v.lado] ?? v.lado} ${v.i + 1}`
+										: (sideLabels[v.lado] ?? v.lado);
 
 								return (
 									<button
-										key={s}
+										key={v.clave}
 										type="button"
-										onClick={() => setLado(s)}
-										aria-pressed={activa}
+										onClick={() => setElegida(v.clave)}
+										aria-pressed={puesta}
 										className="flex flex-col gap-1.5 text-left"
 									>
 										<span
 											className={`block overflow-hidden rounded-lg border bg-gris transition-colors ${
-												activa
+												puesta
 													? "border-tinta ring-2 ring-tinta/25"
 													: "border-tinta/15 hover:border-tinta/40"
 											}`}
 										>
 											<Compuesto
-												foto={suya}
-												mockup={mockups[s] ?? null}
-												arte={arte[s]}
+												foto={v.foto}
+												mockup={mockups[v.lado] ?? null}
+												arte={arte[v.lado]}
 												hex={colorPrenda?.hex}
 												alt=""
 												className="w-full"
 											/>
 										</span>
 										<span
-											className={`truncate text-[13px] ${activa ? "font-semibold text-tinta" : "text-tinta/60"}`}
+											className={`truncate text-[13px] ${puesta ? "font-semibold text-tinta" : "text-tinta/60"}`}
 										>
-											{sideLabels[s] ?? s}
+											{etiqueta}
 										</span>
 									</button>
 								);

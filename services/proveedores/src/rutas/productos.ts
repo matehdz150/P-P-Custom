@@ -510,9 +510,11 @@ function validarFotosReales(datos: Cuerpo) {
 		throw malaPeticion("Las fotos de la prenda tienen que venir en una lista");
 	}
 
-	// Lados por colores: un catálogo razonable no pasa de aquí ni de lejos, y
-	// el tope evita que un cuerpo enorme se guarde entero en el ítem.
-	if (crudas.length > 60) {
+	/* Lados × colores × las fotos que quiera el taller. El tope existe para que
+	   un cuerpo enorme no se guarde entero en el ítem, no para racionar: ocho
+	   colores en dos lados con cuatro fotos cada uno son 64, y eso ya es un
+	   producto fotografiado con mucho cariño. */
+	if (crudas.length > 120) {
 		throw malaPeticion("Demasiadas fotos de prenda en un solo producto");
 	}
 
@@ -534,11 +536,19 @@ function validarFotosReales(datos: Cuerpo) {
 			);
 		}
 
-		const llave = `${lado}|${color}`;
-		if (vistas.has(llave)) {
-			throw malaPeticion(`Hay dos fotos para "${color}" en el mismo lado`);
+		/* VARIAS FOTOS POR LADO Y COLOR ES LO NORMAL, no un error: la misma taza
+		   blanca de frente, de perfil y en una mano son tres vistas de la misma
+		   combinación, y cada una lleva su propia geometría porque el estampado
+		   cae distinto en cada encuadre.
+
+		   Lo que sí se rechaza es el mismo ARCHIVO dos veces. Es siempre un
+		   descuido —subir dos veces la misma foto— y dejaría dos vistas idénticas
+		   que además no se pueden distinguir al editarlas, porque la URL es lo que
+		   las identifica. */
+		if (vistas.has(url)) {
+			throw malaPeticion(`La misma foto está puesta dos veces en "${color}"`);
 		}
-		vistas.add(llave);
+		vistas.add(url);
 
 		/* DOS GEOMETRÍAS, UNA POR FOTO, y nunca las dos.
 		

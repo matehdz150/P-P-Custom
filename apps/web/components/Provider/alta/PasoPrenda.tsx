@@ -53,17 +53,27 @@ export default function PasoPrenda({
 	const lados = alta.printSides.map((l) => l.sideKey);
 	const colores = alta.colors.filter((c) => c.name.trim());
 
-	function guardar(foto: FotoDePrenda) {
-		const resto = alta.fotosReales.filter(
-			(f) => !(f.lado === foto.lado && f.color === foto.color),
-		);
-		set("fotosReales", [...resto, foto]);
-	}
+	/* LA IDENTIDAD DE UNA FOTO ES SU URL. Cada subida trae su propio nombre al
+	   azar desde S3, así que no hay dos iguales, y eso evita añadirle un id al
+	   modelo sólo para poder editarla.
 
-	function quitar(lado: string, color: string) {
+	   Se reemplaza EN SU SITIO y no quitando y volviendo a poner al final: con
+	   varias fotos por combinación, mover la editada al final las reordenaría
+	   en pantalla mientras se arrastra una esquina. */
+	function guardar(foto: FotoDePrenda) {
+		const existe = alta.fotosReales.some((f) => f.url === foto.url);
 		set(
 			"fotosReales",
-			alta.fotosReales.filter((f) => !(f.lado === lado && f.color === color)),
+			existe
+				? alta.fotosReales.map((f) => (f.url === foto.url ? foto : f))
+				: [...alta.fotosReales, foto],
+		);
+	}
+
+	function quitar(url: string) {
+		set(
+			"fotosReales",
+			alta.fotosReales.filter((f) => f.url !== url),
 		);
 	}
 
@@ -77,21 +87,29 @@ export default function PasoPrenda({
 		);
 	}
 
-	const puestas = alta.fotosReales.length;
 	const total = lados.length * colores.length;
+	/* Dos cuentas distintas, porque ahora una combinación puede llevar varias
+	   fotos: cuántas hay en total, y cuántas combinaciones tienen al menos una
+	   —que es lo que dice si falta trabajo—. */
+	const conAlguna = new Set(alta.fotosReales.map((f) => `${f.lado}|${f.color}`))
+		.size;
 
 	return (
 		<div className="flex flex-col gap-7">
 			<div className="flex flex-col gap-1">
 				<Etiqueta>La prenda de verdad</Etiqueta>
 				<Ayuda>
-					Sube una foto por cada lado y color, y arrastra las cuatro esquinas
-					hasta el cuadro donde imprimes. Con eso el cliente ve su diseño sobre
-					la prenda en vez de sobre un dibujo. Puedes dejarlo para después: sin
-					foto se sigue viendo el mockup.
+					Sube las fotos de cada lado y color, y marca en cada una dónde cae lo
+					impreso. Con eso el cliente ve su diseño sobre la prenda en vez de
+					sobre un dibujo. Puedes poner varias de la misma combinación —de
+					frente, de perfil, en la mano— y cada una lleva su propia marca,
+					porque el estampado cae distinto en cada encuadre. Puedes dejarlo para
+					después: sin foto se sigue viendo el mockup.
 				</Ayuda>
 				<p className="pt-1 text-[13px] text-tinta/55">
-					{puestas} de {total} {total === 1 ? "combinación" : "combinaciones"}
+					{alta.fotosReales.length}{" "}
+					{alta.fotosReales.length === 1 ? "foto" : "fotos"} · {conAlguna} de{" "}
+					{total} {total === 1 ? "combinación" : "combinaciones"}
 				</p>
 			</div>
 
@@ -109,12 +127,12 @@ export default function PasoPrenda({
 								key={`${lado}|${color.name}`}
 								lado={lado}
 								color={color}
-								foto={alta.fotosReales.find(
+								fotos={alta.fotosReales.filter(
 									(f) => f.lado === lado && f.color === color.name,
 								)}
 								onGuardar={guardar}
 								esCilindro={esCilindro}
-								onQuitar={() => quitar(lado, color.name)}
+								onQuitar={quitar}
 							/>
 						))}
 					</div>
@@ -124,22 +142,30 @@ export default function PasoPrenda({
 	);
 }
 
-/** Una combinación de lado y color: la foto, o el hueco para subirla. */
+/**
+ * Una combinación de lado y color, con TODAS sus fotos.
+ *
+ * VARIAS POR COMBINACIÓN es lo normal: la misma taza blanca de frente, de
+ * perfil y en una mano son tres vistas del mismo lado, y el comprador las va a
+ * querer ver todas. Cada una lleva su propia marca —esquinas o banda— porque el
+ * estampado cae distinto en cada encuadre; una marca compartida sólo cuadraría
+ * en la foto con la que se hizo.
+ */
 function Casilla({
 	lado,
 	color,
-	foto,
+	fotos,
 	onGuardar,
 	esCilindro,
 	onQuitar,
 }: {
 	lado: string;
 	color: { name: string; hex: string };
-	foto?: FotoDePrenda;
+	fotos: FotoDePrenda[];
 	onGuardar: (f: FotoDePrenda) => void;
 	/** Decide con qué geometría nace la foto y cuál se marca encima. */
 	esCilindro: boolean;
-	onQuitar: () => void;
+	onQuitar: (url: string) => void;
 }) {
 	const input = useRef<HTMLInputElement>(null);
 	const [subiendo, setSubiendo] = useState(false);
@@ -157,8 +183,8 @@ function Casilla({
 				lado,
 				color: color.name,
 				url,
-				// El cuadro arranca centrado en el pecho y el taller lo mueve. Un
-				// cuadro de tamaño cero obligaría a cazar cuatro puntos invisibles.
+				// La marca arranca centrada y el taller la mueve. De tamaño cero
+				// obligaría a cazar cuatro puntos invisibles.
 				...(esCilindro
 					? { banda: BANDA_POR_DEFECTO }
 					: { esquinas: ESQUINAS_POR_DEFECTO }),
@@ -171,7 +197,7 @@ function Casilla({
 	}
 
 	return (
-		<div className="flex flex-col gap-2.5 rounded-xl border border-tinta/12 p-3">
+		<div className="flex flex-col gap-3 rounded-xl border border-tinta/12 p-3">
 			<div className="flex items-center justify-between gap-3">
 				<span className="flex min-w-0 items-center gap-2">
 					<span
@@ -183,44 +209,83 @@ function Casilla({
 					</span>
 				</span>
 
-				{foto && (
-					<button
-						type="button"
-						onClick={onQuitar}
-						aria-label={`Quitar la foto de ${color.name}`}
-						className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg text-tinta/45 transition-colors hover:bg-[rgba(192,57,43,0.08)] hover:text-[#c0392b]"
-					>
-						<Trash2 className="size-[17px]" aria-hidden />
-					</button>
+				{fotos.length > 1 && (
+					<span className="shrink-0 text-[12px] text-tinta/50">
+						{fotos.length} fotos
+					</span>
 				)}
 			</div>
 
-			{foto ? (
-				esCilindro ? (
-					<MarcarBanda
-						foto={foto}
-						onBanda={(banda) => onGuardar({ ...foto, banda })}
-					/>
-				) : (
-					<MarcarCuadro
-						foto={foto}
-						hex={color.hex}
-						onEsquinas={(esquinas) => onGuardar({ ...foto, esquinas })}
-					/>
-				)
-			) : (
-				<button
-					type="button"
-					onClick={() => input.current?.click()}
-					disabled={subiendo}
-					className="flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-tinta/25 bg-gris text-tinta/55 transition-colors hover:border-tinta/45 disabled:opacity-60"
-				>
-					<Upload className="size-5" aria-hidden />
-					<span className="text-[13px] font-semibold">
-						{subiendo ? "Subiendo…" : "Subir foto"}
-					</span>
-				</button>
-			)}
+			{fotos.map((foto, i) => (
+				<div key={foto.url} className="flex flex-col gap-2">
+					{/* La cabecera de cada foto sólo aparece cuando hay más de una: con
+					    una sola, un "Foto 1" es ruido que no distingue nada. */}
+					{fotos.length > 1 && (
+						<div className="flex items-center justify-between gap-3 border-t border-tinta/10 pt-2">
+							<span className="text-[12px] font-semibold text-tinta/60">
+								Foto {i + 1}
+							</span>
+							<button
+								type="button"
+								onClick={() => onQuitar(foto.url)}
+								aria-label={`Quitar la foto ${i + 1} de ${color.name}`}
+								className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg text-tinta/45 transition-colors hover:bg-[rgba(192,57,43,0.08)] hover:text-[#c0392b]"
+							>
+								<Trash2 className="size-4" aria-hidden />
+							</button>
+						</div>
+					)}
+
+					{esCilindro ? (
+						<MarcarBanda
+							foto={foto}
+							onBanda={(banda) => onGuardar({ ...foto, banda })}
+						/>
+					) : (
+						<MarcarCuadro
+							foto={foto}
+							hex={color.hex}
+							onEsquinas={(esquinas) => onGuardar({ ...foto, esquinas })}
+						/>
+					)}
+
+					{fotos.length === 1 && (
+						<button
+							type="button"
+							onClick={() => onQuitar(foto.url)}
+							className="self-start text-[12px] font-semibold text-tinta/50 underline underline-offset-4 hover:text-[#c0392b]"
+						>
+							Quitar esta foto
+						</button>
+					)}
+				</div>
+			))}
+
+			{/* El botón de subir se queda SIEMPRE, con o sin fotos: es lo que hace
+			    que se puedan añadir más. Con fotos es una tira baja para no competir
+			    con ellas; sin ninguna, el hueco cuadrado de antes. */}
+			<button
+				type="button"
+				onClick={() => input.current?.click()}
+				disabled={subiendo}
+				className={
+					fotos.length > 0
+						? "flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-dashed border-tinta/25 text-[13px] font-semibold text-tinta/60 transition-colors hover:border-tinta/45 hover:text-tinta disabled:opacity-60"
+						: "flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-tinta/25 bg-gris text-tinta/55 transition-colors hover:border-tinta/45 disabled:opacity-60"
+				}
+			>
+				<Upload
+					className={fotos.length > 0 ? "size-4" : "size-5"}
+					aria-hidden
+				/>
+				<span className="text-[13px] font-semibold">
+					{subiendo
+						? "Subiendo…"
+						: fotos.length > 0
+							? "Añadir otra foto"
+							: "Subir foto"}
+				</span>
+			</button>
 
 			{fallo && (
 				<p role="alert" className="text-[13px] text-[#c0392b]">
