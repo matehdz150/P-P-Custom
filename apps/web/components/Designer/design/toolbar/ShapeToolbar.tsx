@@ -1,18 +1,18 @@
 "use client";
 
 import { Path } from "fabric";
-import { Copy, Trash } from "lucide-react";
 import { useRef } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import { useHistory } from "@/Contexts/HistoryContext";
 import { ChangePropertyCommand } from "@/lib/history/commands/ChangePropertyCommand";
-import { DuplicateObjectCommand } from "@/lib/history/commands/DuplicateObjectCommand";
-import { RemoveObjectCommand } from "@/lib/history/commands/RemoveObjectCommand";
+import { useAccionesDeGrafico } from "../../hooks/useAccionesDeGrafico";
+import MobileImageToolbar from "../../MobileControllers/MobileTextToolbar/MobileImageToolbar/MobileImageToolbar";
 
 export default function ShapeToolbar() {
-	const { activeObject, getCanvas, setActiveObject } = useDesigner();
+	const { activeObject, getCanvas } = useDesigner();
 	const { execute } = useHistory();
 	const canvas = getCanvas();
+	const { aplicar, duplicar, borrar } = useAccionesDeGrafico(activeObject);
 	const fillRef = useRef<HTMLInputElement>(null);
 	const strokeRef = useRef<HTMLInputElement>(null);
 
@@ -29,12 +29,6 @@ export default function ShapeToolbar() {
 		execute(new ChangePropertyCommand(shape, "stroke", color));
 		if (!shape.strokeWidth)
 			execute(new ChangePropertyCommand(shape, "strokeWidth", 2));
-	};
-
-	const duplicate = () => execute(new DuplicateObjectCommand(shape));
-	const remove = () => {
-		execute(new RemoveObjectCommand(shape));
-		setActiveObject(null);
 	};
 
 	return (
@@ -91,25 +85,13 @@ export default function ShapeToolbar() {
 
 			<div className="w-px h-8 bg-[#d6d6c8]" />
 
-			{/* DUPLICAR */}
-			<button
-				type="button"
-				onClick={duplicate}
-				className="p-1 rounded hover:bg-gray-200"
-				title="Duplicar"
-			>
-				<Copy size={22} />
-			</button>
-
-			{/* BORRAR */}
-			<button
-				type="button"
-				onClick={remove}
-				className="p-1 rounded hover:bg-gray-200"
-				title="Eliminar"
-			>
-				<Trash size={22} className="text-tinta" />
-			</button>
+			<MobileImageToolbar
+				compacto
+				image={shape}
+				apply={aplicar}
+				onDuplicate={duplicar}
+				onRemove={borrar}
+			/>
 		</div>
 	);
 }

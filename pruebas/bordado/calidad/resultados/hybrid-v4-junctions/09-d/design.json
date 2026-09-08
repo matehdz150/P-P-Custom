@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "76b9491fa05d6f7d7c4e60d24775d9e9254e9fad3ad9d832d3c2eb3013a5940c",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "d-d-0",
+      "sourceObjectId": "d-d-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M50 15L50 40"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 2.7,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true,
+        "satinMode": "stroke"
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2,
+      "quality": {
+        "lengthMm": 25,
+        "averageWidthMm": 2.7,
+        "minWidthMm": 2.7,
+        "maxWidthMm": 2.7,
+        "widthVariance": 0,
+        "widthVariationRatio": 0,
+        "curvatureDegPerMm": 0,
+        "maxCurvatureDegPerMm": 0,
+        "accumulatedTurningAngleDeg": 0,
+        "maxDirectionDeltaDeg": 0,
+        "junctionCount": 0,
+        "branchCount": 1,
+        "endpointTaper": 0,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 0,
+        "railDivergenceMmPerMm": 0,
+        "railConvergenceMmPerMm": 0,
+        "numberOfSharpTurns": 0,
+        "representationDecision": "stroke-v2",
+        "representationReasons": [],
+        "rawCenterlineNodes": 2,
+        "rawRailNodes": 0,
+        "finalRailNodes": 0,
+        "rungsBefore": 0,
+        "rungsAfter": 0,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 12
+      }
+    },
+    {
+      "id": "d-d-1-hybrid-rails-0-0",
+      "sourceObjectId": "d-d-1",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M49.351 27.554L47.656 25.456L45.882 24.791L43.025 24.723L41.191 25.267L39.538 26.274L37.734 28.494L37.015 30.227L36.654 32.937L37.035 35.669L37.799 37.401L38.963 38.923L41.348 40.502L43.181 41.029L46.001 40.954L47.793 40.385L50.001 38.947M48.649 28.446L46.498 27.826L45.308 27.429L43.462 27.388L42.284 27.735L41.25 28.361L40.099 29.797L39.611 30.971L39.354 32.942L39.618 34.884L40.124 36.028L40.865 37.007L42.403 38.017L43.594 38.361L45.478 38.305L46.685 37.922L48.411 36.765M49.425 27.46L48.575 28.54M41.142 25.157L42.333 27.845M36.534 32.937L39.474 32.943M41.301 40.612L42.45 37.906M50.072 39.044L48.34 36.668"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 44,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.604,
+        "widthVariance": 0.13531,
+        "angleVariance": 11.40362,
+        "maxAngleDeltaDeg": 21.783,
+        "junctionCount": 1,
+        "segmentIndex": 0,
+        "segmentCount": 1,
+        "representationDecision": "rails-v3",
+        "representationReasons": [
+          "JUNCTION",
+          "HIGH_CURVATURE",
+          "CURVATURE_PEAK",
+          "ACCUMULATED_TURN",
+          "DIRECTION_CHANGE",
+          "FAN_RISK"
+        ],
+        "lengthMm": 31.418,
+        "curvatureDegPerMm": 8.2259,
+        "maxCurvatureDegPerMm": 9.7219,
+        "accumulatedTurningAngleDeg": 259.589,
+        "branchCount": 2,
+        "endpointTaper": 0,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 1,
+        "railDivergenceMmPerMm": 0,
+        "railConvergenceMmPerMm": 0,
+        "numberOfSharpTurns": 0,
+        "rawCenterlineNodes": 32,
+        "rawRailNodes": 82,
+        "finalRailNodes": 34,
+        "rungsBefore": 41,
+        "rungsAfter": 5,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 15
+      }
+    }
+  ],
+  "metrics": {
+    "componentCount": 2,
+    "nodeCount": 46,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-hybrid-v4-2026-09-06",
+    "texto": {
+      "satinColumns": 2,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-hybrid-v4-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0",
+  "debug": {
+    "hybridJoins": []
+  }
+}

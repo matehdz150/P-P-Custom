@@ -35,6 +35,13 @@ infra/.correo-envio
 # El build del sitio publicado (infra/sitio.sh)
 .next-sitio/
 infra/.frontend
+infra/.pruebas-api
+infra/.pruebas-cognito
+
+# Usuarios, tokens temporales y resultados del banco de carga aislado
+pruebas/carga/.credenciales
+pruebas/carga/.usuarios.json
+pruebas/carga/resultados/
 
 # Vista previa de los correos (infra local, no va al repo)
 .correos/

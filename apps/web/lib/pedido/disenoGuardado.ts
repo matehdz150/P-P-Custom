@@ -24,7 +24,7 @@ export type DisenoPorLado = Record<string, object[]>;
  * de donde sea. Con la lista blanca, lo peor que se consigue es abrir un
  * diseño que no es tuyo, que ya es público por su ruta.
  */
-const PERMITIDO = /^\/medios\/[A-Za-z0-9._\-/]+\.json$/;
+const PERMITIDO = /^\/(?:medios|carritos|eventos)\/[A-Za-z0-9._\-/]+\.json$/;
 
 export function rutaDeDisenoValida(ruta: string | null | undefined) {
 	if (typeof ruta !== "string" || !PERMITIDO.test(ruta)) return false;

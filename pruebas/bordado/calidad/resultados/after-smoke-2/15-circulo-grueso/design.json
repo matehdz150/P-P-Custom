@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "74e47cc8fcae7f0dce1fdf6b64891544e8969da6e989cac6a4780ba60419531b",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "circulo-v3-fill-0",
+      "sourceObjectId": "circulo",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M44.374 6.353L39.177 7.301L34.322 10.101L30.683 14.18L28.207 19.059L26.771 24.415L26.3 30L26.771 35.585L28.207 40.941L30.683 45.82L34.322 49.899L39.177 52.699L45 53.7L50.823 52.699L55.678 49.899L59.317 45.82L61.793 40.941L63.229 35.585L63.7 30L63.229 24.415L61.793 19.059L59.317 14.18L55.678 10.101L50.823 7.301L45.626 6.353ZM44.374 13.647L48.344 14.273L50.988 15.825L53.183 18.32L54.873 21.681L55.938 25.677L56.3 30L55.938 34.323L54.873 38.319L53.183 41.68L50.988 44.175L48.344 45.727L45 46.3L41.656 45.727L39.012 44.175L36.817 41.68L35.127 38.319L34.062 34.323L33.7 30L34.062 25.677L35.127 21.681L36.817 18.32L39.012 15.825L41.656 14.273L45.626 13.647Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "maxStitchLengthMm": 4.5,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 50
+    }
+  ],
+  "metrics": {
+    "componentCount": 1,
+    "nodeCount": 50,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-v3-2026-09-06",
+    "texto": {
+      "satinColumns": 1,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": [
+      {
+        "code": "SATIN_TOO_WIDE",
+        "message": "Columna de 7.4 mm convertida a fill.",
+        "severity": "review"
+      }
+    ]
+  },
+  "profileVersion": "experimental-v3-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

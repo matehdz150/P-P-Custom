@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "254f2120a37268ac112c302b5a1cb7377f92845d2675f10841e51264a6e9ff0d",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "swoosh-v3-0-0",
+      "sourceObjectId": "swoosh",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M9.415 34.821L10.381 36.876L11.883 38.286L15.418 40.384L19.151 42.204L23.101 43.592L27.121 44.544L31.2 45.184L35.371 45.403L39.485 45.171L43.578 44.679L47.617 43.733L53.447 41.747L58.969 39.143L62.562 37.181L67.523 33.628M10.585 33.179L12.813 33.399L14.504 34.264L17.697 36.16L21.002 37.775L24.451 38.985L28.048 39.834L31.7 40.411L35.36 40.603L39.063 40.389L42.743 39.952L46.339 39.106L51.624 37.307L56.718 34.904L60.012 33.114L64.611 29.813M9.345 34.919L10.655 33.081M31.188 45.304L31.712 40.291M67.596 33.723L64.538 29.717"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 38,
+      "quality": {
+        "minWidthMm": 2.016,
+        "maxWidthMm": 4.8,
+        "averageWidthMm": 4.591,
+        "widthVariance": 0.4602,
+        "angleVariance": 2.54861,
+        "maxAngleDeltaDeg": 6.88,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 2
+      }
+    },
+    {
+      "id": "swoosh-v3-0-1",
+      "sourceObjectId": "swoosh",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M67.523 33.628L72.174 29.709L76.542 25.525L80.289 20.874L80.755 18.668M64.611 29.813L68.941 26.161L73.062 22.219L77.112 18.062L79.245 17.332M67.596 33.723L64.538 29.717M76.629 25.608L72.975 22.136M80.845 18.748L79.155 17.252"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.016,
+        "maxWidthMm": 4.8,
+        "averageWidthMm": 4.132,
+        "widthVariance": 1.1657,
+        "angleVariance": 3.75354,
+        "maxAngleDeltaDeg": 4.986,
+        "junctionCount": 0,
+        "segmentIndex": 1,
+        "segmentCount": 2
+      },
+      "dependencies": [
+        "swoosh-v3-0-0"
+      ]
+    }
+  ],
+  "metrics": {
+    "componentCount": 2,
+    "nodeCount": 54,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-v3-2026-09-06",
+    "texto": {
+      "satinColumns": 1,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-v3-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

@@ -1,15 +1,18 @@
 "use client";
 
-import { Image as FabricImage } from "fabric";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
+import { useAccionesDeGrafico } from "@/components/Designer/hooks/useAccionesDeGrafico";
+import { esObjetoGrafico } from "@/lib/fabric/esObjetoGrafico";
 import MobileImageToolbar from "./MobileImageToolbar";
 
 export default function MobileImageToolbarContainer() {
 	const { activeObject, getCanvas } = useDesigner();
 	const canvas = getCanvas();
 
-	const image = activeObject instanceof FabricImage ? activeObject : undefined;
+	const image = esObjetoGrafico(activeObject) ? activeObject : undefined;
+
+	const { aplicar, duplicar, borrar } = useAccionesDeGrafico(image);
 
 	// 🔒 hooks siempre arriba
 	const toolbarRef = useRef<HTMLDivElement | null>(null);
@@ -25,20 +28,31 @@ export default function MobileImageToolbarContainer() {
 		const vpt = canvas.viewportTransform;
 		if (!vpt) return;
 
-		const retina =
-			typeof canvas.getRetinaScaling === "function"
-				? canvas.getRetinaScaling()
-				: 1;
-
-		const vx = (center.x * vpt[0] + vpt[4]) / retina;
-		const vy = (center.y * vpt[3] + vpt[5]) / retina;
-
 		const rect = el.getBoundingClientRect();
 		const toolbarHeight = toolbarRef.current.offsetHeight;
-
+		const toolbarWidth = toolbarRef.current.offsetWidth;
+		// El viewport de Fabric ya está en píxeles lógicos; sólo falta la escala CSS.
+		const vx =
+			((center.x * vpt[0] + center.y * vpt[2] + vpt[4]) * rect.width) /
+			canvas.getWidth();
+		const vy =
+			((center.x * vpt[1] + center.y * vpt[3] + vpt[5]) * rect.height) /
+			canvas.getHeight();
 		setPos({
-			x: rect.left + vx,
-			y: rect.top + vy - toolbarHeight - 8,
+			x: Math.max(
+				8,
+				Math.min(
+					rect.left + vx - toolbarWidth / 2,
+					window.innerWidth - toolbarWidth - 8,
+				),
+			),
+			y: Math.max(
+				8,
+				Math.min(
+					rect.top + vy - toolbarHeight - 8,
+					window.innerHeight - toolbarHeight - 8,
+				),
+			),
 		});
 	}, [canvas, image]);
 
@@ -66,19 +80,6 @@ export default function MobileImageToolbarContainer() {
 		};
 	}, [canvas, image, updatePosition]);
 
-	const apply = (props: Record<string, unknown>) => {
-		if (!canvas || !image) return;
-		image.set(props);
-		canvas.requestRenderAll();
-	};
-
-	const remove = () => {
-		if (!canvas || !image) return;
-		canvas.remove(image);
-		canvas.discardActiveObject();
-		canvas.requestRenderAll();
-	};
-
 	// 🔚 guard clause FINAL
 	if (!canvas || !image) return null;
 
@@ -87,15 +88,20 @@ export default function MobileImageToolbarContainer() {
 			ref={toolbarRef}
 			style={{
 				position: "fixed",
-				left: pos.x + 10,
+				left: pos.x,
 				top: pos.y,
 				zIndex: 100,
-				touchAction: "none",
+				touchAction: "pan-x",
 			}}
 			onPointerDown={(e) => e.stopPropagation()}
 			onPointerUp={(e) => e.stopPropagation()}
 		>
-			<MobileImageToolbar image={image} apply={apply} onRemove={remove} />
+			<MobileImageToolbar
+				image={image}
+				apply={aplicar}
+				onDuplicate={duplicar}
+				onRemove={borrar}
+			/>
 		</div>
 	);
 }

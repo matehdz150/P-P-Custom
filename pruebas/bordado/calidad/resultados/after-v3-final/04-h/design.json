@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "23dc6dbae19825730d78a918e9cc6630301c67225c3873209ea6d68fdcd57dbc",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "h-H-0-v3-0-0",
+      "sourceObjectId": "h-H-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M36.433 17L35.807 19L35.65 21L35.65 23L35.65 25L35.65 27L35.65 29L35.65 31L35.65 33L35.65 35L35.65 37L35.807 39L36.433 41M37.567 17L38.193 19L38.35 21L38.35 23L38.35 25L38.35 27L38.35 29L38.35 31L38.35 33L38.35 35L38.35 37L38.193 39L37.567 41M36.313 17L37.687 17M35.53 29L38.47 29M36.313 41L37.687 41"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 32,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.411,
+        "widthVariance": 0.30879,
+        "angleVariance": 0,
+        "maxAngleDeltaDeg": 0,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 1
+      }
+    },
+    {
+      "id": "h-H-1-v3-1-0",
+      "sourceObjectId": "h-H-1",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M49.433 17L48.807 19L48.65 21L48.65 23L48.65 25L48.65 27L48.65 29L48.65 31L48.65 33L48.65 35L48.65 37L48.807 39L49.433 41M50.567 17L51.193 19L51.35 21L51.35 23L51.35 25L51.35 27L51.35 29L51.35 31L51.35 33L51.35 35L51.35 37L51.193 39L50.567 41M49.313 17L50.687 17M48.53 29L51.47 29M49.313 41L50.687 41"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 32,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.411,
+        "widthVariance": 0.30879,
+        "angleVariance": 0,
+        "maxAngleDeltaDeg": 0,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 1
+      }
+    },
+    {
+      "id": "h-H-2-v3-2-0",
+      "sourceObjectId": "h-H-2",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M37 29.567L38.857 30.193L40.714 30.35L42.571 30.35L44.429 30.35L46.286 30.35L48.143 30.193L50 29.567M37 28.433L38.857 27.807L40.714 27.65L42.571 27.65L44.429 27.65L46.286 27.65L48.143 27.807L50 28.433M37 29.687L37 28.313M42.571 30.47L42.571 27.53M50 29.687L50 28.313"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 22,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.23,
+        "widthVariance": 0.4169,
+        "angleVariance": 0,
+        "maxAngleDeltaDeg": 0,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 1
+      }
+    }
+  ],
+  "metrics": {
+    "componentCount": 3,
+    "nodeCount": 86,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-v3-2026-09-06",
+    "texto": {
+      "satinColumns": 3,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-v3-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

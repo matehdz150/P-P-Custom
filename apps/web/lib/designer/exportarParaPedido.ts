@@ -4,6 +4,8 @@ import type { Canvas, FabricObject } from "fabric";
 import type { PrendaColor } from "@/Contexts/DesignerContext";
 import type { DesignerProductTemplate } from "@/lib/api/products";
 import { conDpi } from "@/lib/designer/dpi";
+import { exportarSvgDeLado } from "@/lib/impresion/svg";
+import { salidaDelLado } from "@/lib/impresion/tecnicas";
 import type { ArchivoDeLado } from "@/lib/pedido/borrador";
 import { componerCilindro } from "@/lib/prenda/cilindro";
 import { componerPrenda, type MezclaDeTinta } from "@/lib/prenda/componer";
@@ -32,6 +34,55 @@ export type LadosExportados = {
 };
 
 type EstadoDeLado = { canvas: Canvas | null; editableAreas: FabricObject[] };
+
+/**
+ * Que lo que va a la máquina de grabado sea grabable, o parar el pedido.
+ *
+ * QUÉ SE COMPRUEBA Y POR QUÉ. `exportarSvgDeLado` cuenta dos cosas que no
+ * pudo convertir: imágenes que siguen siendo ráster —un diseño guardado antes
+ * de que el editor vectorizara al subir— y textos cuya tipografía no se pudo
+ * leer. Las dos producen un archivo que se ve bien en pantalla y que el láser
+ * no puede seguir.
+ *
+ * EL MENSAJE DICE QUÉ HACER, no que algo falló. "Revisa tu diseño" obliga a
+ * adivinar cuál de los cuatro objetos es el que estorba; nombrar el lado y la
+ * acción concreta se puede seguir sin preguntar.
+ */
+function revisarElVector(
+	vectorial: { imagenesSinTrazar: number; textosSinConvertir: number } | null,
+	lado: string,
+) {
+	if (!vectorial) {
+		throw new Error(
+			`No pudimos preparar los trazos de ${lado}. Quita lo que tengas puesto y vuelve a ponerlo.`,
+		);
+	}
+
+	const { imagenesSinTrazar: imagenes, textosSinConvertir: textos } = vectorial;
+	if (imagenes === 0 && textos === 0) return;
+
+	const problemas: string[] = [];
+
+	if (imagenes > 0) {
+		problemas.push(
+			imagenes === 1
+				? "hay 1 imagen que no está convertida a trazos: bórrala y vuelve a subirla"
+				: `hay ${imagenes} imágenes que no están convertidas a trazos: bórralas y vuelve a subirlas`,
+		);
+	}
+
+	if (textos > 0) {
+		problemas.push(
+			textos === 1
+				? "hay 1 texto cuya tipografía no pudimos convertir: cámbiale la fuente"
+				: `hay ${textos} textos cuya tipografía no pudimos convertir: cámbiales la fuente`,
+		);
+	}
+
+	throw new Error(
+		`En ${lado}, ${problemas.join(" y ")}. Este producto se graba con láser y la máquina sólo puede seguir trazos.`,
+	);
+}
 
 export async function exportarParaPedido(
 	sides: Record<string, EstadoDeLado>,
@@ -70,6 +121,26 @@ export async function exportarParaPedido(
 
 		if (!arte) continue;
 
+		/* EL VECTOR SÓLO DONDE LO PIDEN. Recorre los objetos, lee las fuentes y
+		   las descomprime: es caro, y en una playera no lo mira nadie porque una
+		   DTF se manda en PNG. Lo decide la técnica declarada del lado. */
+		const vectorial =
+			salidaDelLado(medidas) === "vector"
+				? await exportarSvgDeLado(canvas, areas, {
+						widthCm: medidas?.widthCm ?? 28,
+					})
+				: null;
+
+		/* SI EL VECTOR NO SALIÓ LIMPIO, NO SE PIDE. No es un aviso que se pueda
+		   ignorar: en un lado de grabado el PNG no se puede producir —la máquina
+		   recorre trazos, no imprime medias tintas—, así que un archivo con una
+		   imagen ráster o un texto sin convertir es un pedido que el taller no
+		   puede fabricar y que nadie descubre hasta tener la pieza delante.
+		   Vale más no dejar confirmar. */
+		if (salidaDelLado(medidas) === "vector") {
+			revisarElVector(vectorial, producto.sideLabels?.[lado] ?? lado);
+		}
+
 		const colocacion = exportarColocacion(canvas, areas);
 
 		archivos.push({
@@ -79,6 +150,7 @@ export async function exportarParaPedido(
 			arte: await conDpi(arte.blob, arte.dpi),
 			colocacion: colocacion?.blob ?? null,
 			prenda: await sobreLaPrendaReal(producto, lado, colorPrenda, arte.blob),
+			vector: vectorial?.blob ?? null,
 			miniaturaArte: exportarMiniaturaDelArte(canvas, areas),
 			miniaturaPrenda: colocacion?.dataUrl ?? null,
 			sangradoCm: arte.sangradoCm,
@@ -100,7 +172,10 @@ export async function exportarParaPedido(
 				canvas
 					.getObjects()
 					.filter((o) => !areas.includes(o))
-					.map((o) => o.toObject()),
+					/* La marca distingue las capas base bloqueadas de lo que añadió el
+					   invitado. Fabric no serializa propiedades propias a menos que se
+					   pidan explícitamente; perderla permitiría editar la base al volver. */
+					.map((o) => o.toObject(["esBaseDeEvento"])),
 			]),
 		),
 	};

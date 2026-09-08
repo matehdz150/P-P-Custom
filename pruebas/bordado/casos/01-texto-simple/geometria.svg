@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+     xmlns:inkstitch="http://inkstitch.org/namespace"
+     version="1.1" width="90.0mm" height="60.0mm"
+     viewBox="0 0 90.0 60.0">
+  <metadata>
+    <inkstitch:min_stitch_len_mm>0.3</inkstitch:min_stitch_len_mm>
+    <inkstitch:collapse_len_mm>3</inkstitch:collapse_len_mm>
+    <inkstitch:min_satin_stroke_width_mm>1.5</inkstitch:min_satin_stroke_width_mm>
+    <inkstitch:inkstitch_svg_version>4</inkstitch:inkstitch_svg_version>
+  </metadata>
+  <path id="letra-1" d="M 7,20 V 6" fill="none" stroke="#171717"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+        inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42"
+        inkstitch:pull_compensation_mm="0.2" inkstitch:center_walk_underlay="true"
+        inkstitch:contour_underlay="false" inkstitch:max_stitch_length_mm="8" />
+  <path id="letra-2" d="M 7,13 L 14,6" fill="none" stroke="#171717"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+        inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42"
+        inkstitch:pull_compensation_mm="0.2" inkstitch:center_walk_underlay="true"
+        inkstitch:contour_underlay="false" inkstitch:max_stitch_length_mm="8" />
+  <path id="letra-3" d="M 7,13 L 14,20" fill="none" stroke="#171717"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+        inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42"
+        inkstitch:pull_compensation_mm="0.2" inkstitch:center_walk_underlay="true"
+        inkstitch:contour_underlay="false" inkstitch:max_stitch_length_mm="8" />
+  <path id="letra-4" d="M 18,6 V 16 C 18,21 27,21 27,16 V 6" fill="none" stroke="#171717"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+        inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42"
+        inkstitch:pull_compensation_mm="0.2" inkstitch:center_walk_underlay="true"
+        inkstitch:contour_underlay="false" inkstitch:max_stitch_length_mm="8" />
+  <path id="letra-5" d="M 39,7 C 30,3 29,12 35,13 C 43,14 42,22 31,19" fill="none" stroke="#171717"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+        inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42"
+        inkstitch:pull_compensation_mm="0.2" inkstitch:center_walk_underlay="true"
+        inkstitch:contour_underlay="false" inkstitch:max_stitch_length_mm="8" />
+  <path id="letra-6" d="M 45,6 H 57" fill="none" stroke="#171717"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+        inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42"
+        inkstitch:pull_compensation_mm="0.2" inkstitch:center_walk_underlay="true"
+        inkstitch:contour_underlay="false" inkstitch:max_stitch_length_mm="8" />
+  <path id="letra-7" d="M 51,6 V 20" fill="none" stroke="#171717"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+        inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42"
+        inkstitch:pull_compensation_mm="0.2" inkstitch:center_walk_underlay="true"
+        inkstitch:contour_underlay="false" inkstitch:max_stitch_length_mm="8" />
+  <path id="letra-8" d="M 60,6 H 72" fill="none" stroke="#171717"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+        inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42"
+        inkstitch:pull_compensation_mm="0.2" inkstitch:center_walk_underlay="true"
+        inkstitch:contour_underlay="false" inkstitch:max_stitch_length_mm="8" />
+  <path id="letra-9" d="M 66,6 V 20" fill="none" stroke="#171717"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+        inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42"
+        inkstitch:pull_compensation_mm="0.2" inkstitch:center_walk_underlay="true"
+        inkstitch:contour_underlay="false" inkstitch:max_stitch_length_mm="8" />
+  <path id="letra-10" d="M 81,6 C 72,6 72,20 81,20 C 89,20 89,6 81,6 Z" fill="none" stroke="#171717"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+        inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42"
+        inkstitch:pull_compensation_mm="0.2" inkstitch:center_walk_underlay="true"
+        inkstitch:contour_underlay="false" inkstitch:max_stitch_length_mm="8" />
+</svg>

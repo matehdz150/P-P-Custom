@@ -62,6 +62,9 @@ SKYDROPX_PAQUETERIAS="${KUSTTO_PAQUETERIAS-paquetexpress}"
 
 
 CUENTA=$(aws_ sts get-caller-identity --query Account --output text)
+# De donde se copia el DST del bordado al crear el pedido. Va DESPUÉS de CUENTA
+# porque se calcula igual que en infra/bordado.sh, que es quien crea el bucket.
+BORDADO="${KUSTTO_EMBROIDERY_BUCKET:-kustto-embroidery-${CUENTA}-${REGION}}"
 
 # El pool de proveedores, si ya se creó con infra/cognito.sh.
 if [ -f infra/.cognito ]; then
@@ -208,6 +211,11 @@ aws_ iam put-role-policy --role-name "$ROL" --policy-name datos \
         },
         {
           \"Effect\": \"Allow\",
+          \"Action\": [\"s3:GetObject\"],
+          \"Resource\": \"arn:aws:s3:::${BORDADO}/embroidery/*\"
+        },
+        {
+          \"Effect\": \"Allow\",
           \"Action\": [
             \"cognito-idp:AdminCreateUser\",
             \"cognito-idp:AdminSetUserPassword\"
@@ -232,7 +240,7 @@ fi
 
 # Una variable vacía al final rompe el parser del CLI ("Expected: ',',
 # received: 'EOF'"), así que las que no tienen valor no se mandan.
-PARES="KUSTTO_TABLA=$TABLA,KUSTTO_BUCKET_PUBLICO=$PUBLICO,KUSTTO_ORIGEN=$ORIGEN"
+PARES="KUSTTO_TABLA=$TABLA,KUSTTO_BUCKET_PUBLICO=$PUBLICO,KUSTTO_EMBROIDERY_BUCKET=$BORDADO,KUSTTO_ORIGEN=$ORIGEN"
 if [ -n "$POOL_ID" ]; then
   PARES="$PARES,KUSTTO_POOL_ID=$POOL_ID"
 else

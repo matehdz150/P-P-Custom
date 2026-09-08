@@ -1,12 +1,13 @@
 "use client";
 
-import { FabricImage, type FabricObject, Path, Textbox } from "fabric";
+import { type FabricObject, Path, Textbox } from "fabric";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import { useHistory } from "@/Contexts/HistoryContext";
 import { CurvedText } from "@/lib/fabric/CurvedText";
+import { esObjetoGrafico } from "@/lib/fabric/esObjetoGrafico";
 
 import { RemoveObjectCommand } from "@/lib/history/commands/RemoveObjectCommand";
 
@@ -92,7 +93,9 @@ export default function LayerItem({ obj }: { obj: FabricObject }) {
 							{(obj instanceof Textbox || obj instanceof CurvedText) && (
 								<TextControls obj={obj} />
 							)}
-							{obj instanceof FabricImage && <ImageControls obj={obj} />}
+							{esObjetoGrafico(obj) && !(obj instanceof Path) && (
+								<ImageControls obj={obj} />
+							)}
 							{obj instanceof Path && <ShapeControls obj={obj} />}
 						</div>
 					</motion.div>

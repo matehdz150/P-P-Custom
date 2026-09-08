@@ -1,0 +1,73 @@
+{
+  "capturedAt": "2026-09-06T00:52:00Z",
+  "account": "218897024535",
+  "region": "us-east-1",
+  "profile": "kustto-admin",
+  "function": {
+    "architecture": "arm64",
+    "packageType": "Image",
+    "benchmarkTimeoutSeconds": 180,
+    "ephemeralStorageMb": 512,
+    "vpcAttached": false,
+    "accountConcurrencyLimit": 1000
+  },
+  "image": {
+    "resolvedDigest": "sha256:2dd24dff8fd4a80d00aca9d933dc24a0df63247352cc715f76d80e49c3700866",
+    "compressedBytes": 400144147,
+    "extractedFilesystemBytes": 965444807,
+    "rootFilesystemLayers": 11,
+    "compressedLayerBytes": [
+      27620453,
+      102030637,
+      263290389,
+      7164232,
+      111,
+      4733,
+      797,
+      1190,
+      1307,
+      1124,
+      24650
+    ],
+    "cleanBuildSeconds": 89
+  },
+  "memoryConfiguration": {
+    "requestedMb": [1024, 2048, 3072, 4096],
+    "measuredMb": [1024, 2048, 3008],
+    "serviceRejectedMb": [3072, 4096],
+    "serviceError": "'MemorySize' value failed to satisfy constraint: Member must have value less than or equal to 3008"
+  },
+  "complexCaseAt1024Mb": {
+    "completed": 0,
+    "observedColdTimeouts": 9,
+    "internalEngineTimeoutSeconds": 150,
+    "lambdaDurationMs": {
+      "min": 150115.87,
+      "median": 150135.49,
+      "max": 150339.69
+    },
+    "billedDurationMs": {
+      "min": 150326,
+      "median": 150390,
+      "max": 150619
+    },
+    "maxMemoryUsedMb": 374,
+    "note": "Tres eran la tanda planeada. Seis ejecuciones adicionales fueron provocadas por reintentos del cliente al expirar su timeout de lectura durante la instrumentación; no se usan como muestras de éxito ni se intentó warm."
+  },
+  "concurrencyAt2048Mb": [
+    {"requested": 1, "successes": 1, "uniqueEnvironments": 1, "durationMinMs": 26244.35, "durationMedianMs": 26244.35, "durationMaxMs": 26244.35},
+    {"requested": 5, "successes": 5, "uniqueEnvironments": 5, "durationMinMs": 25601.28, "durationMedianMs": 34010.76, "durationMaxMs": 34359.03},
+    {"requested": 10, "successes": 10, "uniqueEnvironments": 10, "durationMinMs": 20604.87, "durationMedianMs": 33643.94, "durationMaxMs": 36191.72}
+  ],
+  "offlineContainerTest": {
+    "dockerNetwork": "none",
+    "case": "01-texto-simple",
+    "success": true,
+    "stitchCount": 1321,
+    "temporaryDirectoryCleaned": true
+  },
+  "excludedEvidence": {
+    "path": "discarded-validator-run.jsonl",
+    "reason": "Corrida previa al arreglo del validador Tajima, que confundía el límite por eje con distancia euclidiana."
+  }
+}

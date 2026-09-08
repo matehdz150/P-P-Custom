@@ -465,11 +465,77 @@ function validar(c: Cuerpo) {
 		throw malaPeticion("Marca al menos un lado que puedas imprimir");
 	}
 
+	validarTecnicas(datos.printSides);
+	validarRecargos(datos.printSides);
 	validarExistencias(datos);
 	validarEnvio(datos);
 	validarFotosReales(datos);
 
 	return datos;
+}
+
+/**
+ * Que el recargo de cada lado sea un número que se pueda cobrar.
+ *
+ * ES UN CAMPO DE PRECIO, y por eso se comprueba aquí aunque el cálculo ya
+ * ignore lo que no sea un número positivo. Un negativo guardado no descontaría
+ * nada —el cálculo lo trata como cero— pero dejaría al taller creyendo que
+ * puso un descuento, y lo descubriría cobrando de menos. Vale más decírselo al
+ * guardar. Ausente es legítimo: significa "cobra el recargo general".
+ */
+function validarRecargos(lados: unknown) {
+	if (!Array.isArray(lados)) return;
+
+	for (const lado of lados as Cuerpo[]) {
+		const r = lado?.recargo;
+		if (r === undefined || r === null || r === "") continue;
+
+		const n = Number(r);
+		if (!Number.isFinite(n) || n < 0) {
+			throw malaPeticion(
+				`El recargo del lado "${String(lado?.sideKey ?? "?")}" tiene que ser un número de 0 en adelante.`,
+			);
+		}
+	}
+}
+
+/**
+ * Que la técnica de cada lado sea una de las que sabemos producir.
+ *
+ * SE COMPRUEBA AQUÍ AUNQUE EL EDITOR YA FALLE SEGURO. Una técnica que no
+ * reconoce se lee como ráster y el taller recibe el PNG de siempre, así que
+ * nada se rompe — pero este campo decide QUÉ ARCHIVO se produce, y el cuerpo de
+ * la petición se puede escribir a mano. Vale más rechazarlo que guardar en la
+ * tabla una palabra que nadie va a poder interpretar dentro de un año.
+ *
+ * LA LISTA ESTÁ DUPLICADA, a propósito y con desgana: la de verdad vive en
+ * `apps/web/lib/impresion/tecnicas.ts`, que además dice qué implica cada una,
+ * pero el front y las Lambdas se empaquetan por separado y no hay un módulo
+ * compartido entre los dos. Si entra una técnica nueva, hay que tocar los dos
+ * sitios; el comentario está para que el segundo no se olvide.
+ *
+ * SIN TÉCNICA SE PASA. Todo lo dado de alta antes de que este campo existiera
+ * viene sin ella, y un alta que exija declararla dejaría a esos productos sin
+ * poder editarse hasta que alguien los repase uno por uno.
+ */
+const TECNICAS = new Set([
+	"dtf",
+	"serigrafia",
+	"sublimacion",
+	"uv",
+	"laser",
+	"bordado",
+]);
+
+function validarTecnicas(lados: unknown[]) {
+	for (const lado of lados) {
+		const tecnica = (lado as Cuerpo | null)?.tecnica;
+		if (tecnica === undefined || tecnica === null || tecnica === "") continue;
+
+		if (typeof tecnica !== "string" || !TECNICAS.has(tecnica)) {
+			throw malaPeticion(`No conocemos la técnica "${String(tecnica)}"`);
+		}
+	}
 }
 
 /**

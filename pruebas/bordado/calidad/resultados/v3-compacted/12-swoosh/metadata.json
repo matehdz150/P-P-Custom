@@ -1,0 +1,154 @@
+{
+  "fixture": "12-swoosh",
+  "profileVersion": "experimental-v3-2026-09-06",
+  "status": "measured",
+  "physicallyValidated": false,
+  "geometry": {
+    "objectCount": 2,
+    "pathCount": 10,
+    "nodeCount": 54,
+    "segmentCount": 44,
+    "satinColumnCount": 2,
+    "fillRegionCount": 0,
+    "runningPathCount": 0,
+    "junctionCount": 0,
+    "satin": {
+      "minWidthMm": 4.132,
+      "maxWidthMm": 4.591,
+      "averageWidthMm": 4.361,
+      "widthVariance": 0.05267
+    },
+    "svgBytes": 1696
+  },
+  "stitchPlan": {
+    "stitchCount": 477,
+    "runningStitches": null,
+    "satinStitches": null,
+    "fillStitches": null,
+    "jumps": 3,
+    "trims": 0,
+    "colorChanges": 0,
+    "maxStitchLengthMm": 5.209,
+    "p95StitchLengthMm": 5.162,
+    "averageStitchLengthMm": 4.587,
+    "stitchesAboveThreshold": 0,
+    "maxJumpLengthMm": 11.735,
+    "estimatedThreadLengthMm": 2211.6,
+    "directionChangeDegrees": {
+      "average": 4.867,
+      "p95": 6.137
+    },
+    "maxDirectionChange": 88.523,
+    "numberOfSharpDirectionChanges": 3,
+    "maxAngleDeltaBetweenAdjacentStitches": 88.523,
+    "numberOfFanStitches": 0,
+    "numberOfCrossingStitches": 6,
+    "overlappingSegments": 44,
+    "overlapDensity": 0.04604,
+    "localStitchDensity": {
+      "cellMm": 1.0,
+      "occupiedCells": 98,
+      "averagePerOccupiedCell": 4.857
+    },
+    "maxLocalDensity": 9,
+    "analysis": {
+      "crossingComparisons": 8482,
+      "crossingPairs": 4,
+      "crossingAnalysisTruncated": false
+    }
+  },
+  "dst": {
+    "widthMm": 71.6,
+    "heightMm": 28.4,
+    "stitchCount": 477,
+    "colorCount": 1,
+    "colorChanges": 0,
+    "jumps": 3,
+    "trims": 0
+  },
+  "tajima": {
+    "passed": true,
+    "checks": {
+      "headerIs512Bytes": true,
+      "payloadAlignedTo3Bytes": true,
+      "hasEndRecord": true,
+      "headerRecordCountMatches": true,
+      "headerColorChangesMatch": true,
+      "boundsMatchPyembroidery": true,
+      "maxAxisMovementRepresentable": true
+    },
+    "maxAxisDeltaTenthsMm": 117
+  },
+  "objects": [
+    {
+      "objectId": "swoosh-v3-0-0",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 38,
+        "segmentCount": 33,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 4.591,
+          "maxWidthMm": 4.591,
+          "averageWidthMm": 4.591,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "swoosh-v3-0-1",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 4.132,
+          "maxWidthMm": 4.132,
+          "averageWidthMm": 4.132,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    }
+  ],
+  "timings": {
+    "cacheState": "warm",
+    "segmentationMs": null,
+    "vectorGeometryMs": null,
+    "skeletonMs": null,
+    "railsMs": null,
+    "junctionHandlingMs": null,
+    "stitchTypeAssignmentMs": null,
+    "uploadMs": null,
+    "svgGenerationMs": 0.2,
+    "inkstitchDisplayStartupMs": 0.0,
+    "inkstitchProcessAndDigitizationMs": 1005.9,
+    "inkstitchInitializationMs": null,
+    "inkstitchDigitizationMs": null,
+    "dstParsingMs": 1.4,
+    "tajimaValidationMs": 0.7,
+    "previewMs": 100.3,
+    "totalMs": 1124.7
+  },
+  "artifacts": {
+    "input": "input.svg",
+    "preparedSvg": "prepared.svg",
+    "stitchPlot": "stitchPlot.png",
+    "embroideredPreview": "embroideredPreview.png",
+    "dst": "design.dst"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "profileVersion": "experimental-v2-2026-09-06",
+  "casos": [
+    {
+      "caso": "01-texto-simple",
+      "espera": "columnas satin de un texto grande",
+      "preparado": true,
+      "designHash": "866ef4b3c36ebaa30a1600eb7040f919ae4c75bb426ce5f7a9cedbafbceceaa4",
+      "objetos": 15,
+      "colores": 1,
+      "puntadas": {
+        "satin": 15
+      },
+      "msLocal": 826
+    },
+    {
+      "caso": "02-logo-monocromo",
+      "espera": "dos tintas",
+      "preparado": true,
+      "designHash": "f9b20ee83a4c6b05ca933da5b322a30855e12221906669d3695628bcc512e247",
+      "objetos": 16,
+      "colores": 2,
+      "puntadas": {
+        "satin": 4,
+        "fill": 12
+      },
+      "msLocal": 2448
+    },
+    {
+      "caso": "03-logo-multicolor",
+      "espera": "tres tintas planas",
+      "preparado": true,
+      "designHash": "23193800bc10899b3e580dcc8bb6fa8a6aa78822ad1c34c843abbe2444990a58",
+      "objetos": 17,
+      "colores": 3,
+      "puntadas": {
+        "satin": 4,
+        "fill": 13
+      },
+      "msLocal": 1517
+    },
+    {
+      "caso": "04-discovery",
+      "espera": "REVIEW, nunca PHOTO, geometria preservada",
+      "preparado": true,
+      "designHash": "fc109eb94681147caf6e06afc4dd2f69b3314951c13da8452226ffab501e92c3",
+      "objetos": 145,
+      "colores": 6,
+      "puntadas": {
+        "running": 119,
+        "fill": 8,
+        "satin": 18
+      },
+      "msLocal": 2872
+    },
+    {
+      "caso": "05-ilustracion",
+      "espera": "REVIEW",
+      "preparado": true,
+      "designHash": "3ae48d0259cf31203cc452b644e22e515beb5573c8598127a478660ce2879e9c",
+      "objetos": 13,
+      "colores": 5,
+      "puntadas": {
+        "fill": 9,
+        "running": 3,
+        "satin": 1
+      },
+      "msLocal": 1424
+    },
+    {
+      "caso": "06-fotografia",
+      "espera": "rechazo local: no debe llegar al motor",
+      "preparado": false,
+      "motivo": "PHOTO",
+      "msLocal": 138
+    },
+    {
+      "caso": "07-posterizada",
+      "espera": "presupuesto agotado: acotado",
+      "preparado": false,
+      "motivo": "COMPLEJIDAD_AUTOMATICA_EXCEDIDA",
+      "msLocal": 460
+    },
+    {
+      "caso": "08-texto-variante",
+      "espera": "variante para comprobar que el hash cambia",
+      "preparado": true,
+      "designHash": "c76b4f572dea5e4b7b2dbb1654b82ec008b349dc3d0402d6ddf5bb45753e5027",
+      "objetos": 15,
+      "colores": 1,
+      "puntadas": {
+        "satin": 15
+      },
+      "msLocal": 473
+    }
+  ]
+}

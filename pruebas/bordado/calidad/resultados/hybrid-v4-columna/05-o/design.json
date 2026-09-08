@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "8fdf1ee34cf76e8c1ff8f979cf7b776697cc278394aef9cd23978bcb97304283",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "o-O-0",
+      "sourceObjectId": "o-O-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M44 17C38 17 37 22 37 29C37 36 38 41 44 41C50 41 51 36 51 29C51 22 50 17 44 17Z"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 2.7,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true,
+        "satinMode": "stroke"
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 5,
+      "quality": {
+        "lengthMm": 63.483,
+        "averageWidthMm": 2.7,
+        "minWidthMm": 2.7,
+        "maxWidthMm": 2.7,
+        "widthVariance": 0,
+        "widthVariationRatio": 0,
+        "curvatureDegPerMm": 5.573,
+        "maxCurvatureDegPerMm": 11.2295,
+        "accumulatedTurningAngleDeg": 353.794,
+        "maxDirectionDeltaDeg": 9.268,
+        "junctionCount": 0,
+        "branchCount": 1,
+        "endpointTaper": 0,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 1,
+        "railDivergenceMmPerMm": 0,
+        "railConvergenceMmPerMm": 0,
+        "numberOfSharpTurns": 0,
+        "representationDecision": "stroke-v2",
+        "representationReasons": [],
+        "rawCenterlineNodes": 65,
+        "rawRailNodes": 0,
+        "finalRailNodes": 0,
+        "rungsBefore": 0,
+        "rungsAfter": 0,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 29
+      }
+    }
+  ],
+  "metrics": {
+    "componentCount": 1,
+    "nodeCount": 5,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-hybrid-v4-2026-09-06",
+    "texto": {
+      "satinColumns": 1,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-hybrid-v4-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0",
+  "debug": {
+    "hybridJoins": []
+  }
+}

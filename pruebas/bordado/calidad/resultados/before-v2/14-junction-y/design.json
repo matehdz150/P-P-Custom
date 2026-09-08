@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "a5ea83125abf7ac80f73d66722a7ac1d9417d65d7b48104511df7b52953c2fe6",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "y-left",
+      "sourceObjectId": "y-left",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M24 12L45 31"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 4,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "y-right",
+      "sourceObjectId": "y-right",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M66 12L45 31"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 4,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "y-down",
+      "sourceObjectId": "y-down",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M45 31L45 52"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 4,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    }
+  ],
+  "metrics": {
+    "componentCount": 3,
+    "nodeCount": 6,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-v2-2026-09-06",
+    "texto": {
+      "satinColumns": 3,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-v2-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

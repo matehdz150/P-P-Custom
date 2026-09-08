@@ -1,0 +1,539 @@
+{
+  "01 logo PNG con transparencia": {
+    "esperado": "logo, se prepara, sin rechazo",
+    "clase": "illustration",
+    "rechazo": null,
+    "conAlfa": true,
+    "coloresOrigen": 908,
+    "coloresReducidos": 6,
+    "perdidaDeltaE": 6.23,
+    "regionesEliminadas": 216,
+    "areaEliminadaMm2": 27.912,
+    "objetos": 102,
+    "puntadas": {
+      "satin": 18,
+      "running": 77,
+      "fill": 7
+    },
+    "incidencias": [
+      "ILLUSTRATION_REVIEW",
+      "DETALLE_PERDIDO",
+      "PALETA_FORZADA"
+    ],
+    "metricas": {
+      "gradientRatio": 0.1941,
+      "texture": 0.0088,
+      "colorEntropy": 5.41,
+      "alphaCoverage": 0.2058
+    },
+    "diagnostico": {
+      "coloresDistintos": 908,
+      "concentracionDominante": 0.4943,
+      "entropia": 5.41,
+      "fraccionInterior": 0.7769,
+      "concentracionInterior": 0.5118,
+      "entropiaInterior": 4.6,
+      "suavidadInterior": 0.5658,
+      "componentesAntes": 184,
+      "componentesDespues": 122,
+      "regionesGrandes": 64,
+      "motas": 58,
+      "fraccionMotas": 0.4754,
+      "areaEnMotas": 0.0507
+    },
+    "hayRaster": false
+  },
+  "02 logo PNG con fondo blanco": {
+    "esperado": "logo, el fondo blanco no se borda",
+    "clase": "illustration",
+    "rechazo": null,
+    "conAlfa": false,
+    "coloresOrigen": 1078,
+    "coloresReducidos": 6,
+    "perdidaDeltaE": 5.33,
+    "regionesEliminadas": 347,
+    "areaEliminadaMm2": 32.581,
+    "objetos": 143,
+    "puntadas": {
+      "satin": 14,
+      "running": 118,
+      "fill": 11
+    },
+    "incidencias": [
+      "ILLUSTRATION_REVIEW",
+      "DETALLE_PERDIDO",
+      "PALETA_FORZADA"
+    ],
+    "metricas": {
+      "gradientRatio": 0.1358,
+      "texture": 0.0388,
+      "colorEntropy": 5.57,
+      "alphaCoverage": 0.2036
+    },
+    "diagnostico": {
+      "coloresDistintos": 1078,
+      "concentracionDominante": 0.4782,
+      "entropia": 5.57,
+      "fraccionInterior": 0.7269,
+      "concentracionInterior": 0.513,
+      "entropiaInterior": 4.566,
+      "suavidadInterior": 0.5371,
+      "componentesAntes": 1274,
+      "componentesDespues": 273,
+      "regionesGrandes": 60,
+      "motas": 213,
+      "fraccionMotas": 0.7802,
+      "areaEnMotas": 0.0617
+    },
+    "hayRaster": false
+  },
+  "03 logo de dos tintas": {
+    "esperado": "logo, paleta corta",
+    "clase": "logo",
+    "rechazo": null,
+    "conAlfa": false,
+    "coloresOrigen": 16,
+    "coloresReducidos": 2,
+    "perdidaDeltaE": 0.39,
+    "regionesEliminadas": 68,
+    "areaEliminadaMm2": 1.478,
+    "objetos": 15,
+    "puntadas": {
+      "satin": 5,
+      "running": 0,
+      "fill": 10
+    },
+    "incidencias": [
+      "DETALLE_PERDIDO"
+    ],
+    "metricas": {
+      "gradientRatio": 0.0083,
+      "texture": 0.0057,
+      "colorEntropy": 0.472,
+      "alphaCoverage": 0.3671
+    },
+    "diagnostico": {
+      "coloresDistintos": 16,
+      "concentracionDominante": 0.992,
+      "entropia": 0.472,
+      "fraccionInterior": 0.9338,
+      "concentracionInterior": 1,
+      "entropiaInterior": 0.03,
+      "suavidadInterior": 0.0157,
+      "componentesAntes": 207,
+      "componentesDespues": 3,
+      "regionesGrandes": 2,
+      "motas": 1,
+      "fraccionMotas": 0.3333,
+      "areaEnMotas": 0
+    },
+    "hayRaster": false
+  },
+  "04 wordmark con texto pequeño": {
+    "esperado": "logo o ilustración, avisa de detalle perdido",
+    "clase": "logo",
+    "rechazo": null,
+    "conAlfa": false,
+    "coloresOrigen": 18,
+    "coloresReducidos": 3,
+    "perdidaDeltaE": 2.84,
+    "regionesEliminadas": 123,
+    "areaEliminadaMm2": 7.352,
+    "objetos": 14,
+    "puntadas": {
+      "satin": 0,
+      "running": 14,
+      "fill": 0
+    },
+    "incidencias": [
+      "DETALLE_PERDIDO"
+    ],
+    "metricas": {
+      "gradientRatio": 0.042,
+      "texture": 0.1761,
+      "colorEntropy": 3.031,
+      "alphaCoverage": 0.0454
+    },
+    "diagnostico": {
+      "coloresDistintos": 18,
+      "concentracionDominante": 0.8215,
+      "entropia": 3.031,
+      "fraccionInterior": 0.3471,
+      "concentracionInterior": 1,
+      "entropiaInterior": 0.428,
+      "suavidadInterior": 0.3352,
+      "componentesAntes": 988,
+      "componentesDespues": 116,
+      "regionesGrandes": 7,
+      "motas": 109,
+      "fraccionMotas": 0.9397,
+      "areaEnMotas": 0.1487
+    },
+    "hayRaster": false
+  },
+  "05 icono geométrico": {
+    "esperado": "logo, pocas regiones",
+    "clase": "logo",
+    "rechazo": null,
+    "conAlfa": true,
+    "coloresOrigen": 133,
+    "coloresReducidos": 2,
+    "perdidaDeltaE": 2.38,
+    "regionesEliminadas": 2,
+    "areaEliminadaMm2": 0.36,
+    "objetos": 8,
+    "puntadas": {
+      "satin": 2,
+      "running": 0,
+      "fill": 6
+    },
+    "incidencias": [
+      "DETALLE_PERDIDO"
+    ],
+    "metricas": {
+      "gradientRatio": 0.0224,
+      "texture": 0.0021,
+      "colorEntropy": 0.923,
+      "alphaCoverage": 0.946
+    },
+    "diagnostico": {
+      "coloresDistintos": 133,
+      "concentracionDominante": 0.9888,
+      "entropia": 0.923,
+      "fraccionInterior": 0.9613,
+      "concentracionInterior": 1,
+      "entropiaInterior": 0.666,
+      "suavidadInterior": 0.0129,
+      "componentesAntes": 3,
+      "componentesDespues": 3,
+      "regionesGrandes": 3,
+      "motas": 0,
+      "fraccionMotas": 0,
+      "areaEnMotas": 0
+    },
+    "hayRaster": false
+  },
+  "06 ilustración por regiones": {
+    "esperado": "ilustración -> revisión humana",
+    "clase": "logo",
+    "rechazo": null,
+    "conAlfa": false,
+    "coloresOrigen": 328,
+    "coloresReducidos": 5,
+    "perdidaDeltaE": 2.2,
+    "regionesEliminadas": 8,
+    "areaEliminadaMm2": 0.647,
+    "objetos": 17,
+    "puntadas": {
+      "satin": 0,
+      "running": 11,
+      "fill": 6
+    },
+    "incidencias": [
+      "DETALLE_PERDIDO"
+    ],
+    "metricas": {
+      "gradientRatio": 0.044,
+      "texture": 0.0082,
+      "colorEntropy": 2.497,
+      "alphaCoverage": 0.3345
+    },
+    "diagnostico": {
+      "coloresDistintos": 328,
+      "concentracionDominante": 0.9363,
+      "entropia": 2.497,
+      "fraccionInterior": 0.8595,
+      "concentracionInterior": 0.9975,
+      "entropiaInterior": 1.684,
+      "suavidadInterior": 0.0378,
+      "componentesAntes": 152,
+      "componentesDespues": 9,
+      "regionesGrandes": 9,
+      "motas": 0,
+      "fraccionMotas": 0,
+      "areaEnMotas": 0
+    },
+    "hayRaster": false
+  },
+  "07 retrato fotográfico": {
+    "esperado": "foto -> rechazo sin llegar al motor",
+    "clase": "photo",
+    "rechazo": "PHOTO",
+    "conAlfa": false,
+    "coloresOrigen": 1035,
+    "coloresReducidos": 0,
+    "perdidaDeltaE": 0,
+    "regionesEliminadas": 0,
+    "areaEliminadaMm2": 0,
+    "objetos": 0,
+    "puntadas": {
+      "satin": 0,
+      "running": 0,
+      "fill": 0
+    },
+    "incidencias": [],
+    "metricas": {
+      "gradientRatio": 0,
+      "texture": 0,
+      "colorEntropy": 7.732,
+      "alphaCoverage": 0.1521
+    },
+    "diagnostico": {
+      "coloresDistintos": 1035,
+      "concentracionDominante": 0.1937,
+      "entropia": 7.732,
+      "fraccionInterior": 0.79,
+      "concentracionInterior": 0.1923,
+      "entropiaInterior": 7.162,
+      "suavidadInterior": 0.9841,
+      "componentesAntes": 0,
+      "componentesDespues": 0,
+      "regionesGrandes": 0,
+      "motas": 0,
+      "fraccionMotas": 0,
+      "areaEnMotas": 0
+    },
+    "hayRaster": false
+  },
+  "08 fotografía recortada con alfa": {
+    "esperado": "foto -> rechazo; el alfa no la convierte en logo",
+    "clase": "photo",
+    "rechazo": "PHOTO",
+    "conAlfa": true,
+    "coloresOrigen": 1086,
+    "coloresReducidos": 0,
+    "perdidaDeltaE": 0,
+    "regionesEliminadas": 0,
+    "areaEliminadaMm2": 0,
+    "objetos": 0,
+    "puntadas": {
+      "satin": 0,
+      "running": 0,
+      "fill": 0
+    },
+    "incidencias": [],
+    "metricas": {
+      "gradientRatio": 0,
+      "texture": 0,
+      "colorEntropy": 6.411,
+      "alphaCoverage": 0.6266
+    },
+    "diagnostico": {
+      "coloresDistintos": 1086,
+      "concentracionDominante": 0.4721,
+      "entropia": 6.411,
+      "fraccionInterior": 0.9145,
+      "concentracionInterior": 0.4518,
+      "entropiaInterior": 5.992,
+      "suavidadInterior": 0.9951,
+      "componentesAntes": 0,
+      "componentesDespues": 0,
+      "regionesGrandes": 0,
+      "motas": 0,
+      "fraccionMotas": 0,
+      "areaEnMotas": 0
+    },
+    "hayRaster": false
+  },
+  "09 degradados": {
+    "esperado": "foto -> rechazo",
+    "clase": "photo",
+    "rechazo": "PHOTO",
+    "conAlfa": false,
+    "coloresOrigen": 306,
+    "coloresReducidos": 0,
+    "perdidaDeltaE": 0,
+    "regionesEliminadas": 0,
+    "areaEliminadaMm2": 0,
+    "objetos": 0,
+    "puntadas": {
+      "satin": 0,
+      "running": 0,
+      "fill": 0
+    },
+    "incidencias": [],
+    "metricas": {
+      "gradientRatio": 0,
+      "texture": 0,
+      "colorEntropy": 6.008,
+      "alphaCoverage": 0.4158
+    },
+    "diagnostico": {
+      "coloresDistintos": 306,
+      "concentracionDominante": 0.3134,
+      "entropia": 6.008,
+      "fraccionInterior": 0.9771,
+      "concentracionInterior": 0.2619,
+      "entropiaInterior": 5.947,
+      "suavidadInterior": 0.754,
+      "componentesAntes": 0,
+      "componentesDespues": 0,
+      "regionesGrandes": 0,
+      "motas": 0,
+      "fraccionMotas": 0,
+      "areaEnMotas": 0
+    },
+    "hayRaster": false
+  },
+  "10 JPEG con ruido de compresión": {
+    "esperado": "foto -> rechazo; el ruido no pasa por logo",
+    "clase": "photo",
+    "rechazo": "PHOTO",
+    "conAlfa": false,
+    "coloresOrigen": 402,
+    "coloresReducidos": 0,
+    "perdidaDeltaE": 0,
+    "regionesEliminadas": 0,
+    "areaEliminadaMm2": 0,
+    "objetos": 0,
+    "puntadas": {
+      "satin": 0,
+      "running": 0,
+      "fill": 0
+    },
+    "incidencias": [],
+    "metricas": {
+      "gradientRatio": 0,
+      "texture": 0,
+      "colorEntropy": 5.42,
+      "alphaCoverage": 0.1647
+    },
+    "diagnostico": {
+      "coloresDistintos": 402,
+      "concentracionDominante": 0.5362,
+      "entropia": 5.42,
+      "fraccionInterior": 0.7,
+      "concentracionInterior": 0.5953,
+      "entropiaInterior": 4.528,
+      "suavidadInterior": 0.6546,
+      "componentesAntes": 0,
+      "componentesDespues": 0,
+      "regionesGrandes": 0,
+      "motas": 0,
+      "fraccionMotas": 0,
+      "areaEnMotas": 0
+    },
+    "hayRaster": false
+  },
+  "11 H de palo seco a 25 mm": {
+    "esperado": "tres columnas satin, sin incidencias",
+    "objetos": 3,
+    "puntadas": {
+      "satin": 3,
+      "running": 0,
+      "fill": 0
+    },
+    "anchosSatinMm": [
+      3.5,
+      3.5,
+      3.5
+    ],
+    "alturaMm": 24.95,
+    "incidencias": [],
+    "regionesEliminadas": 10,
+    "satinAbierto": true
+  },
+  "12 H de palo seco a 7 mm": {
+    "esperado": "sigue siendo legible; astas finas -> running o satin",
+    "objetos": 3,
+    "puntadas": {
+      "satin": 3,
+      "running": 0,
+      "fill": 0
+    },
+    "anchosSatinMm": [
+      1,
+      1,
+      1
+    ],
+    "alturaMm": 6.95,
+    "incidencias": [
+      "reject:ASTA_DEMASIADO_FINA"
+    ],
+    "regionesEliminadas": 8,
+    "satinAbierto": true
+  },
+  "13 H de palo seco a 4 mm": {
+    "esperado": "rechazo por altura insuficiente",
+    "objetos": 3,
+    "puntadas": {
+      "satin": 0,
+      "running": 3,
+      "fill": 0
+    },
+    "anchosSatinMm": [],
+    "alturaMm": 3.95,
+    "incidencias": [
+      "reject:TEXTO_DEMASIADO_PEQUENO",
+      "reject:ASTA_DEMASIADO_FINA"
+    ],
+    "regionesEliminadas": 8,
+    "satinAbierto": true
+  },
+  "14 I de serif con asta de pelo a 12 mm": {
+    "esperado": "rechazo por asta demasiado fina",
+    "objetos": 3,
+    "puntadas": {
+      "satin": 3,
+      "running": 0,
+      "fill": 0
+    },
+    "anchosSatinMm": [
+      1.1,
+      1,
+      1.1
+    ],
+    "alturaMm": 11.95,
+    "incidencias": [
+      "reject:ASTA_DEMASIADO_FINA"
+    ],
+    "regionesEliminadas": 8,
+    "satinAbierto": true
+  },
+  "15 columna de 15 mm de ancho": {
+    "esperado": "relleno, avisando de que la columna es demasiado ancha",
+    "objetos": 1,
+    "puntadas": {
+      "satin": 0,
+      "running": 0,
+      "fill": 1
+    },
+    "anchosSatinMm": [],
+    "alturaMm": 29.95,
+    "incidencias": [],
+    "regionesEliminadas": 0,
+    "satinAbierto": true
+  },
+  "16 e con contraforma diminuta a 8 mm": {
+    "esperado": "revisión por contraforma que se cierra",
+    "objetos": 1,
+    "puntadas": {
+      "satin": 1,
+      "running": 0,
+      "fill": 0
+    },
+    "anchosSatinMm": [
+      1.3
+    ],
+    "alturaMm": 6.4,
+    "incidencias": [],
+    "regionesEliminadas": 14,
+    "satinAbierto": true
+  },
+  "17 O grande": {
+    "esperado": "una columna satin cerrada, con la contraforma intacta",
+    "objetos": 1,
+    "puntadas": {
+      "satin": 1,
+      "running": 0,
+      "fill": 0
+    },
+    "anchosSatinMm": [
+      3.4
+    ],
+    "alturaMm": 21.35,
+    "incidencias": [],
+    "regionesEliminadas": 63,
+    "satinAbierto": false
+  }
+}

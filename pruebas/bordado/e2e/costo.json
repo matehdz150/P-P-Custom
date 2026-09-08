@@ -1,0 +1,52 @@
+{
+  "worker": {
+    "ejecuciones": 27,
+    "msMedia": 4417,
+    "msP50": 1810,
+    "msP95": 17758,
+    "msMax": 32307,
+    "memoriaMb": 2048,
+    "usadaMaxMb": 403,
+    "arranquesEnFrio": 5,
+    "initMsMedia": 2763,
+    "agotaronElMotor": 4,
+    "costoDeUnAgotado": 0.002
+  },
+  "api": {
+    "ejecuciones": 238,
+    "msMedia": 37,
+    "msP50": 6,
+    "msP95": 154,
+    "msMax": 1270,
+    "memoriaMb": 512,
+    "usadaMaxMb": 123,
+    "arranquesEnFrio": 3,
+    "initMsMedia": 692
+  },
+  "desglosePorTrabajo": {
+    "workerLambda": 0.000048,
+    "apiLambda": 0.000005,
+    "dynamoSqsS3": 0.000029,
+    "total": 0.000082,
+    "totalConWorkerEnP95": 0.000508
+  },
+  "proyeccionSinCapaGratuita": {
+    "100 trabajos/mes": {
+      "usd": 0.01,
+      "usdEnP95": 0.05
+    },
+    "1000 trabajos/mes": {
+      "usd": 0.08,
+      "usdEnP95": 0.51
+    },
+    "10000 trabajos/mes": {
+      "usd": 0.82,
+      "usdEnP95": 5.08
+    },
+    "100000 trabajos/mes": {
+      "usd": 8.23,
+      "usdEnP95": 50.75
+    }
+  },
+  "nota": "Sin capa gratuita. No incluye CloudWatch Logs ni transferencia de salida."
+}

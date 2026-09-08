@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "74e47cc8fcae7f0dce1fdf6b64891544e8969da6e989cac6a4780ba60419531b",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [],
+  "metrics": {
+    "componentCount": 0,
+    "nodeCount": 0,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-hybrid-v4-2026-09-06",
+    "texto": {
+      "satinColumns": 1,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-hybrid-v4-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0",
+  "debug": {
+    "hybridJoins": []
+  }
+}

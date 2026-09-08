@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "f6cda6318727e9e762d5fd178dfe88bd30eed8eea0b5f0767fdd2970c8519b1c",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "curva-gruesa-v3-0-0",
+      "sourceObjectId": "curva-gruesa",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M11.08 42.496L12.538 40.903L13.406 39.099L14.073 37.237L14.712 35.445L15.404 33.678L16.389 32.05L17.378 30.407L18.362 28.766L19.332 27.139L20.576 25.719L21.879 24.343L23.181 22.961L24.472 21.582L25.971 20.452L27.548 19.412L29.107 18.376L30.674 17.327L32.422 16.636L34.179 15.997L35.936 15.349L37.721 14.764L39.596 14.553L41.435 14.34L43.309 14.115L45.183 14.113L47.058 14.335L48.902 14.546L50.781 14.755M9.656 41.986L9.542 39.829L10.017 37.884L10.694 35.996L11.398 34.039L12.163 32.11L13.23 30.324L14.292 28.553L15.36 26.779L16.441 24.993L17.805 23.42L19.236 21.899L20.667 20.384L22.11 18.866L23.769 17.604L25.512 16.443L27.273 15.278L29.026 14.127L30.965 13.344L32.948 12.614L34.931 11.893L36.921 11.254L39.003 11.002L41.12 10.754L43.202 10.517L45.284 10.514L47.366 10.748L49.479 10.992L51.557 11.239M11.193 42.536L9.543 41.945M26.045 20.547L23.696 17.509M50.755 14.872L51.583 11.122"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 64,
+      "quality": {
+        "minWidthMm": 1.512,
+        "maxWidthMm": 3.6,
+        "averageWidthMm": 3.514,
+        "widthVariance": 0.14888,
+        "angleVariance": 1.15007,
+        "maxAngleDeltaDeg": 4.454,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 2
+      }
+    },
+    {
+      "id": "curva-gruesa-v3-0-1",
+      "sourceObjectId": "curva-gruesa",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M50.781 14.755L52.577 15.317L54.352 15.949L56.121 16.572L57.895 17.221L59.495 18.232L61.091 19.235L62.699 20.239L64.268 21.292L65.621 22.62L66.987 23.952L68.35 25.277L69.703 26.609L70.765 28.185L71.833 29.762L72.917 31.359L73.992 32.933L74.83 34.636L75.58 36.388L76.357 38.196L77.335 39.943L78.889 41.443M51.557 11.239L53.551 11.851L55.531 12.548L57.518 13.254L59.473 13.985L61.248 15.088L63.028 16.201L64.795 17.311L66.516 18.481L68.016 19.932L69.504 21.379L70.994 22.833L72.467 24.303L73.642 26.022L74.811 27.741L75.964 29.44L77.126 31.161L78.045 33.016L78.868 34.923L79.664 36.775L80.259 38.687L80.278 40.846M50.755 14.872L51.583 11.122M66.903 24.038L69.588 21.293M78.779 41.491L80.389 40.799"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 50,
+      "quality": {
+        "minWidthMm": 1.512,
+        "maxWidthMm": 3.6,
+        "averageWidthMm": 3.486,
+        "widthVariance": 0.19313,
+        "angleVariance": 1.043,
+        "maxAngleDeltaDeg": 3.707,
+        "junctionCount": 0,
+        "segmentIndex": 1,
+        "segmentCount": 2
+      },
+      "dependencies": [
+        "curva-gruesa-v3-0-0"
+      ]
+    },
+    {
+      "id": "curva-gruesa-v3-0-2",
+      "sourceObjectId": "curva-gruesa",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M14.345 44.01L15.795 42.409L16.654 40.6L17.306 38.749L17.935 36.954L18.68 35.214L19.661 33.585L20.646 31.941L21.616 30.314L22.64 28.73L23.947 27.359L25.226 26.008L26.521 24.631L27.954 23.421L29.527 22.388L31.056 21.374L32.638 20.351L34.414 19.713L36.116 19.093L37.886 18.439L39.738 18.132L41.557 17.925L43.409 17.703L45.284 17.724L47.13 17.943L48.963 18.149M12.919 43.508L12.794 41.351L13.259 39.403L13.931 37.496L14.627 35.533L15.448 33.629L16.513 31.84L17.574 30.064L18.651 28.272L19.791 26.528L21.223 25.005L22.681 23.462L24.125 21.944L25.717 20.6L27.466 19.436L29.261 18.253L31.029 17.131L32.997 16.403L35.037 15.658L37.011 14.947L39.069 14.595L41.208 14.342L43.313 14.104L45.396 14.126L47.508 14.363L49.633 14.612M14.458 44.05L12.806 43.468M26.6 24.721L24.045 21.854M48.941 18.267L49.656 14.494"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 58,
+      "quality": {
+        "minWidthMm": 1.512,
+        "maxWidthMm": 3.6,
+        "averageWidthMm": 3.504,
+        "widthVariance": 0.1651,
+        "angleVariance": 1.80426,
+        "maxAngleDeltaDeg": 5.74,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 2
+      },
+      "dependencies": [
+        "curva-gruesa-v3-0-1"
+      ]
+    },
+    {
+      "id": "curva-gruesa-v3-0-3",
+      "sourceObjectId": "curva-gruesa",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M48.963 18.149L50.813 18.484L52.594 19.12L54.318 19.728L56.106 20.351L57.717 21.342L59.286 22.326L60.892 23.324L62.391 24.468L63.747 25.794L65.091 27.1L66.458 28.42L67.608 29.922L68.669 31.497L69.744 33.085L70.815 34.66L71.702 36.336L72.442 38.091L73.204 39.89L74.174 41.642L75.72 43.15M49.633 14.612L51.682 14.99L53.658 15.681L55.691 16.4L57.66 17.104L59.447 18.185L61.256 19.313L63.028 20.427L64.678 21.689L66.179 23.14L67.692 24.611L69.182 26.067L70.45 27.711L71.62 29.436L72.778 31.148L73.94 32.873L74.91 34.702L75.725 36.615L76.518 38.485L77.104 40.4L77.112 42.56M48.941 18.267L49.656 14.494M65.005 27.183L67.778 24.528M75.61 43.197L77.223 42.513"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 48,
+      "quality": {
+        "minWidthMm": 1.512,
+        "maxWidthMm": 3.6,
+        "averageWidthMm": 3.481,
+        "widthVariance": 0.20168,
+        "angleVariance": 1.44269,
+        "maxAngleDeltaDeg": 5.229,
+        "junctionCount": 0,
+        "segmentIndex": 1,
+        "segmentCount": 2
+      },
+      "dependencies": [
+        "curva-gruesa-v3-0-2"
+      ]
+    }
+  ],
+  "metrics": {
+    "componentCount": 4,
+    "nodeCount": 220,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-v3-2026-09-06",
+    "texto": {
+      "satinColumns": 1,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-v3-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

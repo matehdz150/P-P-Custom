@@ -1,0 +1,380 @@
+[
+	{
+		"archivo": "logo-bn-simple.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "dos tintas, fondo blanco"
+	},
+	{
+		"archivo": "logo-multicolor.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "tres tintas planas"
+	},
+	{
+		"archivo": "logo-alpha.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "fondo transparente"
+	},
+	{
+		"archivo": "logo-fondo-color.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "tinta clara sobre fondo de color"
+	},
+	{
+		"archivo": "logo-antialias-suave.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "reescalado desde 220px"
+	},
+	{
+		"archivo": "logo-antialias-fuerte.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "reescalado desde 120px"
+	},
+	{
+		"archivo": "logo-jpeg-q30.jpg",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "JPEG calidad 30"
+	},
+	{
+		"archivo": "logo-jpeg-q60.jpg",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "JPEG calidad 60"
+	},
+	{
+		"archivo": "logo-jpeg-q90.jpg",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "JPEG calidad 90"
+	},
+	{
+		"archivo": "logo-sombra-ligera.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "sombra desenfoque 6"
+	},
+	{
+		"archivo": "logo-sombra-marcada.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "sombra desenfoque 14"
+	},
+	{
+		"archivo": "logo-gradiente-ligero.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "degradado interno hasta #2a5fc0"
+	},
+	{
+		"archivo": "logo-gradiente-medio.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "degradado interno hasta #7fb2ff"
+	},
+	{
+		"archivo": "wordmark-grueso.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "wordmark de 92px"
+	},
+	{
+		"archivo": "wordmark-fino.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "wordmark de 46px"
+	},
+	{
+		"archivo": "wordmark-pequeno.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "wordmark de 24px"
+	},
+	{
+		"archivo": "logo-escaneado-limpio.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "escaneado grano 6"
+	},
+	{
+		"archivo": "logo-escaneado-sucio.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "escaneado grano 16"
+	},
+	{
+		"archivo": "ilustracion-simple.png",
+		"familia": "ilustracion",
+		"espera": "grafico",
+		"nota": "cinco regiones planas"
+	},
+	{
+		"archivo": "ilustracion-media.png",
+		"familia": "ilustracion",
+		"espera": "grafico",
+		"nota": "catorce regiones"
+	},
+	{
+		"archivo": "ilustracion-compleja.png",
+		"familia": "ilustracion",
+		"espera": "grafico",
+		"nota": "cuarenta regiones"
+	},
+	{
+		"archivo": "ilustracion-muy-compleja.png",
+		"familia": "ilustracion",
+		"espera": "grafico",
+		"nota": "noventa regiones"
+	},
+	{
+		"archivo": "clipart-contorno.png",
+		"familia": "ilustracion",
+		"espera": "grafico",
+		"nota": "relleno plano con contorno grueso"
+	},
+	{
+		"archivo": "clipart-fino.png",
+		"familia": "ilustracion",
+		"espera": "grafico",
+		"nota": "contorno fino y muchas piezas"
+	},
+	{
+		"archivo": "cartoon-plano.png",
+		"familia": "ilustracion",
+		"espera": "grafico",
+		"nota": "cartoon de tintas planas"
+	},
+	{
+		"archivo": "cartoon-detallado.png",
+		"familia": "ilustracion",
+		"espera": "grafico",
+		"nota": "cartoon con muchos añadidos"
+	},
+	{
+		"archivo": "foto-retrato.png",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "campos suaves"
+	},
+	{
+		"archivo": "foto-producto-fondo-blanco.png",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "objeto sobre blanco"
+	},
+	{
+		"archivo": "foto-con-alpha.png",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "recorte con alfa"
+	},
+	{
+		"archivo": "foto-alto-contraste.png",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "mucho contraste"
+	},
+	{
+		"archivo": "foto-casi-monocroma.png",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "casi sin color"
+	},
+	{
+		"archivo": "foto-fondo-simple.png",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "fondo liso"
+	},
+	{
+		"archivo": "foto-grano-fuerte.png",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "grano alto"
+	},
+	{
+		"archivo": "foto-suave.png",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "muy suave"
+	},
+	{
+		"archivo": "foto-jpeg-q40.jpg",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "JPEG calidad 40"
+	},
+	{
+		"archivo": "foto-jpeg-q75.jpg",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "JPEG calidad 75"
+	},
+	{
+		"archivo": "degradado-lineal.png",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "degradado puro"
+	},
+	{
+		"archivo": "degradado-radial.png",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "degradado puro"
+	},
+	{
+		"archivo": "degradado-tres-paradas.png",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "degradado puro"
+	},
+	{
+		"archivo": "ambiguo-logo-glossy-suave.png",
+		"familia": "ambiguo",
+		"espera": "ambiguo",
+		"nota": "brillo 0.35"
+	},
+	{
+		"archivo": "ambiguo-logo-glossy-fuerte.png",
+		"familia": "ambiguo",
+		"espera": "ambiguo",
+		"nota": "brillo 0.7"
+	},
+	{
+		"archivo": "ambiguo-posterizada-4.png",
+		"familia": "ambiguo",
+		"espera": "ambiguo",
+		"nota": "foto reducida a 4 niveles por canal"
+	},
+	{
+		"archivo": "ambiguo-posterizada-8.png",
+		"familia": "ambiguo",
+		"espera": "ambiguo",
+		"nota": "foto reducida a 8 niveles por canal"
+	},
+	{
+		"archivo": "ambiguo-posterizada-16.png",
+		"familia": "ambiguo",
+		"espera": "ambiguo",
+		"nota": "foto reducida a 16 niveles por canal"
+	},
+	{
+		"archivo": "ambiguo-pixelart-8.png",
+		"familia": "ambiguo",
+		"espera": "ambiguo",
+		"nota": "rejilla de 8 ampliada sin interpolar"
+	},
+	{
+		"archivo": "ambiguo-pixelart-32.png",
+		"familia": "ambiguo",
+		"espera": "ambiguo",
+		"nota": "rejilla de 32 ampliada sin interpolar"
+	},
+	{
+		"archivo": "ambiguo-acuarela-suave.png",
+		"familia": "ambiguo",
+		"espera": "ambiguo",
+		"nota": "manchas desenfocadas 12"
+	},
+	{
+		"archivo": "ambiguo-acuarela-fuerte.png",
+		"familia": "ambiguo",
+		"espera": "ambiguo",
+		"nota": "manchas desenfocadas 26"
+	},
+	{
+		"archivo": "ambiguo-captura-interfaz.png",
+		"familia": "ambiguo",
+		"espera": "ambiguo",
+		"nota": "interfaz plana con texto fino"
+	},
+	{
+		"archivo": "ambiguo-captura-degradada.png",
+		"familia": "ambiguo",
+		"espera": "ambiguo",
+		"nota": "interfaz con fondo degradado"
+	},
+	{
+		"archivo": "ambiguo-vector-alta.png",
+		"familia": "ambiguo",
+		"espera": "ambiguo",
+		"nota": "vector a 1600px"
+	},
+	{
+		"archivo": "ambiguo-vector-media.png",
+		"familia": "ambiguo",
+		"espera": "ambiguo",
+		"nota": "vector a 900px"
+	},
+	{
+		"archivo": "ambiguo-vector-con-texturas.png",
+		"familia": "ambiguo",
+		"espera": "ambiguo",
+		"nota": "vector con veladuras encima"
+	},
+	{
+		"archivo": "real-01-logo-color-alpha.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "Discovery Park, real"
+	},
+	{
+		"archivo": "real-02-logo-color-sin-alpha.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "Discovery aplanado"
+	},
+	{
+		"archivo": "real-03-logo-blanco-negro.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "logo b/n del banco láser"
+	},
+	{
+		"archivo": "real-04-wordmark-texto-pequeno.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "wordmark del banco"
+	},
+	{
+		"archivo": "real-05-icono-geometrico.png",
+		"familia": "logo",
+		"espera": "grafico",
+		"nota": "icono del banco"
+	},
+	{
+		"archivo": "real-06-ilustracion.png",
+		"familia": "ilustracion",
+		"espera": "grafico",
+		"nota": "ilustración del banco"
+	},
+	{
+		"archivo": "real-07-retrato.jpg",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "retrato REAL"
+	},
+	{
+		"archivo": "real-08-fotografia-alpha.png",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "foto recortada REAL"
+	},
+	{
+		"archivo": "real-09-degradados.png",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "degradados REALES"
+	},
+	{
+		"archivo": "real-10-jpeg-ruido-compresion.jpg",
+		"familia": "foto",
+		"espera": "foto",
+		"nota": "JPEG ruidoso REAL"
+	}
+]

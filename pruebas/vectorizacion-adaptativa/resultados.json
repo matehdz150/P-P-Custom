@@ -1,0 +1,1623 @@
+{
+  "fecha": "2026-09-05T22:58:05.052Z",
+  "motor": "vtracer-wasm 0.1.0 vendorizado; ejecución Node del mismo WASM usado en browser",
+  "fixtures": 10,
+  "ejecutados": 10,
+  "clasificacionesCorrectas": 10,
+  "svgValidos": 10,
+  "scorePromedio": 96.37,
+  "confianzaPromedio": 0.747,
+  "scorePromedioBaseline": 75.33,
+  "resultados": [
+    {
+      "caso": "01-logo-color-alpha.png",
+      "descripcion": "Logo color con transparencia (Discovery Park)",
+      "esperado": "logo-line-art",
+      "clasificado": "logo-line-art",
+      "clasificacionCorrecta": true,
+      "confianzaClasificacion": 0.5611,
+      "ambiguo": true,
+      "scoresClase": {
+        "logo-line-art": 0.6748,
+        "icono-geometrico": 0.3702,
+        "ilustracion": 0.568,
+        "fotografia": 0.6351
+      },
+      "metricas": {
+        "anchoOriginal": 1180,
+        "altoOriginal": 549,
+        "alpha": {
+          "transparente": 0.8389,
+          "parcial": 0.0881,
+          "opaco": 0.1611,
+          "fuerte": true
+        },
+        "color": {
+          "top1": 0.2326,
+          "top8": 0.6416,
+          "entropiaBits": 4.6543,
+          "entropiaNormalizada": 0.3879,
+          "bins": 204
+        },
+        "tonoContinuo": 0.478,
+        "densidadBordes": 0.6858,
+        "uniformidadFondoBorde": 0.9073,
+        "textura": 0.3277,
+        "componentes": {
+          "total": 80,
+          "pequenos": 8,
+          "fraccionAreaPequena": 0.0056
+        }
+      },
+      "dimensionesVector": {
+        "ancho": 1400,
+        "alto": 651,
+        "escala": 1.1864
+      },
+      "seleccionado": "mascara-detalle",
+      "score": 99.09,
+      "confianza": 0.6077,
+      "candidatos": [
+        {
+          "nombre": "mascara-detalle",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 2374,
+            "paths": 74,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 99.09,
+            "fidelidadVisual": 0.996,
+            "penalizacionComplejidad": 0.0051,
+            "foregroundPerdido": 0.0016,
+            "foregroundAnadido": 0.02,
+            "similitudBordesF1": 0.9992,
+            "huecosReferencia": 16,
+            "huecosSalida": 16,
+            "errorHuecos": 0,
+            "componentesReferencia": 74,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 251
+        },
+        {
+          "nombre": "mascara-balanceada",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 2374,
+            "paths": 74,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 99.09,
+            "fidelidadVisual": 0.996,
+            "penalizacionComplejidad": 0.0051,
+            "foregroundPerdido": 0.0016,
+            "foregroundAnadido": 0.02,
+            "similitudBordesF1": 0.9992,
+            "huecosReferencia": 16,
+            "huecosSalida": 16,
+            "errorHuecos": 0,
+            "componentesReferencia": 74,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 216.8
+        },
+        {
+          "nombre": "regiones-color",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 2371,
+            "paths": 73,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 93.65,
+            "fidelidadVisual": 0.9416,
+            "penalizacionComplejidad": 0.005,
+            "foregroundPerdido": 0.0008,
+            "foregroundAnadido": 0.0369,
+            "similitudBordesF1": 0.9919,
+            "huecosReferencia": 16,
+            "huecosSalida": 11,
+            "errorHuecos": 0.3125,
+            "componentesReferencia": 74,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 452.9
+        }
+      ],
+      "baselineActual": {
+        "perfil": "imagen",
+        "senales": {
+          "perfil": "imagen",
+          "top8": 0.8879,
+          "medios": 0.2116
+        },
+        "dimensionesVector": {
+          "ancho": 1000,
+          "alto": 465,
+          "escala": 0.8475
+        },
+        "validacion": {
+          "valida": true,
+          "errores": [],
+          "nodos": 2149,
+          "paths": 72,
+          "dimensionesCorrectas": true
+        },
+        "evaluacion": {
+          "score": 81.15,
+          "fidelidadVisual": 0.8161,
+          "penalizacionComplejidad": 0.0046,
+          "foregroundPerdido": 0.2977,
+          "foregroundAnadido": 0.0087,
+          "similitudBordesF1": 0.7811,
+          "huecosReferencia": 16,
+          "huecosSalida": 19,
+          "errorHuecos": 0.1875,
+          "componentesReferencia": 74,
+          "componentesPerdidos": 9,
+          "recallComponentes": 0.8784
+        },
+        "milisegundos": 108
+      }
+    },
+    {
+      "caso": "02-logo-color-sin-alpha.png",
+      "descripcion": "Logo color sin transparencia",
+      "esperado": "logo-line-art",
+      "clasificado": "logo-line-art",
+      "clasificacionCorrecta": true,
+      "confianzaClasificacion": 0.979,
+      "ambiguo": false,
+      "scoresClase": {
+        "logo-line-art": 0.8492,
+        "icono-geometrico": 0.5517,
+        "ilustracion": 0.6603,
+        "fotografia": 0.3969
+      },
+      "metricas": {
+        "anchoOriginal": 1180,
+        "altoOriginal": 549,
+        "alpha": {
+          "transparente": 0,
+          "parcial": 0,
+          "opaco": 1,
+          "fuerte": false
+        },
+        "color": {
+          "top1": 0.7643,
+          "top8": 0.8863,
+          "entropiaBits": 2.061,
+          "entropiaNormalizada": 0.1718,
+          "bins": 236
+        },
+        "tonoContinuo": 0.4451,
+        "densidadBordes": 0.6757,
+        "uniformidadFondoBorde": 0.9108,
+        "textura": 0.3635,
+        "componentes": {
+          "total": 76,
+          "pequenos": 4,
+          "fraccionAreaPequena": 0.0033
+        }
+      },
+      "dimensionesVector": {
+        "ancho": 1400,
+        "alto": 651,
+        "escala": 1.1864
+      },
+      "seleccionado": "mascara-detalle",
+      "score": 99.07,
+      "confianza": 0.6911,
+      "candidatos": [
+        {
+          "nombre": "mascara-detalle",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 2415,
+            "paths": 75,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 99.07,
+            "fidelidadVisual": 0.9959,
+            "penalizacionComplejidad": 0.0052,
+            "foregroundPerdido": 0.0017,
+            "foregroundAnadido": 0.0205,
+            "similitudBordesF1": 0.9993,
+            "huecosReferencia": 16,
+            "huecosSalida": 16,
+            "errorHuecos": 0,
+            "componentesReferencia": 75,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 206.6
+        },
+        {
+          "nombre": "mascara-balanceada",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 2415,
+            "paths": 75,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 99.07,
+            "fidelidadVisual": 0.9959,
+            "penalizacionComplejidad": 0.0052,
+            "foregroundPerdido": 0.0017,
+            "foregroundAnadido": 0.0205,
+            "similitudBordesF1": 0.9993,
+            "huecosReferencia": 16,
+            "huecosSalida": 16,
+            "errorHuecos": 0,
+            "componentesReferencia": 75,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 204.7
+        },
+        {
+          "nombre": "regiones-color",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 2386,
+            "paths": 74,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 93.64,
+            "fidelidadVisual": 0.9415,
+            "penalizacionComplejidad": 0.0051,
+            "foregroundPerdido": 0.0008,
+            "foregroundAnadido": 0.0366,
+            "similitudBordesF1": 0.9915,
+            "huecosReferencia": 16,
+            "huecosSalida": 11,
+            "errorHuecos": 0.3125,
+            "componentesReferencia": 75,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 423.9
+        }
+      ],
+      "baselineActual": {
+        "perfil": "imagen",
+        "senales": {
+          "perfil": "imagen",
+          "top8": 0.8863,
+          "medios": 0.2119
+        },
+        "dimensionesVector": {
+          "ancho": 1000,
+          "alto": 465,
+          "escala": 0.8475
+        },
+        "validacion": {
+          "valida": true,
+          "errores": [],
+          "nodos": 2263,
+          "paths": 78,
+          "dimensionesCorrectas": true
+        },
+        "evaluacion": {
+          "score": 75.48,
+          "fidelidadVisual": 0.7598,
+          "penalizacionComplejidad": 0.005,
+          "foregroundPerdido": 0.2886,
+          "foregroundAnadido": 0.0103,
+          "similitudBordesF1": 0.7859,
+          "huecosReferencia": 16,
+          "huecosSalida": 25,
+          "errorHuecos": 0.5625,
+          "componentesReferencia": 75,
+          "componentesPerdidos": 9,
+          "recallComponentes": 0.88
+        },
+        "milisegundos": 100.2
+      }
+    },
+    {
+      "caso": "03-logo-blanco-negro.png",
+      "descripcion": "Logo blanco/negro",
+      "esperado": "logo-line-art",
+      "clasificado": "logo-line-art",
+      "clasificacionCorrecta": true,
+      "confianzaClasificacion": 0.6909,
+      "ambiguo": true,
+      "scoresClase": {
+        "logo-line-art": 0.8797,
+        "icono-geometrico": 0.7937,
+        "ilustracion": 0.6602,
+        "fotografia": 0.1922
+      },
+      "metricas": {
+        "anchoOriginal": 760,
+        "altoOriginal": 300,
+        "alpha": {
+          "transparente": 0,
+          "parcial": 0,
+          "opaco": 1,
+          "fuerte": false
+        },
+        "color": {
+          "top1": 0.6177,
+          "top8": 0.9897,
+          "entropiaBits": 1.3749,
+          "entropiaNormalizada": 0.1146,
+          "bins": 16
+        },
+        "tonoContinuo": 0.1552,
+        "densidadBordes": 0.3971,
+        "uniformidadFondoBorde": 1,
+        "textura": 0.3073,
+        "componentes": {
+          "total": 2,
+          "pequenos": 0,
+          "fraccionAreaPequena": 0
+        }
+      },
+      "dimensionesVector": {
+        "ancho": 1400,
+        "alto": 553,
+        "escala": 1.8421
+      },
+      "seleccionado": "mascara-detalle",
+      "score": 99.93,
+      "confianza": 0.6378,
+      "candidatos": [
+        {
+          "nombre": "mascara-detalle",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 209,
+            "paths": 2,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 99.93,
+            "fidelidadVisual": 0.9994,
+            "penalizacionComplejidad": 0.0001,
+            "foregroundPerdido": 0.0004,
+            "foregroundAnadido": 0.0027,
+            "similitudBordesF1": 0.9999,
+            "huecosReferencia": 2,
+            "huecosSalida": 2,
+            "errorHuecos": 0,
+            "componentesReferencia": 2,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 172.1
+        },
+        {
+          "nombre": "mascara-balanceada",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 209,
+            "paths": 2,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 99.93,
+            "fidelidadVisual": 0.9994,
+            "penalizacionComplejidad": 0.0001,
+            "foregroundPerdido": 0.0004,
+            "foregroundAnadido": 0.0027,
+            "similitudBordesF1": 0.9999,
+            "huecosReferencia": 2,
+            "huecosSalida": 2,
+            "errorHuecos": 0,
+            "componentesReferencia": 2,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 170.2
+        },
+        {
+          "nombre": "regiones-color",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 212,
+            "paths": 2,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 99.91,
+            "fidelidadVisual": 0.9992,
+            "penalizacionComplejidad": 0.0001,
+            "foregroundPerdido": 0.0004,
+            "foregroundAnadido": 0.0038,
+            "similitudBordesF1": 1,
+            "huecosReferencia": 2,
+            "huecosSalida": 2,
+            "errorHuecos": 0,
+            "componentesReferencia": 2,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 369.6
+        }
+      ],
+      "baselineActual": {
+        "perfil": "icono",
+        "senales": {
+          "perfil": "icono",
+          "top8": 0.9897,
+          "medios": 0.0248
+        },
+        "dimensionesVector": {
+          "ancho": 760,
+          "alto": 300,
+          "escala": 1
+        },
+        "validacion": {
+          "valida": true,
+          "errores": [],
+          "nodos": 152,
+          "paths": 2,
+          "dimensionesCorrectas": true
+        },
+        "evaluacion": {
+          "score": 99.94,
+          "fidelidadVisual": 0.9995,
+          "penalizacionComplejidad": 0.0001,
+          "foregroundPerdido": 0.0007,
+          "foregroundAnadido": 0.0018,
+          "similitudBordesF1": 1,
+          "huecosReferencia": 2,
+          "huecosSalida": 2,
+          "errorHuecos": 0,
+          "componentesReferencia": 2,
+          "componentesPerdidos": 0,
+          "recallComponentes": 1
+        },
+        "milisegundos": 50.6
+      }
+    },
+    {
+      "caso": "04-wordmark-texto-pequeno.png",
+      "descripcion": "Wordmark con texto pequeño",
+      "esperado": "logo-line-art",
+      "clasificado": "logo-line-art",
+      "clasificacionCorrecta": true,
+      "confianzaClasificacion": 1,
+      "ambiguo": false,
+      "scoresClase": {
+        "logo-line-art": 0.947,
+        "icono-geometrico": 0.7105,
+        "ilustracion": 0.6849,
+        "fotografia": 0.1712
+      },
+      "metricas": {
+        "anchoOriginal": 680,
+        "altoOriginal": 150,
+        "alpha": {
+          "transparente": 0,
+          "parcial": 0,
+          "opaco": 1,
+          "fuerte": false
+        },
+        "color": {
+          "top1": 0.9295,
+          "top8": 0.9776,
+          "entropiaBits": 0.623,
+          "entropiaNormalizada": 0.0519,
+          "bins": 16
+        },
+        "tonoContinuo": 0.183,
+        "densidadBordes": 0.4505,
+        "uniformidadFondoBorde": 1,
+        "textura": 0.3613,
+        "componentes": {
+          "total": 28,
+          "pequenos": 11,
+          "fraccionAreaPequena": 0.0256
+        }
+      },
+      "dimensionesVector": {
+        "ancho": 1400,
+        "alto": 309,
+        "escala": 2.0588
+      },
+      "seleccionado": "mascara-detalle",
+      "score": 98.78,
+      "confianza": 0.7249,
+      "candidatos": [
+        {
+          "nombre": "mascara-detalle",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 1243,
+            "paths": 40,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 98.78,
+            "fidelidadVisual": 0.99,
+            "penalizacionComplejidad": 0.0022,
+            "foregroundPerdido": 0.0067,
+            "foregroundAnadido": 0.0469,
+            "similitudBordesF1": 0.999,
+            "huecosReferencia": 13,
+            "huecosSalida": 13,
+            "errorHuecos": 0,
+            "componentesReferencia": 40,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 84.4
+        },
+        {
+          "nombre": "mascara-balanceada",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 1188,
+            "paths": 37,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 97.54,
+            "fidelidadVisual": 0.9774,
+            "penalizacionComplejidad": 0.002,
+            "foregroundPerdido": 0.0071,
+            "foregroundAnadido": 0.0469,
+            "similitudBordesF1": 0.9971,
+            "huecosReferencia": 13,
+            "huecosSalida": 13,
+            "errorHuecos": 0,
+            "componentesReferencia": 40,
+            "componentesPerdidos": 3,
+            "recallComponentes": 0.925
+          },
+          "milisegundos": 84.2
+        },
+        {
+          "nombre": "regiones-color",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 1005,
+            "paths": 30,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 83.46,
+            "fidelidadVisual": 0.8362,
+            "penalizacionComplejidad": 0.0016,
+            "foregroundPerdido": 0.0073,
+            "foregroundAnadido": 0.1257,
+            "similitudBordesF1": 0.9584,
+            "huecosReferencia": 13,
+            "huecosSalida": 5,
+            "errorHuecos": 0.6154,
+            "componentesReferencia": 40,
+            "componentesPerdidos": 8,
+            "recallComponentes": 0.8
+          },
+          "milisegundos": 183.6
+        }
+      ],
+      "baselineActual": {
+        "perfil": "trazo",
+        "senales": {
+          "perfil": "trazo",
+          "top8": 0.9776,
+          "medios": 0.0341
+        },
+        "dimensionesVector": {
+          "ancho": 2000,
+          "alto": 441,
+          "escala": 2.9412
+        },
+        "validacion": {
+          "valida": true,
+          "errores": [],
+          "nodos": 1419,
+          "paths": 40,
+          "dimensionesCorrectas": true
+        },
+        "evaluacion": {
+          "score": 98.89,
+          "fidelidadVisual": 0.9913,
+          "penalizacionComplejidad": 0.0024,
+          "foregroundPerdido": 0.0052,
+          "foregroundAnadido": 0.0422,
+          "similitudBordesF1": 0.9997,
+          "huecosReferencia": 13,
+          "huecosSalida": 13,
+          "errorHuecos": 0,
+          "componentesReferencia": 40,
+          "componentesPerdidos": 0,
+          "recallComponentes": 1
+        },
+        "milisegundos": 172.2
+      }
+    },
+    {
+      "caso": "05-icono-geometrico.png",
+      "descripcion": "Icono geométrico",
+      "esperado": "icono-geometrico",
+      "clasificado": "icono-geometrico",
+      "clasificacionCorrecta": true,
+      "confianzaClasificacion": 0.9087,
+      "ambiguo": false,
+      "scoresClase": {
+        "logo-line-art": 0.8478,
+        "icono-geometrico": 1.0117,
+        "ilustracion": 0.6054,
+        "fotografia": 0.1094
+      },
+      "metricas": {
+        "anchoOriginal": 420,
+        "altoOriginal": 420,
+        "alpha": {
+          "transparente": 0.471,
+          "parcial": 0.0143,
+          "opaco": 0.529,
+          "fuerte": true
+        },
+        "color": {
+          "top1": 0.836,
+          "top8": 0.9909,
+          "entropiaBits": 0.9082,
+          "entropiaNormalizada": 0.0757,
+          "bins": 56
+        },
+        "tonoContinuo": 0.1146,
+        "densidadBordes": 0.1688,
+        "uniformidadFondoBorde": 1,
+        "textura": 0.0816,
+        "componentes": {
+          "total": 1,
+          "pequenos": 0,
+          "fraccionAreaPequena": 0
+        }
+      },
+      "dimensionesVector": {
+        "ancho": 420,
+        "alto": 420,
+        "escala": 1
+      },
+      "seleccionado": "mascara-detalle",
+      "score": 99.98,
+      "confianza": 0.6816,
+      "candidatos": [
+        {
+          "nombre": "mascara-detalle",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 82,
+            "paths": 1,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 99.98,
+            "fidelidadVisual": 0.9998,
+            "penalizacionComplejidad": 0,
+            "foregroundPerdido": 0,
+            "foregroundAnadido": 0.0012,
+            "similitudBordesF1": 1,
+            "huecosReferencia": 0,
+            "huecosSalida": 0,
+            "errorHuecos": 0,
+            "componentesReferencia": 1,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 39.8
+        },
+        {
+          "nombre": "mascara-balanceada",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 82,
+            "paths": 1,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 99.98,
+            "fidelidadVisual": 0.9998,
+            "penalizacionComplejidad": 0,
+            "foregroundPerdido": 0,
+            "foregroundAnadido": 0.0012,
+            "similitudBordesF1": 1,
+            "huecosReferencia": 0,
+            "huecosSalida": 0,
+            "errorHuecos": 0,
+            "componentesReferencia": 1,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 37.9
+        },
+        {
+          "nombre": "regiones-color",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 226,
+            "paths": 3,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 99.49,
+            "fidelidadVisual": 0.9951,
+            "penalizacionComplejidad": 0.0002,
+            "foregroundPerdido": 0.0002,
+            "foregroundAnadido": 0.0013,
+            "similitudBordesF1": 0.9806,
+            "huecosReferencia": 0,
+            "huecosSalida": 0,
+            "errorHuecos": 0,
+            "componentesReferencia": 1,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 90.7
+        }
+      ],
+      "baselineActual": {
+        "perfil": "trazo",
+        "senales": {
+          "perfil": "trazo",
+          "top8": 0.9924,
+          "medios": 0.4723
+        },
+        "dimensionesVector": {
+          "ancho": 1260,
+          "alto": 1260,
+          "escala": 3
+        },
+        "validacion": {
+          "valida": true,
+          "errores": [],
+          "nodos": 168,
+          "paths": 1,
+          "dimensionesCorrectas": true
+        },
+        "evaluacion": {
+          "score": 99.98,
+          "fidelidadVisual": 0.9999,
+          "penalizacionComplejidad": 0.0001,
+          "foregroundPerdido": 0,
+          "foregroundAnadido": 0.0008,
+          "similitudBordesF1": 1,
+          "huecosReferencia": 0,
+          "huecosSalida": 0,
+          "errorHuecos": 0,
+          "componentesReferencia": 1,
+          "componentesPerdidos": 0,
+          "recallComponentes": 1
+        },
+        "milisegundos": 345.6
+      }
+    },
+    {
+      "caso": "06-ilustracion.png",
+      "descripcion": "Ilustración por regiones",
+      "esperado": "ilustracion",
+      "clasificado": "ilustracion",
+      "clasificacionCorrecta": true,
+      "confianzaClasificacion": 0.6178,
+      "ambiguo": true,
+      "scoresClase": {
+        "logo-line-art": 0.8334,
+        "icono-geometrico": 0.7633,
+        "ilustracion": 0.8933,
+        "fotografia": 0.265
+      },
+      "metricas": {
+        "anchoOriginal": 700,
+        "altoOriginal": 520,
+        "alpha": {
+          "transparente": 0,
+          "parcial": 0,
+          "opaco": 1,
+          "fuerte": false
+        },
+        "color": {
+          "top1": 0.6494,
+          "top8": 0.9492,
+          "entropiaBits": 2.0347,
+          "entropiaNormalizada": 0.1696,
+          "bins": 157
+        },
+        "tonoContinuo": 0.2341,
+        "densidadBordes": 0.3961,
+        "uniformidadFondoBorde": 1,
+        "textura": 0.2519,
+        "componentes": {
+          "total": 1,
+          "pequenos": 0,
+          "fraccionAreaPequena": 0
+        }
+      },
+      "dimensionesVector": {
+        "ancho": 700,
+        "alto": 520,
+        "escala": 1
+      },
+      "seleccionado": "mascara-detalle",
+      "score": 99.85,
+      "confianza": 0.6228,
+      "candidatos": [
+        {
+          "nombre": "mascara-detalle",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 122,
+            "paths": 1,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 99.85,
+            "fidelidadVisual": 0.9986,
+            "penalizacionComplejidad": 0.0001,
+            "foregroundPerdido": 0,
+            "foregroundAnadido": 0.0041,
+            "similitudBordesF1": 0.9971,
+            "huecosReferencia": 0,
+            "huecosSalida": 0,
+            "errorHuecos": 0,
+            "componentesReferencia": 1,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 77.2
+        },
+        {
+          "nombre": "mascara-balanceada",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 122,
+            "paths": 1,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 99.85,
+            "fidelidadVisual": 0.9986,
+            "penalizacionComplejidad": 0.0001,
+            "foregroundPerdido": 0,
+            "foregroundAnadido": 0.0041,
+            "similitudBordesF1": 0.9971,
+            "huecosReferencia": 0,
+            "huecosSalida": 0,
+            "errorHuecos": 0,
+            "componentesReferencia": 1,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 77.1
+        },
+        {
+          "nombre": "regiones-color",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 118,
+            "paths": 1,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 99.83,
+            "fidelidadVisual": 0.9983,
+            "penalizacionComplejidad": 0.0001,
+            "foregroundPerdido": 0,
+            "foregroundAnadido": 0.0053,
+            "similitudBordesF1": 0.9968,
+            "huecosReferencia": 0,
+            "huecosSalida": 0,
+            "errorHuecos": 0,
+            "componentesReferencia": 1,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 167
+        }
+      ],
+      "baselineActual": {
+        "perfil": "trazo",
+        "senales": {
+          "perfil": "trazo",
+          "top8": 0.9492,
+          "medios": 0.2911
+        },
+        "dimensionesVector": {
+          "ancho": 2000,
+          "alto": 1486,
+          "escala": 2.8571
+        },
+        "validacion": {
+          "valida": true,
+          "errores": [],
+          "nodos": 384,
+          "paths": 1,
+          "dimensionesCorrectas": true
+        },
+        "evaluacion": {
+          "score": 99.72,
+          "fidelidadVisual": 0.9975,
+          "penalizacionComplejidad": 0.0002,
+          "foregroundPerdido": 0,
+          "foregroundAnadido": 0.0016,
+          "similitudBordesF1": 0.9906,
+          "huecosReferencia": 0,
+          "huecosSalida": 0,
+          "errorHuecos": 0,
+          "componentesReferencia": 1,
+          "componentesPerdidos": 0,
+          "recallComponentes": 1
+        },
+        "milisegundos": 607.9
+      }
+    },
+    {
+      "caso": "07-retrato.jpg",
+      "descripcion": "Retrato",
+      "esperado": "fotografia",
+      "clasificado": "fotografia",
+      "clasificacionCorrecta": true,
+      "confianzaClasificacion": 0.7149,
+      "ambiguo": false,
+      "scoresClase": {
+        "logo-line-art": 0.49,
+        "icono-geometrico": 0.4934,
+        "ilustracion": 0.6116,
+        "fotografia": 0.7062
+      },
+      "metricas": {
+        "anchoOriginal": 612,
+        "altoOriginal": 760,
+        "alpha": {
+          "transparente": 0,
+          "parcial": 0,
+          "opaco": 1,
+          "fuerte": false
+        },
+        "color": {
+          "top1": 0.6044,
+          "top8": 0.8451,
+          "entropiaBits": 2.852,
+          "entropiaNormalizada": 0.2377,
+          "bins": 194
+        },
+        "tonoContinuo": 0.77,
+        "densidadBordes": 0.2277,
+        "uniformidadFondoBorde": 0.9105,
+        "textura": 0.1059,
+        "componentes": {
+          "total": 5,
+          "pequenos": 3,
+          "fraccionAreaPequena": 0.0006
+        }
+      },
+      "dimensionesVector": {
+        "ancho": 580,
+        "alto": 720,
+        "escala": 0.9474
+      },
+      "seleccionado": "luminancia-adaptativa",
+      "score": 89.25,
+      "confianza": 0.8882,
+      "candidatos": [
+        {
+          "nombre": "luminancia-adaptativa",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 490,
+            "paths": 4,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 89.25,
+            "fidelidadVisual": 0.8929,
+            "penalizacionComplejidad": 0.0004,
+            "foregroundPerdido": 0.0034,
+            "foregroundAnadido": 0.0211,
+            "similitudBordesF1": 0.978,
+            "huecosReferencia": 19,
+            "huecosSalida": 18,
+            "errorHuecos": 0.0526,
+            "componentesReferencia": 9,
+            "componentesPerdidos": 5,
+            "recallComponentes": 0.4444
+          },
+          "milisegundos": 81.8
+        },
+        {
+          "nombre": "luminancia-luces",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 713,
+            "paths": 9,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 77.29,
+            "fidelidadVisual": 0.7736,
+            "penalizacionComplejidad": 0.0007,
+            "foregroundPerdido": 0.0017,
+            "foregroundAnadido": 0.1785,
+            "similitudBordesF1": 0.6062,
+            "huecosReferencia": 19,
+            "huecosSalida": 7,
+            "errorHuecos": 0.6316,
+            "componentesReferencia": 9,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 82
+        },
+        {
+          "nombre": "luminancia-sombras",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 652,
+            "paths": 6,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 75.83,
+            "fidelidadVisual": 0.7589,
+            "penalizacionComplejidad": 0.0006,
+            "foregroundPerdido": 0.1106,
+            "foregroundAnadido": 0.0095,
+            "similitudBordesF1": 0.7111,
+            "huecosReferencia": 19,
+            "huecosSalida": 23,
+            "errorHuecos": 0.2105,
+            "componentesReferencia": 9,
+            "componentesPerdidos": 6,
+            "recallComponentes": 0.3333
+          },
+          "milisegundos": 80.9
+        }
+      ],
+      "baselineActual": {
+        "perfil": "imagen",
+        "senales": {
+          "perfil": "imagen",
+          "top8": 0.8451,
+          "medios": 0.1712
+        },
+        "dimensionesVector": {
+          "ancho": 612,
+          "alto": 760,
+          "escala": 1
+        },
+        "validacion": {
+          "valida": true,
+          "errores": [],
+          "nodos": 913,
+          "paths": 34,
+          "dimensionesCorrectas": true
+        },
+        "evaluacion": {
+          "score": 28.05,
+          "fidelidadVisual": 0.2821,
+          "penalizacionComplejidad": 0.0016,
+          "foregroundPerdido": 0.9207,
+          "foregroundAnadido": 0.0036,
+          "similitudBordesF1": 0.2139,
+          "huecosReferencia": 20,
+          "huecosSalida": 3,
+          "errorHuecos": 0.85,
+          "componentesReferencia": 10,
+          "componentesPerdidos": 9,
+          "recallComponentes": 0.1
+        },
+        "milisegundos": 83.5
+      }
+    },
+    {
+      "caso": "08-fotografia-alpha.png",
+      "descripcion": "Fotografía recortada con alpha",
+      "esperado": "fotografia",
+      "clasificado": "fotografia",
+      "clasificacionCorrecta": true,
+      "confianzaClasificacion": 1,
+      "ambiguo": false,
+      "scoresClase": {
+        "logo-line-art": 0.2864,
+        "icono-geometrico": 0.2363,
+        "ilustracion": 0.4289,
+        "fotografia": 0.9368
+      },
+      "metricas": {
+        "anchoOriginal": 612,
+        "altoOriginal": 760,
+        "alpha": {
+          "transparente": 0.6021,
+          "parcial": 0.0161,
+          "opaco": 0.3979,
+          "fuerte": true
+        },
+        "color": {
+          "top1": 0.245,
+          "top8": 0.6187,
+          "entropiaBits": 4.8466,
+          "entropiaNormalizada": 0.4039,
+          "bins": 192
+        },
+        "tonoContinuo": 0.8035,
+        "densidadBordes": 0.2238,
+        "uniformidadFondoBorde": 0.9099,
+        "textura": 0.1011,
+        "componentes": {
+          "total": 1,
+          "pequenos": 0,
+          "fraccionAreaPequena": 0
+        }
+      },
+      "dimensionesVector": {
+        "ancho": 580,
+        "alto": 720,
+        "escala": 0.9474
+      },
+      "seleccionado": "luminancia-adaptativa",
+      "score": 91.73,
+      "confianza": 0.8827,
+      "candidatos": [
+        {
+          "nombre": "luminancia-adaptativa",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 473,
+            "paths": 5,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 91.73,
+            "fidelidadVisual": 0.9177,
+            "penalizacionComplejidad": 0.0004,
+            "foregroundPerdido": 0.0033,
+            "foregroundAnadido": 0.0217,
+            "similitudBordesF1": 0.9737,
+            "huecosReferencia": 14,
+            "huecosSalida": 13,
+            "errorHuecos": 0.0714,
+            "componentesReferencia": 8,
+            "componentesPerdidos": 3,
+            "recallComponentes": 0.625
+          },
+          "milisegundos": 81.5
+        },
+        {
+          "nombre": "luminancia-luces",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 692,
+            "paths": 6,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 82.77,
+            "fidelidadVisual": 0.8284,
+            "penalizacionComplejidad": 0.0006,
+            "foregroundPerdido": 0.0016,
+            "foregroundAnadido": 0.1833,
+            "similitudBordesF1": 0.607,
+            "huecosReferencia": 14,
+            "huecosSalida": 10,
+            "errorHuecos": 0.2857,
+            "componentesReferencia": 8,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 83
+        },
+        {
+          "nombre": "luminancia-sombras",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 562,
+            "paths": 6,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 80.32,
+            "fidelidadVisual": 0.8037,
+            "penalizacionComplejidad": 0.0005,
+            "foregroundPerdido": 0.1081,
+            "foregroundAnadido": 0.0088,
+            "similitudBordesF1": 0.7265,
+            "huecosReferencia": 14,
+            "huecosSalida": 14,
+            "errorHuecos": 0,
+            "componentesReferencia": 8,
+            "componentesPerdidos": 5,
+            "recallComponentes": 0.375
+          },
+          "milisegundos": 81.1
+        }
+      ],
+      "baselineActual": {
+        "perfil": "imagen",
+        "senales": {
+          "perfil": "imagen",
+          "top8": 0.8462,
+          "medios": 0.1705
+        },
+        "dimensionesVector": {
+          "ancho": 612,
+          "alto": 760,
+          "escala": 1
+        },
+        "validacion": {
+          "valida": true,
+          "errores": [],
+          "nodos": 909,
+          "paths": 35,
+          "dimensionesCorrectas": true
+        },
+        "evaluacion": {
+          "score": 27.53,
+          "fidelidadVisual": 0.2769,
+          "penalizacionComplejidad": 0.0016,
+          "foregroundPerdido": 0.9211,
+          "foregroundAnadido": 0.0031,
+          "similitudBordesF1": 0.2087,
+          "huecosReferencia": 16,
+          "huecosSalida": 2,
+          "errorHuecos": 0.875,
+          "componentesReferencia": 10,
+          "componentesPerdidos": 9,
+          "recallComponentes": 0.1
+        },
+        "milisegundos": 82
+      }
+    },
+    {
+      "caso": "09-degradados.png",
+      "descripcion": "Imagen con degradados/tono continuo",
+      "esperado": "fotografia",
+      "clasificado": "fotografia",
+      "clasificacionCorrecta": true,
+      "confianzaClasificacion": 1,
+      "ambiguo": false,
+      "scoresClase": {
+        "logo-line-art": 0.1971,
+        "icono-geometrico": 0.083,
+        "ilustracion": 0.2198,
+        "fotografia": 0.7284
+      },
+      "metricas": {
+        "anchoOriginal": 720,
+        "altoOriginal": 440,
+        "alpha": {
+          "transparente": 0,
+          "parcial": 0,
+          "opaco": 1,
+          "fuerte": false
+        },
+        "color": {
+          "top1": 0.0564,
+          "top8": 0.3641,
+          "entropiaBits": 5.6698,
+          "entropiaNormalizada": 0.4725,
+          "bins": 205
+        },
+        "tonoContinuo": 0.5167,
+        "densidadBordes": 0.06,
+        "uniformidadFondoBorde": 0.0004,
+        "textura": 0.0393,
+        "componentes": {
+          "total": 36,
+          "pequenos": 32,
+          "fraccionAreaPequena": 0.0033
+        }
+      },
+      "dimensionesVector": {
+        "ancho": 720,
+        "alto": 440,
+        "escala": 1
+      },
+      "seleccionado": "luminancia-adaptativa",
+      "score": 99.92,
+      "confianza": 0.9996,
+      "candidatos": [
+        {
+          "nombre": "luminancia-adaptativa",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 136,
+            "paths": 1,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 99.92,
+            "fidelidadVisual": 0.9993,
+            "penalizacionComplejidad": 0.0001,
+            "foregroundPerdido": 0.0008,
+            "foregroundAnadido": 0.0019,
+            "similitudBordesF1": 0.9993,
+            "huecosReferencia": 1,
+            "huecosSalida": 1,
+            "errorHuecos": 0,
+            "componentesReferencia": 1,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 72.6
+        },
+        {
+          "nombre": "luminancia-luces",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 131,
+            "paths": 1,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 83.11,
+            "fidelidadVisual": 0.8311,
+            "penalizacionComplejidad": 0.0001,
+            "foregroundPerdido": 0,
+            "foregroundAnadido": 0.0975,
+            "similitudBordesF1": 0.3654,
+            "huecosReferencia": 1,
+            "huecosSalida": 1,
+            "errorHuecos": 0,
+            "componentesReferencia": 1,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 72.4
+        },
+        {
+          "nombre": "luminancia-sombras",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 149,
+            "paths": 1,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 65.36,
+            "fidelidadVisual": 0.6537,
+            "penalizacionComplejidad": 0.0001,
+            "foregroundPerdido": 0.1193,
+            "foregroundAnadido": 0.001,
+            "similitudBordesF1": 0.3587,
+            "huecosReferencia": 1,
+            "huecosSalida": 2,
+            "errorHuecos": 1,
+            "componentesReferencia": 1,
+            "componentesPerdidos": 0,
+            "recallComponentes": 1
+          },
+          "milisegundos": 73.6
+        }
+      ],
+      "baselineActual": {
+        "perfil": "imagen",
+        "senales": {
+          "perfil": "imagen",
+          "top8": 0.3641,
+          "medios": 0.8414
+        },
+        "dimensionesVector": {
+          "ancho": 720,
+          "alto": 440,
+          "escala": 1
+        },
+        "validacion": {
+          "valida": true,
+          "errores": [],
+          "nodos": 111,
+          "paths": 1,
+          "dimensionesCorrectas": true
+        },
+        "evaluacion": {
+          "score": 67.21,
+          "fidelidadVisual": 0.6721,
+          "penalizacionComplejidad": 0.0001,
+          "foregroundPerdido": 0.1147,
+          "foregroundAnadido": 0.0014,
+          "similitudBordesF1": 0.4307,
+          "huecosReferencia": 1,
+          "huecosSalida": 0,
+          "errorHuecos": 1,
+          "componentesReferencia": 1,
+          "componentesPerdidos": 0,
+          "recallComponentes": 1
+        },
+        "milisegundos": 69.3
+      }
+    },
+    {
+      "caso": "10-jpeg-ruido-compresion.jpg",
+      "descripcion": "JPEG con ruido y compresión",
+      "esperado": "fotografia",
+      "clasificado": "fotografia",
+      "clasificacionCorrecta": true,
+      "confianzaClasificacion": 1,
+      "ambiguo": false,
+      "scoresClase": {
+        "logo-line-art": 0.0736,
+        "icono-geometrico": -0.1776,
+        "ilustracion": 0.266,
+        "fotografia": 1.176
+      },
+      "metricas": {
+        "anchoOriginal": 640,
+        "altoOriginal": 640,
+        "alpha": {
+          "transparente": 0,
+          "parcial": 0,
+          "opaco": 1,
+          "fuerte": false
+        },
+        "color": {
+          "top1": 0.2327,
+          "top8": 0.556,
+          "entropiaBits": 5.1973,
+          "entropiaNormalizada": 0.4331,
+          "bins": 258
+        },
+        "tonoContinuo": 1,
+        "densidadBordes": 0.744,
+        "uniformidadFondoBorde": 0.1406,
+        "textura": 0.5274,
+        "componentes": {
+          "total": 67,
+          "pequenos": 59,
+          "fraccionAreaPequena": 0.0143
+        }
+      },
+      "dimensionesVector": {
+        "ancho": 640,
+        "alto": 640,
+        "escala": 1
+      },
+      "seleccionado": "luminancia-luces",
+      "score": 86.06,
+      "confianza": 0.737,
+      "candidatos": [
+        {
+          "nombre": "luminancia-luces",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 4917,
+            "paths": 138,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 86.06,
+            "fidelidadVisual": 0.8733,
+            "penalizacionComplejidad": 0.0127,
+            "foregroundPerdido": 0.0178,
+            "foregroundAnadido": 0.116,
+            "similitudBordesF1": 0.9218,
+            "huecosReferencia": 107,
+            "huecosSalida": 65,
+            "errorHuecos": 0.3925,
+            "componentesReferencia": 435,
+            "componentesPerdidos": 56,
+            "recallComponentes": 0.8713
+          },
+          "milisegundos": 92.4
+        },
+        {
+          "nombre": "luminancia-adaptativa",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 6933,
+            "paths": 264,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 81.79,
+            "fidelidadVisual": 0.8408,
+            "penalizacionComplejidad": 0.0229,
+            "foregroundPerdido": 0.0273,
+            "foregroundAnadido": 0.056,
+            "similitudBordesF1": 0.9433,
+            "huecosReferencia": 107,
+            "huecosSalida": 63,
+            "errorHuecos": 0.4112,
+            "componentesReferencia": 435,
+            "componentesPerdidos": 171,
+            "recallComponentes": 0.6069
+          },
+          "milisegundos": 87.9
+        },
+        {
+          "nombre": "luminancia-sombras",
+          "validacion": {
+            "valida": true,
+            "errores": [],
+            "nodos": 4939,
+            "paths": 199,
+            "dimensionesCorrectas": true
+          },
+          "evaluacion": {
+            "score": 63.44,
+            "fidelidadVisual": 0.6494,
+            "penalizacionComplejidad": 0.0151,
+            "foregroundPerdido": 0.1694,
+            "foregroundAnadido": 0.0277,
+            "similitudBordesF1": 0.7132,
+            "huecosReferencia": 107,
+            "huecosSalida": 34,
+            "errorHuecos": 0.6822,
+            "componentesReferencia": 435,
+            "componentesPerdidos": 332,
+            "recallComponentes": 0.2368
+          },
+          "milisegundos": 82.4
+        }
+      ],
+      "baselineActual": {
+        "perfil": "imagen",
+        "senales": {
+          "perfil": "imagen",
+          "top8": 0.556,
+          "medios": 0.3997
+        },
+        "dimensionesVector": {
+          "ancho": 640,
+          "alto": 640,
+          "escala": 1
+        },
+        "validacion": {
+          "valida": true,
+          "errores": [],
+          "nodos": 6986,
+          "paths": 272,
+          "dimensionesCorrectas": true
+        },
+        "evaluacion": {
+          "score": 75.34,
+          "fidelidadVisual": 0.7768,
+          "penalizacionComplejidad": 0.0234,
+          "foregroundPerdido": 0.1271,
+          "foregroundAnadido": 0.0545,
+          "similitudBordesF1": 0.884,
+          "huecosReferencia": 107,
+          "huecosSalida": 52,
+          "errorHuecos": 0.514,
+          "componentesReferencia": 435,
+          "componentesPerdidos": 189,
+          "recallComponentes": 0.5655
+        },
+        "milisegundos": 89.5
+      }
+    }
+  ]
+}

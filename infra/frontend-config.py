@@ -106,10 +106,11 @@ def main() -> None:
         # otro dominio el navegador se lo prohibiría.
         "DefaultCacheBehavior": comportamiento(None, "sitio", con_funcion=True),
         "CacheBehaviors": {
-            "Quantity": 2,
+            "Quantity": 3,
             "Items": [
                 comportamiento("/mockups/*", "contenido", con_funcion=False),
                 comportamiento("/medios/*", "contenido", con_funcion=False),
+                comportamiento("/eventos/*", "contenido", con_funcion=False),
             ],
         },
         "CustomErrorResponses": {

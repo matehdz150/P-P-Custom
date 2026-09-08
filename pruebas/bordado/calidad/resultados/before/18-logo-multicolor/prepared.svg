@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkstitch="http://inkstitch.org/namespace" width="90mm" height="60mm" viewBox="0 0 90 60">
+<metadata><inkstitch:min_stitch_len_mm>0.3</inkstitch:min_stitch_len_mm><inkstitch:collapse_len_mm>3</inkstitch:collapse_len_mm><inkstitch:min_satin_stroke_width_mm>1.5</inkstitch:min_satin_stroke_width_mm><inkstitch:inkstitch_svg_version>4</inkstitch:inkstitch_svg_version></metadata>
+<path id="blue-disc" d="M28 13A17 17 0 1 1 27.99 13Z" fill="#2563eb" fill-rule="evenodd" stroke="none" inkstitch:fill_method="tatami_fill" inkstitch:angle="0.0" inkstitch:row_spacing_mm="0.45" inkstitch:max_stitch_length_mm="4.0" inkstitch:fill_underlay="true" inkstitch:pull_compensation_mm="0.15" inkstitch:trim_after="true" />
+<path id="red-swoosh" d="M18 38C34 50 57 47 73 25" fill="none" stroke="#ef4444" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round" inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42" inkstitch:pull_compensation_mm="0.15" inkstitch:center_walk_underlay="true" inkstitch:max_stitch_length_mm="8" />
+<path id="green-line" d="M18 49C35 54 60 53 76 42" fill="none" stroke="#16a34a" stroke-width="0.3" inkstitch:stroke_method="running_stitch" inkstitch:running_stitch_length_mm="2.2" inkstitch:bean_stitch_repeats="1" />
+</svg>

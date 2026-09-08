@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkstitch="http://inkstitch.org/namespace" width="90mm" height="60mm" viewBox="0 0 90 60">
+<metadata><inkstitch:min_stitch_len_mm>0.3</inkstitch:min_stitch_len_mm><inkstitch:collapse_len_mm>3</inkstitch:collapse_len_mm><inkstitch:min_satin_stroke_width_mm>1.5</inkstitch:min_satin_stroke_width_mm><inkstitch:inkstitch_svg_version>4</inkstitch:inkstitch_svg_version></metadata>
+<path id="d-d-0" d="M50 15L50 40" fill="none" stroke="#171717" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42" inkstitch:pull_compensation_mm="0.15" inkstitch:center_walk_underlay="true" inkstitch:max_stitch_length_mm="8" />
+<path id="d-d-1" d="M49 28C45 24 38 26 38 33C38 40 46 42 50 37" fill="none" stroke="#171717" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42" inkstitch:pull_compensation_mm="0.15" inkstitch:center_walk_underlay="true" inkstitch:max_stitch_length_mm="8" />
+</svg>

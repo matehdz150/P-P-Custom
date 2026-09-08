@@ -1,5 +1,6 @@
 "use client";
 
+import type { EmbroideryStatus } from "@kustto/bordado";
 import type { Canvas, FabricObject, TMat2D } from "fabric";
 import {
 	createContext,
@@ -31,6 +32,15 @@ export interface DesignerProductConfig {
 		perColorPrice?: number;
 		embroideryExtra?: number;
 	};
+	/**
+	 * El recargo de cada lado, por `sideKey`.
+	 *
+	 * Baja hasta aquí por lo mismo que `tecnicas`: el dato ya existía en
+	 * `printSides` y se quedaba en `ProductDesigner`, así que el desglose que
+	 * ve el comprador mientras diseña no podía saber que una manga cuesta menos
+	 * que una espalda — y enseñaba el recargo general para las dos.
+	 */
+	lados?: { sideKey: string; recargo?: number | null }[];
 }
 
 interface DesignerContextType {
@@ -87,7 +97,57 @@ interface DesignerContextType {
 	 */
 	plantilla: { clave: string | null } | null;
 	setPlantilla: (p: { clave: string | null } | null) => void;
+
+	/** Evento público al que regresará el diseño al terminar. */
+	evento: {
+		codigo: string;
+		itemId: string;
+		eventoId?: string;
+		organizador?: boolean;
+		personalizacion?: "libre" | "bloqueada" | "sin_personalizacion";
+	} | null;
+	setEvento: (
+		e: {
+			codigo: string;
+			itemId: string;
+			eventoId?: string;
+			organizador?: boolean;
+			personalizacion?: "libre" | "bloqueada" | "sin_personalizacion";
+		} | null,
+	) => void;
+
+	/**
+	 * Con qué se estampa cada lado, por `sideKey`.
+	 *
+	 * VIVE AQUÍ porque quien la necesita es el hook que agrega imágenes, y ése
+	 * está a cuatro niveles del componente que carga la ficha. El dato existía
+	 * ya en `printSides`, pero se quedaba en `ProductDesigner`: el lienzo nunca
+	 * llegó a saber si lo que está diseñando se imprime o se graba.
+	 */
+	tecnicas: Record<string, string | undefined>;
+	setTecnicas: (t: Record<string, string | undefined>) => void;
+	/**
+	 * Cómo quedó la preparación de bordado de cada lado, por `sideKey`.
+	 *
+	 * VIVE AQUÍ Y NO EN EL PANEL porque quien tiene que consultarlo es el paso
+	 * de agregar al carrito, que está en otra rama del árbol. Sin esto, el panel
+	 * sabía que un diseño había sido rechazado y el carrito se lo llevaba igual:
+	 * el comprador acababa pagando un bordado que la máquina no puede coser.
+	 */
+	bordados: Record<string, EstadoDeBordado | undefined>;
+	setBordado: (lado: string, estado: EstadoDeBordado | null) => void;
 }
+
+/** Lo que el editor necesita saber del bordado de un lado. */
+export type EstadoDeBordado = {
+	jobId: string;
+	designHash: string;
+	status: EmbroideryStatus;
+	/** Qué se le enseña al comprador si no se puede continuar. */
+	mensaje: string | null;
+	/** Códigos de incidencia, para el taller. No se enseñan. */
+	incidencias: string[];
+};
 
 const DesignerContext = createContext<DesignerContextType>(
 	{} as DesignerContextType,
@@ -209,6 +269,31 @@ export function DesignerProvider({ children }: { children: ReactNode }) {
 	const [plantilla, setPlantilla] = useState<{ clave: string | null } | null>(
 		null,
 	);
+	const [evento, setEvento] = useState<{
+		codigo: string;
+		itemId: string;
+		eventoId?: string;
+		organizador?: boolean;
+		personalizacion?: "libre" | "bloqueada" | "sin_personalizacion";
+	} | null>(null);
+	const [tecnicas, setTecnicas] = useState<Record<string, string | undefined>>(
+		{},
+	);
+	const [bordados, setBordados] = useState<
+		Record<string, EstadoDeBordado | undefined>
+	>({});
+	const setBordado = useCallback(
+		(lado: string, estado: EstadoDeBordado | null) => {
+			setBordados((previo) => {
+				if (previo[lado] === undefined && estado === null) return previo;
+				const siguiente = { ...previo };
+				if (estado === null) delete siguiente[lado];
+				else siguiente[lado] = estado;
+				return siguiente;
+			});
+		},
+		[],
+	);
 
 	return (
 		<DesignerContext.Provider
@@ -233,6 +318,12 @@ export function DesignerProvider({ children }: { children: ReactNode }) {
 				setAgregando,
 				plantilla,
 				setPlantilla,
+				evento,
+				setEvento,
+				tecnicas,
+				setTecnicas,
+				bordados,
+				setBordado,
 				config,
 				setConfig,
 				notice,

@@ -1,0 +1,1274 @@
+[
+  {
+    "caso": "01-texto-simple",
+    "jobId": "emb_37710d86a7b89c9f7bada1d2136d487a4b11d4f3",
+    "status": "READY",
+    "archivos": {
+      "design.dst": {
+        "key": "embroidery/68db12a62b12e659cfeedcea93de6fcaae053a1a4e78867195afc2a6a53de2c5/emb_37710d86a7b89c9f7bada1d2136d487a4b11d4f3/design.dst",
+        "bytes": 6020,
+        "bytesS3": 6020,
+        "sha256": "0490b48294b89943034fff4197e38141d32c07a21478d883a2775a300e3e35b9",
+        "sha256Declarado": "0490b48294b89943034fff4197e38141d32c07a21478d883a2775a300e3e35b9",
+        "contentType": "application/octet-stream",
+        "integro": true
+      },
+      "preview.png": {
+        "key": "embroidery/68db12a62b12e659cfeedcea93de6fcaae053a1a4e78867195afc2a6a53de2c5/emb_37710d86a7b89c9f7bada1d2136d487a4b11d4f3/preview.png",
+        "bytes": 13088,
+        "bytesS3": 13088,
+        "sha256": "6ab517dd1a9d269dccd2350066f11a28b21f7a4c7afa2973f299d6b070ce19e1",
+        "sha256Declarado": "6ab517dd1a9d269dccd2350066f11a28b21f7a4c7afa2973f299d6b070ce19e1",
+        "contentType": "image/png",
+        "integro": true
+      },
+      "metadata.json": {
+        "key": "embroidery/68db12a62b12e659cfeedcea93de6fcaae053a1a4e78867195afc2a6a53de2c5/emb_37710d86a7b89c9f7bada1d2136d487a4b11d4f3/metadata.json",
+        "bytes": 2546,
+        "bytesS3": 2546,
+        "sha256": "82392aa82999786e09b68d374078e7d7703f48c61bc549be2d3423b9e03c9584",
+        "sha256Declarado": "82392aa82999786e09b68d374078e7d7703f48c61bc549be2d3423b9e03c9584",
+        "contentType": "application/json",
+        "integro": true
+      }
+    },
+    "tajima": {
+      "ok": true,
+      "motivo": "",
+      "cabecera": "LA:                \rST:   1836\rCO:  0\r+X:  374\r-X:  374\r+Y:  110\r-Y:  110\rAX:+  373\rAY:-   19\rMX:+    0\rMY:+    0\rPD:***"
+    },
+    "dst": {
+      "puntadas": 1827,
+      "totalOrdenes": 1836,
+      "saltos": 8,
+      "cortes": 0,
+      "cambiosDeColor": 0,
+      "hilos": 0,
+      "anchoMm": 74.8,
+      "altoMm": 22
+    },
+    "metadata": {
+      "checksums": {
+        "design.dst": "0490b48294b89943034fff4197e38141d32c07a21478d883a2775a300e3e35b9",
+        "embroideredPreview.png": "0982eec1281121f0a2b2251896ddd37f36d6de290f7cb595a23e58a84a69d2c9",
+        "preview.png": "6ab517dd1a9d269dccd2350066f11a28b21f7a4c7afa2973f299d6b070ce19e1"
+      },
+      "confidence": 0.94,
+      "decision": "accept",
+      "designHash": "68db12a62b12e659cfeedcea93de6fcaae053a1a4e78867195afc2a6a53de2c5",
+      "engineVersion": "inkstitch-3.3.0",
+      "issues": [],
+      "metrics": {
+        "colorChanges": 0,
+        "colorCount": 1,
+        "componentCount": 15,
+        "heightMm": 22,
+        "jumps": 8,
+        "nodeCount": 30,
+        "quality": {
+          "geometry": {
+            "fillRegionCount": 0,
+            "joins": [],
+            "junctionCount": 10,
+            "nodeCount": 30,
+            "objectCount": 15,
+            "pathCount": 15,
+            "representationDecision": {
+              "railsV3": 0,
+              "railsV3Percent": 0,
+              "strokeV2": 15,
+              "strokeV2Percent": 100
+            },
+            "runningPathCount": 0,
+            "sampling": {
+              "finalRailNodes": 0,
+              "rawCenterlineNodes": 30,
+              "rawRailNodes": 0,
+              "rungsAfter": 0,
+              "rungsBefore": 0
+            },
+            "satin": {
+              "averageWidthMm": 3.513,
+              "maxWidthMm": 3.6,
+              "minWidthMm": 3.5,
+              "widthVariance": 0.00116
+            },
+            "satinColumnCount": 15,
+            "segmentCount": 15,
+            "svgBytes": 5234,
+            "travelOrdering": {
+              "afterMm": 138.47,
+              "beforeMm": 138.47,
+              "reordered": false
+            },
+            "underlay": {
+              "estimatedStitches": 130,
+              "layers": 15
+            }
+          },
+          "stitchPlan": {
+            "analysis": {
+              "crossingAnalysisTruncated": false,
+              "crossingComparisons": 20246,
+              "crossingPairs": 44
+            },
+            "averageStitchLengthMm": 3.405,
+            "colorChanges": 0,
+            "directionChangeDegrees": {
+              "average": 7.245,
+              "p95": 7.496
+            },
+            "estimatedThreadLengthMm": 6281.5,
+            "fillStitches": null,
+            "jumps": 8,
+            "localStitchDensity": {
+              "averagePerOccupiedCell": 5.404,
+              "cellMm": 1,
+              "occupiedCells": 337
+            },
+            "maxAngleDeltaBetweenAdjacentStitches": 90,
+            "maxDirectionChange": 90,
+            "maxJumpLengthMm": 12.433,
+            "maxLocalDensity": 13,
+            "maxStitchLengthMm": 3.932,
+            "numberOfCrossingStitches": 59,
+            "numberOfFanStitches": 0,
+            "numberOfSharpDirectionChanges": 52,
+            "overlapDensity": 0.15311,
+            "overlappingSegments": 660,
+            "p95StitchLengthMm": 3.92,
+            "runningStitches": null,
+            "satinStitches": null,
+            "stitchCount": 1827,
+            "stitchesAboveThreshold": 0,
+            "trims": 0
+          }
+        },
+        "stitchCount": 1827,
+        "trims": 0,
+        "widthMm": 74.8
+      },
+      "physicallyValidated": false,
+      "profileVersion": "experimental-hybrid-v4-2026-09-06",
+      "schemaVersion": 1,
+      "timings": {
+        "dstParsingMs": 12.6,
+        "inkstitchDigitizationMs": null,
+        "inkstitchInitializationMs": null,
+        "inkstitchProcessAndDigitizationMs": 5730.5,
+        "previewMs": 99.2,
+        "svgGenerationMs": 0.3,
+        "tajimaValidationMs": 6.5
+      },
+      "validation": {
+        "tajima": {
+          "checks": {
+            "boundsMatchPyembroidery": true,
+            "hasEndRecord": true,
+            "headerColorChangesMatch": true,
+            "headerIs512Bytes": true,
+            "headerRecordCountMatches": true,
+            "maxAxisMovementRepresentable": true,
+            "payloadAlignedTo3Bytes": true
+          },
+          "maxAxisDeltaTenthsMm": 119,
+          "passed": true
+        }
+      }
+    },
+    "coincide": {
+      "stitchCount": true,
+      "colorCount": true,
+      "jumps": true,
+      "trims": true,
+      "declarado": {
+        "stitchCount": 1827,
+        "colorCount": 1,
+        "jumps": 8,
+        "trims": 0,
+        "widthMm": 74.8,
+        "heightMm": 22
+      },
+      "leido": {
+        "puntadas": 1827,
+        "totalOrdenes": 1836,
+        "saltos": 8,
+        "cortes": 0,
+        "cambiosDeColor": 0,
+        "hilos": 0,
+        "anchoMm": 74.8,
+        "altoMm": 22
+      }
+    }
+  },
+  {
+    "caso": "02-logo-monocromo",
+    "jobId": "emb_ef6dce503b296597425fa17b069d255f6197ff82",
+    "status": "REVIEW",
+    "archivos": {
+      "design.dst": {
+        "key": "embroidery/bed1b9dc10877febe7d6aa91694e5c02efb5e6f63e201c88d851efe57e15638c/emb_ef6dce503b296597425fa17b069d255f6197ff82/design.dst",
+        "bytes": 27866,
+        "bytesS3": 27866,
+        "sha256": "d4dc013acb3df4c59622c4488be419a321e88114258718f3d25adcd4b3cb8120",
+        "sha256Declarado": "d4dc013acb3df4c59622c4488be419a321e88114258718f3d25adcd4b3cb8120",
+        "contentType": "application/octet-stream",
+        "integro": true
+      },
+      "preview.png": {
+        "key": "embroidery/bed1b9dc10877febe7d6aa91694e5c02efb5e6f63e201c88d851efe57e15638c/emb_ef6dce503b296597425fa17b069d255f6197ff82/preview.png",
+        "bytes": 107888,
+        "bytesS3": 107888,
+        "sha256": "16cbe67e3ef6aed2ef889b9c2bdd0ebf20cf1617ea83f29543046f71a8f791f7",
+        "sha256Declarado": "16cbe67e3ef6aed2ef889b9c2bdd0ebf20cf1617ea83f29543046f71a8f791f7",
+        "contentType": "image/png",
+        "integro": true
+      },
+      "metadata.json": {
+        "key": "embroidery/bed1b9dc10877febe7d6aa91694e5c02efb5e6f63e201c88d851efe57e15638c/emb_ef6dce503b296597425fa17b069d255f6197ff82/metadata.json",
+        "bytes": 2887,
+        "bytesS3": 2887,
+        "sha256": "5d8711220b9b51aacf7b846f1b7fb506b42e1bb2129e1a0a53908aea700967ba",
+        "sha256Declarado": "5d8711220b9b51aacf7b846f1b7fb506b42e1bb2129e1a0a53908aea700967ba",
+        "contentType": "application/json",
+        "integro": true
+      }
+    },
+    "tajima": {
+      "ok": true,
+      "motivo": "",
+      "cabecera": "LA:                \rST:   9096\rCO:  0\r+X:  377\r-X:  377\r+Y:  132\r-Y:  132\rAX:+  116\rAY:-  127\rMX:+    0\rMY:+    0\rPD:***"
+    },
+    "dst": {
+      "puntadas": 9069,
+      "totalOrdenes": 9092,
+      "saltos": 11,
+      "cortes": 11,
+      "cambiosDeColor": 0,
+      "hilos": 0,
+      "anchoMm": 75.4,
+      "altoMm": 26.4
+    },
+    "metadata": {
+      "checksums": {
+        "design.dst": "d4dc013acb3df4c59622c4488be419a321e88114258718f3d25adcd4b3cb8120",
+        "embroideredPreview.png": "20cb1b8716b693785f6715fb86d20741a58ad4904fd24aacc4f753db6a43b04e",
+        "preview.png": "16cbe67e3ef6aed2ef889b9c2bdd0ebf20cf1617ea83f29543046f71a8f791f7"
+      },
+      "confidence": 0.78,
+      "decision": "review",
+      "designHash": "bed1b9dc10877febe7d6aa91694e5c02efb5e6f63e201c88d851efe57e15638c",
+      "engineVersion": "inkstitch-3.3.0",
+      "issues": [
+        {
+          "code": "EXCESSIVE_OVERLAP",
+          "message": "La trayectoria acumula demasiado solape local.",
+          "severity": "review"
+        },
+        {
+          "code": "SHARP_DIRECTION_CHANGE",
+          "message": "El plan concentra demasiados cambios bruscos de dirección.",
+          "severity": "review"
+        }
+      ],
+      "metrics": {
+        "alphaCoverage": 0.3642,
+        "colorChanges": 0,
+        "colorCount": 1,
+        "colorEntropy": 0.247,
+        "componentCount": 16,
+        "gradientRatio": 0.0086,
+        "heightMm": 26.4,
+        "jumps": 11,
+        "nodeCount": 44,
+        "quality": {
+          "geometry": {
+            "fillRegionCount": 12,
+            "joins": [],
+            "junctionCount": 4,
+            "nodeCount": 44,
+            "objectCount": 16,
+            "pathCount": 22,
+            "representationDecision": {
+              "railsV3": 1,
+              "railsV3Percent": 25,
+              "strokeV2": 3,
+              "strokeV2Percent": 75
+            },
+            "runningPathCount": 0,
+            "sampling": {
+              "finalRailNodes": 38,
+              "rawCenterlineNodes": 36,
+              "rawRailNodes": 112,
+              "rungsAfter": 5,
+              "rungsBefore": 56
+            },
+            "satin": {
+              "averageWidthMm": 5.286,
+              "maxWidthMm": 5.642,
+              "minWidthMm": 5.1,
+              "widthVariance": 0.04903
+            },
+            "satinColumnCount": 4,
+            "segmentCount": 22,
+            "svgBytes": 10639,
+            "travelOrdering": {
+              "afterMm": 110.83,
+              "beforeMm": 110.83,
+              "reordered": false
+            },
+            "underlay": {
+              "estimatedStitches": 72,
+              "layers": 4
+            }
+          },
+          "stitchPlan": {
+            "analysis": {
+              "crossingAnalysisTruncated": false,
+              "crossingComparisons": 753338,
+              "crossingPairs": 76927
+            },
+            "averageStitchLengthMm": 2.874,
+            "colorChanges": 0,
+            "directionChangeDegrees": {
+              "average": 21.213,
+              "p95": 90
+            },
+            "estimatedThreadLengthMm": 26098.1,
+            "fillStitches": null,
+            "jumps": 11,
+            "localStitchDensity": {
+              "averagePerOccupiedCell": 6.497,
+              "cellMm": 1,
+              "occupiedCells": 1394
+            },
+            "maxAngleDeltaBetweenAdjacentStitches": 90,
+            "maxDirectionChange": 90,
+            "maxJumpLengthMm": 9.753,
+            "maxLocalDensity": 20,
+            "maxStitchLengthMm": 6.297,
+            "numberOfCrossingStitches": 7506,
+            "numberOfFanStitches": 0,
+            "numberOfSharpDirectionChanges": 1301,
+            "overlapDensity": 0.32359,
+            "overlappingSegments": 3477,
+            "p95StitchLengthMm": 5.6,
+            "runningStitches": null,
+            "satinStitches": null,
+            "stitchCount": 9069,
+            "stitchesAboveThreshold": 18,
+            "trims": 11
+          }
+        },
+        "stitchCount": 9069,
+        "texture": 0.0055,
+        "trims": 11,
+        "widthMm": 75.4
+      },
+      "physicallyValidated": false,
+      "profileVersion": "experimental-hybrid-v4-2026-09-06",
+      "schemaVersion": 1,
+      "timings": {
+        "dstParsingMs": 64.2,
+        "inkstitchDigitizationMs": null,
+        "inkstitchInitializationMs": null,
+        "inkstitchProcessAndDigitizationMs": 200496.8,
+        "previewMs": 251,
+        "svgGenerationMs": 0.4,
+        "tajimaValidationMs": 32.9
+      },
+      "validation": {
+        "tajima": {
+          "checks": {
+            "boundsMatchPyembroidery": true,
+            "hasEndRecord": true,
+            "headerColorChangesMatch": true,
+            "headerIs512Bytes": true,
+            "headerRecordCountMatches": true,
+            "maxAxisMovementRepresentable": true,
+            "payloadAlignedTo3Bytes": true
+          },
+          "maxAxisDeltaTenthsMm": 94,
+          "passed": true
+        }
+      }
+    },
+    "coincide": {
+      "stitchCount": true,
+      "colorCount": true,
+      "jumps": true,
+      "trims": true,
+      "declarado": {
+        "stitchCount": 9069,
+        "colorCount": 1,
+        "jumps": 11,
+        "trims": 11,
+        "widthMm": 75.4,
+        "heightMm": 26.4
+      },
+      "leido": {
+        "puntadas": 9069,
+        "totalOrdenes": 9092,
+        "saltos": 11,
+        "cortes": 11,
+        "cambiosDeColor": 0,
+        "hilos": 0,
+        "anchoMm": 75.4,
+        "altoMm": 26.4
+      }
+    }
+  },
+  {
+    "caso": "03-logo-multicolor",
+    "jobId": "emb_1b5c1568437a29880750426ad207d82a8253a02a",
+    "status": "REVIEW",
+    "archivos": {
+      "design.dst": {
+        "key": "embroidery/3146e57c3ed49d6393b5718912ea30809419a91f4b33c0a1c42c08b4bc320736/emb_1b5c1568437a29880750426ad207d82a8253a02a/design.dst",
+        "bytes": 21509,
+        "bytesS3": 21509,
+        "sha256": "a826d64e70e480cecd041da25a60fcda3f710600ff049b94781d9279bf73027f",
+        "sha256Declarado": "a826d64e70e480cecd041da25a60fcda3f710600ff049b94781d9279bf73027f",
+        "contentType": "application/octet-stream",
+        "integro": true
+      },
+      "preview.png": {
+        "key": "embroidery/3146e57c3ed49d6393b5718912ea30809419a91f4b33c0a1c42c08b4bc320736/emb_1b5c1568437a29880750426ad207d82a8253a02a/preview.png",
+        "bytes": 117795,
+        "bytesS3": 117795,
+        "sha256": "fdd595dce12e6ae1cc424246bb5814e0effd415a1cc25932de60430ffe71e9da",
+        "sha256Declarado": "fdd595dce12e6ae1cc424246bb5814e0effd415a1cc25932de60430ffe71e9da",
+        "contentType": "image/png",
+        "integro": true
+      },
+      "metadata.json": {
+        "key": "embroidery/3146e57c3ed49d6393b5718912ea30809419a91f4b33c0a1c42c08b4bc320736/emb_1b5c1568437a29880750426ad207d82a8253a02a/metadata.json",
+        "bytes": 2770,
+        "bytesS3": 2770,
+        "sha256": "1adceb6aa2c597253ed48437b8692a119422265fa474c40ad590ff39cc390835",
+        "sha256Declarado": "1adceb6aa2c597253ed48437b8692a119422265fa474c40ad590ff39cc390835",
+        "contentType": "application/json",
+        "integro": true
+      }
+    },
+    "tajima": {
+      "ok": true,
+      "motivo": "",
+      "cabecera": "LA:                \rST:   6975\rCO:  2\r+X:  377\r-X:  377\r+Y:  133\r-Y:  133\rAX:+   68\rAY:+   58\rMX:+    0\rMY:+    0\rPD:***"
+    },
+    "dst": {
+      "puntadas": 6943,
+      "totalOrdenes": 6971,
+      "saltos": 13,
+      "cortes": 12,
+      "cambiosDeColor": 2,
+      "hilos": 0,
+      "anchoMm": 75.4,
+      "altoMm": 26.6
+    },
+    "metadata": {
+      "checksums": {
+        "design.dst": "a826d64e70e480cecd041da25a60fcda3f710600ff049b94781d9279bf73027f",
+        "embroideredPreview.png": "4745633dcc13be3363cef576aa28e06795d38fd0201ed54bf947f5867ccb0a50",
+        "preview.png": "fdd595dce12e6ae1cc424246bb5814e0effd415a1cc25932de60430ffe71e9da"
+      },
+      "confidence": 0.78,
+      "decision": "review",
+      "designHash": "3146e57c3ed49d6393b5718912ea30809419a91f4b33c0a1c42c08b4bc320736",
+      "engineVersion": "inkstitch-3.3.0",
+      "issues": [
+        {
+          "code": "SHARP_DIRECTION_CHANGE",
+          "message": "El plan concentra demasiados cambios bruscos de dirección.",
+          "severity": "review"
+        }
+      ],
+      "metrics": {
+        "alphaCoverage": 0.3652,
+        "colorChanges": 2,
+        "colorCount": 3,
+        "colorEntropy": 1.862,
+        "componentCount": 17,
+        "gradientRatio": 0.0226,
+        "heightMm": 26.6,
+        "jumps": 13,
+        "nodeCount": 34,
+        "quality": {
+          "geometry": {
+            "fillRegionCount": 13,
+            "joins": [],
+            "junctionCount": 1,
+            "nodeCount": 34,
+            "objectCount": 17,
+            "pathCount": 17,
+            "representationDecision": {
+              "railsV3": 0,
+              "railsV3Percent": 0,
+              "strokeV2": 4,
+              "strokeV2Percent": 100
+            },
+            "runningPathCount": 0,
+            "sampling": {
+              "finalRailNodes": 0,
+              "rawCenterlineNodes": 44,
+              "rawRailNodes": 0,
+              "rungsAfter": 0,
+              "rungsBefore": 0
+            },
+            "satin": {
+              "averageWidthMm": 5.375,
+              "maxWidthMm": 5.7,
+              "minWidthMm": 5.2,
+              "widthVariance": 0.04188
+            },
+            "satinColumnCount": 4,
+            "segmentCount": 17,
+            "svgBytes": 9221,
+            "travelOrdering": {
+              "afterMm": 159.71,
+              "beforeMm": 159.71,
+              "reordered": false
+            },
+            "underlay": {
+              "estimatedStitches": 87,
+              "layers": 4
+            }
+          },
+          "stitchPlan": {
+            "analysis": {
+              "crossingAnalysisTruncated": false,
+              "crossingComparisons": 414073,
+              "crossingPairs": 39613
+            },
+            "averageStitchLengthMm": 2.902,
+            "colorChanges": 2,
+            "directionChangeDegrees": {
+              "average": 23.109,
+              "p95": 90
+            },
+            "estimatedThreadLengthMm": 20211,
+            "fillStitches": null,
+            "jumps": 13,
+            "localStitchDensity": {
+              "averagePerOccupiedCell": 5,
+              "cellMm": 1,
+              "occupiedCells": 1386
+            },
+            "maxAngleDeltaBetweenAdjacentStitches": 90,
+            "maxDirectionChange": 90,
+            "maxJumpLengthMm": 12.445,
+            "maxLocalDensity": 18,
+            "maxStitchLengthMm": 6.45,
+            "numberOfCrossingStitches": 5697,
+            "numberOfFanStitches": 0,
+            "numberOfSharpDirectionChanges": 1166,
+            "overlapDensity": 0.164,
+            "overlappingSegments": 1602,
+            "p95StitchLengthMm": 5.7,
+            "runningStitches": null,
+            "satinStitches": null,
+            "stitchCount": 6943,
+            "stitchesAboveThreshold": 144,
+            "trims": 12
+          }
+        },
+        "stitchCount": 6943,
+        "texture": 0.0002,
+        "trims": 12,
+        "widthMm": 75.4
+      },
+      "physicallyValidated": false,
+      "profileVersion": "experimental-hybrid-v4-2026-09-06",
+      "schemaVersion": 1,
+      "timings": {
+        "dstParsingMs": 49.7,
+        "inkstitchDigitizationMs": null,
+        "inkstitchInitializationMs": null,
+        "inkstitchProcessAndDigitizationMs": 128410.1,
+        "previewMs": 256.4,
+        "svgGenerationMs": 0.3,
+        "tajimaValidationMs": 26
+      },
+      "validation": {
+        "tajima": {
+          "checks": {
+            "boundsMatchPyembroidery": true,
+            "hasEndRecord": true,
+            "headerColorChangesMatch": true,
+            "headerIs512Bytes": true,
+            "headerRecordCountMatches": true,
+            "maxAxisMovementRepresentable": true,
+            "payloadAlignedTo3Bytes": true
+          },
+          "maxAxisDeltaTenthsMm": 120,
+          "passed": true
+        }
+      }
+    },
+    "coincide": {
+      "stitchCount": true,
+      "colorCount": true,
+      "jumps": true,
+      "trims": true,
+      "declarado": {
+        "stitchCount": 6943,
+        "colorCount": 3,
+        "jumps": 13,
+        "trims": 12,
+        "widthMm": 75.4,
+        "heightMm": 26.6
+      },
+      "leido": {
+        "puntadas": 6943,
+        "totalOrdenes": 6971,
+        "saltos": 13,
+        "cortes": 12,
+        "cambiosDeColor": 2,
+        "hilos": 0,
+        "anchoMm": 75.4,
+        "altoMm": 26.6
+      }
+    }
+  },
+  {
+    "caso": "04-discovery",
+    "jobId": "emb_f2b344e3b7f965eefe57510a900b5cef78ca6ea8",
+    "status": "REVIEW",
+    "archivos": {
+      "design.dst": {
+        "key": "embroidery/9c8506938c398d52edffbbdee78f4705ea0cc5b00ea599b4aca11bd88c41dd77/emb_f2b344e3b7f965eefe57510a900b5cef78ca6ea8/design.dst",
+        "bytes": 11000,
+        "bytesS3": 11000,
+        "sha256": "daae76740785721228773ad58b07cd10a6a944583811bc79f68a5b3a49efb444",
+        "sha256Declarado": "daae76740785721228773ad58b07cd10a6a944583811bc79f68a5b3a49efb444",
+        "contentType": "application/octet-stream",
+        "integro": true
+      },
+      "preview.png": {
+        "key": "embroidery/9c8506938c398d52edffbbdee78f4705ea0cc5b00ea599b4aca11bd88c41dd77/emb_f2b344e3b7f965eefe57510a900b5cef78ca6ea8/preview.png",
+        "bytes": 36836,
+        "bytesS3": 36836,
+        "sha256": "96b6d6866f51ba9e5508d0d1c2c0f07ed1012cb86ab50735f3ea3fe7cd1dfd45",
+        "sha256Declarado": "96b6d6866f51ba9e5508d0d1c2c0f07ed1012cb86ab50735f3ea3fe7cd1dfd45",
+        "contentType": "image/png",
+        "integro": true
+      },
+      "metadata.json": {
+        "key": "embroidery/9c8506938c398d52edffbbdee78f4705ea0cc5b00ea599b4aca11bd88c41dd77/emb_f2b344e3b7f965eefe57510a900b5cef78ca6ea8/metadata.json",
+        "bytes": 3195,
+        "bytesS3": 3195,
+        "sha256": "86220e5f68fdda800c19d64704ddaebfc8e37830308fb4565c0de7a26d6cc39e",
+        "sha256Declarado": "86220e5f68fdda800c19d64704ddaebfc8e37830308fb4565c0de7a26d6cc39e",
+        "contentType": "application/json",
+        "integro": true
+      }
+    },
+    "tajima": {
+      "ok": true,
+      "motivo": "",
+      "cabecera": "LA:                \rST:   3482\rCO:  5\r+X:  452\r-X:  452\r+Y:  208\r-Y:  208\rAX:+  320\rAY:+    0\rMX:+    0\rMY:+    0\rPD:***"
+    },
+    "dst": {
+      "puntadas": 3374,
+      "totalOrdenes": 3485,
+      "saltos": 95,
+      "cortes": 10,
+      "cambiosDeColor": 5,
+      "hilos": 0,
+      "anchoMm": 90.4,
+      "altoMm": 41.6
+    },
+    "metadata": {
+      "checksums": {
+        "design.dst": "daae76740785721228773ad58b07cd10a6a944583811bc79f68a5b3a49efb444",
+        "embroideredPreview.png": "c77db66f7a794ef89c4c948da0d26ebe5e3b76feed96a5548bd7e644dcdf571b",
+        "preview.png": "96b6d6866f51ba9e5508d0d1c2c0f07ed1012cb86ab50735f3ea3fe7cd1dfd45"
+      },
+      "confidence": 0.82,
+      "decision": "review",
+      "designHash": "9c8506938c398d52edffbbdee78f4705ea0cc5b00ea599b4aca11bd88c41dd77",
+      "engineVersion": "inkstitch-3.3.0",
+      "issues": [
+        {
+          "code": "COMPLEX_GRADIENT",
+          "message": "Este diseño tiene degradados y el bordado los simplifica; lo revisamos antes de fabricarlo.",
+          "severity": "review"
+        },
+        {
+          "code": "ILLUSTRATION_REVIEW",
+          "message": "Este diseño necesita revisión antes de fabricarse.",
+          "severity": "review"
+        },
+        {
+          "code": "HIGH_LOCAL_DENSITY",
+          "message": "Hay una zona con demasiadas puntadas por milímetro cuadrado.",
+          "severity": "review"
+        },
+        {
+          "code": "SHARP_DIRECTION_CHANGE",
+          "message": "El plan concentra demasiados cambios bruscos de dirección.",
+          "severity": "review"
+        }
+      ],
+      "metrics": {
+        "alphaCoverage": 0.2055,
+        "colorChanges": 5,
+        "colorCount": 6,
+        "colorEntropy": 5.213,
+        "componentCount": 145,
+        "gradientRatio": 0.1908,
+        "heightMm": 41.6,
+        "jumps": 95,
+        "nodeCount": 372,
+        "quality": {
+          "geometry": {
+            "fillRegionCount": 8,
+            "joins": [],
+            "junctionCount": 12,
+            "nodeCount": 372,
+            "objectCount": 145,
+            "pathCount": 186,
+            "representationDecision": {
+              "railsV3": 8,
+              "railsV3Percent": 44.4,
+              "strokeV2": 10,
+              "strokeV2Percent": 55.6
+            },
+            "runningPathCount": 119,
+            "sampling": {
+              "finalRailNodes": 94,
+              "rawCenterlineNodes": 123,
+              "rawRailNodes": 166,
+              "rungsAfter": 33,
+              "rungsBefore": 83
+            },
+            "satin": {
+              "averageWidthMm": 1.362,
+              "maxWidthMm": 1.7,
+              "minWidthMm": 0.65,
+              "widthVariance": 0.08493
+            },
+            "satinColumnCount": 18,
+            "segmentCount": 186,
+            "svgBytes": 38962,
+            "travelOrdering": {
+              "afterMm": 836.43,
+              "beforeMm": 836.43,
+              "reordered": false
+            },
+            "underlay": {
+              "estimatedStitches": 86,
+              "layers": 18
+            }
+          },
+          "stitchPlan": {
+            "analysis": {
+              "crossingAnalysisTruncated": false,
+              "crossingComparisons": 52724,
+              "crossingPairs": 873
+            },
+            "averageStitchLengthMm": 1.417,
+            "colorChanges": 5,
+            "directionChangeDegrees": {
+              "average": 18.331,
+              "p95": 81.87
+            },
+            "estimatedThreadLengthMm": 5476.9,
+            "fillStitches": null,
+            "jumps": 95,
+            "localStitchDensity": {
+              "averagePerOccupiedCell": 3.918,
+              "cellMm": 1,
+              "occupiedCells": 842
+            },
+            "maxAngleDeltaBetweenAdjacentStitches": 90,
+            "maxDirectionChange": 90,
+            "maxJumpLengthMm": 13.453,
+            "maxLocalDensity": 26,
+            "maxStitchLengthMm": 4.314,
+            "numberOfCrossingStitches": 686,
+            "numberOfFanStitches": 0,
+            "numberOfSharpDirectionChanges": 405,
+            "overlapDensity": 0.16559,
+            "overlappingSegments": 991,
+            "p95StitchLengthMm": 3.677,
+            "runningStitches": null,
+            "satinStitches": null,
+            "stitchCount": 3374,
+            "stitchesAboveThreshold": 0,
+            "trims": 10
+          }
+        },
+        "stitchCount": 3374,
+        "texture": 0.0069,
+        "trims": 10,
+        "widthMm": 90.4
+      },
+      "physicallyValidated": false,
+      "profileVersion": "experimental-hybrid-v4-2026-09-06",
+      "schemaVersion": 1,
+      "timings": {
+        "dstParsingMs": 23.2,
+        "inkstitchDigitizationMs": null,
+        "inkstitchInitializationMs": null,
+        "inkstitchProcessAndDigitizationMs": 10967.7,
+        "previewMs": 118.9,
+        "svgGenerationMs": 1.1,
+        "tajimaValidationMs": 12.5
+      },
+      "validation": {
+        "tajima": {
+          "checks": {
+            "boundsMatchPyembroidery": true,
+            "hasEndRecord": true,
+            "headerColorChangesMatch": true,
+            "headerIs512Bytes": true,
+            "headerRecordCountMatches": true,
+            "maxAxisMovementRepresentable": true,
+            "payloadAlignedTo3Bytes": true
+          },
+          "maxAxisDeltaTenthsMm": 118,
+          "passed": true
+        }
+      }
+    },
+    "coincide": {
+      "stitchCount": true,
+      "colorCount": true,
+      "jumps": true,
+      "trims": true,
+      "declarado": {
+        "stitchCount": 3374,
+        "colorCount": 6,
+        "jumps": 95,
+        "trims": 10,
+        "widthMm": 90.4,
+        "heightMm": 41.6
+      },
+      "leido": {
+        "puntadas": 3374,
+        "totalOrdenes": 3485,
+        "saltos": 95,
+        "cortes": 10,
+        "cambiosDeColor": 5,
+        "hilos": 0,
+        "anchoMm": 90.4,
+        "altoMm": 41.6
+      }
+    }
+  },
+  {
+    "caso": "05-ilustracion",
+    "jobId": "emb_c01918a31708b45eef813c9f4ffde4e3b05fe22f",
+    "status": "REVIEW",
+    "archivos": {
+      "design.dst": {
+        "key": "embroidery/f5c02cfd64c5416896dbeec7d663fe5b208c0cdd1ba5a215a81c5400f0059da9/emb_c01918a31708b45eef813c9f4ffde4e3b05fe22f/design.dst",
+        "bytes": 6890,
+        "bytesS3": 6890,
+        "sha256": "d5e7515c05a8db29eb105bc8ef808068578ce9c548a3b6e87a7fb50b3a87dd2b",
+        "sha256Declarado": "d5e7515c05a8db29eb105bc8ef808068578ce9c548a3b6e87a7fb50b3a87dd2b",
+        "contentType": "application/octet-stream",
+        "integro": true
+      },
+      "preview.png": {
+        "key": "embroidery/f5c02cfd64c5416896dbeec7d663fe5b208c0cdd1ba5a215a81c5400f0059da9/emb_c01918a31708b45eef813c9f4ffde4e3b05fe22f/preview.png",
+        "bytes": 37926,
+        "bytesS3": 37926,
+        "sha256": "2e22b51a2d30308117d20477c66ae29ee2af1ef2d5ab0f9edaf8466459f39438",
+        "sha256Declarado": "2e22b51a2d30308117d20477c66ae29ee2af1ef2d5ab0f9edaf8466459f39438",
+        "contentType": "image/png",
+        "integro": true
+      },
+      "metadata.json": {
+        "key": "embroidery/f5c02cfd64c5416896dbeec7d663fe5b208c0cdd1ba5a215a81c5400f0059da9/emb_c01918a31708b45eef813c9f4ffde4e3b05fe22f/metadata.json",
+        "bytes": 2749,
+        "bytesS3": 2749,
+        "sha256": "e143c89f8f70ba534a4ca1e861cf874ed01bfbc38394032791d65d3639ef7ba0",
+        "sha256Declarado": "e143c89f8f70ba534a4ca1e861cf874ed01bfbc38394032791d65d3639ef7ba0",
+        "contentType": "application/json",
+        "integro": true
+      }
+    },
+    "tajima": {
+      "ok": true,
+      "motivo": "",
+      "cabecera": "LA:                \rST:   2110\rCO:  4\r+X:  406\r-X:  406\r+Y:  222\r-Y:  222\rAX:-  303\rAY:+  109\rMX:+    0\rMY:+    0\rPD:***"
+    },
+    "dst": {
+      "puntadas": 2077,
+      "totalOrdenes": 2110,
+      "saltos": 20,
+      "cortes": 8,
+      "cambiosDeColor": 4,
+      "hilos": 0,
+      "anchoMm": 81.2,
+      "altoMm": 44.4
+    },
+    "metadata": {
+      "checksums": {
+        "design.dst": "d5e7515c05a8db29eb105bc8ef808068578ce9c548a3b6e87a7fb50b3a87dd2b",
+        "embroideredPreview.png": "dcedb060bcf5bfbb51becda6770ff950d6d260910770211ce44b6e1d95c57a26",
+        "preview.png": "2e22b51a2d30308117d20477c66ae29ee2af1ef2d5ab0f9edaf8466459f39438"
+      },
+      "confidence": 0.78,
+      "decision": "review",
+      "designHash": "f5c02cfd64c5416896dbeec7d663fe5b208c0cdd1ba5a215a81c5400f0059da9",
+      "engineVersion": "inkstitch-3.3.0",
+      "issues": [
+        {
+          "code": "SHARP_DIRECTION_CHANGE",
+          "message": "El plan concentra demasiados cambios bruscos de dirección.",
+          "severity": "review"
+        }
+      ],
+      "metrics": {
+        "alphaCoverage": 0.2857,
+        "colorChanges": 4,
+        "colorCount": 5,
+        "colorEntropy": 2.627,
+        "componentCount": 13,
+        "gradientRatio": 0.0205,
+        "heightMm": 44.4,
+        "jumps": 20,
+        "nodeCount": 26,
+        "quality": {
+          "geometry": {
+            "fillRegionCount": 9,
+            "joins": [],
+            "junctionCount": 0,
+            "nodeCount": 26,
+            "objectCount": 13,
+            "pathCount": 13,
+            "representationDecision": {
+              "railsV3": 0,
+              "railsV3Percent": 0,
+              "strokeV2": 0,
+              "strokeV2Percent": 0
+            },
+            "runningPathCount": 3,
+            "sampling": {
+              "finalRailNodes": 0,
+              "rawCenterlineNodes": 0,
+              "rawRailNodes": 0,
+              "rungsAfter": 0,
+              "rungsBefore": 0
+            },
+            "satin": {
+              "averageWidthMm": 1.3,
+              "maxWidthMm": 1.3,
+              "minWidthMm": 1.3,
+              "widthVariance": 0
+            },
+            "satinColumnCount": 1,
+            "segmentCount": 13,
+            "svgBytes": 6497,
+            "travelOrdering": {
+              "afterMm": 263.54,
+              "beforeMm": 352.48,
+              "reordered": true
+            },
+            "underlay": {
+              "estimatedStitches": 0,
+              "layers": 0
+            }
+          },
+          "stitchPlan": {
+            "analysis": {
+              "crossingAnalysisTruncated": false,
+              "crossingComparisons": 25915,
+              "crossingPairs": 550
+            },
+            "averageStitchLengthMm": 2.24,
+            "colorChanges": 4,
+            "directionChangeDegrees": {
+              "average": 26.609,
+              "p95": 90
+            },
+            "estimatedThreadLengthMm": 4793.5,
+            "fillStitches": null,
+            "jumps": 20,
+            "localStitchDensity": {
+              "averagePerOccupiedCell": 1.831,
+              "cellMm": 1,
+              "occupiedCells": 1127
+            },
+            "maxAngleDeltaBetweenAdjacentStitches": 90,
+            "maxDirectionChange": 90,
+            "maxJumpLengthMm": 14.534,
+            "maxLocalDensity": 10,
+            "maxStitchLengthMm": 4.3,
+            "numberOfCrossingStitches": 627,
+            "numberOfFanStitches": 0,
+            "numberOfSharpDirectionChanges": 456,
+            "overlapDensity": 0.02024,
+            "overlappingSegments": 139,
+            "p95StitchLengthMm": 4.031,
+            "runningStitches": null,
+            "satinStitches": null,
+            "stitchCount": 2077,
+            "stitchesAboveThreshold": 0,
+            "trims": 8
+          }
+        },
+        "stitchCount": 2077,
+        "texture": 0.0066,
+        "trims": 8,
+        "widthMm": 81.2
+      },
+      "physicallyValidated": false,
+      "profileVersion": "experimental-hybrid-v4-2026-09-06",
+      "schemaVersion": 1,
+      "timings": {
+        "dstParsingMs": 14,
+        "inkstitchDigitizationMs": null,
+        "inkstitchInitializationMs": null,
+        "inkstitchProcessAndDigitizationMs": 19052.3,
+        "previewMs": 139.4,
+        "svgGenerationMs": 0.3,
+        "tajimaValidationMs": 7.5
+      },
+      "validation": {
+        "tajima": {
+          "checks": {
+            "boundsMatchPyembroidery": true,
+            "hasEndRecord": true,
+            "headerColorChangesMatch": true,
+            "headerIs512Bytes": true,
+            "headerRecordCountMatches": true,
+            "maxAxisMovementRepresentable": true,
+            "payloadAlignedTo3Bytes": true
+          },
+          "maxAxisDeltaTenthsMm": 120,
+          "passed": true
+        }
+      }
+    },
+    "coincide": {
+      "stitchCount": true,
+      "colorCount": true,
+      "jumps": true,
+      "trims": true,
+      "declarado": {
+        "stitchCount": 2077,
+        "colorCount": 5,
+        "jumps": 20,
+        "trims": 8,
+        "widthMm": 81.2,
+        "heightMm": 44.4
+      },
+      "leido": {
+        "puntadas": 2077,
+        "totalOrdenes": 2110,
+        "saltos": 20,
+        "cortes": 8,
+        "cambiosDeColor": 4,
+        "hilos": 0,
+        "anchoMm": 81.2,
+        "altoMm": 44.4
+      }
+    }
+  },
+  {
+    "caso": "08-texto-variante",
+    "jobId": "emb_46c82bd07a3c03bc96e5015dc97ec96ae090342f",
+    "status": "READY",
+    "archivos": {
+      "design.dst": {
+        "key": "embroidery/a7c9a5b894715dcfe03571b8026fdc6ccab4446012f8b48111d96b2a60df6908/emb_46c82bd07a3c03bc96e5015dc97ec96ae090342f/design.dst",
+        "bytes": 5084,
+        "bytesS3": 5084,
+        "sha256": "43fd1329cf91bc1c8f4b1ef80400beca4ff2f5dc5d239492e19e46189f3a01af",
+        "sha256Declarado": "43fd1329cf91bc1c8f4b1ef80400beca4ff2f5dc5d239492e19e46189f3a01af",
+        "contentType": "application/octet-stream",
+        "integro": true
+      },
+      "preview.png": {
+        "key": "embroidery/a7c9a5b894715dcfe03571b8026fdc6ccab4446012f8b48111d96b2a60df6908/emb_46c82bd07a3c03bc96e5015dc97ec96ae090342f/preview.png",
+        "bytes": 12559,
+        "bytesS3": 12559,
+        "sha256": "88ae309c4607eb06a726eba23859825ffe1b4ebbb3da3d640ee88f86a9c891b1",
+        "sha256Declarado": "88ae309c4607eb06a726eba23859825ffe1b4ebbb3da3d640ee88f86a9c891b1",
+        "contentType": "image/png",
+        "integro": true
+      },
+      "metadata.json": {
+        "key": "embroidery/a7c9a5b894715dcfe03571b8026fdc6ccab4446012f8b48111d96b2a60df6908/emb_46c82bd07a3c03bc96e5015dc97ec96ae090342f/metadata.json",
+        "bytes": 2539,
+        "bytesS3": 2539,
+        "sha256": "462a25e3d7dd6c2a962acb9c5b901ab8cce88a8059fb568292422682fcf29121",
+        "sha256Declarado": "462a25e3d7dd6c2a962acb9c5b901ab8cce88a8059fb568292422682fcf29121",
+        "contentType": "application/json",
+        "integro": true
+      }
+    },
+    "tajima": {
+      "ok": true,
+      "motivo": "",
+      "cabecera": "LA:                \rST:   1524\rCO:  0\r+X:  307\r-X:  307\r+Y:   90\r-Y:   90\rAX:+  305\rAY:-   11\rMX:+    0\rMY:+    0\rPD:***"
+    },
+    "dst": {
+      "puntadas": 1516,
+      "totalOrdenes": 1524,
+      "saltos": 7,
+      "cortes": 0,
+      "cambiosDeColor": 0,
+      "hilos": 0,
+      "anchoMm": 61.4,
+      "altoMm": 18
+    },
+    "metadata": {
+      "checksums": {
+        "design.dst": "43fd1329cf91bc1c8f4b1ef80400beca4ff2f5dc5d239492e19e46189f3a01af",
+        "embroideredPreview.png": "50ef3098769ccf0eea78b5ef89e94584cabcb2eb6a293cb4477436d5421f8a45",
+        "preview.png": "88ae309c4607eb06a726eba23859825ffe1b4ebbb3da3d640ee88f86a9c891b1"
+      },
+      "confidence": 0.94,
+      "decision": "accept",
+      "designHash": "a7c9a5b894715dcfe03571b8026fdc6ccab4446012f8b48111d96b2a60df6908",
+      "engineVersion": "inkstitch-3.3.0",
+      "issues": [],
+      "metrics": {
+        "colorChanges": 0,
+        "colorCount": 1,
+        "componentCount": 15,
+        "heightMm": 18,
+        "jumps": 7,
+        "nodeCount": 30,
+        "quality": {
+          "geometry": {
+            "fillRegionCount": 0,
+            "joins": [],
+            "junctionCount": 10,
+            "nodeCount": 30,
+            "objectCount": 15,
+            "pathCount": 15,
+            "representationDecision": {
+              "railsV3": 0,
+              "railsV3Percent": 0,
+              "strokeV2": 15,
+              "strokeV2Percent": 100
+            },
+            "runningPathCount": 0,
+            "sampling": {
+              "finalRailNodes": 0,
+              "rawCenterlineNodes": 30,
+              "rawRailNodes": 0,
+              "rungsAfter": 0,
+              "rungsBefore": 0
+            },
+            "satin": {
+              "averageWidthMm": 2.9,
+              "maxWidthMm": 2.9,
+              "minWidthMm": 2.9,
+              "widthVariance": 0
+            },
+            "satinColumnCount": 15,
+            "segmentCount": 15,
+            "svgBytes": 5229,
+            "travelOrdering": {
+              "afterMm": 121.12,
+              "beforeMm": 121.12,
+              "reordered": false
+            },
+            "underlay": {
+              "estimatedStitches": 115,
+              "layers": 15
+            }
+          },
+          "stitchPlan": {
+            "analysis": {
+              "crossingAnalysisTruncated": false,
+              "crossingComparisons": 18635,
+              "crossingPairs": 55
+            },
+            "averageStitchLengthMm": 2.914,
+            "colorChanges": 0,
+            "directionChangeDegrees": {
+              "average": 8.595,
+              "p95": 8.881
+            },
+            "estimatedThreadLengthMm": 4459.1,
+            "fillStitches": null,
+            "jumps": 7,
+            "localStitchDensity": {
+              "averagePerOccupiedCell": 5.317,
+              "cellMm": 1,
+              "occupiedCells": 284
+            },
+            "maxAngleDeltaBetweenAdjacentStitches": 90,
+            "maxDirectionChange": 90,
+            "maxJumpLengthMm": 11.7,
+            "maxLocalDensity": 13,
+            "maxStitchLengthMm": 3.239,
+            "numberOfCrossingStitches": 75,
+            "numberOfFanStitches": 0,
+            "numberOfSharpDirectionChanges": 52,
+            "overlapDensity": 0.15669,
+            "overlappingSegments": 467,
+            "p95StitchLengthMm": 3.239,
+            "runningStitches": null,
+            "satinStitches": null,
+            "stitchCount": 1516,
+            "stitchesAboveThreshold": 0,
+            "trims": 0
+          }
+        },
+        "stitchCount": 1516,
+        "trims": 0,
+        "widthMm": 61.4
+      },
+      "physicallyValidated": false,
+      "profileVersion": "experimental-hybrid-v4-2026-09-06",
+      "schemaVersion": 1,
+      "timings": {
+        "dstParsingMs": 10.4,
+        "inkstitchDigitizationMs": null,
+        "inkstitchInitializationMs": null,
+        "inkstitchProcessAndDigitizationMs": 3361.8,
+        "previewMs": 82.9,
+        "svgGenerationMs": 0.3,
+        "tajimaValidationMs": 5.5
+      },
+      "validation": {
+        "tajima": {
+          "checks": {
+            "boundsMatchPyembroidery": true,
+            "hasEndRecord": true,
+            "headerColorChangesMatch": true,
+            "headerIs512Bytes": true,
+            "headerRecordCountMatches": true,
+            "maxAxisMovementRepresentable": true,
+            "payloadAlignedTo3Bytes": true
+          },
+          "maxAxisDeltaTenthsMm": 108,
+          "passed": true
+        }
+      }
+    },
+    "coincide": {
+      "stitchCount": true,
+      "colorCount": true,
+      "jumps": true,
+      "trims": true,
+      "declarado": {
+        "stitchCount": 1516,
+        "colorCount": 1,
+        "jumps": 7,
+        "trims": 0,
+        "widthMm": 61.4,
+        "heightMm": 18
+      },
+      "leido": {
+        "puntadas": 1516,
+        "totalOrdenes": 1524,
+        "saltos": 7,
+        "cortes": 0,
+        "cambiosDeColor": 0,
+        "hilos": 0,
+        "anchoMm": 61.4,
+        "altoMm": 18
+      }
+    }
+  }
+]

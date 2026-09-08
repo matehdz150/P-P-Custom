@@ -208,6 +208,28 @@ export const llaves = {
 		pk: `ORDER_FOLIO#${folio}`,
 		sk: "LOCK",
 	}),
+
+	/** Un enlace público apunta al evento privado de su organizador. */
+	codigoDeEvento: (codigo: string) => ({
+		pk: `EVENT_CODE#${codigo}`,
+		sk: "LOCK",
+	}),
+
+	evento: (sub: string, id: string) => ({
+		pk: `CUSTOMER#${sub}`,
+		sk: `EVENT#${id}`,
+	}),
+
+	participacionDeEvento: (id: string, intentoId: string) => ({
+		pk: `EVENT#${id}`,
+		sk: `PARTICIPATION#${intentoId}`,
+	}),
+
+	/** Diseño temporal emitido para un producto concreto de un evento. */
+	disenoDeEvento: (id: string, disenoId: string) => ({
+		pk: `EVENT#${id}`,
+		sk: `DESIGN#${disenoId}`,
+	}),
 };
 
 /**

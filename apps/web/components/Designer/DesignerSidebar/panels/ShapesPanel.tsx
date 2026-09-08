@@ -28,7 +28,16 @@ function trazos(shape: ShapeDef) {
 	return shape.d ? [{ d: shape.d, fill: undefined }] : [];
 }
 
-export default function ShapesPanel({ close }: { close: () => void }) {
+/**
+ * Sólo las rejillas, sin cabecera ni botón de cerrar.
+ *
+ * El móvil las mete en un drawer que YA pone su propio título, así que la
+ * cabecera de aquí saldría duplicada. Se parte en dos en vez de escribir una
+ * versión corta para el teléfono: es el mismo criterio que ya siguió la
+ * biblioteca de imágenes, y una copia se habría quedado sin los gráficos
+ * nuevos en cuanto alguien añadiera uno.
+ */
+export function RejillasDeGraficos() {
 	const { getCanvas, getEditableAreas, setActiveObject } = useDesigner();
 	const { execute } = useHistory();
 	const guard = useElementGuard();
@@ -80,6 +89,28 @@ export default function ShapesPanel({ close }: { close: () => void }) {
 	};
 
 	return (
+		<>
+			<Rejilla
+				titulo="Gráficos"
+				nota="Entran a color. Para cambiarlos, desagrupa."
+				lista={GRAPHICS}
+				onPick={insertShape}
+			/>
+
+			<Rejilla
+				titulo="Formas"
+				nota="Entran en negro y las recoloreas."
+				lista={SHAPES}
+				onPick={insertShape}
+				className="mt-8"
+			/>
+		</>
+	);
+}
+
+/** La misma rejilla con la cabecera que necesita la barra de escritorio. */
+export default function ShapesPanel({ close }: { close: () => void }) {
+	return (
 		<div className="h-full flex flex-col">
 			<div className="p-6 flex justify-between items-center border-b bg-white">
 				<h2 className="font-semibold text-xl text-tinta">Gráficos y formas</h2>
@@ -89,20 +120,7 @@ export default function ShapesPanel({ close }: { close: () => void }) {
 			</div>
 
 			<div className="flex-1 overflow-y-auto p-6">
-				<Rejilla
-					titulo="Gráficos"
-					nota="Entran a color. Para cambiarlos, desagrupa."
-					lista={GRAPHICS}
-					onPick={insertShape}
-				/>
-
-				<Rejilla
-					titulo="Formas"
-					nota="Entran en negro y las recoloreas."
-					lista={SHAPES}
-					onPick={insertShape}
-					className="mt-8"
-				/>
+				<RejillasDeGraficos />
 			</div>
 		</div>
 	);

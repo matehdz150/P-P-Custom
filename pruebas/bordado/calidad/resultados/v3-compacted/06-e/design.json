@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "16495359eff48ff367adf8b13fa2fe873ab8fde18051fdaeb038437460ed938a",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "e-e-0-v3-0-0",
+      "sourceObjectId": "e-e-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M50.373 30.573L49.404 28.559L47.736 27.296L45.581 26.61L43.308 26.5L41.054 26.945L39.006 28.102M49.627 31.427L48.095 30.555L46.568 29.73L45.082 29.263L43.537 29.19L42.036 29.46L40.752 30.161M50.452 30.483L49.548 31.517M45.604 26.492L45.06 29.381M38.928 28.01L40.83 30.252"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 20,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.432,
+        "widthVariance": 0.29228,
+        "angleVariance": 18.52004,
+        "maxAngleDeltaDeg": 18.979,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 3
+      }
+    },
+    {
+      "id": "e-e-0-v3-0-1",
+      "sourceObjectId": "e-e-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M39.006 28.102L37.445 29.898L36.749 32.153L36.817 34.495L37.494 36.705L38.771 38.614M40.752 30.161L39.802 31.214L39.411 32.602L39.484 34.07L39.913 35.507L40.749 36.777M38.928 28.01L40.83 30.252M36.63 32.133L39.529 32.622M38.683 38.696L40.837 36.695"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 18,
+      "quality": {
+        "minWidthMm": 2.7,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.7,
+        "widthVariance": 0,
+        "angleVariance": 2.11644,
+        "maxAngleDeltaDeg": 20.512,
+        "junctionCount": 0,
+        "segmentIndex": 1,
+        "segmentCount": 3
+      },
+      "dependencies": [
+        "e-e-0-v3-0-0"
+      ]
+    },
+    {
+      "id": "e-e-0-v3-0-2",
+      "sourceObjectId": "e-e-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M38.771 38.614L40.592 40.007L42.698 40.865L44.938 41.182L47.2 40.933L49.323 40.027L50.834 38.55L51.436 36.362M40.749 36.777L41.976 37.689L43.41 38.26L44.952 38.482L46.489 38.328L47.879 37.745L49.264 36.753L50.564 35.638M38.683 38.696L40.837 36.695M44.937 41.302L44.952 38.362M51.528 36.439L50.472 35.561"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 22,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.465,
+        "widthVariance": 0.26363,
+        "angleVariance": 10.14476,
+        "maxAngleDeltaDeg": 17.055,
+        "junctionCount": 0,
+        "segmentIndex": 2,
+        "segmentCount": 3
+      },
+      "dependencies": [
+        "e-e-0-v3-0-1"
+      ]
+    },
+    {
+      "id": "e-e-0-v3-1-0",
+      "sourceObjectId": "e-e-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M38 34.35L46 34.35L48 34.193L50 33.567M38 31.65L46 31.65L48 31.807L50 32.433M38 34.47L38 31.53M46 34.47L46 31.53M50 33.687L50 32.313"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 14,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.23,
+        "widthVariance": 0.4169,
+        "angleVariance": 0,
+        "maxAngleDeltaDeg": 0,
+        "junctionCount": 1,
+        "segmentIndex": 0,
+        "segmentCount": 1
+      }
+    }
+  ],
+  "metrics": {
+    "componentCount": 4,
+    "nodeCount": 74,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-v3-2026-09-06",
+    "texto": {
+      "satinColumns": 1,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-v3-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

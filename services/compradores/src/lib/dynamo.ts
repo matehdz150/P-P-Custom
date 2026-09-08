@@ -154,6 +154,28 @@ export const llaves = {
 		prefijo: "TEMPLATE#",
 	}),
 
+	/** Evento administrado por el comprador. Las participaciones viven aparte. */
+	evento: (sub: string, id: string) => ({
+		pk: `CUSTOMER#${sub}`,
+		sk: `EVENT#${id}`,
+	}),
+
+	eventosDe: (sub: string) => ({
+		pk: `CUSTOMER#${sub}`,
+		prefijo: "EVENT#",
+	}),
+
+	/** El enlace público sólo resuelve a su dueño; el contenido sigue en CUSTOMER#. */
+	codigoDeEvento: (codigo: string) => ({
+		pk: `EVENT_CODE#${codigo}`,
+		sk: "LOCK",
+	}),
+
+	participacionesDeEvento: (id: string) => ({
+		pk: `EVENT#${id}`,
+		prefijo: "PARTICIPATION#",
+	}),
+
 	/** El prefijo con el que se listan. Espejo del `sk` de arriba. */
 	disenosDe: (sub: string) => ({
 		pk: `CUSTOMER#${sub}`,

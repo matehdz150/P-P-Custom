@@ -52,13 +52,17 @@ const MAXIMO = {
 	   reescalada a 1600 px de ancho, así que pesa menos que el arte; el mismo
 	   tope evita tener que pensarlo dos veces. */
 	prenda: 25 * 1024 * 1024,
+	/* El MISMO arte en trazos, para lo que no se imprime sino que se graba. Un
+	   SVG es texto y pesa poco… salvo si alguien vectorizó una foto y trae
+	   cuarenta mil trazos. Ahí el tope es la defensa. */
+	vector: 12 * 1024 * 1024,
 	diseno: 10 * 1024 * 1024,
 } as const;
 
-/* Tres archivos por lado —arte, colocación y prenda real— más el diseño. Con
-   seis lados son diecinueve; veinte da aire. Eran catorce cuando los archivos
-   por lado eran dos. */
-const MAXIMO_ARCHIVOS = 20;
+/* Cuatro archivos por lado —arte, colocación, prenda real y, en los productos
+   de grabado, el vector— más el diseño. Con seis lados son veinticinco; se
+   deja en veintiséis. Eran veinte cuando los archivos por lado eran tres. */
+const MAXIMO_ARCHIVOS = 26;
 
 type Tipo = keyof typeof MAXIMO;
 
@@ -66,7 +70,14 @@ const TIPOS: Record<Tipo, string> = {
 	arte: "image/png",
 	colocacion: "image/png",
 	prenda: "image/png",
+	vector: "image/svg+xml",
 	diseno: "application/json",
+};
+
+/** Con qué extensión se guarda cada uno. Todo era `.png` hasta que entró el láser. */
+const EXTENSION: Partial<Record<Tipo, string>> = {
+	vector: "svg",
+	diseno: "json",
 };
 
 const LIMPIO = (s: unknown) =>
@@ -74,7 +85,13 @@ const LIMPIO = (s: unknown) =>
 		.replace(/[^a-zA-Z0-9-_]/g, "")
 		.slice(0, 30);
 
-export async function firmarSubidas(cuerpo: unknown) {
+export async function firmarSubidas(
+	cuerpo: unknown,
+	/* Sólo lo construyen rutas del servidor. En eventos incluye el id del
+	   evento y del producto para que una referencia no se pueda reutilizar en
+	   otro artículo del mismo enlace compartido. */
+	prefijo: "carritos" | `eventos/${string}/${string}` = "carritos",
+) {
 	const c = (cuerpo ?? {}) as Record<string, unknown>;
 	const archivos = Array.isArray(c.archivos) ? c.archivos : [];
 
@@ -115,8 +132,10 @@ export async function firmarSubidas(cuerpo: unknown) {
 			}
 
 			const nombre =
-				tipo === "diseno" ? "diseno.json" : `${lado}-${tipo}.png`;
-			const key = `carritos/${itemId}/${nombre}`;
+				tipo === "diseno"
+					? "diseno.json"
+					: `${lado}-${tipo}.${EXTENSION[tipo] ?? "png"}`;
+			const key = `${prefijo}/${itemId}/${nombre}`;
 
 			const uploadUrl = await getSignedUrl(
 				s3,

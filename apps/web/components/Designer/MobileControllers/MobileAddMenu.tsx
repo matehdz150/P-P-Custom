@@ -1,7 +1,8 @@
 "use client";
 
-import { Type } from "lucide-react";
+import { Shapes, Type } from "lucide-react";
 import { useState } from "react";
+import { RejillasDeGraficos } from "@/components/Designer/DesignerSidebar/panels/ShapesPanel";
 import BibliotecaDeImagenes from "@/components/Designer/panels/BibliotecaDeImagenes";
 import { useDesignRules } from "../hooks/useProductConfig";
 import MobileAddTextPanel from "./MobileAddTextPanel";
@@ -13,7 +14,7 @@ export default function MobileAddMenu({
 }) {
 	const { allowImages, allowText } = useDesignRules();
 
-	const [view, setView] = useState<"menu" | "text">("menu");
+	const [view, setView] = useState<"menu" | "text" | "shapes">("menu");
 
 	if (view === "text") {
 		return (
@@ -21,6 +22,21 @@ export default function MobileAddMenu({
 				goBack={() => setView("menu")}
 				closeDrawer={closeDrawer}
 			/>
+		);
+	}
+
+	if (view === "shapes") {
+		return (
+			<div className="pb-6">
+				<button
+					type="button"
+					onClick={() => setView("menu")}
+					className="mb-4 text-sm text-tinta/60"
+				>
+					← Volver
+				</button>
+				<RejillasDeGraficos />
+			</div>
 		);
 	}
 
@@ -38,6 +54,17 @@ export default function MobileAddMenu({
 					Este producto no permite imágenes
 				</div>
 			)}
+
+			{/* GRÁFICOS Y FORMAS. Faltaban entera en el teléfono: existían en la
+			    barra de escritorio y aquí no había forma de llegar a ellas. */}
+			<button
+				type="button"
+				onClick={() => setView("shapes")}
+				className="w-full text-left px-4 py-6 border rounded-lg flex gap-3 items-center"
+			>
+				<Shapes />
+				Gráficos y formas
+			</button>
 
 			{/* TEXTO */}
 			{allowText ? (

@@ -205,7 +205,7 @@ export const cargarPlantillaAlCarrito = (id: string) =>
  */
 export async function subirArteDePlantilla(
 	archivos: {
-		tipo: "arte" | "colocacion" | "prenda" | "diseno";
+		tipo: "arte" | "colocacion" | "prenda" | "vector" | "diseno";
 		lado?: string;
 		cuerpo: Blob;
 	}[],
@@ -237,10 +237,10 @@ export async function subirArteDePlantilla(
 			const res = await fetch(destino.uploadUrl, {
 				method: "PUT",
 				// Exactamente el tipo que se firmó, o S3 rechaza la firma.
-				headers: {
-					"Content-Type":
-						a.tipo === "diseno" ? "application/json" : "image/png",
-				},
+				/* Del propio blob y no deducido del tipo: desde que hay productos de
+				   grabado, `arte` puede ser PNG y `vector` es SVG. Firmar una cosa y
+				   mandar otra hace que S3 rechace la subida por firma inválida. */
+				headers: { "Content-Type": a.cuerpo.type || "image/png" },
 				body: a.cuerpo,
 			});
 

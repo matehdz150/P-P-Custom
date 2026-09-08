@@ -1,0 +1,31 @@
+FROM ubuntu:22.04
+
+ARG INKSTITCH_VERSION=3.3.0
+ARG INKSTITCH_ARCH=aarch64
+ARG INKSTITCH_SHA256=8e6918e62dee98b8cdbb46a3aad12521b094d2608049abd7eda5771092e9835e
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        libgl1 \
+        libgtk-3-0 \
+        libwayland-server0 \
+        xauth \
+        xvfb \
+        xz-utils \
+    && curl -fsSL \
+        "https://github.com/inkstitch/inkstitch/releases/download/v${INKSTITCH_VERSION}/inkstitch-${INKSTITCH_VERSION}-linux-${INKSTITCH_ARCH}.tar.xz" \
+        -o /tmp/inkstitch.tar.xz \
+    && echo "${INKSTITCH_SHA256}  /tmp/inkstitch.tar.xz" | sha256sum -c - \
+    && mkdir -p /opt \
+    && tar -xJf /tmp/inkstitch.tar.xz -C /opt \
+    && rm /tmp/inkstitch.tar.xz \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+
+COPY inkstitch-headless /usr/local/bin/inkstitch-headless
+RUN chmod +x /usr/local/bin/inkstitch-headless
+
+ENTRYPOINT ["/usr/local/bin/inkstitch-headless"]

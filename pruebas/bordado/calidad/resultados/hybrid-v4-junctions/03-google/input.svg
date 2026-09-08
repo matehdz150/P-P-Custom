@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="90mm" height="60mm" viewBox="0 0 90 60">
+<rect width="90" height="60" fill="#f7f7f5"/>
+<path d="M15.200000000000001 21.0C12.0 16.2 4 17 4 26.6C4 37.0 13.600000000000001 37.8 16.0 31.4L11.2 31.4" fill="none" stroke="#4285f4" stroke-width="2.16" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M23.2 25.0C18.4 25.0 18.4 37.0 23.2 37.0C28.0 37.0 28.0 25.0 23.2 25.0Z" fill="none" stroke="#4285f4" stroke-width="2.16" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M34.400000000000006 25.0C29.6 25.0 29.6 37.0 34.400000000000006 37.0C39.2 37.0 39.2 25.0 34.400000000000006 25.0Z" fill="none" stroke="#4285f4" stroke-width="2.16" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M50.400000000000006 26.6C47.2 24.2 40.800000000000004 25.8 40.800000000000004 31.4C40.800000000000004 37.0 48.00000000000001 37.8 50.400000000000006 33.8C50.400000000000006 40.2 48.800000000000004 44.2 44.00000000000001 44.2C41.6 44.2 40.800000000000004 42.6 40.800000000000004 41.0" fill="none" stroke="#4285f4" stroke-width="2.16" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M55.2 17L55.2 37.0" fill="none" stroke="#4285f4" stroke-width="2.16" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M68.80000000000001 29.0C66.4 25.0 59.2 25.8 59.2 30.6C59.2 37.0 68.0 37.8 69.60000000000001 33.0M59.2 30.6L68.80000000000001 30.6" fill="none" stroke="#4285f4" stroke-width="2.16" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

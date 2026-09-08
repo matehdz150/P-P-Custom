@@ -1,0 +1,924 @@
+{
+  "fixture": "03-google",
+  "profileVersion": "experimental-v3-2026-09-06",
+  "status": "measured",
+  "physicallyValidated": false,
+  "geometry": {
+    "objectCount": 37,
+    "pathCount": 185,
+    "nodeCount": 648,
+    "segmentCount": 463,
+    "satinColumnCount": 37,
+    "fillRegionCount": 0,
+    "runningPathCount": 0,
+    "junctionCount": 1,
+    "satin": {
+      "minWidthMm": 1.769,
+      "maxWidthMm": 2.16,
+      "averageWidthMm": 2.089,
+      "widthVariance": 0.01953
+    },
+    "svgBytes": 18282
+  },
+  "stitchPlan": {
+    "stitchCount": 1548,
+    "runningStitches": null,
+    "satinStitches": null,
+    "fillStitches": null,
+    "jumps": 6,
+    "trims": 0,
+    "colorChanges": 0,
+    "maxStitchLengthMm": 3.585,
+    "p95StitchLengthMm": 2.561,
+    "averageStitchLengthMm": 2.209,
+    "stitchesAboveThreshold": 0,
+    "maxJumpLengthMm": 12.883,
+    "estimatedThreadLengthMm": 3464.3,
+    "directionChangeDegrees": {
+      "average": 12.482,
+      "p95": 49.735
+    },
+    "maxDirectionChange": 90.0,
+    "numberOfSharpDirectionChanges": 75,
+    "maxAngleDeltaBetweenAdjacentStitches": 90.0,
+    "numberOfFanStitches": 0,
+    "numberOfCrossingStitches": 145,
+    "overlappingSegments": 255,
+    "overlapDensity": 0.10519,
+    "localStitchDensity": {
+      "cellMm": 1.0,
+      "occupiedCells": 282,
+      "averagePerOccupiedCell": 5.472
+    },
+    "maxLocalDensity": 15,
+    "analysis": {
+      "crossingComparisons": 23582,
+      "crossingPairs": 226,
+      "crossingAnalysisTruncated": false
+    }
+  },
+  "dst": {
+    "widthMm": 67.2,
+    "heightMm": 28.4,
+    "stitchCount": 1548,
+    "colorCount": 1,
+    "colorChanges": 0,
+    "jumps": 6,
+    "trims": 0
+  },
+  "tajima": {
+    "passed": true,
+    "checks": {
+      "headerIs512Bytes": true,
+      "payloadAlignedTo3Bytes": true,
+      "hasEndRecord": true,
+      "headerRecordCountMatches": true,
+      "headerColorChangesMatch": true,
+      "boundsMatchPyembroidery": true,
+      "maxAxisMovementRepresentable": true
+    },
+    "maxAxisDeltaTenthsMm": 114
+  },
+  "objects": [
+    {
+      "objectId": "google-0-G-0-v3-0-0",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 18,
+        "segmentCount": 13,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 1.834,
+          "maxWidthMm": 1.834,
+          "averageWidthMm": 1.834,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-0-G-0-v3-0-1",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-0-G-0-v3-0-2",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-0-G-0-v3-0-3",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 20,
+        "segmentCount": 15,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-0-G-0-v3-0-4",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-0-G-0-v3-0-5",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-0-G-0-v3-0-6",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-0-G-0-v3-0-7",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 18,
+        "segmentCount": 13,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 1.834,
+          "maxWidthMm": 1.834,
+          "averageWidthMm": 1.834,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-1-o-0-v3-1-0",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-1-o-0-v3-1-1",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 18,
+        "segmentCount": 13,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-1-o-0-v3-1-2",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-1-o-0-v3-1-3",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-1-o-0-v3-1-4",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 18,
+        "segmentCount": 13,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-1-o-0-v3-1-5",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-2-o-0-v3-2-0",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-2-o-0-v3-2-1",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 18,
+        "segmentCount": 13,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-2-o-0-v3-2-2",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-2-o-0-v3-2-3",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-2-o-0-v3-2-4",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 18,
+        "segmentCount": 13,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-2-o-0-v3-2-5",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-3-g-0-v3-3-0",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 1.769,
+          "maxWidthMm": 1.769,
+          "averageWidthMm": 1.769,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-3-g-0-v3-3-1",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-3-g-0-v3-3-2",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-3-g-0-v3-3-3",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-3-g-0-v3-3-4",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-3-g-0-v3-3-5",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-3-g-0-v3-3-6",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 20,
+        "segmentCount": 15,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-3-g-0-v3-3-7",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-3-g-0-v3-3-8",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 1.769,
+          "maxWidthMm": 1.769,
+          "averageWidthMm": 1.769,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-4-l-0-v3-4-0",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 42,
+        "segmentCount": 37,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 1.943,
+          "maxWidthMm": 1.943,
+          "averageWidthMm": 1.943,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-5-e-0-v3-5-0",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 1.769,
+          "maxWidthMm": 1.769,
+          "averageWidthMm": 1.769,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-5-e-0-v3-5-1",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-5-e-0-v3-5-2",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-5-e-0-v3-5-3",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-5-e-0-v3-5-4",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 2.16,
+          "maxWidthMm": 2.16,
+          "averageWidthMm": 2.16,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-5-e-0-v3-5-5",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 1.769,
+          "maxWidthMm": 1.769,
+          "averageWidthMm": 1.769,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "google-5-e-0-v3-6-0",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 26,
+        "segmentCount": 21,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 1,
+        "satin": {
+          "minWidthMm": 1.965,
+          "maxWidthMm": 1.965,
+          "averageWidthMm": 1.965,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    }
+  ],
+  "timings": {
+    "cacheState": "warm",
+    "segmentationMs": null,
+    "vectorGeometryMs": null,
+    "skeletonMs": null,
+    "railsMs": null,
+    "junctionHandlingMs": null,
+    "stitchTypeAssignmentMs": null,
+    "uploadMs": null,
+    "svgGenerationMs": 0.3,
+    "inkstitchDisplayStartupMs": 0.0,
+    "inkstitchProcessAndDigitizationMs": 1434.4,
+    "inkstitchInitializationMs": null,
+    "inkstitchDigitizationMs": null,
+    "dstParsingMs": 3.6,
+    "tajimaValidationMs": 1.8,
+    "previewMs": 190.6,
+    "totalMs": 1676.9
+  },
+  "artifacts": {
+    "input": "input.svg",
+    "preparedSvg": "prepared.svg",
+    "stitchPlot": "stitchPlot.png",
+    "embroideredPreview": "embroideredPreview.png",
+    "dst": "design.dst"
+  }
+}

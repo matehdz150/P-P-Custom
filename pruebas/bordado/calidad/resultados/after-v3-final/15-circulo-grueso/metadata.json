@@ -1,0 +1,1021 @@
+{
+  "fixture": "15-circulo-grueso",
+  "profileVersion": "experimental-v3-2026-09-06",
+  "status": "measured",
+  "physicallyValidated": false,
+  "geometry": {
+    "objectCount": 14,
+    "pathCount": 70,
+    "nodeCount": 340,
+    "segmentCount": 270,
+    "satinColumnCount": 14,
+    "fillRegionCount": 0,
+    "runningPathCount": 0,
+    "junctionCount": 0,
+    "satin": {
+      "minWidthMm": 3.7,
+      "maxWidthMm": 3.7,
+      "averageWidthMm": 3.7,
+      "widthVariance": 0.0
+    },
+    "svgBytes": 8515
+  },
+  "stitchPlan": {
+    "stitchCount": 1430,
+    "runningStitches": 0,
+    "satinStitches": 1530,
+    "fillStitches": 0,
+    "jumps": 2,
+    "trims": 0,
+    "colorChanges": 0,
+    "maxStitchLengthMm": 4.205,
+    "p95StitchLengthMm": 4.08,
+    "averageStitchLengthMm": 3.702,
+    "stitchesAboveThreshold": 0,
+    "maxJumpLengthMm": 9.105,
+    "estimatedThreadLengthMm": 5302.7,
+    "directionChangeDegrees": {
+      "average": 7.043,
+      "p95": 10.811
+    },
+    "maxDirectionChange": 89.801,
+    "numberOfSharpDirectionChanges": 28,
+    "maxAngleDeltaBetweenAdjacentStitches": 89.801,
+    "numberOfFanStitches": 0,
+    "numberOfCrossingStitches": 144,
+    "overlappingSegments": 193,
+    "overlapDensity": 0.05957,
+    "localStitchDensity": {
+      "cellMm": 1.0,
+      "occupiedCells": 304,
+      "averagePerOccupiedCell": 4.701
+    },
+    "maxLocalDensity": 11,
+    "analysis": {
+      "crossingComparisons": 36638,
+      "crossingPairs": 146,
+      "crossingAnalysisTruncated": false
+    },
+    "typedStitchesMeasurement": "sum-of-isolated-object-runs; puede diferir de stitchCount por conexiones entre objetos"
+  },
+  "dst": {
+    "widthMm": 37.6,
+    "heightMm": 47.4,
+    "stitchCount": 1430,
+    "colorCount": 1,
+    "colorChanges": 0,
+    "jumps": 2,
+    "trims": 0
+  },
+  "tajima": {
+    "passed": true,
+    "checks": {
+      "headerIs512Bytes": true,
+      "payloadAlignedTo3Bytes": true,
+      "hasEndRecord": true,
+      "headerRecordCountMatches": true,
+      "headerColorChangesMatch": true,
+      "boundsMatchPyembroidery": true,
+      "maxAxisMovementRepresentable": true
+    },
+    "maxAxisDeltaTenthsMm": 92
+  },
+  "objects": [
+    {
+      "objectId": "circulo-v3-0-0",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 22,
+        "segmentCount": 17,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 1010
+      },
+      "stitchPlan": {
+        "stitchCount": 95,
+        "runningStitches": 0,
+        "satinStitches": 95,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.179,
+        "p95StitchLengthMm": 4.08,
+        "averageStitchLengthMm": 3.532,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 335.5,
+        "directionChangeDegrees": {
+          "average": 6.427,
+          "p95": 11.294
+        },
+        "maxDirectionChange": 89.896,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 89.896,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 4,
+        "overlappingSegments": 11,
+        "overlapDensity": 0.04741,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 22,
+          "averagePerOccupiedCell": 4.273
+        },
+        "maxLocalDensity": 9,
+        "analysis": {
+          "crossingComparisons": 1572,
+          "crossingPairs": 3,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 814.1,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "circulo-v3-0-1",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 30,
+        "segmentCount": 25,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 1124
+      },
+      "stitchPlan": {
+        "stitchCount": 142,
+        "runningStitches": 0,
+        "satinStitches": 142,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.115,
+        "p95StitchLengthMm": 4.06,
+        "averageStitchLengthMm": 3.542,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 503.0,
+        "directionChangeDegrees": {
+          "average": 5.827,
+          "p95": 7.294
+        },
+        "maxDirectionChange": 87.184,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 87.184,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 0,
+        "overlappingSegments": 16,
+        "overlapDensity": 0.04925,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 32,
+          "averagePerOccupiedCell": 4.406
+        },
+        "maxLocalDensity": 7,
+        "analysis": {
+          "crossingComparisons": 1395,
+          "crossingPairs": 0,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 804.1,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "circulo-v3-0-2",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 20,
+        "segmentCount": 15,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 984
+      },
+      "stitchPlan": {
+        "stitchCount": 87,
+        "runningStitches": 0,
+        "satinStitches": 87,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.104,
+        "p95StitchLengthMm": 4.061,
+        "averageStitchLengthMm": 3.38,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 294.0,
+        "directionChangeDegrees": {
+          "average": 6.423,
+          "p95": 15.06
+        },
+        "maxDirectionChange": 85.662,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 85.662,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 0,
+        "overlappingSegments": 17,
+        "overlapDensity": 0.06742,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 19,
+          "averagePerOccupiedCell": 4.526
+        },
+        "maxLocalDensity": 10,
+        "analysis": {
+          "crossingComparisons": 1588,
+          "crossingPairs": 0,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 794.0,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "circulo-v3-0-3",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 20,
+        "segmentCount": 15,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 987
+      },
+      "stitchPlan": {
+        "stitchCount": 90,
+        "runningStitches": 0,
+        "satinStitches": 90,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.115,
+        "p95StitchLengthMm": 4.048,
+        "averageStitchLengthMm": 3.327,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 299.4,
+        "directionChangeDegrees": {
+          "average": 6.599,
+          "p95": 13.923
+        },
+        "maxDirectionChange": 81.431,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 81.431,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 0,
+        "overlappingSegments": 9,
+        "overlapDensity": 0.04186,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 19,
+          "averagePerOccupiedCell": 4.684
+        },
+        "maxLocalDensity": 9,
+        "analysis": {
+          "crossingComparisons": 970,
+          "crossingPairs": 0,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 818.9,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "circulo-v3-0-4",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 28,
+        "segmentCount": 23,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 1093
+      },
+      "stitchPlan": {
+        "stitchCount": 130,
+        "runningStitches": 0,
+        "satinStitches": 130,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.105,
+        "p95StitchLengthMm": 4.061,
+        "averageStitchLengthMm": 3.567,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 463.8,
+        "directionChangeDegrees": {
+          "average": 5.967,
+          "p95": 7.79
+        },
+        "maxDirectionChange": 79.905,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 79.905,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 4,
+        "overlappingSegments": 15,
+        "overlapDensity": 0.0535,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 27,
+          "averagePerOccupiedCell": 4.778
+        },
+        "maxLocalDensity": 9,
+        "analysis": {
+          "crossingComparisons": 1481,
+          "crossingPairs": 3,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 794.6,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "circulo-v3-0-5",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 24,
+        "segmentCount": 19,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 1041
+      },
+      "stitchPlan": {
+        "stitchCount": 110,
+        "runningStitches": 0,
+        "satinStitches": 110,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.134,
+        "p95StitchLengthMm": 4.08,
+        "averageStitchLengthMm": 3.477,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 382.4,
+        "directionChangeDegrees": {
+          "average": 6.156,
+          "p95": 8.981
+        },
+        "maxDirectionChange": 89.785,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 89.785,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 8,
+        "overlappingSegments": 14,
+        "overlapDensity": 0.05452,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 23,
+          "averagePerOccupiedCell": 4.739
+        },
+        "maxLocalDensity": 8,
+        "analysis": {
+          "crossingComparisons": 1831,
+          "crossingPairs": 6,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 788.4,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "circulo-v3-0-6",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 926
+      },
+      "stitchPlan": {
+        "stitchCount": 50,
+        "runningStitches": 0,
+        "satinStitches": 50,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.085,
+        "p95StitchLengthMm": 4.072,
+        "averageStitchLengthMm": 2.94,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 147.0,
+        "directionChangeDegrees": {
+          "average": 6.835,
+          "p95": 12.849
+        },
+        "maxDirectionChange": 81.718,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 81.718,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 6,
+        "overlappingSegments": 12,
+        "overlapDensity": 0.06818,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 11,
+          "averagePerOccupiedCell": 4.455
+        },
+        "maxLocalDensity": 10,
+        "analysis": {
+          "crossingComparisons": 572,
+          "crossingPairs": 4,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 817.5,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "circulo-v3-0-7",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 26,
+        "segmentCount": 21,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 1063
+      },
+      "stitchPlan": {
+        "stitchCount": 120,
+        "runningStitches": 0,
+        "satinStitches": 120,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.205,
+        "p95StitchLengthMm": 4.085,
+        "averageStitchLengthMm": 3.555,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 426.6,
+        "directionChangeDegrees": {
+          "average": 6.174,
+          "p95": 9.679
+        },
+        "maxDirectionChange": 88.748,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 88.748,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 9,
+        "overlappingSegments": 11,
+        "overlapDensity": 0.04472,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 26,
+          "averagePerOccupiedCell": 4.577
+        },
+        "maxLocalDensity": 10,
+        "analysis": {
+          "crossingComparisons": 2112,
+          "crossingPairs": 8,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 784.3,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "circulo-v3-0-8",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 34,
+        "segmentCount": 29,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 1173
+      },
+      "stitchPlan": {
+        "stitchCount": 164,
+        "runningStitches": 0,
+        "satinStitches": 164,
+        "fillStitches": 0,
+        "jumps": 2,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.115,
+        "p95StitchLengthMm": 4.078,
+        "averageStitchLengthMm": 3.616,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 6.32,
+        "estimatedThreadLengthMm": 599.3,
+        "directionChangeDegrees": {
+          "average": 5.88,
+          "p95": 7.253
+        },
+        "maxDirectionChange": 86.361,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 86.361,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 0,
+        "overlappingSegments": 11,
+        "overlapDensity": 0.04061,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 31,
+          "averagePerOccupiedCell": 5.258
+        },
+        "maxLocalDensity": 10,
+        "analysis": {
+          "crossingComparisons": 1692,
+          "crossingPairs": 0,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 798.3,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "circulo-v3-0-9",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 24,
+        "segmentCount": 19,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 1038
+      },
+      "stitchPlan": {
+        "stitchCount": 109,
+        "runningStitches": 0,
+        "satinStitches": 109,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.105,
+        "p95StitchLengthMm": 4.057,
+        "averageStitchLengthMm": 3.517,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 383.4,
+        "directionChangeDegrees": {
+          "average": 6.065,
+          "p95": 8.688
+        },
+        "maxDirectionChange": 85.426,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 85.426,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 4,
+        "overlappingSegments": 19,
+        "overlapDensity": 0.05943,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 26,
+          "averagePerOccupiedCell": 4.154
+        },
+        "maxLocalDensity": 10,
+        "analysis": {
+          "crossingComparisons": 1793,
+          "crossingPairs": 3,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 791.8,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "circulo-v3-0-10",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 22,
+        "segmentCount": 17,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 1014
+      },
+      "stitchPlan": {
+        "stitchCount": 99,
+        "runningStitches": 0,
+        "satinStitches": 99,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.144,
+        "p95StitchLengthMm": 4.081,
+        "averageStitchLengthMm": 3.416,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 338.2,
+        "directionChangeDegrees": {
+          "average": 6.152,
+          "p95": 9.158
+        },
+        "maxDirectionChange": 82.168,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 82.168,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 7,
+        "overlappingSegments": 16,
+        "overlapDensity": 0.06334,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 22,
+          "averagePerOccupiedCell": 4.455
+        },
+        "maxLocalDensity": 9,
+        "analysis": {
+          "crossingComparisons": 1400,
+          "crossingPairs": 5,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 791.4,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "circulo-v3-0-11",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 30,
+        "segmentCount": 25,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 1127
+      },
+      "stitchPlan": {
+        "stitchCount": 143,
+        "runningStitches": 0,
+        "satinStitches": 143,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.105,
+        "p95StitchLengthMm": 4.05,
+        "averageStitchLengthMm": 3.524,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 504.0,
+        "directionChangeDegrees": {
+          "average": 6.115,
+          "p95": 8.758
+        },
+        "maxDirectionChange": 85.966,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 85.966,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 0,
+        "overlappingSegments": 14,
+        "overlapDensity": 0.04688,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 31,
+          "averagePerOccupiedCell": 4.581
+        },
+        "maxLocalDensity": 8,
+        "analysis": {
+          "crossingComparisons": 1558,
+          "crossingPairs": 0,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 811.0,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "circulo-v3-0-12",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 28,
+        "segmentCount": 23,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 1096
+      },
+      "stitchPlan": {
+        "stitchCount": 132,
+        "runningStitches": 0,
+        "satinStitches": 132,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.14,
+        "p95StitchLengthMm": 4.094,
+        "averageStitchLengthMm": 3.555,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 469.3,
+        "directionChangeDegrees": {
+          "average": 5.996,
+          "p95": 7.586
+        },
+        "maxDirectionChange": 89.599,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 89.599,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 0,
+        "overlappingSegments": 15,
+        "overlapDensity": 0.04905,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 30,
+          "averagePerOccupiedCell": 4.367
+        },
+        "maxLocalDensity": 10,
+        "analysis": {
+          "crossingComparisons": 2222,
+          "crossingPairs": 0,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 797.6,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "circulo-v3-0-13",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 16,
+        "segmentCount": 11,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 923
+      },
+      "stitchPlan": {
+        "stitchCount": 59,
+        "runningStitches": 0,
+        "satinStitches": 59,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.111,
+        "p95StitchLengthMm": 4.073,
+        "averageStitchLengthMm": 3.294,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 194.3,
+        "directionChangeDegrees": {
+          "average": 6.535,
+          "p95": 9.68
+        },
+        "maxDirectionChange": 88.059,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 88.059,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 0,
+        "overlappingSegments": 4,
+        "overlapDensity": 0.03516,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 11,
+          "averagePerOccupiedCell": 5.273
+        },
+        "maxLocalDensity": 10,
+        "analysis": {
+          "crossingComparisons": 523,
+          "crossingPairs": 0,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 789.5,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    }
+  ],
+  "timings": {
+    "cacheState": "warm",
+    "segmentationMs": null,
+    "vectorGeometryMs": null,
+    "skeletonMs": null,
+    "railsMs": null,
+    "junctionHandlingMs": null,
+    "stitchTypeAssignmentMs": null,
+    "uploadMs": null,
+    "svgGenerationMs": 0.4,
+    "inkstitchDisplayStartupMs": 0.0,
+    "inkstitchProcessAndDigitizationMs": 999.2,
+    "inkstitchInitializationMs": null,
+    "inkstitchDigitizationMs": null,
+    "dstParsingMs": 3.1,
+    "tajimaValidationMs": 1.7,
+    "previewMs": 223.0,
+    "totalMs": 12533.9
+  },
+  "artifacts": {
+    "input": "input.svg",
+    "preparedSvg": "prepared.svg",
+    "stitchPlot": "stitchPlot.png",
+    "embroideredPreview": "embroideredPreview.png",
+    "dst": "design.dst"
+  }
+}

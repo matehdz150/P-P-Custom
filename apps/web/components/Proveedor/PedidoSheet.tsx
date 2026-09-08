@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Copy, Download, Maximize2, Minimize2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	Sheet,
 	SheetContent,
@@ -90,6 +90,10 @@ export function PedidoSheet({
 		}
 	}
 
+	/* Un bordado en revisión no puede quedar como un dato más entre quince: es
+	   lo único que le dice al taller que ese diseño lo preparó una máquina cuyo
+	   perfil todavía no se ha validado cosiendo. Va arriba y se ve. */
+	const aRevisar = pedido.lineas.filter((l) => l.requiereRevisionBordado);
 	const artes = pedido.lineas.flatMap((l) =>
 		l.arte.map((a) => ({ ...a, lineaId: l.id, producto: l.producto })),
 	);
@@ -143,6 +147,22 @@ export function PedidoSheet({
 					</SheetDescription>
 				</div>
 
+				{aRevisar.length > 0 && (
+					<div className="mx-6 mt-1 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3">
+						<p className="text-[13px] font-semibold text-amber-900">
+							Bordado por revisar
+						</p>
+						<p className="pt-1 text-[13px] leading-[19px] text-amber-900/80">
+							{aRevisar.length === 1
+								? "Una línea"
+								: `${aRevisar.length} líneas`}{" "}
+							de este pedido llevan un bordado que preparó el sistema y que
+							conviene revisar antes de coser:{" "}
+							{aRevisar.map((l) => l.producto).join(", ")}.
+						</p>
+					</div>
+				)}
+
 				{/* Expandido: dos columnas. El arte necesita ancho y los datos no. */}
 				<div
 					className={
@@ -170,6 +190,9 @@ export function PedidoSheet({
 											ruta={a.ruta}
 											colocacion={a.colocacion}
 											prenda={a.prenda}
+											vector={a.vector}
+											bordado={a.bordado}
+											bordadoEstado={a.bordadoEstado}
 											lado={a.lado}
 											folio={pedido.folio}
 											sangradoCm={a.sangradoCm}
@@ -207,6 +230,17 @@ export function PedidoSheet({
 												etiqueta="Lados"
 												valor={l.lados.join(" + ") || "—"}
 											/>
+											{l.bordados?.length ? (
+												<Dato
+													etiqueta="Bordado"
+													valor={l.bordados
+														.map(
+															(b) =>
+																`${b.lado}: ${b.status === "REVIEW" ? "revisar" : "listo"}`,
+														)
+														.join(" · ")}
+												/>
+											) : null}
 											<Dato etiqueta="Piezas" valor={String(l.piezas)} />
 											<Dato
 												etiqueta="Importe"
@@ -358,6 +392,9 @@ function Arte({
 	ruta,
 	colocacion,
 	prenda,
+	vector,
+	bordado,
+	bordadoEstado,
 	lado,
 	folio,
 	sangradoCm,
@@ -373,6 +410,18 @@ function Arte({
 	colocacion?: string | null;
 	/** La prenda REAL con el diseño. Casi nunca existe todavía. */
 	prenda?: string | null;
+	/**
+	 * El MISMO arte en trazos. Sólo existe si el lado se graba en vez de
+	 * imprimirse, así que la ruta se escribe siempre y el archivo casi nunca
+	 * está: se comprueba pidiéndolo, igual que la prenda real.
+	 */
+	vector?: string | null;
+	/**
+	 * El DST que preparó el motor. Sólo llega en los lados que se bordan, así
+	 * que aquí no hace falta preguntar «¿aplica?»: si viene, aplica.
+	 */
+	bordado?: string | null;
+	bordadoEstado?: "READY" | "REVIEW";
 	lado: string;
 	folio: string;
 	/** Cuánto desborda el archivo por lado, si el taller lo declaró. */
@@ -402,6 +451,46 @@ function Arte({
 	   ningún producto tiene fotos de prenda: reservarle un hueco vacío en cada
 	   tarjeta sería peor que el reflujo de cuando sí llega. */
 	const [hayPrenda, setHayPrenda] = useState(false);
+	const [hayVector, setHayVector] = useState(false);
+	/* Que la ruta venga significa que este lado se borda, no que el archivo
+	   esté: copiarlo al pedido se hace tragándose los errores para no tumbar
+	   una compra ya cobrada. Se comprueba antes de ofrecer la descarga, porque
+	   un botón que baja un XML de error es peor que no tener botón. */
+	const [hayBordado, setHayBordado] = useState(false);
+
+	/* Se PREGUNTA por el vector en vez de dibujarlo: la ruta se escribe siempre
+	   en la línea del pedido y el archivo sólo existe en los lados que se
+	   graban. Comprobarlo en el servidor costaría una llamada a S3 por lado y
+	   por pedido; aquí es una cabecera y se hace una vez. */
+	useEffect(() => {
+		if (!vector) return;
+
+		let vigente = true;
+		fetch(vector, { method: "HEAD" })
+			.then((r) => {
+				if (vigente) setHayVector(r.ok);
+			})
+			.catch(() => {});
+
+		return () => {
+			vigente = false;
+		};
+	}, [vector]);
+
+	useEffect(() => {
+		if (!bordado) return;
+
+		let vigente = true;
+		fetch(bordado, { method: "HEAD" })
+			.then((r) => {
+				if (vigente) setHayBordado(r.ok);
+			})
+			.catch(() => {});
+
+		return () => {
+			vigente = false;
+		};
+	}, [bordado]);
 
 	/* Medio centímetro de margen: por debajo es redondeo, por encima es que la
 	   plantilla y los centímetros declarados no dicen lo mismo. */
@@ -528,16 +617,77 @@ function Arte({
 					{falta ? (
 						<span className="text-[12px] text-tinta/40">Sin archivo</span>
 					) : (
-						<a
-							href={ruta}
-							download={`pedido-${folio}-${lado}.png`}
-							className="flex shrink-0 items-center gap-1.5 rounded-md bg-tinta px-2.5 py-1.5 text-[12px] font-semibold text-lima"
-						>
-							<Download size={13} />
-							Descargar
-						</a>
+						<div className="flex shrink-0 items-center gap-2">
+							{/* EL VECTOR MANDA CUANDO EXISTE, y por eso va primero y en
+							    tinta: en un grabado el PNG no se puede producir —la máquina
+							    sigue un recorrido, no imprime medias tintas— y sólo sirve
+							    de referencia. Aparece solo si el archivo está; en todo lo
+							    que se imprime no ocupa sitio. */}
+							{hayVector && vector && (
+								<a
+									href={vector}
+									download={`pedido-${folio}-${lado}.svg`}
+									className="flex items-center gap-1.5 rounded-md bg-tinta px-2.5 py-1.5 text-[12px] font-semibold text-lima"
+								>
+									<Download size={13} />
+									Vectores
+								</a>
+							)}
+
+							<a
+								href={ruta}
+								download={`pedido-${folio}-${lado}.png`}
+								className={`flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-[12px] font-semibold ${
+									hayVector
+										? "border border-tinta/20 text-tinta"
+										: "bg-tinta text-lima"
+								}`}
+							>
+								<Download size={13} />
+								{hayVector ? "PNG" : "Descargar"}
+							</a>
+						</div>
 					)}
 				</div>
+
+				{/* EN SU PROPIA FILA, NO ENTRE LOS OTROS BOTONES. Puesto al lado del
+				    PNG parecería un formato alternativo del mismo archivo, y no lo
+				    es: el arte es lo acordado con el cliente y el DST es una
+				    propuesta de cómo coserlo que ninguna prenda ha comprobado
+				    todavía. Quien produce tiene que poder distinguirlos de un
+				    vistazo, y por eso lleva su propia franja y su propia
+				    advertencia. */}
+				{hayBordado && bordado && (
+					<div className="mt-2.5 border-t border-tinta/12 pt-2.5">
+						<div className="flex items-center justify-between gap-3">
+							<div className="min-w-0">
+								<p className="text-[12px] font-semibold text-tinta">
+									Bordado preparado por el sistema
+								</p>
+								<p className="pt-0.5 text-[11px] leading-[15px] text-tinta/55">
+									{bordadoEstado === "REVIEW"
+										? "Revísalo antes de coser: el motor marcó detalles que conviene mirar."
+										: "Sin validar en prenda."}{" "}
+									Es una propuesta, no un archivo aprobado: si prefieres
+									digitalizarlo tú, ignóralo.
+								</p>
+							</div>
+
+							<a
+								href={bordado}
+								download={`pedido-${folio}-${lado}.dst`}
+								className={`flex shrink-0 items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-[12px] font-semibold ${
+									bordadoEstado === "REVIEW"
+										? "border-amber-300 bg-amber-50 text-amber-900"
+										: "border-tinta/20 text-tinta"
+								}`}
+							>
+								<Download size={13} />
+								DST
+							</a>
+						</div>
+					</div>
+				)}
 			</figcaption>
 		</figure>
 	);

@@ -1,0 +1,20 @@
+{
+  "fixture": "15-circulo-grueso",
+  "profileVersion": "experimental-hybrid-v4-2026-09-06",
+  "status": "failed",
+  "physicallyValidated": false,
+  "error": "RuntimeError",
+  "message": "ENGINE_FAILED: There are no objects in the entire document that Ink/Stitch knows how to work with.\n\nTip: Run Extensions > Ink/Stitch > Troubleshoot > Troubleshoot Objects\n\n",
+  "timings": {
+    "cacheState": "warm",
+    "segmentationMs": null,
+    "vectorGeometryMs": null,
+    "skeletonMs": null,
+    "railsMs": null,
+    "junctionHandlingMs": null,
+    "stitchTypeAssignmentMs": null,
+    "uploadMs": null,
+    "svgGenerationMs": 0.3,
+    "totalMs": 407.7
+  }
+}

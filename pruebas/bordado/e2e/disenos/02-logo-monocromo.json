@@ -1,0 +1,618 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "f8e3fd221788273fcaf7a86f5c6542378e4d5ae1bf02e67e1e5f184e7544c4df",
+  "productId": "PENDIENTE",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 50
+  },
+  "bounds": {
+    "xMm": 7.750000000000001,
+    "yMm": 13.500000000000002,
+    "widthMm": 74.70000000000002,
+    "heightMm": 25.800000000000004
+  },
+  "colors": [
+    {
+      "id": "color-141414",
+      "sourceHex": "#141414",
+      "displayHex": "#141414",
+      "order": 0
+    },
+    {
+      "id": "color-595959",
+      "sourceHex": "#595959",
+      "displayHex": "#595959",
+      "order": 1
+    }
+  ],
+  "objects": [
+    {
+      "id": "o0-t0-0",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M7.75 16L22.95 16 23.95 16.3 24.8 17.15 26.05 19.6 27.1 24.75"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "stroke",
+        "strokeWidthMm": 5.1,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "quality": {
+        "lengthMm": 25.453,
+        "averageWidthMm": 5.167,
+        "minWidthMm": 0.1,
+        "maxWidthMm": 9.7,
+        "widthVariance": 9.36556,
+        "widthVariationRatio": 0.59232,
+        "curvatureDegPerMm": 3.0832,
+        "maxCurvatureDegPerMm": 25.1998,
+        "accumulatedTurningAngleDeg": 78.476,
+        "maxDirectionDeltaDeg": 28.301,
+        "junctionCount": 1,
+        "branchCount": 2,
+        "endpointTaper": 0.9806,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 1,
+        "railDivergenceMmPerMm": 1.4142,
+        "railConvergenceMmPerMm": 1.2747,
+        "numberOfSharpTurns": 1,
+        "representationDecision": "stroke-v2",
+        "representationReasons": [],
+        "rawCenterlineNodes": 6,
+        "rawRailNodes": 0,
+        "finalRailNodes": 0,
+        "rungsBefore": 0,
+        "rungsAfter": 0,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 12
+      },
+      "bounds": {
+        "xMm": 7.750000000000001,
+        "yMm": 16,
+        "widthMm": 19.35,
+        "heightMm": 8.75
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-1",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M38.27 23.534L38.938 21.988 39.565 21.422 40.323 21.089 42.499 20.704 44.608 21.143 45.586 21.756 46.257 22.878 46.729 24.979 46.305 27.007 46.156 27.413 45.282 28.466 44.634 28.794 42.518 29.238 40.361 28.895 39.626 28.557 39 28.022 38.64 27.305 37.925 23.29M33.13 21.066L34.696 18.413 36.42 16.828 38.497 15.762 42.582 15.102 46.718 15.838 49.645 17.933 51.551 20.804 52.339 24.93 51.57 29.148 51.079 30.192 48.862 32.776 46.775 34.063 42.653 34.858 38.523 34.297 36.421 33.168 34.688 31.557 33.405 29.536 32.275 24.21M38.378 23.586L33.022 21.014M44.563 21.255L46.762 15.727M46.193 26.962L51.681 29.193M40.399 28.781L38.484 34.411M38.043 23.271L32.157 24.229"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "quality": {
+        "minWidthMm": 5.547,
+        "maxWidthMm": 5.724,
+        "averageWidthMm": 5.642,
+        "widthVariance": 0.00295,
+        "angleVariance": 16.32542,
+        "maxAngleDeltaDeg": 25.031,
+        "junctionCount": 2,
+        "segmentIndex": 0,
+        "segmentCount": 1,
+        "representationDecision": "rails-v3",
+        "representationReasons": [
+          "JUNCTION",
+          "HIGH_CURVATURE",
+          "CURVATURE_PEAK",
+          "ACCUMULATED_TURN",
+          "DIRECTION_CHANGE",
+          "RAIL_NON_PARALLEL",
+          "FAN_RISK"
+        ],
+        "lengthMm": 43.683,
+        "curvatureDegPerMm": 7.5701,
+        "maxCurvatureDegPerMm": 11.6504,
+        "accumulatedTurningAngleDeg": 332.319,
+        "branchCount": 3,
+        "endpointTaper": 0,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 1,
+        "railDivergenceMmPerMm": 0.1797,
+        "railConvergenceMmPerMm": 0.2042,
+        "numberOfSharpTurns": 0,
+        "rawCenterlineNodes": 22,
+        "rawRailNodes": 112,
+        "finalRailNodes": 38,
+        "rungsBefore": 56,
+        "rungsAfter": 5,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 20
+      },
+      "bounds": {
+        "xMm": 32.27497413322221,
+        "yMm": 15.102273189123986,
+        "widthMm": 20.0636926374113,
+        "heightMm": 19.755785105013466
+      },
+      "nodeCount": 14
+    },
+    {
+      "id": "o0-t0-2",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M7.8 13.5L28.35 13.6 30.45 14.5 31.85 15.75 32.95 17.65 33.45 20 34.5 18.5 35.9 17.1 37.7 15.9 39.55 15.15 41.85 14.75 42.95 14.75 44.65 15 46.6 15.65 48.8 17 50.35 18.55 51.6 20.5 52.5 23.25 52.6 25.65 52.25 27.75 51.5 29.65 50.15 31.65 49.1 32.7 47.65 33.75 46.05 34.55 44.7 34.95 41.8 35.2 40.1 34.95 38.2 34.3 35.6 32.6 34.5 31.45 33.45 29.9 32.45 27.35 32.2 25.65 32.3 23.6 32.15 23.55 31.35 24.45 30.25 25.3 28.35 26.05 27.35 26.2 16.75 26.2 16.6 26.35 16.6 35.15 7.8 35.2 7.75 21.25 20.2 21.2 21.1 20.55 21.25 19.45 21 19 20.35 18.5 7.8 18.5 7.75 13.55Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 90,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 7.750000000000001,
+        "yMm": 13.500000000000002,
+        "widthMm": 44.85,
+        "heightMm": 21.700000000000003
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-3",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M26.15 13.5L28.35 13.6 29.75 14.1 31.05 14.95 31.85 15.75 32.7 17.05 33.1 18.1 33.45 20 34.85 18.1 37 16.3 39.55 15.15 41.85 14.75 44.15 14.9 46.6 15.65 48.8 17 50.35 18.55 51.6 20.5 52.5 23.25 52.5 26.7 51.85 28.9 51.1 30.35 50.15 31.65 48.2 33.4 46.05 34.55 43 35.2 40.65 35.05 38.8 34.55 36.55 33.35 34.8 31.8 33.65 30.25 32.7 28.2 32.2 25.65 32.25 23.55 30.25 25.3 28.35 26.05 27.35 26.2 16.75 26.2 16.6 26.35 16.55 35.2 7.75 35.15 7.75 21.25 20.2 21.2 20.6 21.05 21.25 20.25 21.15 19.2 20.35 18.5 7.8 18.5 7.75 13.55 26.1 13.5Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 135,
+        "maxStitchLengthMm": 4,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 7.750000000000001,
+        "yMm": 13.500000000000002,
+        "widthMm": 44.75,
+        "heightMm": 21.700000000000003
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-4",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M41.85 14.75L42.95 14.75 45.25 15.15 46.6 15.65 48.2 16.55 50.35 18.55 51.5 20.3 52.1 21.7 52.6 24.3 52.5 26.7 52.1 28.25 51.1 30.35 50.15 31.65 49.1 32.7 47.65 33.75 46.05 34.55 44.7 34.95 41.8 35.2 39.55 34.8 37 33.65 35.6 32.6 34.5 31.45 32.95 28.9 32.3 26.6 32.3 23.6 32.15 23.55 31.35 24.45 30.25 25.3 28.35 26.05 27.35 26.2 16.75 26.2 16.6 26.35 16.6 35.15 7.8 35.2 7.75 21.25 20.2 21.2 21.1 20.55 21.25 19.45 21 19 20.35 18.5 7.8 18.5 7.75 13.55 28.35 13.6 30.45 14.5 31.85 15.75 32.95 17.65 33.45 20 34.85 18.1 37 16.3 39.55 15.15 41.8 14.8Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 0,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 7.750000000000001,
+        "yMm": 13.55,
+        "widthMm": 44.85,
+        "heightMm": 21.650000000000006
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-5",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M7.75 16.6L7.8 13.5 28.35 13.6 30.45 14.5 31.85 15.75 32.95 17.65 33.45 20 35.45 17.5 37 16.3 38.2 15.65 40.65 14.9 41.85 14.75 44.15 14.9 46 15.4 47.4 16.05 48.8 17 50.15 18.3 51.1 19.6 51.85 21.05 52.4 22.8 52.6 24.3 52.5 26.7 52.25 27.75 51.6 29.45 50.7 30.95 49.1 32.7 48.05 33.5 46.05 34.55 44.7 34.95 43 35.2 40.1 34.95 37.7 34.05 35.6 32.6 34.15 31 32.95 28.9 32.3 26.6 32.3 23.6 32.15 23.55 31.35 24.45 30.25 25.3 28.35 26.05 27.35 26.2 16.75 26.2 16.6 26.35 16.6 35.15 7.8 35.2 7.75 21.25 20.2 21.2 21.1 20.55 21.25 19.45 21 19 20.35 18.5 7.8 18.5 7.75 16.65Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 45,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 7.750000000000001,
+        "yMm": 13.500000000000002,
+        "widthMm": 44.85,
+        "heightMm": 21.700000000000003
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-6",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M21.1 20.5L21.25 19.45 21 19 20.35 18.5 7.8 18.5 7.8 13.5 28.35 13.6 30.45 14.5 31.85 15.75 32.95 17.65 33.45 20 35.45 17.5 37.7 15.9 40.15 15 42.95 14.75 46 15.4 47.4 16.05 49.1 17.25 50.35 18.55 51.6 20.5 52.25 22.2 52.6 24.3 52.5 26.7 52.25 27.75 51.6 29.45 50.7 30.95 49.1 32.7 48.05 33.5 46.05 34.55 44.7 34.95 43 35.2 40.1 34.95 37.7 34.05 35.6 32.6 34.15 31 32.95 28.9 32.3 26.6 32.3 23.6 32.15 23.55 31.35 24.45 30.25 25.3 28.35 26.05 27.35 26.2 16.75 26.2 16.6 26.35 16.6 35.15 7.8 35.2 7.75 21.25 20.2 21.2 21.1 20.55Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 90,
+        "maxStitchLengthMm": 4,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 7.750000000000001,
+        "yMm": 13.500000000000002,
+        "widthMm": 44.85,
+        "heightMm": 21.700000000000003
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-7",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M32.2 24.3L32.3 23.6 32.15 23.55 31.35 24.45 30.25 25.3 28.8 25.95 27.35 26.2 16.75 26.2 16.6 26.35 16.55 35.2 7.75 35.15 7.75 21.25 20.2 21.2 20.6 21.05 21.25 20.25 21.15 19.2 20.35 18.5 7.8 18.5 7.8 13.5 28.35 13.6 30.45 14.5 31.85 15.75 32.95 17.65 33.45 20 34.5 18.5 35.9 17.1 37.7 15.9 39.55 15.15 41.85 14.75 42.95 14.75 44.65 15 46.6 15.65 48.8 17 50.8 19.15 52.1 21.7 52.6 24.3 52.5 26.7 51.5 29.65 50.15 31.65 49.1 32.7 47.65 33.75 46.05 34.55 44.7 34.95 41.8 35.2 39.55 34.8 37 33.65 34.8 31.8 33.45 29.9 32.45 27.35 32.2 24.35Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 135,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 7.750000000000001,
+        "yMm": 13.500000000000002,
+        "widthMm": 44.85,
+        "heightMm": 21.700000000000003
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-8",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M38.4 34.35L37 33.65 35.6 32.6 33.65 30.25 32.95 28.9 32.45 27.35 32.2 25.65 32.3 23.6 32.15 23.55 31.35 24.45 30.25 25.3 28.35 26.05 27.35 26.2 16.75 26.2 16.6 26.35 16.6 35.15 7.8 35.2 7.75 21.25 20.2 21.2 20.6 21.05 21.25 20.25 21.15 19.2 20.35 18.5 7.8 18.5 7.8 13.5 28.35 13.6 30.45 14.5 31.85 15.75 32.95 17.65 33.45 20 34.85 18.1 36.5 16.65 38.2 15.65 40.15 15 41.85 14.75 44.15 14.9 46 15.4 48.2 16.55 49.1 17.25 50.8 19.15 51.6 20.5 52.25 22.2 52.6 24.3 52.5 26.7 51.5 29.65 50.35 31.4 49.1 32.7 47.65 33.75 46.05 34.55 44.15 35.05 41.8 35.2 40.1 34.95 38.45 34.4Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 0,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 7.750000000000001,
+        "yMm": 13.500000000000002,
+        "widthMm": 44.85,
+        "heightMm": 21.700000000000003
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-9",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M80.9 16.35L61.5 16.4 60.4 17.55 60.4 35.5 61.55 36.65 82.45 36.65"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "stroke",
+        "strokeWidthMm": 5.3,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "quality": {
+        "lengthMm": 61.468,
+        "averageWidthMm": 4.4,
+        "minWidthMm": 0.1,
+        "maxWidthMm": 7.7,
+        "widthVariance": 10.12667,
+        "widthVariationRatio": 0.72324,
+        "curvatureDegPerMm": 2.926,
+        "maxCurvatureDegPerMm": 4.5974,
+        "accumulatedTurningAngleDeg": 179.852,
+        "maxDirectionDeltaDeg": 46.125,
+        "junctionCount": 0,
+        "branchCount": 1,
+        "endpointTaper": 0.9773,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 1,
+        "railDivergenceMmPerMm": 1.4453,
+        "railConvergenceMmPerMm": 1.4142,
+        "numberOfSharpTurns": 4,
+        "representationDecision": "stroke-v2",
+        "representationReasons": [],
+        "rawCenterlineNodes": 6,
+        "rawRailNodes": 0,
+        "finalRailNodes": 0,
+        "rungsBefore": 0,
+        "rungsAfter": 0,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 29
+      },
+      "bounds": {
+        "xMm": 60.4,
+        "yMm": 16.349999999999998,
+        "widthMm": 22.05000000000001,
+        "heightMm": 20.3
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-10",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M56.6 26.25L79.35 26.25"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "stroke",
+        "strokeWidthMm": 5.1,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "quality": {
+        "lengthMm": 22.75,
+        "averageWidthMm": 0.1,
+        "minWidthMm": 0.1,
+        "maxWidthMm": 0.1,
+        "widthVariance": 0,
+        "widthVariationRatio": 0,
+        "curvatureDegPerMm": 0,
+        "maxCurvatureDegPerMm": 0,
+        "accumulatedTurningAngleDeg": 0,
+        "maxDirectionDeltaDeg": 0,
+        "junctionCount": 1,
+        "branchCount": 2,
+        "endpointTaper": 0,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 0,
+        "railDivergenceMmPerMm": 0,
+        "railConvergenceMmPerMm": 0,
+        "numberOfSharpTurns": 0,
+        "representationDecision": "stroke-v2",
+        "representationReasons": [],
+        "rawCenterlineNodes": 2,
+        "rawRailNodes": 0,
+        "finalRailNodes": 0,
+        "rungsBefore": 0,
+        "rungsAfter": 0,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 11
+      },
+      "bounds": {
+        "xMm": 56.6,
+        "yMm": 26.25,
+        "widthMm": 22.75,
+        "heightMm": 0.05
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-11",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M56.65 13.75L80.85 13.75 80.85 19 64.2 19.1 64.3 23.75 79.35 23.8 79.3 28.75 64.3 28.75 64.2 33.95 82.4 34.05 82.45 39.25 56.65 39.3 56.6 13.8Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 135,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 56.6,
+        "yMm": 13.750000000000002,
+        "widthMm": 25.85000000000001,
+        "heightMm": 25.550000000000004
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-12",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M78.9 13.75L80.9 13.8 80.85 19 64.3 19 64.2 23.65 79.3 23.75 79.35 28.7 64.3 28.75 64.2 33.95 82.4 34.05 82.4 39.3 56.6 39.25 56.6 13.8 78.85 13.75Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 0,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 56.6,
+        "yMm": 13.750000000000002,
+        "widthMm": 25.799999999999997,
+        "heightMm": 25.550000000000004
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-13",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M76.9 23.75L79.35 23.8 79.3 28.75 64.3 28.75 64.2 33.95 82.4 34.05 82.4 39.3 56.6 39.25 56.65 13.75 80.85 13.75 80.85 19 64.2 19.1 64.3 23.75 76.85 23.75Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 45,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 56.6,
+        "yMm": 13.750000000000002,
+        "widthMm": 25.799999999999997,
+        "heightMm": 25.550000000000004
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-14",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M80.25 34.05L82.45 34.1 82.4 39.3 56.65 39.3 56.65 13.75 80.85 13.75 80.85 19 64.2 19.1 64.3 23.75 79.35 23.8 79.3 28.75 64.3 28.75 64.3 34.05 80.2 34.05Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 90,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 56.65,
+        "yMm": 13.750000000000002,
+        "widthMm": 25.80000000000001,
+        "heightMm": 25.550000000000004
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-15",
+      "sourceObjectId": "logo-bn-simple.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-141414",
+      "geometry": {
+        "kind": "path",
+        "d": "M56.6 35.95L56.65 13.75 80.85 13.75 80.85 19 64.2 19.1 64.3 23.75 79.35 23.8 79.3 28.75 64.3 28.75 64.2 33.95 82.45 34.1 82.4 39.3 56.65 39.3 56.6 36Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 135,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 56.6,
+        "yMm": 13.750000000000002,
+        "widthMm": 25.85000000000001,
+        "heightMm": 25.550000000000004
+      },
+      "nodeCount": 2
+    }
+  ],
+  "metrics": {
+    "componentCount": 16,
+    "nodeCount": 44,
+    "colorCount": 2,
+    "widthMm": 90,
+    "heightMm": 50,
+    "gradientRatio": 0.0086,
+    "texture": 0.0055,
+    "colorEntropy": 0.247,
+    "alphaCoverage": 0.3642
+  },
+  "preparation": {
+    "profileVersion": "experimental-hybrid-v4-2026-09-06",
+    "raster": {
+      "sourceColorCount": 14,
+      "hadAlpha": false,
+      "mmPorPx": 0.05,
+      "reducedColorCount": 2,
+      "quantizationDeltaE": 0.26,
+      "classification": "logo",
+      "removedRegions": 210,
+      "removedAreaMm2": 3.709
+    },
+    "issues": [
+      {
+        "code": "DETALLE_PERDIDO",
+        "message": "Quitamos 210 detalle(s) demasiado pequeño(s) para bordarse a este tamaño.",
+        "severity": "review"
+      }
+    ]
+  },
+  "profileVersion": "experimental-hybrid-v4-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

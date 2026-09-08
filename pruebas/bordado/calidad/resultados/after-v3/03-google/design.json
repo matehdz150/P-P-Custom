@@ -1,0 +1,1464 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "0d1b7926e05da8e7604f41d05e8e2e24c8b787f1c49527483148fcde17772770",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#4285f4",
+      "displayHex": "#4285f4",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "google-0-G-0-v3-0-0",
+      "sourceObjectId": "google-0-G-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M15.525 20.683L14.949 19.527L14.191 18.477L13.036 17.762L11.746 17.294L10.38 17.09M14.875 21.317L13.964 20.67L12.963 20.193L12.12 19.718L11.225 19.39L10.294 19.248M15.611 20.6L14.789 21.4M14.26 18.379L12.893 20.29M10.384 16.97L10.29 19.368"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 18,
+      "quality": {
+        "minWidthMm": 0.907,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 1.834,
+        "widthVariance": 0.22664,
+        "angleVariance": 8.89828,
+        "maxAngleDeltaDeg": 11.711,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 8
+      }
+    },
+    {
+      "id": "google-0-G-0-v3-0-1",
+      "sourceObjectId": "google-0-G-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M10.38 17.09L8.992 17.176L7.655 17.561L6.429 18.227L5.371 19.124M10.294 19.248L9.363 19.304L8.468 19.562L7.652 20.007L6.93 20.619M10.384 16.97L10.29 19.368M7.61 17.449L8.514 19.673M5.284 19.041L7.016 20.702"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 0.06588,
+        "maxAngleDeltaDeg": 12.383,
+        "junctionCount": 0,
+        "segmentIndex": 1,
+        "segmentCount": 8
+      },
+      "dependencies": [
+        "google-0-G-0-v3-0-0"
+      ]
+    },
+    {
+      "id": "google-0-G-0-v3-0-2",
+      "sourceObjectId": "google-0-G-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M5.371 19.124L4.547 20.207L3.934 21.392L3.475 22.616L3.176 23.857M6.93 20.619L6.347 21.402L5.899 22.289L5.541 23.246L5.294 24.277M5.284 19.041L7.016 20.702M3.825 21.343L6.008 22.339M3.058 23.834L5.412 24.3"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 2.78542,
+        "maxAngleDeltaDeg": 10.219,
+        "junctionCount": 0,
+        "segmentIndex": 2,
+        "segmentCount": 8
+      },
+      "dependencies": [
+        "google-0-G-0-v3-0-1"
+      ]
+    },
+    {
+      "id": "google-0-G-0-v3-0-3",
+      "sourceObjectId": "google-0-G-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M3.176 23.857L3.023 25.124L2.935 26.375L2.998 27.63L3.1 28.883L3.372 30.13L3.711 31.383M5.294 24.277L5.174 25.325L5.095 26.406L5.153 27.481L5.236 28.558L5.463 29.588L5.722 30.594M3.058 23.834L5.412 24.3M2.879 27.638L5.273 27.473M3.599 31.427L5.833 30.55"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 20,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 0.7157,
+        "maxAngleDeltaDeg": 6.904,
+        "junctionCount": 0,
+        "segmentIndex": 3,
+        "segmentCount": 8
+      },
+      "dependencies": [
+        "google-0-G-0-v3-0-2"
+      ]
+    },
+    {
+      "id": "google-0-G-0-v3-0-4",
+      "sourceObjectId": "google-0-G-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M3.711 31.383L4.286 32.549L5.004 33.685L5.88 34.709L6.987 35.523M5.722 30.594L6.186 31.522L6.704 32.352L7.334 33.112L8.112 33.68M3.599 31.427L5.833 30.55M4.91 33.759L6.798 32.278M6.925 35.626L8.175 33.577"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 2.08172,
+        "maxAngleDeltaDeg": 10.933,
+        "junctionCount": 0,
+        "segmentIndex": 4,
+        "segmentCount": 8
+      },
+      "dependencies": [
+        "google-0-G-0-v3-0-3"
+      ]
+    },
+    {
+      "id": "google-0-G-0-v3-0-5",
+      "sourceObjectId": "google-0-G-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M6.987 35.523L8.239 36.118L9.574 36.45L10.953 36.503L12.328 36.269M8.112 33.68L8.96 34.082L9.874 34.311L10.814 34.348L11.733 34.192M6.925 35.626L8.175 33.577M9.557 36.569L9.891 34.192M12.361 36.384L11.7 34.077"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 0.08746,
+        "maxAngleDeltaDeg": 12.308,
+        "junctionCount": 0,
+        "segmentIndex": 5,
+        "segmentCount": 8
+      },
+      "dependencies": [
+        "google-0-G-0-v3-0-4"
+      ]
+    },
+    {
+      "id": "google-0-G-0-v3-0-6",
+      "sourceObjectId": "google-0-G-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M12.328 36.269L13.628 35.76L14.764 34.964L15.717 33.971L16.577 32.573M11.733 34.192L12.611 33.855L13.384 33.302L14.038 32.613L14.473 32.086M12.361 36.384L11.7 34.077M14.841 35.056L13.308 33.21M16.694 32.6L14.356 32.059"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 38.18534,
+        "maxAngleDeltaDeg": 25.935,
+        "junctionCount": 0,
+        "segmentIndex": 6,
+        "segmentCount": 8
+      },
+      "dependencies": [
+        "google-0-G-0-v3-0-5"
+      ]
+    },
+    {
+      "id": "google-0-G-0-v3-0-7",
+      "sourceObjectId": "google-0-G-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M16.577 32.573L16.756 30.776L15.011 30.364L13.537 30.345L12.369 30.646L11.2 30.946M14.473 32.086L14.994 32.024L14.401 32.436L13.537 32.455L12.369 32.154L11.2 31.854M16.694 32.6L14.356 32.059M15.045 30.249L14.367 32.551M11.2 30.826L11.2 31.974"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 18,
+      "quality": {
+        "minWidthMm": 0.907,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 1.834,
+        "widthVariance": 0.22664,
+        "angleVariance": 389.62698,
+        "maxAngleDeltaDeg": 48.33,
+        "junctionCount": 0,
+        "segmentIndex": 7,
+        "segmentCount": 8
+      },
+      "dependencies": [
+        "google-0-G-0-v3-0-6"
+      ]
+    },
+    {
+      "id": "google-1-o-0-v3-1-0",
+      "sourceObjectId": "google-1-o-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M22.732 24.026L21.42 24.395L20.373 25.221L19.524 26.436L18.991 27.731M23.668 25.974L22.683 26.147L21.873 26.775L21.394 27.517L21.038 28.419M22.68 23.918L23.72 26.082M20.289 25.134L21.956 26.861M18.877 27.693L21.152 28.457"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 8.16609,
+        "maxAngleDeltaDeg": 15.962,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 6
+      }
+    },
+    {
+      "id": "google-1-o-0-v3-1-1",
+      "sourceObjectId": "google-1-o-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M18.991 27.731L18.697 29.043L18.561 30.35L18.561 31.65L18.697 32.957L18.991 34.269M21.038 28.419L20.824 29.421L20.718 30.467L20.718 31.533L20.824 32.579L21.038 33.581M18.877 27.693L21.152 28.457M18.442 30.344L20.838 30.474M18.877 34.307L21.152 33.543"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 18,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 0.85947,
+        "maxAngleDeltaDeg": 8.516,
+        "junctionCount": 0,
+        "segmentIndex": 1,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-1-o-0-v3-1-0"
+      ]
+    },
+    {
+      "id": "google-1-o-0-v3-1-2",
+      "sourceObjectId": "google-1-o-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M18.991 34.269L19.524 35.564L20.373 36.779L21.618 37.718L23.2 38.08M21.038 33.581L21.394 34.483L21.873 35.225L22.485 35.739L23.2 35.92M18.877 34.307L21.152 33.543M20.289 36.866L21.956 35.139M23.2 38.2L23.2 35.8"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 21.07306,
+        "maxAngleDeltaDeg": 23.669,
+        "junctionCount": 0,
+        "segmentIndex": 2,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-1-o-0-v3-1-1"
+      ]
+    },
+    {
+      "id": "google-1-o-0-v3-1-3",
+      "sourceObjectId": "google-1-o-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M23.2 38.08L24.782 37.718L26.027 36.779L26.876 35.564L27.409 34.269M23.2 35.92L23.915 35.739L24.527 35.225L25.006 34.483L25.362 33.581M23.2 38.2L23.2 35.8M26.111 36.866L24.444 35.139M27.523 34.307L25.248 33.543"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 21.07306,
+        "maxAngleDeltaDeg": 23.669,
+        "junctionCount": 0,
+        "segmentIndex": 3,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-1-o-0-v3-1-2"
+      ]
+    },
+    {
+      "id": "google-1-o-0-v3-1-4",
+      "sourceObjectId": "google-1-o-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M27.409 34.269L27.703 32.957L27.839 31.65L27.839 30.35L27.703 29.043L27.409 27.731M25.362 33.581L25.576 32.579L25.682 31.533L25.682 30.467L25.576 29.421L25.362 28.419M27.523 34.307L25.248 33.543M27.958 31.656L25.562 31.526M27.523 27.693L25.248 28.457"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 18,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 0.85947,
+        "maxAngleDeltaDeg": 8.516,
+        "junctionCount": 0,
+        "segmentIndex": 4,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-1-o-0-v3-1-3"
+      ]
+    },
+    {
+      "id": "google-1-o-0-v3-1-5",
+      "sourceObjectId": "google-1-o-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M27.409 27.731L26.876 26.436L26.027 25.221L24.98 24.395L23.668 24.026M25.362 28.419L25.006 27.517L24.527 26.775L23.717 26.147L22.732 25.974M27.523 27.693L25.248 28.457M26.111 25.134L24.444 26.861M23.72 23.918L22.68 26.082"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 8.16609,
+        "maxAngleDeltaDeg": 15.962,
+        "junctionCount": 0,
+        "segmentIndex": 5,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-1-o-0-v3-1-4"
+      ]
+    },
+    {
+      "id": "google-2-o-0-v3-2-0",
+      "sourceObjectId": "google-2-o-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M33.932 24.026L32.62 24.395L31.573 25.221L30.724 26.436L30.191 27.731M34.868 25.974L33.883 26.147L33.073 26.775L32.594 27.517L32.238 28.419M33.88 23.918L34.92 26.082M31.489 25.134L33.156 26.861M30.077 27.693L32.352 28.457"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 8.16609,
+        "maxAngleDeltaDeg": 15.962,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 6
+      }
+    },
+    {
+      "id": "google-2-o-0-v3-2-1",
+      "sourceObjectId": "google-2-o-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M30.191 27.731L29.897 29.043L29.761 30.35L29.761 31.65L29.897 32.957L30.191 34.269M32.238 28.419L32.024 29.421L31.918 30.467L31.918 31.533L32.024 32.579L32.238 33.581M30.077 27.693L32.352 28.457M29.642 30.344L32.038 30.474M30.077 34.307L32.352 33.543"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 18,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 0.85947,
+        "maxAngleDeltaDeg": 8.516,
+        "junctionCount": 0,
+        "segmentIndex": 1,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-2-o-0-v3-2-0"
+      ]
+    },
+    {
+      "id": "google-2-o-0-v3-2-2",
+      "sourceObjectId": "google-2-o-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M30.191 34.269L30.724 35.564L31.573 36.779L32.818 37.718L34.4 38.08M32.238 33.581L32.594 34.483L33.073 35.225L33.685 35.739L34.4 35.92M30.077 34.307L32.352 33.543M31.489 36.866L33.156 35.139M34.4 38.2L34.4 35.8"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 21.07306,
+        "maxAngleDeltaDeg": 23.669,
+        "junctionCount": 0,
+        "segmentIndex": 2,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-2-o-0-v3-2-1"
+      ]
+    },
+    {
+      "id": "google-2-o-0-v3-2-3",
+      "sourceObjectId": "google-2-o-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M34.4 38.08L35.982 37.718L37.227 36.779L38.076 35.564L38.609 34.269M34.4 35.92L35.115 35.739L35.727 35.225L36.206 34.483L36.562 33.581M34.4 38.2L34.4 35.8M37.311 36.866L35.644 35.139M38.723 34.307L36.448 33.543"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 21.07306,
+        "maxAngleDeltaDeg": 23.669,
+        "junctionCount": 0,
+        "segmentIndex": 3,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-2-o-0-v3-2-2"
+      ]
+    },
+    {
+      "id": "google-2-o-0-v3-2-4",
+      "sourceObjectId": "google-2-o-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M38.609 34.269L38.903 32.957L39.039 31.65L39.039 30.35L38.903 29.043L38.609 27.731M36.562 33.581L36.776 32.579L36.882 31.533L36.882 30.467L36.776 29.421L36.562 28.419M38.723 34.307L36.448 33.543M39.158 31.656L36.762 31.526M38.723 27.693L36.448 28.457"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 18,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 0.85947,
+        "maxAngleDeltaDeg": 8.516,
+        "junctionCount": 0,
+        "segmentIndex": 4,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-2-o-0-v3-2-3"
+      ]
+    },
+    {
+      "id": "google-2-o-0-v3-2-5",
+      "sourceObjectId": "google-2-o-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M38.609 27.731L38.076 26.436L37.227 25.221L36.18 24.395L34.868 24.026M36.562 28.419L36.206 27.517L35.727 26.775L34.917 26.147L33.932 25.974M38.723 27.693L36.448 28.457M37.311 25.134L35.644 26.861M34.92 23.918L33.88 26.082"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 8.16609,
+        "maxAngleDeltaDeg": 15.962,
+        "junctionCount": 0,
+        "segmentIndex": 5,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-2-o-0-v3-2-4"
+      ]
+    },
+    {
+      "id": "google-3-g-0-v3-3-0",
+      "sourceObjectId": "google-3-g-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M50.578 26.183L49.584 25.298L48.438 24.637L47.055 24.462L45.671 24.558M50.222 27.017L49.132 26.737L47.996 26.701L47.007 26.622L46.01 26.692M50.625 26.072L50.175 27.128M48.463 24.52L47.971 26.818M45.652 24.44L46.029 26.81"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 0.907,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 1.769,
+        "widthVariance": 0.2465,
+        "angleVariance": 6.40089,
+        "maxAngleDeltaDeg": 10.79,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 9
+      }
+    },
+    {
+      "id": "google-3-g-0-v3-3-1",
+      "sourceObjectId": "google-3-g-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M45.671 24.558L44.323 24.895L43.047 25.474L41.895 26.301L40.946 27.366M46.01 26.692L45.042 26.931L44.143 27.335L43.351 27.897L42.709 28.614M45.652 24.44L46.029 26.81M42.986 25.371L44.204 27.439M40.848 27.296L42.806 28.683"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 0.54011,
+        "maxAngleDeltaDeg": 12.322,
+        "junctionCount": 0,
+        "segmentIndex": 1,
+        "segmentCount": 9
+      },
+      "dependencies": [
+        "google-3-g-0-v3-3-0"
+      ]
+    },
+    {
+      "id": "google-3-g-0-v3-3-2",
+      "sourceObjectId": "google-3-g-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M40.946 27.366L40.262 28.616L39.858 29.977L39.722 31.388L39.876 32.809M42.709 28.614L42.249 29.462L41.978 30.393L41.882 31.364L41.981 32.323M40.848 27.296L42.806 28.683M39.74 29.954L42.095 30.416M39.759 32.836L42.097 32.296"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 0.06146,
+        "maxAngleDeltaDeg": 12.376,
+        "junctionCount": 0,
+        "segmentIndex": 2,
+        "segmentCount": 9
+      },
+      "dependencies": [
+        "google-3-g-0-v3-3-1"
+      ]
+    },
+    {
+      "id": "google-3-g-0-v3-3-3",
+      "sourceObjectId": "google-3-g-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M39.876 32.809L40.344 34.185L41.151 35.412L42.274 36.362L43.585 36.996M41.981 32.323L42.27 33.209L42.769 33.981L43.474 34.566L44.313 34.962M39.759 32.836L42.097 32.296M41.061 35.492L42.859 33.901M43.545 37.109L44.353 34.849"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 0.14029,
+        "maxAngleDeltaDeg": 14.751,
+        "junctionCount": 0,
+        "segmentIndex": 3,
+        "segmentCount": 9
+      },
+      "dependencies": [
+        "google-3-g-0-v3-3-2"
+      ]
+    },
+    {
+      "id": "google-3-g-0-v3-3-4",
+      "sourceObjectId": "google-3-g-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M43.585 36.996L44.983 37.311L46.404 37.326L47.797 37.049L49.109 36.483M44.313 34.962L45.242 35.166L46.204 35.175L47.148 34.989L48.025 34.615M43.545 37.109L44.353 34.849M46.415 37.445L46.193 35.055M49.169 36.587L47.965 34.511"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 0.07046,
+        "maxAngleDeltaDeg": 12.797,
+        "junctionCount": 0,
+        "segmentIndex": 4,
+        "segmentCount": 9
+      },
+      "dependencies": [
+        "google-3-g-0-v3-3-3"
+      ]
+    },
+    {
+      "id": "google-3-g-0-v3-3-5",
+      "sourceObjectId": "google-3-g-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M49.109 36.483L49.939 35.845L50.015 34.976L49.338 35.122L49.238 35.954M48.025 34.615L49.119 33.847L50.579 32.891L51.416 34.533L51.394 36.09M49.169 36.587L47.965 34.511M49.983 35.092L50.61 32.776M49.118 35.947L51.514 36.098"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 374.3616,
+        "maxAngleDeltaDeg": 59.009,
+        "junctionCount": 0,
+        "segmentIndex": 5,
+        "segmentCount": 9
+      },
+      "dependencies": [
+        "google-3-g-0-v3-3-4"
+      ]
+    },
+    {
+      "id": "google-3-g-0-v3-3-6",
+      "sourceObjectId": "google-3-g-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M49.238 35.954L49.131 37.068L48.959 38.172L48.707 39.233L48.355 40.229L47.884 41.13L47.282 41.896M51.394 36.09L51.271 37.358L51.072 38.617L50.767 39.882L50.315 41.137L49.669 42.346L48.786 43.446M49.118 35.947L51.514 36.098M48.592 39.197L50.881 39.918M47.198 41.81L48.87 43.532"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 20,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 7.53881,
+        "maxAngleDeltaDeg": 11.571,
+        "junctionCount": 0,
+        "segmentIndex": 6,
+        "segmentCount": 9
+      },
+      "dependencies": [
+        "google-3-g-0-v3-3-5"
+      ]
+    },
+    {
+      "id": "google-3-g-0-v3-3-7",
+      "sourceObjectId": "google-3-g-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M47.282 41.896L46.542 42.496L45.664 42.883L44.727 43.065L43.812 43.112M48.786 43.446L47.668 44.34L46.367 44.925L44.963 45.212L43.49 45.248M47.198 41.81L48.87 43.532M45.625 42.77L46.406 45.039M43.83 42.993L43.472 45.367"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 0.93438,
+        "maxAngleDeltaDeg": 14.837,
+        "junctionCount": 0,
+        "segmentIndex": 7,
+        "segmentCount": 9
+      },
+      "dependencies": [
+        "google-3-g-0-v3-3-6"
+      ]
+    },
+    {
+      "id": "google-3-g-0-v3-3-8",
+      "sourceObjectId": "google-3-g-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M43.812 43.112L42.974 42.961L42.313 42.524L41.618 41.804L41.231 40.859M43.49 45.248L42.001 44.889L40.742 43.932L40.312 42.558L40.369 41.141M43.83 42.993L43.472 45.367M42.402 42.444L40.653 44.012M41.345 40.822L40.255 41.178"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 0.907,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 1.769,
+        "widthVariance": 0.2465,
+        "angleVariance": 16.75748,
+        "maxAngleDeltaDeg": 21.356,
+        "junctionCount": 0,
+        "segmentIndex": 8,
+        "segmentCount": 9
+      },
+      "dependencies": [
+        "google-3-g-0-v3-3-7"
+      ]
+    },
+    {
+      "id": "google-4-l-0-v3-4-0",
+      "sourceObjectId": "google-4-l-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M54.746 17L54.446 18.176L54.145 19.353L54.12 20.529L54.12 21.706L54.12 22.882L54.12 24.059L54.12 25.235L54.12 26.412L54.12 27.588L54.12 28.765L54.12 29.941L54.12 31.118L54.12 32.294L54.12 33.471L54.145 34.647L54.446 35.824L54.746 37M55.654 17L55.954 18.176L56.255 19.353L56.28 20.529L56.28 21.706L56.28 22.882L56.28 24.059L56.28 25.235L56.28 26.412L56.28 27.588L56.28 28.765L56.28 29.941L56.28 31.118L56.28 32.294L56.28 33.471L56.255 34.647L55.954 35.824L55.654 37M54.626 17L55.774 17M54 26.412L56.4 26.412M54.626 37L55.774 37"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 42,
+      "quality": {
+        "minWidthMm": 0.907,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 1.943,
+        "widthVariance": 0.17467,
+        "angleVariance": 0,
+        "maxAngleDeltaDeg": 0,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 1
+      }
+    },
+    {
+      "id": "google-5-e-0-v3-5-0",
+      "sourceObjectId": "google-5-e-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M69.124 28.683L68.573 27.506L67.78 26.486L66.567 25.847L65.256 25.486M68.476 29.317L67.618 28.674L66.622 28.25L65.78 27.858L64.875 27.612M69.21 28.599L68.39 29.401M67.846 26.385L66.556 28.35M65.277 25.368L64.854 27.73"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 0.907,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 1.769,
+        "widthVariance": 0.2465,
+        "angleVariance": 7.37155,
+        "maxAngleDeltaDeg": 11.893,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 6
+      }
+    },
+    {
+      "id": "google-5-e-0-v3-5-1",
+      "sourceObjectId": "google-5-e-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M65.256 25.486L63.905 25.376L62.549 25.521L61.23 25.942L60.018 26.67M64.875 27.612L63.937 27.535L63.011 27.631L62.144 27.899L61.388 28.34M65.277 25.368L64.854 27.73M62.523 25.404L63.037 27.748M59.942 26.577L61.465 28.432"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 1.64946,
+        "maxAngleDeltaDeg": 14.349,
+        "junctionCount": 0,
+        "segmentIndex": 1,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-5-e-0-v3-5-0"
+      ]
+    },
+    {
+      "id": "google-5-e-0-v3-5-2",
+      "sourceObjectId": "google-5-e-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M60.018 26.67L59.024 27.713L58.375 29.008L58.137 30.412L58.256 31.809M61.388 28.34L60.798 28.944L60.423 29.695L60.293 30.553L60.385 31.443M59.942 26.577L61.465 28.432M58.262 28.969L60.537 29.733M58.138 31.829L60.503 31.422"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 1.11466,
+        "maxAngleDeltaDeg": 16.214,
+        "junctionCount": 0,
+        "segmentIndex": 2,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-5-e-0-v3-5-1"
+      ]
+    },
+    {
+      "id": "google-5-e-0-v3-5-3",
+      "sourceObjectId": "google-5-e-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M58.256 31.809L58.625 33.137L59.264 34.349L60.167 35.393L61.276 36.207M60.385 31.443L60.623 32.318L61.045 33.127L61.639 33.811L62.378 34.35M58.138 31.829L60.503 31.422M59.165 34.417L61.144 33.059M61.215 36.311L62.439 34.246"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 0.02992,
+        "maxAngleDeltaDeg": 12.602,
+        "junctionCount": 0,
+        "segmentIndex": 3,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-5-e-0-v3-5-2"
+      ]
+    },
+    {
+      "id": "google-5-e-0-v3-5-4",
+      "sourceObjectId": "google-5-e-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M61.276 36.207L62.52 36.771L63.84 37.083L65.195 37.145L66.548 36.95M62.378 34.35L63.226 34.729L64.141 34.944L65.081 34.988L66.003 34.859M61.215 36.311L62.439 34.246M63.823 37.201L64.157 34.825M66.578 37.066L65.973 34.743"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 2.16,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 2.16,
+        "widthVariance": 0,
+        "angleVariance": 0.07584,
+        "maxAngleDeltaDeg": 11.595,
+        "junctionCount": 0,
+        "segmentIndex": 4,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-5-e-0-v3-5-3"
+      ]
+    },
+    {
+      "id": "google-5-e-0-v3-5-5",
+      "sourceObjectId": "google-5-e-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M66.548 36.95L67.852 36.474L69.013 35.68L69.649 34.532L69.975 33.255M66.003 34.859L66.862 34.554L67.624 34.091L68.523 33.528L69.225 32.745M66.578 37.066L65.973 34.743M69.092 35.77L67.546 34M70.074 33.322L69.126 32.678"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 16,
+      "quality": {
+        "minWidthMm": 0.907,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 1.769,
+        "widthVariance": 0.2465,
+        "angleVariance": 9.02922,
+        "maxAngleDeltaDeg": 13.855,
+        "junctionCount": 0,
+        "segmentIndex": 5,
+        "segmentCount": 6
+      },
+      "dependencies": [
+        "google-5-e-0-v3-5-4"
+      ]
+    },
+    {
+      "id": "google-5-e-0-v3-6-0",
+      "sourceObjectId": "google-5-e-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M59.2 31.68L60.267 31.68L61.333 31.68L62.4 31.68L63.467 31.68L64.533 31.68L65.6 31.68L66.667 31.655L67.733 31.354L68.8 31.054M59.2 29.52L60.267 29.52L61.333 29.52L62.4 29.52L63.467 29.52L64.533 29.52L65.6 29.52L66.667 29.545L67.733 29.846L68.8 30.146M59.2 31.8L59.2 29.4M63.467 31.8L63.467 29.4M68.8 31.174L68.8 30.026"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 26,
+      "quality": {
+        "minWidthMm": 0.907,
+        "maxWidthMm": 2.16,
+        "averageWidthMm": 1.965,
+        "widthVariance": 0.16145,
+        "angleVariance": 0,
+        "maxAngleDeltaDeg": 0,
+        "junctionCount": 1,
+        "segmentIndex": 0,
+        "segmentCount": 1
+      }
+    }
+  ],
+  "metrics": {
+    "componentCount": 37,
+    "nodeCount": 648,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-v3-2026-09-06",
+    "texto": {
+      "satinColumns": 6,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-v3-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

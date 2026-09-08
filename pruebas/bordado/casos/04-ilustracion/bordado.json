@@ -1,0 +1,386 @@
+{
+  "schemaVersion": 1,
+  "case": {
+    "id": "04-ilustracion",
+    "label": "Ilustración simplificada",
+    "expectedDisposition": "review"
+  },
+  "source": {
+    "kind": "opaque-raster",
+    "file": "original.png",
+    "sha256": "9dd49573eb7e646284d901a4c1d75af9f9c58ed32d4140454dee37118e93b3a9",
+    "metrics": {
+      "alphaCoverage": 1.0,
+      "hasMeaningfulTransparency": false,
+      "colorEntropyBits32": 1.706,
+      "edgeDensity": 0.0068,
+      "borderUniformity": 1.0,
+      "textureLaplacianVariance": 398.74
+    }
+  },
+  "physical": {
+    "units": "mm",
+    "embroideryArea": {
+      "width": 90.0,
+      "height": 60.0
+    },
+    "output": {
+      "width": 76.2,
+      "height": 44.6
+    },
+    "mustRedigitizeAfterScale": true
+  },
+  "colors": [
+    {
+      "order": 1,
+      "hex": "#315d9b",
+      "threadCatalog": null
+    },
+    {
+      "order": 2,
+      "hex": "#ef6b45",
+      "threadCatalog": null
+    },
+    {
+      "order": 3,
+      "hex": "#367c4a",
+      "threadCatalog": null
+    },
+    {
+      "order": 4,
+      "hex": "#efb52d",
+      "threadCatalog": null
+    },
+    {
+      "order": 5,
+      "hex": "#f2ead8",
+      "threadCatalog": null
+    },
+    {
+      "order": 6,
+      "hex": "#74452a",
+      "threadCatalog": null
+    }
+  ],
+  "objects": [
+    {
+      "id": "region-1",
+      "source": {
+        "kind": "raster-region",
+        "paletteIndex": 0
+      },
+      "geometry": {
+        "svgPath": "M 64.50,20.70 L 64.30,20.70 L 64.30,20.90 L 64.70,21.30 L 65.10,22.20 L 67.90,26.60 L 67.80,26.90 L 61.10,24.10 L 49.60,26.90 L 31.20,49.70 L 31.20,50.00 L 71.90,50.00 L 71.90,45.10 L 65.00,45.00 L 67.90,39.40 L 67.90,39.10 L 63.00,39.00 L 63.20,38.40 L 69.20,28.20 L 69.10,27.60 Z",
+        "areaMm2": 656.84,
+        "boundsMm": [
+          31.2,
+          20.7,
+          40.8,
+          29.4
+        ]
+      },
+      "stitchType": "fill",
+      "threadColor": "#315d9b",
+      "density": {
+        "rowSpacingMm": 0.45
+      },
+      "angleDeg": 0,
+      "underlay": [
+        "tatami-sparse"
+      ],
+      "pullCompensationMm": 0.15,
+      "maxStitchLengthMm": 4,
+      "trimAfter": true,
+      "order": 0
+    },
+    {
+      "id": "region-2",
+      "source": {
+        "kind": "raster-region",
+        "paletteIndex": 0
+      },
+      "geometry": {
+        "svgPath": "M 76.10,45.10 L 76.10,50.00 L 83.90,50.00 L 80.70,45.10 Z",
+        "areaMm2": 30.7,
+        "boundsMm": [
+          76.1,
+          45.1,
+          7.9,
+          5.0
+        ]
+      },
+      "stitchType": "fill",
+      "threadColor": "#315d9b",
+      "density": {
+        "rowSpacingMm": 0.45
+      },
+      "angleDeg": 0,
+      "underlay": [
+        "tatami-sparse"
+      ],
+      "pullCompensationMm": 0.15,
+      "maxStitchLengthMm": 4,
+      "trimAfter": true,
+      "order": 1
+    },
+    {
+      "id": "region-3",
+      "source": {
+        "kind": "raster-region",
+        "paletteIndex": 1
+      },
+      "geometry": {
+        "svgPath": "M 34.10,18.10 L 33.80,18.20 L 8.20,49.70 L 8.20,50.00 L 30.90,50.00 L 44.60,33.00 L 44.60,32.70 Z",
+        "areaMm2": 560.4,
+        "boundsMm": [
+          8.2,
+          18.1,
+          36.5,
+          32.0
+        ]
+      },
+      "stitchType": "fill",
+      "threadColor": "#ef6b45",
+      "density": {
+        "rowSpacingMm": 0.45
+      },
+      "angleDeg": 45,
+      "underlay": [
+        "tatami-sparse"
+      ],
+      "pullCompensationMm": 0.15,
+      "maxStitchLengthMm": 4,
+      "trimAfter": true,
+      "order": 2
+    },
+    {
+      "id": "region-4",
+      "source": {
+        "kind": "raster-region",
+        "paletteIndex": 2
+      },
+      "geometry": {
+        "svgPath": "M 74.10,20.10 L 73.90,20.10 L 63.10,38.80 L 63.10,39.00 L 68.00,39.10 L 68.00,39.40 L 65.10,45.00 L 81.90,45.00 L 81.90,44.70 L 79.30,39.10 L 83.90,39.00 L 83.90,38.80 Z",
+        "areaMm2": 283.51,
+        "boundsMm": [
+          63.1,
+          20.1,
+          20.9,
+          25.0
+        ]
+      },
+      "stitchType": "fill",
+      "threadColor": "#367c4a",
+      "density": {
+        "rowSpacingMm": 0.45
+      },
+      "angleDeg": -45,
+      "underlay": [
+        "tatami-sparse"
+      ],
+      "pullCompensationMm": 0.15,
+      "maxStitchLengthMm": 4,
+      "trimAfter": true,
+      "order": 3
+    },
+    {
+      "id": "region-5",
+      "source": {
+        "kind": "raster-region",
+        "paletteIndex": 3
+      },
+      "geometry": {
+        "svgPath": "M 16.10,7.00 L 14.20,7.40 L 12.60,8.10 L 11.30,9.00 L 10.00,10.30 L 9.10,11.60 L 8.40,13.20 L 8.00,15.10 L 8.00,16.90 L 8.40,18.80 L 9.10,20.40 L 10.00,21.70 L 11.30,23.00 L 12.60,23.90 L 14.20,24.60 L 16.10,25.00 L 17.90,25.00 L 19.80,24.60 L 21.40,23.90 L 22.70,23.00 L 24.00,21.70 L 24.90,20.40 L 25.60,18.80 L 26.00,16.90 L 26.00,15.10 L 25.60,13.20 L 24.90,11.60 L 24.00,10.30 L 22.70,9.00 L 21.40,8.10 L 19.80,7.40 L 17.90,7.00 Z",
+        "areaMm2": 254.46,
+        "boundsMm": [
+          8.0,
+          7.0,
+          18.1,
+          18.1
+        ]
+      },
+      "stitchType": "fill",
+      "threadColor": "#efb52d",
+      "density": {
+        "rowSpacingMm": 0.45
+      },
+      "angleDeg": 90,
+      "underlay": [
+        "tatami-sparse"
+      ],
+      "pullCompensationMm": 0.15,
+      "maxStitchLengthMm": 4,
+      "trimAfter": true,
+      "order": 4
+    },
+    {
+      "id": "region-6",
+      "source": {
+        "kind": "raster-region",
+        "paletteIndex": 4
+      },
+      "geometry": {
+        "svgPath": "M 67.80,26.60 L 60.10,14.10 L 59.90,14.10 L 49.80,26.00 L 49.30,26.80 L 60.70,24.00 L 61.40,24.10 L 67.50,26.80 L 67.80,26.80 Z",
+        "areaMm2": 94.28,
+        "boundsMm": [
+          49.3,
+          14.1,
+          18.6,
+          12.8
+        ]
+      },
+      "stitchType": "fill",
+      "threadColor": "#f2ead8",
+      "density": {
+        "rowSpacingMm": 0.45
+      },
+      "angleDeg": 0,
+      "underlay": [
+        "tatami-sparse"
+      ],
+      "pullCompensationMm": 0.15,
+      "maxStitchLengthMm": 4,
+      "trimAfter": true,
+      "order": 5
+    },
+    {
+      "id": "region-7",
+      "source": {
+        "kind": "raster-region",
+        "paletteIndex": 5
+      },
+      "geometry": {
+        "svgPath": "M 72.00,45.10 L 72.00,51.00 L 76.00,51.00 L 76.00,45.10 Z",
+        "areaMm2": 23.6,
+        "boundsMm": [
+          72.0,
+          45.1,
+          4.1,
+          6.0
+        ]
+      },
+      "stitchType": "fill",
+      "threadColor": "#74452a",
+      "density": {
+        "rowSpacingMm": 0.45
+      },
+      "angleDeg": 45,
+      "underlay": [
+        "tatami-sparse"
+      ],
+      "pullCompensationMm": 0.15,
+      "maxStitchLengthMm": 4,
+      "trimAfter": false,
+      "order": 6
+    }
+  ],
+  "preparation": {
+    "strategy": "perimeter-background-and-color-segmentation",
+    "backgroundColor": [
+      255,
+      255,
+      255
+    ],
+    "borderBackgroundAgreement": 1.0,
+    "paletteBeforeThreadMapping": [
+      "#315d9b",
+      "#ef6b45",
+      "#367c4a",
+      "#efb52d",
+      "#f2ead8",
+      "#74452a"
+    ],
+    "componentsRaw": 7,
+    "componentsKept": 7,
+    "componentsRemoved": 0,
+    "highDetailInput": false,
+    "minimumKeptAreaMm2": 0.75,
+    "simplificationToleranceMm": 0.12
+  },
+  "digitization": {
+    "engine": "Ink/Stitch",
+    "version": "3.3.0",
+    "format": "Tajima DST",
+    "stderr": null
+  },
+  "dstStructuralValidation": {
+    "passed": true,
+    "checks": {
+      "headerIs512Bytes": true,
+      "payloadAlignedTo3Bytes": true,
+      "hasEndRecord": true,
+      "headerRecordCountMatches": true,
+      "headerColorChangesMatch": true,
+      "boundsMatchPyembroidery": true
+    },
+    "headerStitchRecords": 2548,
+    "decodedRecordsBeforeEnd": 2559,
+    "encodedTrimSequences": 6,
+    "logicalRecordsIncludingEnd": 2548,
+    "headerColorChanges": 5,
+    "decodedColorChanges": 5,
+    "decodedBoundsMm": [
+      -38.1,
+      -22.3,
+      38.1,
+      22.3
+    ]
+  },
+  "artifacts": {
+    "preparedGeometry": {
+      "file": "geometria.svg",
+      "sha256": "663db1cb88a1abb87373bdd2ce8309fed8c365afe83bdc38f30a0ea59582e8ee"
+    },
+    "stitchPreview": {
+      "file": "preview.png",
+      "sha256": "6062e70705d8760a24d704abb6b56e0b5af9cd14b5f178946fbed4035ea66491"
+    },
+    "machineFile": {
+      "file": "diseno.dst",
+      "sha256": "82413926c6d3347a36ce205c8de48c5696fbecbecb61d4af5b91e2322c0aa363"
+    }
+  },
+  "metrics": {
+    "widthMm": 76.2,
+    "heightMm": 44.6,
+    "boundsMm": [
+      -38.1,
+      -22.3,
+      38.1,
+      22.3
+    ],
+    "stitches": 2520,
+    "commands": 2548,
+    "colorChanges": 5,
+    "jumps": 16,
+    "trims": 6,
+    "stops": 0,
+    "estimatedThreadLengthM": 6.8,
+    "minStitchLengthMm": 0.28,
+    "maxStitchLengthMm": 4.31,
+    "zeroLengthStitches": 7,
+    "shortStitchesUnder0_3mm": 10,
+    "longStitchesOver10mm": 0,
+    "dstSizeBytes": 8192,
+    "estimatedMachineMinutesAt700Spm": 6.1,
+    "preparationMs": 200.5,
+    "digitizationMs": 11707.0,
+    "validationAndPreviewMs": 35.2,
+    "processingMs": 11942.7
+  },
+  "validation": {
+    "passed": true,
+    "decision": "review",
+    "confidence": 0.88,
+    "issues": [
+      {
+        "code": "illustration-review",
+        "severity": "warning",
+        "message": "Una ilustración multicapa requiere confirmar oclusiones, orden y resultado sobre tela.",
+        "measured": 6,
+        "limit": "revisión humana"
+      }
+    ],
+    "limitsAre": "spike guardrails; calibrate by fabric/machine/test-sew before production"
+  }
+}

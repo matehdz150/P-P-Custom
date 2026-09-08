@@ -1,0 +1,220 @@
+{
+  "fixture": "20-combinacion",
+  "profileVersion": "experimental-v3-2026-09-06",
+  "status": "measured",
+  "physicallyValidated": false,
+  "geometry": {
+    "objectCount": 5,
+    "pathCount": 17,
+    "nodeCount": 85,
+    "segmentCount": 68,
+    "satinColumnCount": 3,
+    "fillRegionCount": 1,
+    "runningPathCount": 1,
+    "junctionCount": 0,
+    "satin": {
+      "minWidthMm": 3.137,
+      "maxWidthMm": 3.4,
+      "averageWidthMm": 3.26,
+      "widthVariance": 0.01168
+    },
+    "svgBytes": 2810
+  },
+  "stitchPlan": {
+    "stitchCount": 1144,
+    "runningStitches": null,
+    "satinStitches": null,
+    "fillStitches": null,
+    "jumps": 9,
+    "trims": 1,
+    "colorChanges": 1,
+    "maxStitchLengthMm": 4.243,
+    "p95StitchLengthMm": 4.031,
+    "averageStitchLengthMm": 2.931,
+    "stitchesAboveThreshold": 0,
+    "maxJumpLengthMm": 14.367,
+    "estimatedThreadLengthMm": 3446.7,
+    "directionChangeDegrees": {
+      "average": 11.454,
+      "p95": 46.187
+    },
+    "maxDirectionChange": 90.0,
+    "numberOfSharpDirectionChanges": 42,
+    "maxAngleDeltaBetweenAdjacentStitches": 90.0,
+    "numberOfFanStitches": 0,
+    "numberOfCrossingStitches": 144,
+    "overlappingSegments": 72,
+    "overlapDensity": 0.0317,
+    "localStitchDensity": {
+      "cellMm": 1.0,
+      "occupiedCells": 579,
+      "averagePerOccupiedCell": 1.971
+    },
+    "maxLocalDensity": 10,
+    "analysis": {
+      "crossingComparisons": 17456,
+      "crossingPairs": 122,
+      "crossingAnalysisTruncated": false
+    }
+  },
+  "dst": {
+    "widthMm": 74.0,
+    "heightMm": 35.2,
+    "stitchCount": 1144,
+    "colorCount": 2,
+    "colorChanges": 1,
+    "jumps": 9,
+    "trims": 1
+  },
+  "tajima": {
+    "passed": true,
+    "checks": {
+      "headerIs512Bytes": true,
+      "payloadAlignedTo3Bytes": true,
+      "hasEndRecord": true,
+      "headerRecordCountMatches": true,
+      "headerColorChangesMatch": true,
+      "boundsMatchPyembroidery": true,
+      "maxAxisMovementRepresentable": true
+    },
+    "maxAxisDeltaTenthsMm": 120
+  },
+  "objects": [
+    {
+      "objectId": "outline",
+      "stitchType": "running",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 1,
+        "nodeCount": 2,
+        "segmentCount": 1,
+        "satinColumnCount": 0,
+        "fillRegionCount": 0,
+        "runningPathCount": 1,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": null,
+          "maxWidthMm": null,
+          "averageWidthMm": null,
+          "widthVariance": null
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "column-v3-0-0",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 36,
+        "segmentCount": 31,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.242,
+          "maxWidthMm": 3.242,
+          "averageWidthMm": 3.242,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "column-v3-0-1",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 18,
+        "segmentCount": 13,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.4,
+          "maxWidthMm": 3.4,
+          "averageWidthMm": 3.4,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "column-v3-0-2",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 24,
+        "segmentCount": 19,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.137,
+          "maxWidthMm": 3.137,
+          "averageWidthMm": 3.137,
+          "widthVariance": 0.0
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    },
+    {
+      "objectId": "area",
+      "stitchType": "fill",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 1,
+        "nodeCount": 5,
+        "segmentCount": 4,
+        "satinColumnCount": 0,
+        "fillRegionCount": 1,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": null,
+          "maxWidthMm": null,
+          "averageWidthMm": null,
+          "widthVariance": null
+        }
+      },
+      "stitchPlan": null,
+      "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+    }
+  ],
+  "timings": {
+    "cacheState": "warm",
+    "segmentationMs": null,
+    "vectorGeometryMs": null,
+    "skeletonMs": null,
+    "railsMs": null,
+    "junctionHandlingMs": null,
+    "stitchTypeAssignmentMs": null,
+    "uploadMs": null,
+    "svgGenerationMs": 0.2,
+    "inkstitchDisplayStartupMs": 0.0,
+    "inkstitchProcessAndDigitizationMs": 3290.4,
+    "inkstitchInitializationMs": null,
+    "inkstitchDigitizationMs": null,
+    "dstParsingMs": 2.8,
+    "tajimaValidationMs": 1.9,
+    "previewMs": 165.6,
+    "totalMs": 3491.5
+  },
+  "artifacts": {
+    "input": "input.svg",
+    "preparedSvg": "prepared.svg",
+    "stitchPlot": "stitchPlot.png",
+    "embroideredPreview": "embroideredPreview.png",
+    "dst": "design.dst"
+  }
+}

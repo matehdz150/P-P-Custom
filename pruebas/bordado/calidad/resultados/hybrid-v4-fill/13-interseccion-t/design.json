@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "5f64903ccd64390d3f2890b92577293185395180551e1251730c447d5645231c",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "t-horizontal",
+      "sourceObjectId": "t-horizontal",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M25 18L65 18"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 5,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true,
+        "satinMode": "stroke"
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2,
+      "quality": {
+        "lengthMm": 40,
+        "averageWidthMm": 5,
+        "minWidthMm": 5,
+        "maxWidthMm": 5,
+        "widthVariance": 0,
+        "widthVariationRatio": 0,
+        "curvatureDegPerMm": 0,
+        "maxCurvatureDegPerMm": 0,
+        "accumulatedTurningAngleDeg": 0,
+        "maxDirectionDeltaDeg": 0,
+        "junctionCount": 0,
+        "branchCount": 1,
+        "endpointTaper": 0,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 0,
+        "railDivergenceMmPerMm": 0,
+        "railConvergenceMmPerMm": 0,
+        "numberOfSharpTurns": 0,
+        "representationDecision": "stroke-v2",
+        "representationReasons": [],
+        "rawCenterlineNodes": 2,
+        "rawRailNodes": 0,
+        "finalRailNodes": 0,
+        "rungsBefore": 0,
+        "rungsAfter": 0,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 19
+      }
+    },
+    {
+      "id": "t-vertical-hybrid-rails-0-0",
+      "sourceObjectId": "t-vertical",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M42.5 18L42.5 24.316L42.5 31.421L42.5 37.737L42.5 44.842L42.558 45.632L43.95 48M47.5 18L47.5 24.316L47.5 31.421L47.5 37.737L47.5 44.842L47.442 45.632L46.05 48M42.38 18L47.62 18M42.38 31.421L47.62 31.421M42.38 44.842L47.62 44.842M42.438 45.632L47.562 45.632M43.83 48L46.17 48"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 24,
+      "quality": {
+        "minWidthMm": 2.1,
+        "maxWidthMm": 5,
+        "averageWidthMm": 4.569,
+        "widthVariance": 1.01771,
+        "angleVariance": 0,
+        "maxAngleDeltaDeg": 0,
+        "junctionCount": 1,
+        "segmentIndex": 0,
+        "segmentCount": 1,
+        "representationDecision": "rails-v3",
+        "representationReasons": [
+          "JUNCTION"
+        ],
+        "lengthMm": 30,
+        "curvatureDegPerMm": 0,
+        "maxCurvatureDegPerMm": 0,
+        "accumulatedTurningAngleDeg": 0,
+        "branchCount": 2,
+        "endpointTaper": 0,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 0,
+        "railDivergenceMmPerMm": 0,
+        "railConvergenceMmPerMm": 0,
+        "numberOfSharpTurns": 0,
+        "rawCenterlineNodes": 2,
+        "rawRailNodes": 78,
+        "finalRailNodes": 14,
+        "rungsBefore": 39,
+        "rungsAfter": 5,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 14
+      }
+    }
+  ],
+  "metrics": {
+    "componentCount": 2,
+    "nodeCount": 26,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-hybrid-v4-2026-09-06",
+    "texto": {
+      "satinColumns": 2,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-hybrid-v4-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0",
+  "debug": {
+    "hybridJoins": []
+  }
+}

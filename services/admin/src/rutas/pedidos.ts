@@ -11,6 +11,7 @@ import {
 	S3Client,
 } from "@aws-sdk/client-s3";
 import { GetCommand, TransactWriteCommand } from "@aws-sdk/lib-dynamodb";
+import { extraPorLados } from "@kustto/precios";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { enviar } from "../lib/correo.js";
 import {
@@ -45,6 +46,15 @@ import * as envios from "./envios.js";
 const s3 = new S3Client({});
 const BUCKET_PUBLICO =
 	process.env.KUSTTO_BUCKET_PUBLICO ?? "kustto-publico-prod";
+/**
+ * De dónde sale el DST del bordado. Es OTRO bucket, y es privado.
+ *
+ * Su prefijo `embroidery/` CADUCA A LOS 90 DÍAS por regla de ciclo de vida
+ * —está pensado como caché de artefactos, indexado por `designHash`, no como
+ * archivo—. Por eso el DST se copia al pedido en vez de enlazarse: un taller
+ * que abra un pedido de hace cuatro meses encontraría el objeto borrado.
+ */
+const BUCKET_BORDADO = process.env.KUSTTO_EMBROIDERY_BUCKET ?? "";
 
 /** Lo que se firma para el arte. Sólo PNG: es lo que exporta el editor. */
 const VIGENCIA_SUBIDA = 900;
@@ -71,7 +81,9 @@ const DIGITOS = (v: string) => v.replace(/\D/g, "");
 const aPesos = (n: number) => Math.round(n * 100) / 100;
 
 const LIMPIO_ID = (v: unknown) =>
-	String(v ?? "").replace(/[^a-zA-Z0-9-]/g, "").slice(0, 40);
+	String(v ?? "")
+		.replace(/[^a-zA-Z0-9-]/g, "")
+		.slice(0, 40);
 
 type Cuerpo = Record<string, any>;
 
@@ -270,12 +282,11 @@ export async function crear(cuerpo: unknown) {
 		/* Sólo si TODAS las partes entregan igual. Con métodos distintos no hay
 		   una entrega de la compra, y guardar la de una parte como si fuera la
 		   de todas es la clase de dato que después se lee mal. */
-		entrega:
-			[...entregas.values()].every(
-				(e) => e.entrega.metodo === [...entregas.values()][0].entrega.metodo,
-			)
-				? [...entregas.values()][0].entrega
-				: null,
+		entrega: [...entregas.values()].every(
+			(e) => e.entrega.metodo === [...entregas.values()][0].entrega.metodo,
+		)
+			? [...entregas.values()][0].entrega
+			: null,
 		productosTotal,
 		total,
 		piezas,
@@ -298,6 +309,13 @@ export async function crear(cuerpo: unknown) {
 				linea.id,
 				linea.lados as string[],
 			);
+
+			/* El DST va DESPUÉS del arte y no bloquea: si el arte falta hay que
+			   parar antes de crear la compra, pero un bordado que no se pudo copiar
+			   sólo significa que el taller lo digitaliza como siempre. */
+			if (linea.bordados?.length) {
+				await copiarBordados(linea.bordados, parte.pedidoId, linea.id);
+			}
 		}
 	}
 
@@ -458,6 +476,50 @@ async function copiarDelCarrito(
 		`medios/pedidos/${pedidoId}/${lineaId}-diseno.json`,
 		false,
 	);
+}
+
+/**
+ * El DST de cada lado bordado, del bucket de artefactos al del pedido.
+ *
+ * POR QUÉ SE COPIA Y NO SE ENLAZA. El original vive bajo `embroidery/`, que
+ * caduca a los 90 días: sirve de caché por `designHash` para no volver a
+ * digitalizar el mismo diseño, no de archivo. Un pedido dura más que eso.
+ *
+ * NINGÚN FALLO AQUÍ PUEDE TUMBAR LA COMPRA. El DST es material de apoyo: el
+ * taller decide si lo usa o si digitaliza por su cuenta, y mientras el perfil
+ * no esté validado físicamente no hay nada que prometa que ese archivo cose
+ * bien. Perderlo cuesta una comodidad; tirar un pedido ya cobrado por no
+ * encontrarlo sería mucho peor. Por eso se traga el error y sigue, al
+ * contrario que el arte, que sin él no se puede producir nada.
+ */
+async function copiarBordados(
+	bordados: { lado: string; jobId: string; designHash: string }[],
+	pedidoId: string,
+	lineaId: string,
+) {
+	if (!BUCKET_BORDADO) return;
+
+	for (const b of bordados) {
+		if (!b.jobId || !b.designHash) continue;
+
+		try {
+			await s3.send(
+				new CopyObjectCommand({
+					Bucket: BUCKET_PUBLICO,
+					CopySource: `${BUCKET_BORDADO}/embroidery/${b.designHash}/${b.jobId}/design.dst`,
+					Key: `medios/pedidos/${pedidoId}/${lineaId}-${b.lado}-bordado.dst`,
+					/* El origen se guarda con su propio `Metadata` (el sha256 que
+					   escribió el worker) y sin tipo útil. Se reescribe para que el
+					   navegador lo baje como archivo en vez de intentar mostrarlo. */
+					MetadataDirective: "REPLACE",
+					ContentType: "application/octet-stream",
+				}),
+			);
+		} catch {
+			/* A propósito en silencio: ver arriba. La ficha del proveedor comprueba
+			   si el archivo está antes de ofrecer la descarga. */
+		}
+	}
 }
 
 /** Las líneas de todas las partes, con el índice que traían al llegar. */
@@ -666,12 +728,45 @@ function aLinea(l: Cuerpo, producto: Cuerpo, pedidoId: string) {
 	>;
 	const base = Number(precios.basePrice ?? 0);
 
-	// El primer lado va en el precio base; cada lado extra se cobra aparte si
-	// el taller lo puso. Es la regla que ya describía su propio formulario.
-	const extraPorLados =
-		lados.length > 1
-			? (lados.length - 1) * Number(precios.perSidePrice ?? 0)
-			: 0;
+	/* El recargo de los lados extra, con la MISMA función que usa el navegador
+	   para enseñarlo. Los números salen de `producto`, que viene de la tabla:
+	   del cuerpo de la petición no se acepta nada que decida cuánto se cobra.
+
+	   Antes la cuenta estaba escrita aquí y otras cuatro veces en el front.
+	   Daba igual mientras todos los lados costaran lo mismo; con un recargo por
+	   lado, una copia sin actualizar significa cobrar algo distinto de lo que
+	   se enseñó. */
+	const extra = extraPorLados(
+		lados,
+		(producto.printSides ?? []) as { sideKey: string; recargo?: number }[],
+		precios,
+	);
+
+	/**
+	 * Cómo quedó el bordado de cada lado que se borda.
+	 *
+	 * SE COPIA TAL CUAL Y NO SE RECALCULA: es descriptivo —no toca el precio ni
+	 * el destinatario— y quien lo produjo fue el motor de bordado, no el
+	 * navegador. Lo que sí decide, que un diseño rechazado no se pueda comprar,
+	 * ya está resuelto antes: un `REJECTED` no llega a agregarse al carrito, y
+	 * aquí sólo se aceptan los dos estados que permiten fabricar.
+	 *
+	 * `REVIEW` es la marca que el taller necesita ver: el sistema preparó el
+	 * bordado pero alguien tiene que mirarlo antes de coserlo. Mientras el
+	 * perfil no esté validado físicamente, es lo único que separa un bordado
+	 * revisado de uno que nadie miró.
+	 */
+	const bordados = (Array.isArray(l.bordados) ? l.bordados : [])
+		.map((b: Cuerpo) => ({
+			lado: String(b.lado ?? "").trim(),
+			jobId: String(b.jobId ?? "").slice(0, 64),
+			designHash: String(b.designHash ?? "").slice(0, 64),
+			status: b.status === "REVIEW" ? "REVIEW" : "READY",
+			incidencias: (Array.isArray(b.incidencias) ? b.incidencias : [])
+				.slice(0, 10)
+				.map((c: unknown) => String(c).slice(0, 48)),
+		}))
+		.filter((b: { lado: string }) => b.lado && lados.includes(b.lado));
 
 	const lineaId = randomUUID();
 
@@ -699,7 +794,15 @@ function aLinea(l: Cuerpo, producto: Cuerpo, pedidoId: string) {
 		lados,
 		tallas,
 		piezas,
-		importe: (base + extraPorLados) * piezas,
+		importe: (base + extra) * piezas,
+		...(bordados.length ? { bordados } : {}),
+		/* Un atajo para el taller y el backoffice: si CUALQUIER lado quedó en
+		   revisión, la línea entera lleva la marca. Sin esto habría que abrir el
+		   arreglo de bordados para saberlo, y en una lista de pedidos eso no se
+		   hace. */
+		...(bordados.some((b: { status: string }) => b.status === "REVIEW")
+			? { requiereRevisionBordado: true }
+			: {}),
 		/**
 		 * Lo que se le prometió al comprador, CONGELADO como el precio.
 		 *
@@ -742,6 +845,7 @@ function aLinea(l: Cuerpo, producto: Cuerpo, pedidoId: string) {
 		arte: lados.map((lado: string) => {
 			const medidas = medidasDeLado(producto, lado);
 			const real = medidaRealDelArchivo(l, lado, medidas.dpi);
+			const bordado = bordados.find((b: { lado: string }) => b.lado === lado);
 
 			return {
 				lado,
@@ -767,6 +871,35 @@ function aLinea(l: Cuerpo, producto: Cuerpo, pedidoId: string) {
 				 * aquí si está costaría una llamada a S3 por lado y por pedido.
 				 */
 				prenda: `/medios/pedidos/${pedidoId}/${lineaId}-${lado}-prenda.png`,
+				/**
+				 * El MISMO arte en trazos, para lo que se graba en vez de imprimirse.
+				 *
+				 * Igual que `prenda`: la ruta se escribe siempre y el archivo puede no
+				 * existir —sólo lo sube el editor en productos de grabado—, así que
+				 * quien la enseñe tiene que aguantar un 404. Comprobarlo aquí costaría
+				 * una llamada a S3 por lado y por pedido.
+				 */
+				vector: `/medios/pedidos/${pedidoId}/${lineaId}-${lado}-vector.svg`,
+				/**
+				 * El DST, SÓLO en los lados que de verdad se bordan.
+				 *
+				 * Al contrario que `prenda` y `vector`, aquí la ruta NO se escribe
+				 * siempre: si este lado no lleva bordado, el campo no existe y el
+				 * taller no ve una descarga que nunca va a funcionar. Se sabe sin
+				 * preguntarle a S3 porque `bordados` ya dice qué lados son.
+				 *
+				 * El estado viaja al lado del archivo a propósito. Un DST en
+				 * `REVIEW` no es lo mismo que uno en `READY`, y quien está a punto
+				 * de mandarlo a la máquina tiene que verlo en el mismo sitio donde
+				 * pulsa, no en otra columna.
+				 */
+				...(bordado
+					? {
+							bordado: `/medios/pedidos/${pedidoId}/${lineaId}-${lado}-bordado.dst`,
+							bordadoEstado: bordado.status,
+							bordadoIncidencias: bordado.incidencias,
+						}
+					: {}),
 				...medidas,
 				...real,
 			};
@@ -990,6 +1123,17 @@ async function firmarArte(conIndice: { indice: number; linea: Linea }[]) {
 				tipo: "prenda" as const,
 				ruta: a.prenda,
 				contentType: "image/png",
+			},
+			/* El vector. Se firma SIEMPRE, por el mismo motivo que la prenda: es el
+			   navegador el que sabe si el lado se graba o se imprime, y no firmarlo
+			   obligaría a otra vuelta al servidor justo después de cobrar. */
+			{
+				indice,
+				lineaId: l.id,
+				lado: a.lado,
+				tipo: "vector" as const,
+				ruta: a.vector,
+				contentType: "image/svg+xml",
 			},
 		]),
 		{

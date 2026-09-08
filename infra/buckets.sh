@@ -94,11 +94,19 @@ ciclo_de_vida() {
           "Expiration": {"Days": 30},
           "NoncurrentVersionExpiration": {"NoncurrentDays": 7},
           "AbortIncompleteMultipartUpload": {"DaysAfterInitiation": 7}
+        },
+        {
+          "ID": "borradores-eventos-caducan",
+          "Status": "Enabled",
+          "Filter": {"Prefix": "eventos/"},
+          "Expiration": {"Days": 90},
+          "NoncurrentVersionExpiration": {"NoncurrentDays": 7},
+          "AbortIncompleteMultipartUpload": {"DaysAfterInitiation": 7}
         }
       ]
     }'
 
-  echo "  $nombre: carritos/ caduca a los 30 días"
+  echo "  $nombre: carritos/ caduca a los 30 días; eventos/ a los 90"
 }
 
 echo "Buckets en $REGION:"

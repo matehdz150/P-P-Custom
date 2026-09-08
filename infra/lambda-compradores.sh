@@ -79,6 +79,8 @@ fi
 # y diseñando, SIN pedir nada, así que el arte no puede vivir en `carritos/`
 # —que caduca a los 30 días— ni en `medios/pedidos/`, que sólo existe después
 # de comprar. Lee y escribe: escribe al diseñar, lee al cargarla en el carrito.
+# `medios/eventos/*` guarda únicamente la portada que el comprador sube para
+# sus eventos. La Lambda arma la carpeta con el `sub`; CloudFront sólo la lee.
 #
 # SÓLO en `medios/disenos/*`. Guardar un diseño copia el arte de un pedido a
 # la carpeta de diseños, así que necesita leer el origen; lo que no puede
@@ -123,6 +125,11 @@ aws_ iam put-role-policy --role-name "$ROL" --policy-name datos \
         \"Effect\": \"Allow\",
         \"Action\": [\"s3:PutObject\", \"s3:GetObject\"],
         \"Resource\": \"arn:aws:s3:::${PUBLICO}/medios/plantillas/*\"
+      },
+      {
+        \"Effect\": \"Allow\",
+        \"Action\": [\"s3:PutObject\"],
+        \"Resource\": \"arn:aws:s3:::${PUBLICO}/medios/eventos/*\"
       },
       {
         \"Effect\": \"Allow\",

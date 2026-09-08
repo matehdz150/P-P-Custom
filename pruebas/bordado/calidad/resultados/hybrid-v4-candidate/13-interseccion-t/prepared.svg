@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkstitch="http://inkstitch.org/namespace" width="90mm" height="60mm" viewBox="0 0 90 60">
+<metadata><inkstitch:min_stitch_len_mm>0.3</inkstitch:min_stitch_len_mm><inkstitch:collapse_len_mm>3</inkstitch:collapse_len_mm><inkstitch:min_satin_stroke_width_mm>1.5</inkstitch:min_satin_stroke_width_mm><inkstitch:inkstitch_svg_version>4</inkstitch:inkstitch_svg_version></metadata>
+<path id="t-horizontal" d="M25 18L65 18" fill="none" stroke="#171717" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round" inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42" inkstitch:pull_compensation_mm="0.15" inkstitch:center_walk_underlay="true" inkstitch:max_stitch_length_mm="6.5" />
+<path id="t-vertical-hybrid-rails-0-0" d="M42.5 18L42.5 24.316L42.5 31.421L42.5 37.737L42.5 44.842L42.558 45.632L43.95 48M47.5 18L47.5 24.316L47.5 31.421L47.5 37.737L47.5 44.842L47.442 45.632L46.05 48M42.38 18L47.62 18M42.38 31.421L47.62 31.421M42.38 44.842L47.62 44.842M42.438 45.632L47.562 45.632M43.83 48L46.17 48" fill="none" stroke="#171717" inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42" inkstitch:pull_compensation_mm="0.15" inkstitch:center_walk_underlay="true" inkstitch:max_stitch_length_mm="6.5" />
+</svg>

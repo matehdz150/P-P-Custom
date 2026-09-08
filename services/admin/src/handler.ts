@@ -9,6 +9,7 @@ import * as carrito from "./rutas/carrito.js";
 import * as catalogo from "./rutas/catalogo.js";
 import * as categorias from "./rutas/categorias.js";
 import * as envios from "./rutas/envios.js";
+import * as eventos from "./rutas/eventos.js";
 import * as pedidos from "./rutas/pedidos.js";
 import * as plantillas from "./rutas/plantillas.js";
 import * as productos from "./rutas/productos.js";
@@ -53,6 +54,13 @@ router.post("/uploads/imagen-url", (p) => subidas.urlParaImagen(p.cuerpo));
    reglas distintas que recordar. Sólo salen productos aprobados. */
 router.get("/publico/catalogo", () => catalogo.listar());
 router.get("/publico/catalogo/:id", (p) => catalogo.obtener(p.params.id));
+router.get("/publico/eventos/:codigo", (p) => eventos.obtener(p.params.codigo));
+router.post("/publico/eventos/:codigo/participaciones", (p) =>
+	eventos.participar(p.params.codigo, p.cuerpo),
+);
+router.post("/publico/eventos/:codigo/subidas", (p) =>
+	eventos.firmarSubidas(p.params.codigo, p.cuerpo),
+);
 router.get("/publico/categorias", () => categorias.listar());
 
 /* Cotizar es público porque pasa ANTES de pagar y antes de que exista un
@@ -122,6 +130,8 @@ const ABIERTAS = [
 	// cualquier ruta que alguien cuelgue ahí mañana nace abierta sin que nadie
 	// lo decida.
 	/^POST \/publico\/pedidos$/,
+	/^POST \/publico\/eventos\/[^/]+\/participaciones$/,
+	/^POST \/publico\/eventos\/[^/]+\/subidas$/,
 	/^POST \/publico\/carrito\/subidas$/,
 	// El webhook de Skydropx. Abierta al mundo pero cerrada de verdad: exige
 	// la firma HMAC del cuerpo y rechaza si no hay secreto configurado.
@@ -164,9 +174,13 @@ export async function handler(evento: any) {
 		if (
 			metodo === "GET" &&
 			(ruta.startsWith("/publico/mockups/") ||
-				ruta.startsWith("/publico/medios/"))
+				ruta.startsWith("/publico/medios/") ||
+				ruta.startsWith("/publico/archivos-eventos/"))
 		) {
-			return await subidas.leerPublico(ruta.slice("/publico/".length));
+			const objeto = ruta.startsWith("/publico/archivos-eventos/")
+				? `eventos/${ruta.slice("/publico/archivos-eventos/".length)}`
+				: ruta.slice("/publico/".length);
+			return await subidas.leerPublico(objeto);
 		}
 
 		/* Se decide ANTES de mirar el cuerpo, y son tres casos que no se

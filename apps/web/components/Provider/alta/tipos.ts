@@ -1,7 +1,33 @@
+import { esTecnica, type Tecnica } from "@/lib/impresion/tecnicas";
 import { sinAcentos } from "@/lib/texto";
 
 /** Un número que el usuario todavía puede estar escribiendo (o haber borrado). */
 export type Cifra = number | "";
+
+/**
+ * Con qué área imprimible nace un lado, según QUÉ lado sea.
+ *
+ * Antes era 28 × 35 para todos, y en una manga eso es un disparate: mide unos
+ * 15 cm de fondo, así que el área por defecto era más ancha que la manga
+ * entera. Con la previsualización dimensionando por centímetros el disparate
+ * ya se ve —el estampado desbordando el brazo—; antes quedaba tapado porque el
+ * tamaño salía de una fracción del dibujo.
+ *
+ * Son SÓLO un punto de partida para que el taller no arranque de algo
+ * imposible: el valor que manda es el que él escriba.
+ *
+ * Vive aquí y no en la pantalla porque lo necesitan dos sitios —al añadir el
+ * lado y al guardar, si lo dejó vacío— y separados se desincronizan.
+ */
+export function medidaPorDefecto(sideKey: string): {
+	widthCm: number;
+	heightCm: number;
+} {
+	/* Por el nombre de la clave y no por una lista cerrada: las plantillas las
+	   nombra quien las crea, y una clave nueva de manga debe caer aquí sola. */
+	if (/manga|sleeve/i.test(sideKey)) return { widthCm: 9, heightCm: 7 };
+	return { widthCm: 28, heightCm: 35 };
+}
 
 export type Lado = {
 	sideKey: string;
@@ -17,6 +43,22 @@ export type Lado = {
 	 * queda una línea blanca en el filo.
 	 */
 	sangradoCm: Cifra;
+	/**
+	 * Con qué se estampa este lado. Vacío = sin declarar, y entonces sale el PNG
+	 * de siempre; la lista y qué implica cada una están en
+	 * `lib/impresion/tecnicas.ts`.
+	 */
+	tecnica: Tecnica | "";
+	/**
+	 * Lo que suma este lado sobre el precio base, en pesos por pieza.
+	 *
+	 * Vacío = usa el recargo general del producto, que es lo correcto cuando
+	 * todos los lados valen igual. Se pone cuando NO: una manga cuesta bastante
+	 * menos que una espalda, y sin esto el cliente pagaba lo mismo por las dos.
+	 *
+	 * Cero es una respuesta válida y distinta de vacío: "este lado va incluido".
+	 */
+	recargo: Cifra;
 };
 
 export type Talla = {
@@ -214,6 +256,8 @@ export function deProductoAAlta(p: {
 		heightCm: number;
 		dpi?: number;
 		sangradoCm?: number;
+		tecnica?: string | null;
+		recargo?: number | null;
 	}[];
 	customizationRules?: {
 		allowText?: boolean;
@@ -250,6 +294,12 @@ export function deProductoAAlta(p: {
 			// Vacío y no cero: el campo tiene que poder quedarse en blanco, que es
 			// lo normal, sin que aparezca un 0 que invita a borrarlo.
 			sangradoCm: s.sangradoCm ?? "",
+			// Igual que el sangrado: vacío y no cero, porque cero significa otra
+			// cosa —"incluido"— y no es lo que quiere decir no haberlo puesto.
+			recargo: s.recargo ?? "",
+			// Un producto dado de alta antes de que esto existiera no la trae, y
+			// vacío es la respuesta correcta: nadie la ha declarado todavía.
+			tecnica: esTecnica(s.tecnica) ? s.tecnica : "",
 		})),
 		reglas: {
 			allowText: reglas.allowText ?? true,
@@ -331,9 +381,10 @@ export function aPayload(alta: Alta, enviar: boolean) {
 		printSides: alta.printSides.map((s) => ({
 			sideKey: s.sideKey,
 			// El área imprimible es lo que limita al cliente en el editor: si el
-			// taller la dejó vacía, vale más un tamaño sensato que un hueco.
-			widthCm: Number(s.widthCm) || 28,
-			heightCm: Number(s.heightCm) || 35,
+			// taller la dejó vacía, vale más un tamaño sensato que un hueco. Y
+			// sensato depende del lado: en una manga, 28 cm no caben.
+			widthCm: Number(s.widthCm) || medidaPorDefecto(s.sideKey).widthCm,
+			heightCm: Number(s.heightCm) || medidaPorDefecto(s.sideKey).heightCm,
 			dpi: Number(s.dpi) || 300,
 			/* Aquí SÍ vale el cero, al revés que el ancho y el alto: "sin
 			   sangrado" es una respuesta legítima y la más común. Poner un valor
@@ -346,6 +397,15 @@ export function aPayload(alta: Alta, enviar: boolean) {
 			   revienta el tope de subida después de que el cliente ya pagó. Dos
 			   centímetros por lado es más de lo que pide cualquier sublimación. */
 			sangradoCm: Math.min(2, Math.max(0, Number(s.sangradoCm) || 0)),
+			/* Sin declarar no se manda el campo, en vez de mandar una cadena
+			   vacía: el lado se queda sin técnica y el editor cae en ráster, que
+			   es lo que hacía antes de que esto existiera. Una cadena vacía
+			   guardada en la tabla parecería una técnica que no es ninguna. */
+			tecnica: esTecnica(s.tecnica) ? s.tecnica : undefined,
+			/* Sin declarar NO se manda el campo, para que el cálculo caiga al
+			   recargo general. Un cero sí se manda: es el taller diciendo que
+			   este lado no cobra extra, y perderlo lo cobraría. */
+			recargo: s.recargo === "" ? undefined : Math.max(0, Number(s.recargo)),
 			enabled: true,
 		})),
 		templateSides: alta.printSides.map((s) => s.sideKey),

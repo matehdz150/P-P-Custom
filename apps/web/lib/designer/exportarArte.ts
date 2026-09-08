@@ -224,6 +224,127 @@ export function exportarMiniaturaDelArte(
 }
 
 /**
+ * Lo ancho que sale el arte para mirarlo de cerca en "Probar".
+ *
+ * SALE DE UNA CUENTA, no de un gusto. Un cilindro enseña 180° de la envoltura
+ * comprimidos en el ancho del cuerpo, así que el arte necesario para que el
+ * centro de la taza salga a 1:1 es `π · ancho del cuerpo en la foto`. Con las
+ * fotos de taza que hay hoy —1254 px, cuerpo visible de 850— eso son 2670 px.
+ * 2400 deja el centro a 0.9 px de arte por píxel de foto, que ya no se ve.
+ */
+const ANCHO_VISTA_CERCANA = 2400;
+
+/**
+ * Cuánto se recorta ese techo en un teléfono.
+ *
+ * SÓLO AFECTA A "PROBAR". `ANCHO_COLOCACION` no se toca: esa imagen viaja al
+ * taller con el pedido y bajarla sería mandarle una referencia peor para
+ * colocar el estampado.
+ *
+ * Un lado a 2400 px de ancho puede acercarse a 8 millones de píxeles, y de ese
+ * PNG se saca además un `getImageData` entero para componer: cada píxel se
+ * paga dos veces. Con cuatro caras eso es lo que congela la pantalla al entrar
+ * al modo, y en un móvil también lo que se lleva la pestaña por delante.
+ *
+ * A la mitad de ancho —un cuarto de los píxeles— la diferencia no se ve en una
+ * pantalla de teléfono, que es justo donde se aplica.
+ */
+function factorDeDispositivo() {
+	return typeof window !== "undefined" &&
+		window.matchMedia("(max-width: 768px)").matches
+		? 0.5
+		: 1;
+}
+
+/**
+ * El techo de esto es la MEMORIA, no la calidad.
+ *
+ * De este PNG se saca además un `getImageData` entero para componer, así que
+ * cada píxel se paga dos veces. Un área alta a 2400 de ancho se dispara: se
+ * recorta por área total y no por ancho, que es lo que de verdad revienta.
+ */
+const PIXELES_MAXIMOS = 8_000_000;
+
+/**
+ * El arte solo, a resolución de mirarlo de cerca. Es para "Probar".
+ *
+ * POR QUÉ NO VALE `exportarMiniaturaDelArte`. Aquélla lleva un `min(1, …)`:
+ * nunca amplía, así que sale a los píxeles que el área ocupa EN PANTALLA y como
+ * mucho a 700. Sobre una playera se nota poco —el arte se proyecta casi a su
+ * tamaño—, pero un cilindro comprime 180° de envoltura en el ancho del cuerpo,
+ * y ahí esos 700 px se estiraban 3.8×: las letras salían con halo, borrosas.
+ * Que es justo lo que se venía a comprobar a esta pantalla.
+ *
+ * SE AMPLÍA SIN MIEDO PORQUE AQUÍ NO HAY MOCKUP. Es la razón por la que existe
+ * `AMPLIACION_MAXIMA` en la colocación y por la que aquí no hace falta: el
+ * multiplicador de Fabric no reescala un bitmap, vuelve a rasterizar la escena,
+ * o sea que el texto y las formas salen nítidos de verdad. Lo único que no
+ * mejora es una imagen que subió el cliente — y ésa antes se encogía a 700 y se
+ * volvía a estirar, así que también sale ganando.
+ *
+ * LA IMAGEN DEL PEDIDO NO PASA POR AQUÍ: `exportarParaPedido` compone con el
+ * arte de producción, que va al DPI que declaró el taller. Esto es sólo la
+ * vista.
+ */
+export function exportarArteParaVista(
+	canvas: Canvas,
+	areas: FabricObject[],
+): string | null {
+	const area = areas[0];
+	if (!area) return null;
+
+	const fondo = canvas.backgroundImage;
+	const colorFondo = canvas.backgroundColor;
+	const vista = canvas.viewportTransform;
+	const visibles = areas.map((a) => a.visible);
+
+	try {
+		canvas.viewportTransform = [1, 0, 0, 1, 0, 0];
+
+		canvas.backgroundImage = undefined;
+		canvas.backgroundColor = "";
+		for (const a of areas) a.visible = false;
+
+		canvas.renderAll();
+
+		const recorte = area.getBoundingRect();
+		const ancho = recorte.width || 1;
+		const alto = recorte.height || 1;
+
+		const factor = factorDeDispositivo();
+		const porAncho = (ANCHO_VISTA_CERCANA * factor) / ancho;
+		const porArea = Math.sqrt(
+			(PIXELES_MAXIMOS * factor * factor) / (ancho * alto),
+		);
+
+		// Nunca por debajo de 1: encoger lo que ya se ve en pantalla sería salir
+		// peor que la miniatura a la que esto viene a sustituir.
+		const multiplicador = Math.max(1, Math.min(porAncho, porArea));
+
+		return canvas.toDataURL({
+			format: "png",
+			left: recorte.left,
+			top: recorte.top,
+			width: recorte.width,
+			height: recorte.height,
+			multiplier: multiplicador,
+		});
+	} catch {
+		// Sin arte, la vista enseña la foto sola. Quedarse sin memoria pidiendo
+		// una imagen grande no puede tumbar la pantalla de "Probar".
+		return null;
+	} finally {
+		canvas.backgroundImage = fondo;
+		canvas.backgroundColor = colorFondo;
+		if (vista) canvas.viewportTransform = vista;
+		areas.forEach((a, i) => {
+			a.visible = visibles[i];
+		});
+		canvas.renderAll();
+	}
+}
+
+/**
  * La prenda CON el diseño encima. Es la referencia de colocación.
  *
  * Sirve a los dos lados y por motivos distintos:

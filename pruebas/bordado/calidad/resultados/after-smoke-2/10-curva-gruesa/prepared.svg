@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkstitch="http://inkstitch.org/namespace" width="90mm" height="60mm" viewBox="0 0 90 60">
+<metadata><inkstitch:min_stitch_len_mm>0.3</inkstitch:min_stitch_len_mm><inkstitch:collapse_len_mm>3</inkstitch:collapse_len_mm><inkstitch:min_satin_stroke_width_mm>1.5</inkstitch:min_satin_stroke_width_mm><inkstitch:inkstitch_svg_version>4</inkstitch:inkstitch_svg_version></metadata>
+<path id="curva-gruesa-v3-fill-0" d="M15.392 44.206L18.434 35.599L22.407 28.975L27.171 23.934L32.519 20.395L38.269 18.296L44.251 17.6L50.292 18.296L56.206 20.387L61.8 23.887L66.87 28.82L71.204 35.213L74.689 43.414L81.311 40.586L77.539 31.792L72.407 24.217L66.263 18.238L59.35 13.91L51.924 11.283L44.249 10.4L36.599 11.292L29.259 13.975L22.516 18.441L16.648 24.654L11.906 32.563L8.608 41.794Z" fill="#171717" fill-rule="evenodd" stroke="none" inkstitch:fill_method="tatami_fill" inkstitch:angle="0.0" inkstitch:row_spacing_mm="0.45" inkstitch:max_stitch_length_mm="4.5" inkstitch:fill_underlay="true" inkstitch:pull_compensation_mm="0.15" inkstitch:trim_after="false" />
+</svg>

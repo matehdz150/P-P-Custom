@@ -24,7 +24,7 @@ export default function DesignerSidebar({
 	// Armando una plantilla la flecha no vuelve al catálogo, sino a la
 	// plantilla a medio armar; la etiqueta tiene que decirlo o parece una
 	// salida en falso.
-	const { plantilla } = useDesigner();
+	const { plantilla, evento } = useDesigner();
 
 	const toggle = (panel: string) => {
 		setActivePanel(activePanel === panel ? null : panel);
@@ -44,7 +44,13 @@ export default function DesignerSidebar({
 			>
 				<SidebarIcon
 					icon={<ArrowLeft size={22} />}
-					label={plantilla ? "Regresar a la plantilla" : "Regresar al catálogo"}
+					label={
+						plantilla
+							? "Regresar a la plantilla"
+							: evento
+								? "Regresar al evento"
+								: "Regresar al catálogo"
+					}
 					onClick={onVolverAlCatalogo}
 				/>
 				<SidebarIcon

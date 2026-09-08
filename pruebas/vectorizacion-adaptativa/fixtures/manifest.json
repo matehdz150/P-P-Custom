@@ -1,0 +1,52 @@
+[
+  {
+    "archivo": "01-logo-color-alpha.png",
+    "esperado": "logo-line-art",
+    "descripcion": "Logo color con transparencia (Discovery Park)"
+  },
+  {
+    "archivo": "02-logo-color-sin-alpha.png",
+    "esperado": "logo-line-art",
+    "descripcion": "Logo color sin transparencia"
+  },
+  {
+    "archivo": "03-logo-blanco-negro.png",
+    "esperado": "logo-line-art",
+    "descripcion": "Logo blanco/negro"
+  },
+  {
+    "archivo": "04-wordmark-texto-pequeno.png",
+    "esperado": "logo-line-art",
+    "descripcion": "Wordmark con texto pequeño"
+  },
+  {
+    "archivo": "05-icono-geometrico.png",
+    "esperado": "icono-geometrico",
+    "descripcion": "Icono geométrico"
+  },
+  {
+    "archivo": "06-ilustracion.png",
+    "esperado": "ilustracion",
+    "descripcion": "Ilustración por regiones"
+  },
+  {
+    "archivo": "07-retrato.jpg",
+    "esperado": "fotografia",
+    "descripcion": "Retrato"
+  },
+  {
+    "archivo": "08-fotografia-alpha.png",
+    "esperado": "fotografia",
+    "descripcion": "Fotografía recortada con alpha"
+  },
+  {
+    "archivo": "09-degradados.png",
+    "esperado": "fotografia",
+    "descripcion": "Imagen con degradados/tono continuo"
+  },
+  {
+    "archivo": "10-jpeg-ruido-compresion.jpg",
+    "esperado": "fotografia",
+    "descripcion": "JPEG con ruido y compresión"
+  }
+]

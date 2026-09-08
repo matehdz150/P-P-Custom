@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+     xmlns:inkstitch="http://inkstitch.org/namespace"
+     version="1.1" width="90.0mm" height="60.0mm"
+     viewBox="0 0 90.0 60.0">
+  <metadata>
+    <inkstitch:min_stitch_len_mm>0.3</inkstitch:min_stitch_len_mm>
+    <inkstitch:collapse_len_mm>3</inkstitch:collapse_len_mm>
+    <inkstitch:min_satin_stroke_width_mm>1.5</inkstitch:min_satin_stroke_width_mm>
+    <inkstitch:inkstitch_svg_version>4</inkstitch:inkstitch_svg_version>
+  </metadata>
+  <path id="region-1" d="M 64.50,20.70 L 64.30,20.70 L 64.30,20.90 L 64.70,21.30 L 65.10,22.20 L 67.90,26.60 L 67.80,26.90 L 61.10,24.10 L 49.60,26.90 L 31.20,49.70 L 31.20,50.00 L 71.90,50.00 L 71.90,45.10 L 65.00,45.00 L 67.90,39.40 L 67.90,39.10 L 63.00,39.00 L 63.20,38.40 L 69.20,28.20 L 69.10,27.60 Z" fill="#315d9b" fill-rule="evenodd" stroke="none"
+        inkstitch:fill_method="tatami_fill" inkstitch:angle="0"
+        inkstitch:row_spacing_mm="0.45" inkstitch:max_stitch_length_mm="4"
+        inkstitch:fill_underlay="true"
+        inkstitch:pull_compensation_mm="0.15" inkstitch:trim_after="true" />
+  <path id="region-2" d="M 76.10,45.10 L 76.10,50.00 L 83.90,50.00 L 80.70,45.10 Z" fill="#315d9b" fill-rule="evenodd" stroke="none"
+        inkstitch:fill_method="tatami_fill" inkstitch:angle="0"
+        inkstitch:row_spacing_mm="0.45" inkstitch:max_stitch_length_mm="4"
+        inkstitch:fill_underlay="true"
+        inkstitch:pull_compensation_mm="0.15" inkstitch:trim_after="true" />
+  <path id="region-3" d="M 34.10,18.10 L 33.80,18.20 L 8.20,49.70 L 8.20,50.00 L 30.90,50.00 L 44.60,33.00 L 44.60,32.70 Z" fill="#ef6b45" fill-rule="evenodd" stroke="none"
+        inkstitch:fill_method="tatami_fill" inkstitch:angle="45"
+        inkstitch:row_spacing_mm="0.45" inkstitch:max_stitch_length_mm="4"
+        inkstitch:fill_underlay="true"
+        inkstitch:pull_compensation_mm="0.15" inkstitch:trim_after="true" />
+  <path id="region-4" d="M 74.10,20.10 L 73.90,20.10 L 63.10,38.80 L 63.10,39.00 L 68.00,39.10 L 68.00,39.40 L 65.10,45.00 L 81.90,45.00 L 81.90,44.70 L 79.30,39.10 L 83.90,39.00 L 83.90,38.80 Z" fill="#367c4a" fill-rule="evenodd" stroke="none"
+        inkstitch:fill_method="tatami_fill" inkstitch:angle="-45"
+        inkstitch:row_spacing_mm="0.45" inkstitch:max_stitch_length_mm="4"
+        inkstitch:fill_underlay="true"
+        inkstitch:pull_compensation_mm="0.15" inkstitch:trim_after="true" />
+  <path id="region-5" d="M 16.10,7.00 L 14.20,7.40 L 12.60,8.10 L 11.30,9.00 L 10.00,10.30 L 9.10,11.60 L 8.40,13.20 L 8.00,15.10 L 8.00,16.90 L 8.40,18.80 L 9.10,20.40 L 10.00,21.70 L 11.30,23.00 L 12.60,23.90 L 14.20,24.60 L 16.10,25.00 L 17.90,25.00 L 19.80,24.60 L 21.40,23.90 L 22.70,23.00 L 24.00,21.70 L 24.90,20.40 L 25.60,18.80 L 26.00,16.90 L 26.00,15.10 L 25.60,13.20 L 24.90,11.60 L 24.00,10.30 L 22.70,9.00 L 21.40,8.10 L 19.80,7.40 L 17.90,7.00 Z" fill="#efb52d" fill-rule="evenodd" stroke="none"
+        inkstitch:fill_method="tatami_fill" inkstitch:angle="90"
+        inkstitch:row_spacing_mm="0.45" inkstitch:max_stitch_length_mm="4"
+        inkstitch:fill_underlay="true"
+        inkstitch:pull_compensation_mm="0.15" inkstitch:trim_after="true" />
+  <path id="region-6" d="M 67.80,26.60 L 60.10,14.10 L 59.90,14.10 L 49.80,26.00 L 49.30,26.80 L 60.70,24.00 L 61.40,24.10 L 67.50,26.80 L 67.80,26.80 Z" fill="#f2ead8" fill-rule="evenodd" stroke="none"
+        inkstitch:fill_method="tatami_fill" inkstitch:angle="0"
+        inkstitch:row_spacing_mm="0.45" inkstitch:max_stitch_length_mm="4"
+        inkstitch:fill_underlay="true"
+        inkstitch:pull_compensation_mm="0.15" inkstitch:trim_after="true" />
+  <path id="region-7" d="M 72.00,45.10 L 72.00,51.00 L 76.00,51.00 L 76.00,45.10 Z" fill="#74452a" fill-rule="evenodd" stroke="none"
+        inkstitch:fill_method="tatami_fill" inkstitch:angle="45"
+        inkstitch:row_spacing_mm="0.45" inkstitch:max_stitch_length_mm="4"
+        inkstitch:fill_underlay="true"
+        inkstitch:pull_compensation_mm="0.15" inkstitch:trim_after="false" />
+</svg>

@@ -1,6 +1,6 @@
 "use client";
 
-import type { FabricImage } from "fabric";
+import type { FabricObject } from "fabric";
 import { useId } from "react";
 import { useHistory } from "@/Contexts/HistoryContext";
 import OpacityControl from "@/components/Icons/OpacityControls";
@@ -8,7 +8,7 @@ import RotationInput from "@/components/Icons/RotateControls";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ChangePropertyCommand } from "@/lib/history/commands/ChangePropertyCommand";
 
-export default function ImageControls({ obj }: { obj: FabricImage }) {
+export default function ImageControls({ obj }: { obj: FabricObject }) {
 	const { execute } = useHistory();
 	const visibilityId = useId();
 

@@ -39,6 +39,22 @@ import type { MezclaDeTinta } from "./componer";
 /** El tope de ancho del PNG. Una foto de estudio llega a 4000 px y no hace falta. */
 const ANCHO_MAXIMO = 1600;
 
+/**
+ * Cuántas columnas del arte se promedian por columna de la foto.
+ *
+ * POR QUÉ NO BASTA CON UNA. Cerca del borde el cilindro se ve casi de canto:
+ * una columna de la foto cubre CINCO o más columnas del arte, y quedarse con
+ * la del centro es tirar las otras cuatro. Eso es lo que dentaba las letras
+ * que se van hacia el borde y les ponía moiré — y no se arregla con más
+ * resolución, porque cuanto más fino es el arte, más se tira.
+ *
+ * EL NÚMERO SALE DE LA DERIVADA, píxel a píxel: en el centro de la taza el
+ * reparto es casi 1:1 y basta una muestra, así que el coste se paga sólo en la
+ * franja de los bordes, que es donde hay algo que ganar. El tope está para que
+ * una foto grande contra un arte grande no dispare el bucle.
+ */
+const MUESTRAS_MAXIMAS = 6;
+
 export type BandaCilindrica = {
 	/** Los bordes visibles del cuerpo, en fracciones de 0 a 1 de la foto. */
 	izquierda: number;
@@ -154,6 +170,12 @@ function pintar(
 	const d = destino.data;
 	const anchoVisible = der - izq;
 
+	/* Reutilizados en todo el recorrido. Son millones de píxeles por varias
+	   muestras cada uno: pedir un arreglo nuevo en cada muestra tenía al
+	   recolector de basura trabajando más que el propio bucle. */
+	const tinta = [0, 0, 0, 0];
+	const columnas: number[] = [];
+
 	for (let x = x0; x <= x1; x++) {
 		// El centro del píxel, no su esquina: con la esquina el estampado entero
 		// queda medio píxel corrido hacia arriba y a la izquierda.
@@ -169,15 +191,36 @@ function pintar(
 		const theta = Math.asin(seno);
 		const coseno = Math.cos(theta);
 
-		/* La columna del arte. Los 180° visibles son la MITAD de la envoltura,
-		   así que `θ/2π` recorre un cuarto a cada lado del centro. Se envuelve
-		   con módulo porque el centro puede estar cerca de la costura. */
-		const sx = envolver(banda.centro + theta / (2 * Math.PI));
-
 		const arribaCol = arribaBase + bombeoPx * coseno;
 		const abajoCol = abajoBase + bombeoPx * coseno;
 		const altoCol = abajoCol - arribaCol;
 		if (!(altoCol > 0)) continue;
+
+		/* CUÁNTO ARTE CABE EN ESTA COLUMNA. La derivada de `θ = asin(2u−1)` es
+		   `2/√(1−(2u−1)²)`, que en el centro vale 2 y en el borde se dispara;
+		   pasada a columnas del arte dice cuántas aplasta este píxel. El suelo
+		   de la raíz evita el infinito exacto del borde. */
+		const derivada = 2 / Math.sqrt(Math.max(1e-6, 1 - seno * seno));
+		const aplastadas = (derivada / (2 * Math.PI)) * (arte.width / anchoVisible);
+		const muestras = Math.min(
+			MUESTRAS_MAXIMAS,
+			Math.max(1, Math.round(aplastadas)),
+		);
+
+		/* Las columnas del arte que caen dentro de ESTE píxel, repartidas por su
+		   ancho. No dependen de la altura, así que se calculan una vez por
+		   columna y no una vez por píxel.
+
+		   Los 180° visibles son la MITAD de la envoltura, así que `θ/2π` recorre
+		   un cuarto a cada lado del centro. Se envuelve con módulo porque el
+		   centro puede estar cerca de la costura. */
+		columnas.length = 0;
+		for (let j = 0; j < muestras; j++) {
+			const uj = (px - izq + (j + 0.5) / muestras - 0.5) / anchoVisible;
+			const senoJ = Math.min(1, Math.max(-1, 2 * uj - 1));
+			const sxJ = envolver(banda.centro + Math.asin(senoJ) / (2 * Math.PI));
+			columnas.push(sxJ * arte.width - 0.5);
+		}
 
 		for (let y = y0; y <= y1; y++) {
 			const py = y + 0.5;
@@ -185,23 +228,40 @@ function pintar(
 			const v = (py - arribaCol) / altoCol;
 			if (v < 0 || v > 1) continue;
 
-			const tinta = muestrear(
-				arte,
-				sx * arte.width - 0.5,
-				v * arte.height - 0.5,
-			);
-			const alfa = tinta[3] / 255;
+			const yArte = v * arte.height - 0.5;
+
+			let r = 0;
+			let g = 0;
+			let b = 0;
+			let a = 0;
+
+			/* Se acumula PREMULTIPLICADO: el color de un píxel transparente no
+			   significa nada —al rasterizar suele quedar negro— y promediarlo a
+			   secas con el de la letra ensucia el borde con una orla oscura. Es
+			   el halo que se veía alrededor del texto. Pesando cada color por su
+			   propia opacidad, los transparentes no aportan color, sólo vacío. */
+			for (let j = 0; j < muestras; j++) {
+				muestrear(arte, columnas[j], yArte, tinta);
+				const aJ = tinta[3];
+				r += tinta[0] * aJ;
+				g += tinta[1] * aJ;
+				b += tinta[2] * aJ;
+				a += aJ;
+			}
+
+			const alfa = a / muestras / 255;
 			if (alfa <= 0) continue;
 
 			const i = (y * ancho + x) * 4;
 
 			for (let canal = 0; canal < 3; canal++) {
 				const fondo = d[i + canal];
+				// De vuelta a color normal: la suma va premultiplicada por alfa.
+				const color = (canal === 0 ? r : canal === 1 ? g : b) / a;
 				/* `multiply` deja pasar el brillo y la sombra del cilindro, que es
 				   justo lo que hace que parezca impreso y no pegado; `normal` lo
 				   tapa, y hace falta sobre una taza oscura. */
-				const puesto =
-					mezcla === "multiply" ? (fondo * tinta[canal]) / 255 : tinta[canal];
+				const puesto = mezcla === "multiply" ? (fondo * color) / 255 : color;
 				d[i + canal] = fondo + (puesto - fondo) * alfa;
 			}
 		}
@@ -214,41 +274,74 @@ function envolver(x: number) {
 }
 
 /**
- * Muestreo bilineal. Con el vecino más cercano, el borde de una letra sale
- * dentado justo donde el cilindro más lo estira.
+ * Muestreo bilineal, EN ESPACIO PREMULTIPLICADO. Escribe en `salida` en vez de
+ * devolver un arreglo: se le llama millones de veces.
+ *
+ * Con el vecino más cercano, el borde de una letra sale dentado justo donde el
+ * cilindro más lo estira. Y con el bilineal de libro —el que interpola los
+ * cuatro canales por separado— sale con orla: el píxel de al lado de la letra
+ * es transparente, pero su color guardado sigue siendo negro, y mezclarlo al
+ * 50 % oscurece el borde aunque su alfa fuera cero. `ImageData` no viene
+ * premultiplicado, así que hay que hacerlo aquí: se pesa cada color por su
+ * alfa, se interpola, y al final se deshace.
  */
-function muestrear(img: ImageData, x: number, y: number) {
+function muestrear(
+	img: ImageData,
+	x: number,
+	y: number,
+	salida: number[],
+): void {
 	const x0 = Math.floor(x);
 	const y0 = Math.floor(y);
 	const fx = x - x0;
 	const fy = y - y0;
 
-	const salida = [0, 0, 0, 0];
+	const p00 = (1 - fx) * (1 - fy);
+	const p10 = fx * (1 - fy);
+	const p01 = (1 - fx) * fy;
+	const p11 = fx * fy;
 
-	for (let canal = 0; canal < 4; canal++) {
-		const a = leer(img, x0, y0, canal);
-		const b = leer(img, x0 + 1, y0, canal);
-		const c = leer(img, x0, y0 + 1, canal);
-		const e = leer(img, x0 + 1, y0 + 1, canal);
+	const i00 = indice(img, x0, y0);
+	const i10 = indice(img, x0 + 1, y0);
+	const i01 = indice(img, x0, y0 + 1);
+	const i11 = indice(img, x0 + 1, y0 + 1);
 
-		salida[canal] =
-			a * (1 - fx) * (1 - fy) +
-			b * fx * (1 - fy) +
-			c * (1 - fx) * fy +
-			e * fx * fy;
+	const d = img.data;
+
+	const a00 = d[i00 + 3];
+	const a10 = d[i10 + 3];
+	const a01 = d[i01 + 3];
+	const a11 = d[i11 + 3];
+
+	const alfa = a00 * p00 + a10 * p10 + a01 * p01 + a11 * p11;
+	salida[3] = alfa;
+
+	if (alfa <= 0) {
+		salida[0] = 0;
+		salida[1] = 0;
+		salida[2] = 0;
+		return;
 	}
 
-	return salida;
+	for (let canal = 0; canal < 3; canal++) {
+		salida[canal] =
+			(d[i00 + canal] * a00 * p00 +
+				d[i10 + canal] * a10 * p10 +
+				d[i01 + canal] * a01 * p01 +
+				d[i11 + canal] * a11 * p11) /
+			alfa;
+	}
 }
 
-function leer(img: ImageData, x: number, y: number, canal: number) {
+/** Dónde empieza ese píxel en `data`. */
+function indice(img: ImageData, x: number, y: number) {
 	/* En horizontal se ENVUELVE y en vertical se recorta. No es simetría rota:
 	   el arte da la vuelta al cilindro, así que su borde derecho continúa en el
 	   izquierdo; arriba y abajo, en cambio, se acaba la taza. */
 	const cx = ((x % img.width) + img.width) % img.width;
 	const cy = Math.min(img.height - 1, Math.max(0, y));
 
-	return img.data[(cy * img.width + cx) * 4 + canal];
+	return (cy * img.width + cx) * 4;
 }
 
 function lienzo(ancho: number, alto: number) {

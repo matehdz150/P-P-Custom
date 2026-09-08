@@ -15,7 +15,6 @@ const exportando = process.env.KUSTTO_EXPORT === "1";
 const nextConfig: NextConfig = {
 	...(exportando ? { output: "export" as const } : {}),
 
-
 	/**
 	 * Carpeta por ruta (`/catalogo/index.html`) en vez de `/catalogo.html`.
 	 *
@@ -60,6 +59,10 @@ const nextConfig: NextConfig = {
 			{
 				source: "/medios/:ruta*",
 				destination: `${ADMIN_API}/publico/medios/:ruta*`,
+			},
+			{
+				source: "/eventos/:ruta*",
+				destination: `${ADMIN_API}/publico/archivos-eventos/:ruta*`,
 			},
 		];
 	},

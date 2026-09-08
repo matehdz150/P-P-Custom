@@ -1,0 +1,3259 @@
+{
+  "generatedAt": "2026-09-06T00:45:48.741921+00:00",
+  "matrix": [
+    {
+      "memoryMb": 1024,
+      "case": "01-texto-simple",
+      "phase": "cold",
+      "samples": 3,
+      "successes": 3,
+      "lambdaDurationMs": {
+        "n": 3,
+        "min": 7528.95,
+        "median": 7601.94,
+        "p95Approx": 18661.36,
+        "max": 18661.36
+      },
+      "initDurationMs": {
+        "n": 3,
+        "min": 219.26,
+        "median": 235.23,
+        "p95Approx": 248.14,
+        "max": 248.14
+      },
+      "coldEndToEndMs": {
+        "n": 3,
+        "min": 7777.09,
+        "median": 7837.17,
+        "p95Approx": 18880.62,
+        "max": 18880.62
+      },
+      "engineMs": {
+        "n": 3,
+        "min": 7327.2,
+        "median": 7413.1,
+        "p95Approx": 18474.8,
+        "max": 18474.8
+      },
+      "validationMs": {
+        "n": 3,
+        "min": 14.9,
+        "median": 21.5,
+        "p95Approx": 25.0,
+        "max": 25.0
+      },
+      "previewMs": {
+        "n": 3,
+        "min": 155.0,
+        "median": 156.6,
+        "p95Approx": 164.7,
+        "max": 164.7
+      },
+      "maxMemoryUsedMb": {
+        "n": 3,
+        "min": 318,
+        "median": 319,
+        "p95Approx": 319,
+        "max": 319
+      },
+      "billedDurationMs": {
+        "n": 3,
+        "min": 7778,
+        "median": 7838,
+        "p95Approx": 18881,
+        "max": 18881
+      },
+      "peakJobTmpBytes": {
+        "n": 3,
+        "min": 28555,
+        "median": 28555,
+        "p95Approx": 28555,
+        "max": 28555
+      },
+      "environmentIds": [
+        "0f19c1f927bf45ccab26f4f4d432f53a",
+        "756e36400ee74b8eb2277397fb596e85",
+        "8a73ac95950948d09ff531509d0a28d2"
+      ]
+    },
+    {
+      "memoryMb": 1024,
+      "case": "01-texto-simple",
+      "phase": "warm",
+      "samples": 5,
+      "successes": 5,
+      "lambdaDurationMs": {
+        "n": 5,
+        "min": 4506.4,
+        "median": 5088.2,
+        "p95Approx": 5171.56,
+        "max": 5171.56
+      },
+      "initDurationMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "coldEndToEndMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "engineMs": {
+        "n": 5,
+        "min": 4346.2,
+        "median": 4913.7,
+        "p95Approx": 4986.6,
+        "max": 4986.6
+      },
+      "validationMs": {
+        "n": 5,
+        "min": 14.8,
+        "median": 25.2,
+        "p95Approx": 35.3,
+        "max": 35.3
+      },
+      "previewMs": {
+        "n": 5,
+        "min": 134.9,
+        "median": 144.4,
+        "p95Approx": 156.2,
+        "max": 156.2
+      },
+      "maxMemoryUsedMb": {
+        "n": 5,
+        "min": 325,
+        "median": 325,
+        "p95Approx": 326,
+        "max": 326
+      },
+      "billedDurationMs": {
+        "n": 5,
+        "min": 4507,
+        "median": 5089,
+        "p95Approx": 5172,
+        "max": 5172
+      },
+      "peakJobTmpBytes": {
+        "n": 5,
+        "min": 28555,
+        "median": 28555,
+        "p95Approx": 28555,
+        "max": 28555
+      },
+      "environmentIds": [
+        "0f19c1f927bf45ccab26f4f4d432f53a",
+        "756e36400ee74b8eb2277397fb596e85",
+        "8a73ac95950948d09ff531509d0a28d2"
+      ]
+    },
+    {
+      "memoryMb": 1024,
+      "case": "02-logo-monocromo",
+      "phase": "cold",
+      "samples": 3,
+      "successes": 3,
+      "lambdaDurationMs": {
+        "n": 3,
+        "min": 36986.87,
+        "median": 47059.69,
+        "p95Approx": 47191.54,
+        "max": 47191.54
+      },
+      "initDurationMs": {
+        "n": 3,
+        "min": 264.48,
+        "median": 280.06,
+        "p95Approx": 346.58,
+        "max": 346.58
+      },
+      "coldEndToEndMs": {
+        "n": 3,
+        "min": 37251.35,
+        "median": 47339.75,
+        "p95Approx": 47538.12,
+        "max": 47538.12
+      },
+      "engineMs": {
+        "n": 3,
+        "min": 36754.3,
+        "median": 46795.5,
+        "p95Approx": 46931.3,
+        "max": 46931.3
+      },
+      "validationMs": {
+        "n": 3,
+        "min": 21.6,
+        "median": 26.3,
+        "p95Approx": 41.9,
+        "max": 41.9
+      },
+      "previewMs": {
+        "n": 3,
+        "min": 197.9,
+        "median": 201.4,
+        "p95Approx": 220.2,
+        "max": 220.2
+      },
+      "maxMemoryUsedMb": {
+        "n": 3,
+        "min": 326,
+        "median": 326,
+        "p95Approx": 328,
+        "max": 328
+      },
+      "billedDurationMs": {
+        "n": 3,
+        "min": 37252,
+        "median": 47340,
+        "p95Approx": 47539,
+        "max": 47539
+      },
+      "peakJobTmpBytes": {
+        "n": 3,
+        "min": 33941,
+        "median": 33941,
+        "p95Approx": 33941,
+        "max": 33941
+      },
+      "environmentIds": [
+        "25dda4b4c10548ac8fb4ebd3915728d3",
+        "cc1c5641ea584cdcb25ac1426a8f0851",
+        "f1c5d09f92ec4101a15e3fcbf9c6c570"
+      ]
+    },
+    {
+      "memoryMb": 1024,
+      "case": "02-logo-monocromo",
+      "phase": "warm",
+      "samples": 5,
+      "successes": 5,
+      "lambdaDurationMs": {
+        "n": 5,
+        "min": 4383.36,
+        "median": 5084.38,
+        "p95Approx": 5154.82,
+        "max": 5154.82
+      },
+      "initDurationMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "coldEndToEndMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "engineMs": {
+        "n": 5,
+        "min": 4150.9,
+        "median": 4843.3,
+        "p95Approx": 4915.6,
+        "max": 4915.6
+      },
+      "validationMs": {
+        "n": 5,
+        "min": 31.2,
+        "median": 36.1,
+        "p95Approx": 41.8,
+        "max": 41.8
+      },
+      "previewMs": {
+        "n": 5,
+        "min": 175.7,
+        "median": 198.8,
+        "p95Approx": 204.1,
+        "max": 204.1
+      },
+      "maxMemoryUsedMb": {
+        "n": 5,
+        "min": 326,
+        "median": 328,
+        "p95Approx": 329,
+        "max": 329
+      },
+      "billedDurationMs": {
+        "n": 5,
+        "min": 4384,
+        "median": 5085,
+        "p95Approx": 5155,
+        "max": 5155
+      },
+      "peakJobTmpBytes": {
+        "n": 5,
+        "min": 33941,
+        "median": 33941,
+        "p95Approx": 33941,
+        "max": 33941
+      },
+      "environmentIds": [
+        "25dda4b4c10548ac8fb4ebd3915728d3",
+        "cc1c5641ea584cdcb25ac1426a8f0851",
+        "f1c5d09f92ec4101a15e3fcbf9c6c570"
+      ]
+    },
+    {
+      "memoryMb": 1024,
+      "case": "03-logo-cuatro-colores",
+      "phase": "cold",
+      "samples": 3,
+      "successes": 3,
+      "lambdaDurationMs": {
+        "n": 3,
+        "min": 46956.9,
+        "median": 47021.59,
+        "p95Approx": 58541.11,
+        "max": 58541.11
+      },
+      "initDurationMs": {
+        "n": 3,
+        "min": 237.41,
+        "median": 709.55,
+        "p95Approx": 920.39,
+        "max": 920.39
+      },
+      "coldEndToEndMs": {
+        "n": 3,
+        "min": 47731.14,
+        "median": 47877.29,
+        "p95Approx": 58778.52,
+        "max": 58778.52
+      },
+      "engineMs": {
+        "n": 3,
+        "min": 46495.6,
+        "median": 46530.2,
+        "p95Approx": 58082.8,
+        "max": 58082.8
+      },
+      "validationMs": {
+        "n": 3,
+        "min": 48.2,
+        "median": 57.6,
+        "p95Approx": 58.2,
+        "max": 58.2
+      },
+      "previewMs": {
+        "n": 3,
+        "min": 361.4,
+        "median": 372.9,
+        "p95Approx": 383.4,
+        "max": 383.4
+      },
+      "maxMemoryUsedMb": {
+        "n": 3,
+        "min": 328,
+        "median": 328,
+        "p95Approx": 329,
+        "max": 329
+      },
+      "billedDurationMs": {
+        "n": 3,
+        "min": 47732,
+        "median": 47878,
+        "p95Approx": 58779,
+        "max": 58779
+      },
+      "peakJobTmpBytes": {
+        "n": 3,
+        "min": 77572,
+        "median": 77572,
+        "p95Approx": 77572,
+        "max": 77572
+      },
+      "environmentIds": [
+        "053d6d567b364cc7b879f8973feb24e7",
+        "4fa06705f4234a7782c95cec3b09911c",
+        "b5dc6bd4ccdf4e308692fc3ac2c7b818"
+      ]
+    },
+    {
+      "memoryMb": 1024,
+      "case": "03-logo-cuatro-colores",
+      "phase": "warm",
+      "samples": 6,
+      "successes": 6,
+      "lambdaDurationMs": {
+        "n": 6,
+        "min": 4666.87,
+        "median": 4722.33,
+        "p95Approx": 5404.63,
+        "max": 5404.63
+      },
+      "initDurationMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "coldEndToEndMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "engineMs": {
+        "n": 6,
+        "min": 4249.0,
+        "median": 4313.4,
+        "p95Approx": 4963.8,
+        "max": 4963.8
+      },
+      "validationMs": {
+        "n": 6,
+        "min": 56.7,
+        "median": 57.45,
+        "p95Approx": 77.4,
+        "max": 77.4
+      },
+      "previewMs": {
+        "n": 6,
+        "min": 325.5,
+        "median": 347.9,
+        "p95Approx": 379.4,
+        "max": 379.4
+      },
+      "maxMemoryUsedMb": {
+        "n": 6,
+        "min": 329,
+        "median": 330.5,
+        "p95Approx": 332,
+        "max": 332
+      },
+      "billedDurationMs": {
+        "n": 6,
+        "min": 4667,
+        "median": 4722.5,
+        "p95Approx": 5405,
+        "max": 5405
+      },
+      "peakJobTmpBytes": {
+        "n": 6,
+        "min": 77572,
+        "median": 77572.0,
+        "p95Approx": 77572,
+        "max": 77572
+      },
+      "environmentIds": [
+        "053d6d567b364cc7b879f8973feb24e7",
+        "8b024acc50894387b54136ad224f0a73",
+        "b5dc6bd4ccdf4e308692fc3ac2c7b818"
+      ]
+    },
+    {
+      "memoryMb": 1024,
+      "case": "04-ilustracion",
+      "phase": "cold",
+      "samples": 3,
+      "successes": 3,
+      "lambdaDurationMs": {
+        "n": 3,
+        "min": 34945.61,
+        "median": 48341.58,
+        "p95Approx": 48948.76,
+        "max": 48948.76
+      },
+      "initDurationMs": {
+        "n": 3,
+        "min": 171.36,
+        "median": 245.88,
+        "p95Approx": 276.68,
+        "max": 276.68
+      },
+      "coldEndToEndMs": {
+        "n": 3,
+        "min": 35116.97,
+        "median": 48587.46,
+        "p95Approx": 49225.44,
+        "max": 49225.44
+      },
+      "engineMs": {
+        "n": 3,
+        "min": 34578.8,
+        "median": 47940.8,
+        "p95Approx": 48531.7,
+        "max": 48531.7
+      },
+      "validationMs": {
+        "n": 3,
+        "min": 31.3,
+        "median": 38.6,
+        "p95Approx": 39.5,
+        "max": 39.5
+      },
+      "previewMs": {
+        "n": 3,
+        "min": 315.2,
+        "median": 343.9,
+        "p95Approx": 355.0,
+        "max": 355.0
+      },
+      "maxMemoryUsedMb": {
+        "n": 3,
+        "min": 327,
+        "median": 327,
+        "p95Approx": 327,
+        "max": 327
+      },
+      "billedDurationMs": {
+        "n": 3,
+        "min": 35117,
+        "median": 48588,
+        "p95Approx": 49226,
+        "max": 49226
+      },
+      "peakJobTmpBytes": {
+        "n": 3,
+        "min": 68259,
+        "median": 68259,
+        "p95Approx": 68259,
+        "max": 68259
+      },
+      "environmentIds": [
+        "477711c1e30a416b9ff2dd79408ee408",
+        "70dfe6c83fde40fca3d11102a41c8b9f",
+        "83bd7c882cbb46cf8febf63c4df0557f"
+      ]
+    },
+    {
+      "memoryMb": 1024,
+      "case": "04-ilustracion",
+      "phase": "warm",
+      "samples": 5,
+      "successes": 5,
+      "lambdaDurationMs": {
+        "n": 5,
+        "min": 4227.77,
+        "median": 5353.67,
+        "p95Approx": 5570.32,
+        "max": 5570.32
+      },
+      "initDurationMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "coldEndToEndMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "engineMs": {
+        "n": 5,
+        "min": 3885.2,
+        "median": 4970.9,
+        "p95Approx": 5187.9,
+        "max": 5187.9
+      },
+      "validationMs": {
+        "n": 5,
+        "min": 37.9,
+        "median": 40.4,
+        "p95Approx": 59.3,
+        "max": 59.3
+      },
+      "previewMs": {
+        "n": 5,
+        "min": 298.3,
+        "median": 320.8,
+        "p95Approx": 341.0,
+        "max": 341.0
+      },
+      "maxMemoryUsedMb": {
+        "n": 5,
+        "min": 328,
+        "median": 328,
+        "p95Approx": 331,
+        "max": 331
+      },
+      "billedDurationMs": {
+        "n": 5,
+        "min": 4228,
+        "median": 5354,
+        "p95Approx": 5571,
+        "max": 5571
+      },
+      "peakJobTmpBytes": {
+        "n": 5,
+        "min": 68259,
+        "median": 68259,
+        "p95Approx": 68259,
+        "max": 68259
+      },
+      "environmentIds": [
+        "477711c1e30a416b9ff2dd79408ee408",
+        "70dfe6c83fde40fca3d11102a41c8b9f",
+        "83bd7c882cbb46cf8febf63c4df0557f"
+      ]
+    },
+    {
+      "memoryMb": 2048,
+      "case": "01-texto-simple",
+      "phase": "cold",
+      "samples": 3,
+      "successes": 3,
+      "lambdaDurationMs": {
+        "n": 3,
+        "min": 2601.37,
+        "median": 3475.62,
+        "p95Approx": 4411.19,
+        "max": 4411.19
+      },
+      "initDurationMs": {
+        "n": 3,
+        "min": 118.6,
+        "median": 235.41,
+        "p95Approx": 265.87,
+        "max": 265.87
+      },
+      "coldEndToEndMs": {
+        "n": 3,
+        "min": 2719.97,
+        "median": 3711.03,
+        "p95Approx": 4677.06,
+        "max": 4677.06
+      },
+      "engineMs": {
+        "n": 3,
+        "min": 2529.8,
+        "median": 3373.8,
+        "p95Approx": 4286.9,
+        "max": 4286.9
+      },
+      "validationMs": {
+        "n": 3,
+        "min": 8.5,
+        "median": 11.2,
+        "p95Approx": 15.1,
+        "max": 15.1
+      },
+      "previewMs": {
+        "n": 3,
+        "min": 59.7,
+        "median": 84.7,
+        "p95Approx": 103.6,
+        "max": 103.6
+      },
+      "maxMemoryUsedMb": {
+        "n": 3,
+        "min": 318,
+        "median": 320,
+        "p95Approx": 321,
+        "max": 321
+      },
+      "billedDurationMs": {
+        "n": 3,
+        "min": 2720,
+        "median": 3712,
+        "p95Approx": 4678,
+        "max": 4678
+      },
+      "peakJobTmpBytes": {
+        "n": 3,
+        "min": 28555,
+        "median": 28555,
+        "p95Approx": 28555,
+        "max": 28555
+      },
+      "environmentIds": [
+        "069e7b57e149406981ae4afba49b2a17",
+        "cfc2182dc14b46ba86ce0b7d7fb17d88",
+        "dfc73cc5a83546209ed2281d79054770"
+      ]
+    },
+    {
+      "memoryMb": 2048,
+      "case": "01-texto-simple",
+      "phase": "warm",
+      "samples": 5,
+      "successes": 5,
+      "lambdaDurationMs": {
+        "n": 5,
+        "min": 1900.12,
+        "median": 2460.91,
+        "p95Approx": 2910.4,
+        "max": 2910.4
+      },
+      "initDurationMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "coldEndToEndMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "engineMs": {
+        "n": 5,
+        "min": 1827.1,
+        "median": 2372.6,
+        "p95Approx": 2804.7,
+        "max": 2804.7
+      },
+      "validationMs": {
+        "n": 5,
+        "min": 8.3,
+        "median": 10.9,
+        "p95Approx": 14.7,
+        "max": 14.7
+      },
+      "previewMs": {
+        "n": 5,
+        "min": 62.0,
+        "median": 74.3,
+        "p95Approx": 84.8,
+        "max": 84.8
+      },
+      "maxMemoryUsedMb": {
+        "n": 5,
+        "min": 325,
+        "median": 327,
+        "p95Approx": 327,
+        "max": 327
+      },
+      "billedDurationMs": {
+        "n": 5,
+        "min": 1901,
+        "median": 2461,
+        "p95Approx": 2911,
+        "max": 2911
+      },
+      "peakJobTmpBytes": {
+        "n": 5,
+        "min": 28555,
+        "median": 28555,
+        "p95Approx": 28555,
+        "max": 28555
+      },
+      "environmentIds": [
+        "069e7b57e149406981ae4afba49b2a17",
+        "cfc2182dc14b46ba86ce0b7d7fb17d88",
+        "dfc73cc5a83546209ed2281d79054770"
+      ]
+    },
+    {
+      "memoryMb": 2048,
+      "case": "02-logo-monocromo",
+      "phase": "cold",
+      "samples": 3,
+      "successes": 3,
+      "lambdaDurationMs": {
+        "n": 3,
+        "min": 21023.61,
+        "median": 26403.03,
+        "p95Approx": 28322.16,
+        "max": 28322.16
+      },
+      "initDurationMs": {
+        "n": 3,
+        "min": 254.78,
+        "median": 278.46,
+        "p95Approx": 316.62,
+        "max": 316.62
+      },
+      "coldEndToEndMs": {
+        "n": 3,
+        "min": 21340.23,
+        "median": 26657.81,
+        "p95Approx": 28600.62,
+        "max": 28600.62
+      },
+      "engineMs": {
+        "n": 3,
+        "min": 20896.9,
+        "median": 26248.4,
+        "p95Approx": 28167.3,
+        "max": 28167.3
+      },
+      "validationMs": {
+        "n": 3,
+        "min": 16.5,
+        "median": 21.7,
+        "p95Approx": 21.9,
+        "max": 21.9
+      },
+      "previewMs": {
+        "n": 3,
+        "min": 104.0,
+        "median": 127.7,
+        "p95Approx": 127.9,
+        "max": 127.9
+      },
+      "maxMemoryUsedMb": {
+        "n": 3,
+        "min": 326,
+        "median": 326,
+        "p95Approx": 326,
+        "max": 326
+      },
+      "billedDurationMs": {
+        "n": 3,
+        "min": 21341,
+        "median": 26658,
+        "p95Approx": 28601,
+        "max": 28601
+      },
+      "peakJobTmpBytes": {
+        "n": 3,
+        "min": 33941,
+        "median": 33941,
+        "p95Approx": 33941,
+        "max": 33941
+      },
+      "environmentIds": [
+        "1438a1f1b80c463a94e5bc827b6a2c12",
+        "ac20c48a53644c2d8f86e0ae5ae00b12",
+        "e3bb595583224113adf7cc19a02670e4"
+      ]
+    },
+    {
+      "memoryMb": 2048,
+      "case": "02-logo-monocromo",
+      "phase": "warm",
+      "samples": 5,
+      "successes": 5,
+      "lambdaDurationMs": {
+        "n": 5,
+        "min": 2532.72,
+        "median": 2885.76,
+        "p95Approx": 2961.16,
+        "max": 2961.16
+      },
+      "initDurationMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "coldEndToEndMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "engineMs": {
+        "n": 5,
+        "min": 2409.3,
+        "median": 2746.1,
+        "p95Approx": 2809.3,
+        "max": 2809.3
+      },
+      "validationMs": {
+        "n": 5,
+        "min": 15.7,
+        "median": 21.4,
+        "p95Approx": 22.7,
+        "max": 22.7
+      },
+      "previewMs": {
+        "n": 5,
+        "min": 104.2,
+        "median": 114.9,
+        "p95Approx": 118.9,
+        "max": 118.9
+      },
+      "maxMemoryUsedMb": {
+        "n": 5,
+        "min": 326,
+        "median": 326,
+        "p95Approx": 329,
+        "max": 329
+      },
+      "billedDurationMs": {
+        "n": 5,
+        "min": 2533,
+        "median": 2886,
+        "p95Approx": 2962,
+        "max": 2962
+      },
+      "peakJobTmpBytes": {
+        "n": 5,
+        "min": 33941,
+        "median": 33941,
+        "p95Approx": 33941,
+        "max": 33941
+      },
+      "environmentIds": [
+        "1438a1f1b80c463a94e5bc827b6a2c12",
+        "ac20c48a53644c2d8f86e0ae5ae00b12",
+        "e3bb595583224113adf7cc19a02670e4"
+      ]
+    },
+    {
+      "memoryMb": 2048,
+      "case": "03-logo-cuatro-colores",
+      "phase": "cold",
+      "samples": 3,
+      "successes": 3,
+      "lambdaDurationMs": {
+        "n": 3,
+        "min": 26076.43,
+        "median": 33525.44,
+        "p95Approx": 34520.8,
+        "max": 34520.8
+      },
+      "initDurationMs": {
+        "n": 3,
+        "min": 207.09,
+        "median": 278.26,
+        "p95Approx": 310.66,
+        "max": 310.66
+      },
+      "coldEndToEndMs": {
+        "n": 3,
+        "min": 26283.52,
+        "median": 33803.7,
+        "p95Approx": 34831.46,
+        "max": 34831.46
+      },
+      "engineMs": {
+        "n": 3,
+        "min": 25832.5,
+        "median": 33258.3,
+        "p95Approx": 34249.9,
+        "max": 34249.9
+      },
+      "validationMs": {
+        "n": 3,
+        "min": 34.2,
+        "median": 38.2,
+        "p95Approx": 38.3,
+        "max": 38.3
+      },
+      "previewMs": {
+        "n": 3,
+        "min": 204.9,
+        "median": 222.1,
+        "p95Approx": 223.1,
+        "max": 223.1
+      },
+      "maxMemoryUsedMb": {
+        "n": 3,
+        "min": 327,
+        "median": 328,
+        "p95Approx": 328,
+        "max": 328
+      },
+      "billedDurationMs": {
+        "n": 3,
+        "min": 26284,
+        "median": 33804,
+        "p95Approx": 34832,
+        "max": 34832
+      },
+      "peakJobTmpBytes": {
+        "n": 3,
+        "min": 77572,
+        "median": 77572,
+        "p95Approx": 77572,
+        "max": 77572
+      },
+      "environmentIds": [
+        "3e9dc2494ffe4136a7fd8ade1c453e79",
+        "88c2790d199b4368966d2f493a689796",
+        "9f5a494454894823a197c780b76e8bcf"
+      ]
+    },
+    {
+      "memoryMb": 2048,
+      "case": "03-logo-cuatro-colores",
+      "phase": "warm",
+      "samples": 5,
+      "successes": 5,
+      "lambdaDurationMs": {
+        "n": 5,
+        "min": 2616.41,
+        "median": 3051.68,
+        "p95Approx": 3135.29,
+        "max": 3135.29
+      },
+      "initDurationMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "coldEndToEndMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "engineMs": {
+        "n": 5,
+        "min": 2389.1,
+        "median": 2798.6,
+        "p95Approx": 2880.6,
+        "max": 2880.6
+      },
+      "validationMs": {
+        "n": 5,
+        "min": 29.0,
+        "median": 37.2,
+        "p95Approx": 37.7,
+        "max": 37.7
+      },
+      "previewMs": {
+        "n": 5,
+        "min": 194.3,
+        "median": 210.4,
+        "p95Approx": 212.6,
+        "max": 212.6
+      },
+      "maxMemoryUsedMb": {
+        "n": 5,
+        "min": 329,
+        "median": 329,
+        "p95Approx": 331,
+        "max": 331
+      },
+      "billedDurationMs": {
+        "n": 5,
+        "min": 2617,
+        "median": 3052,
+        "p95Approx": 3136,
+        "max": 3136
+      },
+      "peakJobTmpBytes": {
+        "n": 5,
+        "min": 77572,
+        "median": 77572,
+        "p95Approx": 77572,
+        "max": 77572
+      },
+      "environmentIds": [
+        "3e9dc2494ffe4136a7fd8ade1c453e79",
+        "88c2790d199b4368966d2f493a689796",
+        "9f5a494454894823a197c780b76e8bcf"
+      ]
+    },
+    {
+      "memoryMb": 2048,
+      "case": "04-ilustracion",
+      "phase": "cold",
+      "samples": 3,
+      "successes": 3,
+      "lambdaDurationMs": {
+        "n": 3,
+        "min": 27281.06,
+        "median": 27724.92,
+        "p95Approx": 27758.14,
+        "max": 27758.14
+      },
+      "initDurationMs": {
+        "n": 3,
+        "min": 266.7,
+        "median": 275.1,
+        "p95Approx": 352.06,
+        "max": 352.06
+      },
+      "coldEndToEndMs": {
+        "n": 3,
+        "min": 27556.16,
+        "median": 28024.84,
+        "p95Approx": 28076.98,
+        "max": 28076.98
+      },
+      "engineMs": {
+        "n": 3,
+        "min": 27038.2,
+        "median": 27484.0,
+        "p95Approx": 27521.5,
+        "max": 27521.5
+      },
+      "validationMs": {
+        "n": 3,
+        "min": 28.5,
+        "median": 28.6,
+        "p95Approx": 28.9,
+        "max": 28.9
+      },
+      "previewMs": {
+        "n": 3,
+        "min": 200.2,
+        "median": 200.3,
+        "p95Approx": 205.2,
+        "max": 205.2
+      },
+      "maxMemoryUsedMb": {
+        "n": 3,
+        "min": 327,
+        "median": 327,
+        "p95Approx": 327,
+        "max": 327
+      },
+      "billedDurationMs": {
+        "n": 3,
+        "min": 27557,
+        "median": 28025,
+        "p95Approx": 28077,
+        "max": 28077
+      },
+      "peakJobTmpBytes": {
+        "n": 3,
+        "min": 68259,
+        "median": 68259,
+        "p95Approx": 68259,
+        "max": 68259
+      },
+      "environmentIds": [
+        "2ec7eadcc46f40499ba25e396105cb27",
+        "727be22f8438467e9c9bc6003be07715",
+        "a004bb0a507f4ed2b3a96cdbe6ecaa4d"
+      ]
+    },
+    {
+      "memoryMb": 2048,
+      "case": "04-ilustracion",
+      "phase": "warm",
+      "samples": 5,
+      "successes": 5,
+      "lambdaDurationMs": {
+        "n": 5,
+        "min": 2986.64,
+        "median": 2994.8,
+        "p95Approx": 3168.66,
+        "max": 3168.66
+      },
+      "initDurationMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "coldEndToEndMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "engineMs": {
+        "n": 5,
+        "min": 2765.6,
+        "median": 2774.8,
+        "p95Approx": 2946.8,
+        "max": 2946.8
+      },
+      "validationMs": {
+        "n": 5,
+        "min": 27.5,
+        "median": 27.7,
+        "p95Approx": 28.4,
+        "max": 28.4
+      },
+      "previewMs": {
+        "n": 5,
+        "min": 187.0,
+        "median": 188.1,
+        "p95Approx": 189.6,
+        "max": 189.6
+      },
+      "maxMemoryUsedMb": {
+        "n": 5,
+        "min": 328,
+        "median": 328,
+        "p95Approx": 330,
+        "max": 330
+      },
+      "billedDurationMs": {
+        "n": 5,
+        "min": 2987,
+        "median": 2995,
+        "p95Approx": 3169,
+        "max": 3169
+      },
+      "peakJobTmpBytes": {
+        "n": 5,
+        "min": 68259,
+        "median": 68259,
+        "p95Approx": 68259,
+        "max": 68259
+      },
+      "environmentIds": [
+        "2ec7eadcc46f40499ba25e396105cb27",
+        "727be22f8438467e9c9bc6003be07715",
+        "a004bb0a507f4ed2b3a96cdbe6ecaa4d"
+      ]
+    },
+    {
+      "memoryMb": 2048,
+      "case": "05-imagen-compleja",
+      "phase": "cold",
+      "samples": 3,
+      "successes": 3,
+      "lambdaDurationMs": {
+        "n": 3,
+        "min": 99726.7,
+        "median": 101796.37,
+        "p95Approx": 130465.92,
+        "max": 130465.92
+      },
+      "initDurationMs": {
+        "n": 3,
+        "min": 203.48,
+        "median": 293.95,
+        "p95Approx": 323.18,
+        "max": 323.18
+      },
+      "coldEndToEndMs": {
+        "n": 3,
+        "min": 99930.18,
+        "median": 102090.32,
+        "p95Approx": 130789.1,
+        "max": 130789.1
+      },
+      "engineMs": {
+        "n": 3,
+        "min": 99281.3,
+        "median": 101425.6,
+        "p95Approx": 130059.2,
+        "max": 130059.2
+      },
+      "validationMs": {
+        "n": 3,
+        "min": 72.1,
+        "median": 72.4,
+        "p95Approx": 83.4,
+        "max": 83.4
+      },
+      "previewMs": {
+        "n": 3,
+        "min": 250.7,
+        "median": 290.7,
+        "p95Approx": 311.5,
+        "max": 311.5
+      },
+      "maxMemoryUsedMb": {
+        "n": 3,
+        "min": 375,
+        "median": 376,
+        "p95Approx": 378,
+        "max": 378
+      },
+      "billedDurationMs": {
+        "n": 3,
+        "min": 99931,
+        "median": 102091,
+        "p95Approx": 130790,
+        "max": 130790
+      },
+      "peakJobTmpBytes": {
+        "n": 3,
+        "min": 251870,
+        "median": 251870,
+        "p95Approx": 251870,
+        "max": 251870
+      },
+      "environmentIds": [
+        "5f837c30736949dcaac4f5be953900e5",
+        "989138e6000f4ad38f27c66e5edbf88b",
+        "ce4f78cf0c9e4723b1095c48c0abda24"
+      ]
+    },
+    {
+      "memoryMb": 2048,
+      "case": "05-imagen-compleja",
+      "phase": "warm",
+      "samples": 5,
+      "successes": 5,
+      "lambdaDurationMs": {
+        "n": 5,
+        "min": 3347.07,
+        "median": 3435.86,
+        "p95Approx": 3995.05,
+        "max": 3995.05
+      },
+      "initDurationMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "coldEndToEndMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "engineMs": {
+        "n": 5,
+        "min": 2991.8,
+        "median": 3069.5,
+        "p95Approx": 3609.8,
+        "max": 3609.8
+      },
+      "validationMs": {
+        "n": 5,
+        "min": 71.2,
+        "median": 80.4,
+        "p95Approx": 84.5,
+        "max": 84.5
+      },
+      "previewMs": {
+        "n": 5,
+        "min": 268.8,
+        "median": 289.5,
+        "p95Approx": 295.5,
+        "max": 295.5
+      },
+      "maxMemoryUsedMb": {
+        "n": 5,
+        "min": 375,
+        "median": 376,
+        "p95Approx": 378,
+        "max": 378
+      },
+      "billedDurationMs": {
+        "n": 5,
+        "min": 3348,
+        "median": 3436,
+        "p95Approx": 3996,
+        "max": 3996
+      },
+      "peakJobTmpBytes": {
+        "n": 5,
+        "min": 251870,
+        "median": 251870,
+        "p95Approx": 251870,
+        "max": 251870
+      },
+      "environmentIds": [
+        "5f837c30736949dcaac4f5be953900e5",
+        "989138e6000f4ad38f27c66e5edbf88b",
+        "ce4f78cf0c9e4723b1095c48c0abda24"
+      ]
+    },
+    {
+      "memoryMb": 3008,
+      "case": "01-texto-simple",
+      "phase": "cold",
+      "samples": 3,
+      "successes": 3,
+      "lambdaDurationMs": {
+        "n": 3,
+        "min": 3067.58,
+        "median": 4242.53,
+        "p95Approx": 4333.57,
+        "max": 4333.57
+      },
+      "initDurationMs": {
+        "n": 3,
+        "min": 207.36,
+        "median": 263.03,
+        "p95Approx": 264.95,
+        "max": 264.95
+      },
+      "coldEndToEndMs": {
+        "n": 3,
+        "min": 3274.94,
+        "median": 4505.56,
+        "p95Approx": 4598.52,
+        "max": 4598.52
+      },
+      "engineMs": {
+        "n": 3,
+        "min": 2977.8,
+        "median": 4123.8,
+        "p95Approx": 4210.8,
+        "max": 4210.8
+      },
+      "validationMs": {
+        "n": 3,
+        "min": 11.3,
+        "median": 15.3,
+        "p95Approx": 15.4,
+        "max": 15.4
+      },
+      "previewMs": {
+        "n": 3,
+        "min": 74.2,
+        "median": 98.0,
+        "p95Approx": 101.7,
+        "max": 101.7
+      },
+      "maxMemoryUsedMb": {
+        "n": 3,
+        "min": 319,
+        "median": 319,
+        "p95Approx": 319,
+        "max": 319
+      },
+      "billedDurationMs": {
+        "n": 3,
+        "min": 3275,
+        "median": 4506,
+        "p95Approx": 4599,
+        "max": 4599
+      },
+      "peakJobTmpBytes": {
+        "n": 3,
+        "min": 28555,
+        "median": 28555,
+        "p95Approx": 28555,
+        "max": 28555
+      },
+      "environmentIds": [
+        "3bd011f9b36e40daaf0ce073cb021492",
+        "4cb5a945567a45d2b4b76aa2e153dad3",
+        "8256f575e2b148a8a90d4f961e058c19"
+      ]
+    },
+    {
+      "memoryMb": 3008,
+      "case": "01-texto-simple",
+      "phase": "warm",
+      "samples": 5,
+      "successes": 5,
+      "lambdaDurationMs": {
+        "n": 5,
+        "min": 2013.74,
+        "median": 2872.34,
+        "p95Approx": 3194.48,
+        "max": 3194.48
+      },
+      "initDurationMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "coldEndToEndMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "engineMs": {
+        "n": 5,
+        "min": 1936.3,
+        "median": 2770.5,
+        "p95Approx": 3091.3,
+        "max": 3091.3
+      },
+      "validationMs": {
+        "n": 5,
+        "min": 10.8,
+        "median": 14.6,
+        "p95Approx": 15.0,
+        "max": 15.0
+      },
+      "previewMs": {
+        "n": 5,
+        "min": 63.5,
+        "median": 84.0,
+        "p95Approx": 87.5,
+        "max": 87.5
+      },
+      "maxMemoryUsedMb": {
+        "n": 5,
+        "min": 325,
+        "median": 325,
+        "p95Approx": 326,
+        "max": 326
+      },
+      "billedDurationMs": {
+        "n": 5,
+        "min": 2014,
+        "median": 2873,
+        "p95Approx": 3195,
+        "max": 3195
+      },
+      "peakJobTmpBytes": {
+        "n": 5,
+        "min": 28555,
+        "median": 28555,
+        "p95Approx": 28555,
+        "max": 28555
+      },
+      "environmentIds": [
+        "3bd011f9b36e40daaf0ce073cb021492",
+        "4cb5a945567a45d2b4b76aa2e153dad3",
+        "8256f575e2b148a8a90d4f961e058c19"
+      ]
+    },
+    {
+      "memoryMb": 3008,
+      "case": "02-logo-monocromo",
+      "phase": "cold",
+      "samples": 3,
+      "successes": 3,
+      "lambdaDurationMs": {
+        "n": 3,
+        "min": 26576.92,
+        "median": 26702.46,
+        "p95Approx": 27152.04,
+        "max": 27152.04
+      },
+      "initDurationMs": {
+        "n": 3,
+        "min": 255.55,
+        "median": 321.68,
+        "p95Approx": 365.1,
+        "max": 365.1
+      },
+      "coldEndToEndMs": {
+        "n": 3,
+        "min": 26832.47,
+        "median": 27067.56,
+        "p95Approx": 27473.72,
+        "max": 27473.72
+      },
+      "engineMs": {
+        "n": 3,
+        "min": 26420.8,
+        "median": 26546.7,
+        "p95Approx": 26993.3,
+        "max": 26993.3
+      },
+      "validationMs": {
+        "n": 3,
+        "min": 21.8,
+        "median": 22.0,
+        "p95Approx": 22.9,
+        "max": 22.9
+      },
+      "previewMs": {
+        "n": 3,
+        "min": 127.2,
+        "median": 128.9,
+        "p95Approx": 130.4,
+        "max": 130.4
+      },
+      "maxMemoryUsedMb": {
+        "n": 3,
+        "min": 326,
+        "median": 326,
+        "p95Approx": 327,
+        "max": 327
+      },
+      "billedDurationMs": {
+        "n": 3,
+        "min": 26833,
+        "median": 27068,
+        "p95Approx": 27474,
+        "max": 27474
+      },
+      "peakJobTmpBytes": {
+        "n": 3,
+        "min": 33941,
+        "median": 33941,
+        "p95Approx": 33941,
+        "max": 33941
+      },
+      "environmentIds": [
+        "4f5d242b7b494cc79848144d3bfc4985",
+        "aa33da522c4247adb13ce9f0e9118d99",
+        "ad2f98c6e1ec44229a98d0e5007cc6c5"
+      ]
+    },
+    {
+      "memoryMb": 3008,
+      "case": "02-logo-monocromo",
+      "phase": "warm",
+      "samples": 5,
+      "successes": 5,
+      "lambdaDurationMs": {
+        "n": 5,
+        "min": 2800.92,
+        "median": 2852.64,
+        "p95Approx": 2899.05,
+        "max": 2899.05
+      },
+      "initDurationMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "coldEndToEndMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "engineMs": {
+        "n": 5,
+        "min": 2660.6,
+        "median": 2713.8,
+        "p95Approx": 2758.6,
+        "max": 2758.6
+      },
+      "validationMs": {
+        "n": 5,
+        "min": 20.9,
+        "median": 21.3,
+        "p95Approx": 22.1,
+        "max": 22.1
+      },
+      "previewMs": {
+        "n": 5,
+        "min": 113.6,
+        "median": 114.5,
+        "p95Approx": 118.2,
+        "max": 118.2
+      },
+      "maxMemoryUsedMb": {
+        "n": 5,
+        "min": 326,
+        "median": 327,
+        "p95Approx": 329,
+        "max": 329
+      },
+      "billedDurationMs": {
+        "n": 5,
+        "min": 2801,
+        "median": 2853,
+        "p95Approx": 2900,
+        "max": 2900
+      },
+      "peakJobTmpBytes": {
+        "n": 5,
+        "min": 33941,
+        "median": 33941,
+        "p95Approx": 33941,
+        "max": 33941
+      },
+      "environmentIds": [
+        "4f5d242b7b494cc79848144d3bfc4985",
+        "aa33da522c4247adb13ce9f0e9118d99",
+        "ad2f98c6e1ec44229a98d0e5007cc6c5"
+      ]
+    },
+    {
+      "memoryMb": 3008,
+      "case": "03-logo-cuatro-colores",
+      "phase": "cold",
+      "samples": 3,
+      "successes": 3,
+      "lambdaDurationMs": {
+        "n": 3,
+        "min": 21277.03,
+        "median": 33441.88,
+        "p95Approx": 35959.66,
+        "max": 35959.66
+      },
+      "initDurationMs": {
+        "n": 3,
+        "min": 235.29,
+        "median": 283.96,
+        "p95Approx": 285.58,
+        "max": 285.58
+      },
+      "coldEndToEndMs": {
+        "n": 3,
+        "min": 21512.32,
+        "median": 33727.46,
+        "p95Approx": 36243.62,
+        "max": 36243.62
+      },
+      "engineMs": {
+        "n": 3,
+        "min": 21065.9,
+        "median": 33177.4,
+        "p95Approx": 35694.1,
+        "max": 35694.1
+      },
+      "validationMs": {
+        "n": 3,
+        "min": 27.8,
+        "median": 37.4,
+        "p95Approx": 37.7,
+        "max": 37.7
+      },
+      "previewMs": {
+        "n": 3,
+        "min": 178.6,
+        "median": 221.0,
+        "p95Approx": 222.1,
+        "max": 222.1
+      },
+      "maxMemoryUsedMb": {
+        "n": 3,
+        "min": 328,
+        "median": 329,
+        "p95Approx": 330,
+        "max": 330
+      },
+      "billedDurationMs": {
+        "n": 3,
+        "min": 21513,
+        "median": 33728,
+        "p95Approx": 36244,
+        "max": 36244
+      },
+      "peakJobTmpBytes": {
+        "n": 3,
+        "min": 77572,
+        "median": 77572,
+        "p95Approx": 77572,
+        "max": 77572
+      },
+      "environmentIds": [
+        "1e808ee569e64b46ba2d50d1cf67e07a",
+        "434eb00aaf4d47c2badab8b25928c6a3",
+        "ec4f420dcd8e436d84e917a29025d401"
+      ]
+    },
+    {
+      "memoryMb": 3008,
+      "case": "03-logo-cuatro-colores",
+      "phase": "warm",
+      "samples": 5,
+      "successes": 5,
+      "lambdaDurationMs": {
+        "n": 5,
+        "min": 2161.14,
+        "median": 3022.29,
+        "p95Approx": 3102.49,
+        "max": 3102.49
+      },
+      "initDurationMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "coldEndToEndMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "engineMs": {
+        "n": 5,
+        "min": 1966.5,
+        "median": 2771.2,
+        "p95Approx": 2853.8,
+        "max": 2853.8
+      },
+      "validationMs": {
+        "n": 5,
+        "min": 27.0,
+        "median": 36.4,
+        "p95Approx": 39.0,
+        "max": 39.0
+      },
+      "previewMs": {
+        "n": 5,
+        "min": 163.7,
+        "median": 207.1,
+        "p95Approx": 214.0,
+        "max": 214.0
+      },
+      "maxMemoryUsedMb": {
+        "n": 5,
+        "min": 329,
+        "median": 330,
+        "p95Approx": 333,
+        "max": 333
+      },
+      "billedDurationMs": {
+        "n": 5,
+        "min": 2162,
+        "median": 3023,
+        "p95Approx": 3103,
+        "max": 3103
+      },
+      "peakJobTmpBytes": {
+        "n": 5,
+        "min": 77572,
+        "median": 77572,
+        "p95Approx": 77572,
+        "max": 77572
+      },
+      "environmentIds": [
+        "1e808ee569e64b46ba2d50d1cf67e07a",
+        "434eb00aaf4d47c2badab8b25928c6a3",
+        "ec4f420dcd8e436d84e917a29025d401"
+      ]
+    },
+    {
+      "memoryMb": 3008,
+      "case": "04-ilustracion",
+      "phase": "cold",
+      "samples": 3,
+      "successes": 3,
+      "lambdaDurationMs": {
+        "n": 3,
+        "min": 16832.2,
+        "median": 27777.55,
+        "p95Approx": 29969.09,
+        "max": 29969.09
+      },
+      "initDurationMs": {
+        "n": 3,
+        "min": 159.16,
+        "median": 262.55,
+        "p95Approx": 264.12,
+        "max": 264.12
+      },
+      "coldEndToEndMs": {
+        "n": 3,
+        "min": 16991.36,
+        "median": 28040.1,
+        "p95Approx": 30233.21,
+        "max": 30233.21
+      },
+      "engineMs": {
+        "n": 3,
+        "min": 16644.1,
+        "median": 27541.6,
+        "p95Approx": 29730.7,
+        "max": 29730.7
+      },
+      "validationMs": {
+        "n": 3,
+        "min": 21.5,
+        "median": 28.8,
+        "p95Approx": 28.9,
+        "max": 28.9
+      },
+      "previewMs": {
+        "n": 3,
+        "min": 158.1,
+        "median": 200.8,
+        "p95Approx": 201.0,
+        "max": 201.0
+      },
+      "maxMemoryUsedMb": {
+        "n": 3,
+        "min": 326,
+        "median": 327,
+        "p95Approx": 328,
+        "max": 328
+      },
+      "billedDurationMs": {
+        "n": 3,
+        "min": 16992,
+        "median": 28041,
+        "p95Approx": 30234,
+        "max": 30234
+      },
+      "peakJobTmpBytes": {
+        "n": 3,
+        "min": 68259,
+        "median": 68259,
+        "p95Approx": 68259,
+        "max": 68259
+      },
+      "environmentIds": [
+        "0e9d5b6ce2f44bcc8948d2f491be3e07",
+        "2d0a62fb77574a0fbdf16ff04fa0e790",
+        "5f6465771ed74667a993a61f455f2ba0"
+      ]
+    },
+    {
+      "memoryMb": 3008,
+      "case": "04-ilustracion",
+      "phase": "warm",
+      "samples": 5,
+      "successes": 5,
+      "lambdaDurationMs": {
+        "n": 5,
+        "min": 2099.07,
+        "median": 3002.36,
+        "p95Approx": 3033.22,
+        "max": 3033.22
+      },
+      "initDurationMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "coldEndToEndMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "engineMs": {
+        "n": 5,
+        "min": 1926.7,
+        "median": 2776.1,
+        "p95Approx": 2802.5,
+        "max": 2802.5
+      },
+      "validationMs": {
+        "n": 5,
+        "min": 20.4,
+        "median": 28.1,
+        "p95Approx": 29.4,
+        "max": 29.4
+      },
+      "previewMs": {
+        "n": 5,
+        "min": 148.1,
+        "median": 188.5,
+        "p95Approx": 198.3,
+        "max": 198.3
+      },
+      "maxMemoryUsedMb": {
+        "n": 5,
+        "min": 328,
+        "median": 328,
+        "p95Approx": 330,
+        "max": 330
+      },
+      "billedDurationMs": {
+        "n": 5,
+        "min": 2100,
+        "median": 3003,
+        "p95Approx": 3034,
+        "max": 3034
+      },
+      "peakJobTmpBytes": {
+        "n": 5,
+        "min": 68259,
+        "median": 68259,
+        "p95Approx": 68259,
+        "max": 68259
+      },
+      "environmentIds": [
+        "0e9d5b6ce2f44bcc8948d2f491be3e07",
+        "2d0a62fb77574a0fbdf16ff04fa0e790",
+        "5f6465771ed74667a993a61f455f2ba0"
+      ]
+    },
+    {
+      "memoryMb": 3008,
+      "case": "05-imagen-compleja",
+      "phase": "cold",
+      "samples": 3,
+      "successes": 3,
+      "lambdaDurationMs": {
+        "n": 3,
+        "min": 120855.6,
+        "median": 125795.14,
+        "p95Approx": 125811.41,
+        "max": 125811.41
+      },
+      "initDurationMs": {
+        "n": 3,
+        "min": 225.01,
+        "median": 243.22,
+        "p95Approx": 253.29,
+        "max": 253.29
+      },
+      "coldEndToEndMs": {
+        "n": 3,
+        "min": 121098.82,
+        "median": 126020.15,
+        "p95Approx": 126064.7,
+        "max": 126064.7
+      },
+      "engineMs": {
+        "n": 3,
+        "min": 120457.9,
+        "median": 125391.2,
+        "p95Approx": 125413.4,
+        "max": 125413.4
+      },
+      "validationMs": {
+        "n": 3,
+        "min": 83.1,
+        "median": 83.4,
+        "p95Approx": 84.0,
+        "max": 84.0
+      },
+      "previewMs": {
+        "n": 3,
+        "min": 307.3,
+        "median": 307.3,
+        "p95Approx": 309.2,
+        "max": 309.2
+      },
+      "maxMemoryUsedMb": {
+        "n": 3,
+        "min": 375,
+        "median": 378,
+        "p95Approx": 390,
+        "max": 390
+      },
+      "billedDurationMs": {
+        "n": 3,
+        "min": 121099,
+        "median": 126021,
+        "p95Approx": 126065,
+        "max": 126065
+      },
+      "peakJobTmpBytes": {
+        "n": 3,
+        "min": 251870,
+        "median": 251870,
+        "p95Approx": 251870,
+        "max": 251870
+      },
+      "environmentIds": [
+        "7c59dbd256764b5094509ecbf624cf93",
+        "b752c35e36244182946e49dbf8d923e7",
+        "e1806c3bd18d448eb3c02e0adb516762"
+      ]
+    },
+    {
+      "memoryMb": 3008,
+      "case": "05-imagen-compleja",
+      "phase": "warm",
+      "samples": 5,
+      "successes": 5,
+      "lambdaDurationMs": {
+        "n": 5,
+        "min": 3787.51,
+        "median": 3940.64,
+        "p95Approx": 4214.35,
+        "max": 4214.35
+      },
+      "initDurationMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "coldEndToEndMs": {
+        "n": 0,
+        "min": null,
+        "median": null,
+        "p95Approx": null,
+        "max": null
+      },
+      "engineMs": {
+        "n": 5,
+        "min": 3396.1,
+        "median": 3555.1,
+        "p95Approx": 3829.5,
+        "max": 3829.5
+      },
+      "validationMs": {
+        "n": 5,
+        "min": 82.6,
+        "median": 84.1,
+        "p95Approx": 87.5,
+        "max": 87.5
+      },
+      "previewMs": {
+        "n": 5,
+        "min": 294.8,
+        "median": 296.1,
+        "p95Approx": 308.3,
+        "max": 308.3
+      },
+      "maxMemoryUsedMb": {
+        "n": 5,
+        "min": 375,
+        "median": 378,
+        "p95Approx": 390,
+        "max": 390
+      },
+      "billedDurationMs": {
+        "n": 5,
+        "min": 3788,
+        "median": 3941,
+        "p95Approx": 4215,
+        "max": 4215
+      },
+      "peakJobTmpBytes": {
+        "n": 5,
+        "min": 251870,
+        "median": 251870,
+        "p95Approx": 251870,
+        "max": 251870
+      },
+      "environmentIds": [
+        "7c59dbd256764b5094509ecbf624cf93",
+        "b752c35e36244182946e49dbf8d923e7",
+        "e1806c3bd18d448eb3c02e0adb516762"
+      ]
+    }
+  ],
+  "concurrency": [
+    {
+      "timestamp": "2026-09-06T00:44:23.063943+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-1",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 26244.35,
+        "billedDurationMs": 26482,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 328,
+        "initDurationMs": 237.65
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 25998.3,
+        "validationMs": 27.8,
+        "previewMs": 213.4,
+        "totalMs": 26240.9,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 153.6,
+        "environmentId": "003e6d8b8a97457abb9f4dab4ec96fea",
+        "environmentInvocation": 1,
+        "handlerInitMs": 41.7
+      },
+      "reportLine": "REPORT RequestId: bc755abb-fd8e-488f-ba50-6613438f6702\tDuration: 26244.35 ms\tBilled Duration: 26482 ms\tMemory Size: 2048 MB\tMax Memory Used: 328 MB\tInit Duration: 237.65 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:44:55.981999+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-5",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 25601.28,
+        "billedDurationMs": 25763,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 327,
+        "initDurationMs": 161.62
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 25374.8,
+        "validationMs": 28.3,
+        "previewMs": 192.3,
+        "totalMs": 25597.6,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 152.8,
+        "environmentId": "1d24ffa5f065480caa88ea800a863e1d",
+        "environmentInvocation": 1,
+        "handlerInitMs": 21.3
+      },
+      "reportLine": "REPORT RequestId: 74c41cf5-8ae3-4624-8d64-72a541d03f94\tDuration: 25601.28 ms\tBilled Duration: 25763 ms\tMemory Size: 2048 MB\tMax Memory Used: 327 MB\tInit Duration: 161.62 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:44:56.717199+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-5",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 26133.96,
+        "billedDurationMs": 26439,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 326,
+        "initDurationMs": 304.77
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 25896.1,
+        "validationMs": 27.6,
+        "previewMs": 203.9,
+        "totalMs": 26129.3,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 151.6,
+        "environmentId": "50cdf55af2b54c63bb4c053c5ac39519",
+        "environmentInvocation": 1,
+        "handlerInitMs": 62.0
+      },
+      "reportLine": "REPORT RequestId: 4f974d74-6ec6-4f4c-b6f2-ac5f48303c8e\tDuration: 26133.96 ms\tBilled Duration: 26439 ms\tMemory Size: 2048 MB\tMax Memory Used: 326 MB\tInit Duration: 304.77 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:45:04.500658+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-5",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 34010.76,
+        "billedDurationMs": 34271,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 330,
+        "initDurationMs": 260.15
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 33748.5,
+        "validationMs": 37.5,
+        "previewMs": 219.3,
+        "totalMs": 34006.6,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 154.0,
+        "environmentId": "59021183422a41deb31648e29b688145",
+        "environmentInvocation": 1,
+        "handlerInitMs": 41.7
+      },
+      "reportLine": "REPORT RequestId: 381561fb-081f-4f95-8e2b-119d2a671188\tDuration: 34010.76 ms\tBilled Duration: 34271 ms\tMemory Size: 2048 MB\tMax Memory Used: 330 MB\tInit Duration: 260.15 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:45:04.578571+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-5",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 34129.99,
+        "billedDurationMs": 34406,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 329,
+        "initDurationMs": 275.07
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 33865.3,
+        "validationMs": 38.1,
+        "previewMs": 220.2,
+        "totalMs": 34125.7,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 152.9,
+        "environmentId": "3d05cd5cbfde45efbe59b0998d57d1ae",
+        "environmentInvocation": 1,
+        "handlerInitMs": 41.6
+      },
+      "reportLine": "REPORT RequestId: ffb1cea7-fc95-47ed-a601-3094a8918e05\tDuration: 34129.99 ms\tBilled Duration: 34406 ms\tMemory Size: 2048 MB\tMax Memory Used: 329 MB\tInit Duration: 275.07 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:45:04.810242+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-5",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 34359.03,
+        "billedDurationMs": 34622,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 328,
+        "initDurationMs": 262.37
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 34089.6,
+        "validationMs": 38.6,
+        "previewMs": 225.3,
+        "totalMs": 34354.9,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 153.0,
+        "environmentId": "b5bc04282da34e0e83313040abd985a1",
+        "environmentInvocation": 1,
+        "handlerInitMs": 41.9
+      },
+      "reportLine": "REPORT RequestId: 2fa660ed-329f-48fd-b355-4acb8c5e6347\tDuration: 34359.03 ms\tBilled Duration: 34622 ms\tMemory Size: 2048 MB\tMax Memory Used: 328 MB\tInit Duration: 262.37 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:45:32.991688+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-10",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 20604.87,
+        "billedDurationMs": 20778,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 328,
+        "initDurationMs": 172.19
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 20429.2,
+        "validationMs": 21.6,
+        "previewMs": 150.3,
+        "totalMs": 20601.9,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 153.5,
+        "environmentId": "64d7ef5937eb41bcb76b1562df4fc3e3",
+        "environmentInvocation": 1,
+        "handlerInitMs": 21.3
+      },
+      "reportLine": "REPORT RequestId: f8394398-a3d6-4742-8e0c-2eab901031ba\tDuration: 20604.87 ms\tBilled Duration: 20778 ms\tMemory Size: 2048 MB\tMax Memory Used: 328 MB\tInit Duration: 172.19 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:45:37.879282+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-10",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 25436.42,
+        "billedDurationMs": 25606,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 328,
+        "initDurationMs": 169.3
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 25196.3,
+        "validationMs": 27.9,
+        "previewMs": 207.4,
+        "totalMs": 25432.8,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 152.8,
+        "environmentId": "286458f3b2814ced9beb5cef6db7237e",
+        "environmentInvocation": 1,
+        "handlerInitMs": 21.4
+      },
+      "reportLine": "REPORT RequestId: 26dd2d72-7937-40e0-bffe-55495ce52426\tDuration: 25436.42 ms\tBilled Duration: 25606 ms\tMemory Size: 2048 MB\tMax Memory Used: 328 MB\tInit Duration: 169.30 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:45:38.449437+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-10",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 26016.38,
+        "billedDurationMs": 26235,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 326,
+        "initDurationMs": 218.38
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 25794.9,
+        "validationMs": 29.1,
+        "previewMs": 186.7,
+        "totalMs": 26011.6,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 151.6,
+        "environmentId": "6e3f522487754d2bbf673f5dbf0d4af1",
+        "environmentInvocation": 1,
+        "handlerInitMs": 41.8
+      },
+      "reportLine": "REPORT RequestId: 0ec9ed27-7474-4db3-bb0f-8b6f566e8c2b\tDuration: 26016.38 ms\tBilled Duration: 26235 ms\tMemory Size: 2048 MB\tMax Memory Used: 326 MB\tInit Duration: 218.38 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:45:45.979124+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-10",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 33403.53,
+        "billedDurationMs": 33691,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 327,
+        "initDurationMs": 287.02
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 33132.8,
+        "validationMs": 37.7,
+        "previewMs": 227.5,
+        "totalMs": 33399.4,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 152.8,
+        "environmentId": "f32610646930433a9891e9052efd1cf1",
+        "environmentInvocation": 1,
+        "handlerInitMs": 41.9
+      },
+      "reportLine": "REPORT RequestId: 265dd05c-63e0-44ea-95d5-e6d603a3abe1\tDuration: 33403.53 ms\tBilled Duration: 33691 ms\tMemory Size: 2048 MB\tMax Memory Used: 327 MB\tInit Duration: 287.02 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:45:45.979254+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-10",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 33445.07,
+        "billedDurationMs": 33706,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 329,
+        "initDurationMs": 260.06
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 33180.6,
+        "validationMs": 37.7,
+        "previewMs": 221.4,
+        "totalMs": 33440.9,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 154.1,
+        "environmentId": "7de9c9291a104e85935671924953a66c",
+        "environmentInvocation": 1,
+        "handlerInitMs": 41.7
+      },
+      "reportLine": "REPORT RequestId: f9879e11-609f-46da-b66d-061a53436065\tDuration: 33445.07 ms\tBilled Duration: 33706 ms\tMemory Size: 2048 MB\tMax Memory Used: 329 MB\tInit Duration: 260.06 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:45:46.168439+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-10",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 33643.94,
+        "billedDurationMs": 33935,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 328,
+        "initDurationMs": 291.05
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 33370.7,
+        "validationMs": 38.4,
+        "previewMs": 226.2,
+        "totalMs": 33637.2,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 152.8,
+        "environmentId": "ee0ea3a25bc344fcaa3f40fd71fe72c9",
+        "environmentInvocation": 1,
+        "handlerInitMs": 41.9
+      },
+      "reportLine": "REPORT RequestId: ecee58bd-b2fa-48c1-96dc-c82c693ac7be\tDuration: 33643.94 ms\tBilled Duration: 33935 ms\tMemory Size: 2048 MB\tMax Memory Used: 328 MB\tInit Duration: 291.05 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:45:46.474250+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-10",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 34021.49,
+        "billedDurationMs": 34263,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 328,
+        "initDurationMs": 241.33
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 33743.5,
+        "validationMs": 38.8,
+        "previewMs": 228.0,
+        "totalMs": 34011.6,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 153.4,
+        "environmentId": "76b3541d55b1443491670fdb5b8880fb",
+        "environmentInvocation": 1,
+        "handlerInitMs": 41.8
+      },
+      "reportLine": "REPORT RequestId: 58bc6edb-0825-483f-a60f-603af998e8e7\tDuration: 34021.49 ms\tBilled Duration: 34263 ms\tMemory Size: 2048 MB\tMax Memory Used: 328 MB\tInit Duration: 241.33 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:45:46.893403+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-10",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 34319.42,
+        "billedDurationMs": 34594,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 327,
+        "initDurationMs": 273.82
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 34054.6,
+        "validationMs": 37.5,
+        "previewMs": 221.5,
+        "totalMs": 34315.2,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 152.8,
+        "environmentId": "7b3501e958384d6d889244436b7ba678",
+        "environmentInvocation": 1,
+        "handlerInitMs": 41.8
+      },
+      "reportLine": "REPORT RequestId: 477ca9d7-cef2-4415-98b4-112ac71ec333\tDuration: 34319.42 ms\tBilled Duration: 34594 ms\tMemory Size: 2048 MB\tMax Memory Used: 327 MB\tInit Duration: 273.82 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:45:47.006757+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-10",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 34527.53,
+        "billedDurationMs": 34798,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 328,
+        "initDurationMs": 269.74
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 34260.9,
+        "validationMs": 37.7,
+        "previewMs": 222.7,
+        "totalMs": 34523.2,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 152.8,
+        "environmentId": "23fb311720b04fa4832b326c4e6997ec",
+        "environmentInvocation": 1,
+        "handlerInitMs": 41.9
+      },
+      "reportLine": "REPORT RequestId: 854c31a7-62ef-4dbe-a1a7-d8ebfe017ad6\tDuration: 34527.53 ms\tBilled Duration: 34798 ms\tMemory Size: 2048 MB\tMax Memory Used: 328 MB\tInit Duration: 269.74 ms"
+    },
+    {
+      "timestamp": "2026-09-06T00:45:48.738554+00:00",
+      "case": "03-logo-cuatro-colores",
+      "requestedPhase": "cold",
+      "actualPhase": "cold",
+      "group": "concurrency-10",
+      "functionError": null,
+      "statusCode": 200,
+      "executedVersion": "$LATEST",
+      "report": {
+        "durationMs": 36191.72,
+        "billedDurationMs": 36480,
+        "memorySizeMb": 2048,
+        "maxMemoryUsedMb": 328,
+        "initDurationMs": 287.79
+      },
+      "result": {
+        "success": true,
+        "case": "03-logo-cuatro-colores",
+        "engineMs": 35924.5,
+        "validationMs": 37.4,
+        "previewMs": 223.6,
+        "totalMs": 36187.5,
+        "stitchCount": 3382,
+        "colorChanges": 3,
+        "jumps": 7,
+        "trims": 3,
+        "widthMm": 70.6,
+        "heightMm": 40.0,
+        "outputBytes": 10718,
+        "previewBytes": 62986,
+        "tmp": {
+          "geometryBytes": 3868,
+          "dstBytes": 10718,
+          "previewBytes": 62986,
+          "peakJobBytes": 77572,
+          "globalDeltaBytes": 464049,
+          "cleaned": true
+        },
+        "structuralValidation": {
+          "passed": true,
+          "checks": {
+            "headerIs512Bytes": true,
+            "payloadAlignedTo3Bytes": true,
+            "hasEndRecord": true,
+            "headerRecordCountMatches": true,
+            "headerColorChangesMatch": true,
+            "boundsMatchPyembroidery": true,
+            "maxAxisMovementRepresentable": true
+          },
+          "maxAxisDeltaTenthsMm": 114
+        },
+        "semanticConsistency": {
+          "passed": true,
+          "checks": {
+            "width": true,
+            "height": true,
+            "stitches": true,
+            "colorChanges": true,
+            "jumps": true,
+            "trims": true
+          }
+        },
+        "architecture": "arm64",
+        "configuredMemoryMb": 2048,
+        "maxMemoryMb": 152.9,
+        "environmentId": "c17f867cf0824aa4970501c880308975",
+        "environmentInvocation": 1,
+        "handlerInitMs": 41.8
+      },
+      "reportLine": "REPORT RequestId: ab05b392-5a85-43be-9bc1-09493b36ec3d\tDuration: 36191.72 ms\tBilled Duration: 36480 ms\tMemory Size: 2048 MB\tMax Memory Used: 328 MB\tInit Duration: 287.79 ms"
+    }
+  ]
+}

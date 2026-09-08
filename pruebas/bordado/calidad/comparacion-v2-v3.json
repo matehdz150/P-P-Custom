@@ -1,0 +1,1540 @@
+{
+  "before": "resultados/before-v2/resultados.json",
+  "after": "resultados/after-v3-candidate/resultados.json",
+  "physicallyValidated": false,
+  "fixtures": [
+    {
+      "fixture": "01-resend",
+      "engineMs": {
+        "before": 1428.3,
+        "after": 1499.9,
+        "changePct": 5.0
+      },
+      "maxStitchLengthMm": {
+        "before": 8.045,
+        "after": 2.9,
+        "changePct": -64.0
+      },
+      "p95StitchLengthMm": {
+        "before": 5.48,
+        "after": 2.617,
+        "changePct": -52.2
+      },
+      "sharpDirectionChanges": {
+        "before": 38.0,
+        "after": 59.0,
+        "changePct": 55.3
+      },
+      "crossingStitches": {
+        "before": 396.0,
+        "after": 125.0,
+        "changePct": -68.4
+      },
+      "overlappingSegments": {
+        "before": 183.0,
+        "after": 255.0,
+        "changePct": 39.3
+      },
+      "maxLocalDensity": {
+        "before": 20.0,
+        "after": 14.0,
+        "changePct": -30.0
+      },
+      "jumps": {
+        "before": 6.0,
+        "after": 8.0,
+        "changePct": 33.3
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 1489.0,
+        "after": 1734.0,
+        "changePct": 16.5
+      },
+      "objectCount": {
+        "before": 8.0,
+        "after": 24.0,
+        "changePct": 200.0
+      },
+      "nodeCount": {
+        "before": 31.0,
+        "after": 404.0,
+        "changePct": 1203.2
+      },
+      "svgBytes": {
+        "before": 4252.0,
+        "after": 11837.0,
+        "changePct": 178.4
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "02-intel",
+      "engineMs": {
+        "before": 929.9,
+        "after": 1273.3,
+        "changePct": 36.9
+      },
+      "maxStitchLengthMm": {
+        "before": 7.94,
+        "after": 2.973,
+        "changePct": -62.6
+      },
+      "p95StitchLengthMm": {
+        "before": 5.884,
+        "after": 2.803,
+        "changePct": -52.4
+      },
+      "sharpDirectionChanges": {
+        "before": 31.0,
+        "after": 38.0,
+        "changePct": 22.6
+      },
+      "crossingStitches": {
+        "before": 181.0,
+        "after": 99.0,
+        "changePct": -45.3
+      },
+      "overlappingSegments": {
+        "before": 241.0,
+        "after": 282.0,
+        "changePct": 17.0
+      },
+      "maxLocalDensity": {
+        "before": 18.0,
+        "after": 17.0,
+        "changePct": -5.6
+      },
+      "jumps": {
+        "before": 5.0,
+        "after": 6.0,
+        "changePct": 20.0
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 1076.0,
+        "after": 1218.0,
+        "changePct": 13.2
+      },
+      "objectCount": {
+        "before": 8.0,
+        "after": 13.0,
+        "changePct": 62.5
+      },
+      "nodeCount": {
+        "before": 23.0,
+        "after": 230.0,
+        "changePct": 900.0
+      },
+      "svgBytes": {
+        "before": 3232.0,
+        "after": 6525.0,
+        "changePct": 101.9
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "03-google",
+      "engineMs": {
+        "before": 1085.5,
+        "after": 1046.7,
+        "changePct": -3.6
+      },
+      "maxStitchLengthMm": {
+        "before": 7.921,
+        "after": 3.585,
+        "changePct": -54.7
+      },
+      "p95StitchLengthMm": {
+        "before": 4.951,
+        "after": 2.577,
+        "changePct": -47.9
+      },
+      "sharpDirectionChanges": {
+        "before": 30.0,
+        "after": 46.0,
+        "changePct": 53.3
+      },
+      "crossingStitches": {
+        "before": 199.0,
+        "after": 97.0,
+        "changePct": -51.3
+      },
+      "overlappingSegments": {
+        "before": 128.0,
+        "after": 206.0,
+        "changePct": 60.9
+      },
+      "maxLocalDensity": {
+        "before": 24.0,
+        "after": 13.0,
+        "changePct": -45.8
+      },
+      "jumps": {
+        "before": 2.0,
+        "after": 3.0,
+        "changePct": 50.0
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 1327.0,
+        "after": 1428.0,
+        "changePct": 7.6
+      },
+      "objectCount": {
+        "before": 6.0,
+        "after": 20.0,
+        "changePct": 233.3
+      },
+      "nodeCount": {
+        "before": 22.0,
+        "after": 354.0,
+        "changePct": 1509.1
+      },
+      "svgBytes": {
+        "before": 3002.0,
+        "after": 10036.0,
+        "changePct": 234.3
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "04-h",
+      "engineMs": {
+        "before": 857.5,
+        "after": 862.9,
+        "changePct": 0.6
+      },
+      "maxStitchLengthMm": {
+        "before": 3.041,
+        "after": 3.041,
+        "changePct": 0.0
+      },
+      "p95StitchLengthMm": {
+        "before": 3.041,
+        "after": 3.027,
+        "changePct": -0.5
+      },
+      "sharpDirectionChanges": {
+        "before": 8.0,
+        "after": 9.0,
+        "changePct": 12.5
+      },
+      "crossingStitches": {
+        "before": 2.0,
+        "after": 5.0,
+        "changePct": 150.0
+      },
+      "overlappingSegments": {
+        "before": 151.0,
+        "after": 127.0,
+        "changePct": -15.9
+      },
+      "maxLocalDensity": {
+        "before": 10.0,
+        "after": 11.0,
+        "changePct": 10.0
+      },
+      "jumps": {
+        "before": 2.0,
+        "after": 2.0,
+        "changePct": 0.0
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 387.0,
+        "after": 393.0,
+        "changePct": 1.6
+      },
+      "objectCount": {
+        "before": 3.0,
+        "after": 3.0,
+        "changePct": 0.0
+      },
+      "nodeCount": {
+        "before": 6.0,
+        "after": 56.0,
+        "changePct": 833.3
+      },
+      "svgBytes": {
+        "before": 1392.0,
+        "after": 1757.0,
+        "changePct": 26.2
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "05-o",
+      "engineMs": {
+        "before": 852.9,
+        "after": 855.9,
+        "changePct": 0.4
+      },
+      "maxStitchLengthMm": {
+        "before": 3.124,
+        "after": 3.191,
+        "changePct": 2.1
+      },
+      "p95StitchLengthMm": {
+        "before": 3.062,
+        "after": 3.102,
+        "changePct": 1.3
+      },
+      "sharpDirectionChanges": {
+        "before": 1.0,
+        "after": 7.0,
+        "changePct": 600.0
+      },
+      "crossingStitches": {
+        "before": 7.0,
+        "after": 14.0,
+        "changePct": 100.0
+      },
+      "overlappingSegments": {
+        "before": 30.0,
+        "after": 43.0,
+        "changePct": 43.3
+      },
+      "maxLocalDensity": {
+        "before": 9.0,
+        "after": 10.0,
+        "changePct": 11.1
+      },
+      "jumps": {
+        "before": 1.0,
+        "after": 1.0,
+        "changePct": 0.0
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 399.0,
+        "after": 418.0,
+        "changePct": 4.8
+      },
+      "objectCount": {
+        "before": 1.0,
+        "after": 4.0,
+        "changePct": 300.0
+      },
+      "nodeCount": {
+        "before": 5.0,
+        "after": 92.0,
+        "changePct": 1740.0
+      },
+      "svgBytes": {
+        "before": 843.0,
+        "after": 2636.0,
+        "changePct": 212.7
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "06-e",
+      "engineMs": {
+        "before": 823.4,
+        "after": 890.1,
+        "changePct": 8.1
+      },
+      "maxStitchLengthMm": {
+        "before": 8.006,
+        "after": 3.106,
+        "changePct": -61.2
+      },
+      "p95StitchLengthMm": {
+        "before": 7.437,
+        "after": 3.049,
+        "changePct": -59.0
+      },
+      "sharpDirectionChanges": {
+        "before": 3.0,
+        "after": 7.0,
+        "changePct": 133.3
+      },
+      "crossingStitches": {
+        "before": 123.0,
+        "after": 16.0,
+        "changePct": -87.0
+      },
+      "overlappingSegments": {
+        "before": 21.0,
+        "after": 40.0,
+        "changePct": 90.5
+      },
+      "maxLocalDensity": {
+        "before": 22.0,
+        "after": 11.0,
+        "changePct": -50.0
+      },
+      "jumps": {
+        "before": 1.0,
+        "after": 1.0,
+        "changePct": 0.0
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 212.0,
+        "after": 318.0,
+        "changePct": 50.0
+      },
+      "objectCount": {
+        "before": 1.0,
+        "after": 4.0,
+        "changePct": 300.0
+      },
+      "nodeCount": {
+        "before": 5.0,
+        "after": 74.0,
+        "changePct": 1380.0
+      },
+      "svgBytes": {
+        "before": 818.0,
+        "after": 2378.0,
+        "changePct": 190.7
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "07-g",
+      "engineMs": {
+        "before": 881.4,
+        "after": 852.8,
+        "changePct": -3.2
+      },
+      "maxStitchLengthMm": {
+        "before": 5.441,
+        "after": 3.401,
+        "changePct": -37.5
+      },
+      "p95StitchLengthMm": {
+        "before": 3.483,
+        "after": 3.105,
+        "changePct": -10.9
+      },
+      "sharpDirectionChanges": {
+        "before": 3.0,
+        "after": 9.0,
+        "changePct": 200.0
+      },
+      "crossingStitches": {
+        "before": 16.0,
+        "after": 44.0,
+        "changePct": 175.0
+      },
+      "overlappingSegments": {
+        "before": 27.0,
+        "after": 42.0,
+        "changePct": 55.6
+      },
+      "maxLocalDensity": {
+        "before": 11.0,
+        "after": 15.0,
+        "changePct": 36.4
+      },
+      "jumps": {
+        "before": 1.0,
+        "after": 1.0,
+        "changePct": 0.0
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 373.0,
+        "after": 395.0,
+        "changePct": 5.9
+      },
+      "objectCount": {
+        "before": 1.0,
+        "after": 5.0,
+        "changePct": 400.0
+      },
+      "nodeCount": {
+        "before": 5.0,
+        "after": 98.0,
+        "changePct": 1860.0
+      },
+      "svgBytes": {
+        "before": 842.0,
+        "after": 3022.0,
+        "changePct": 258.9
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "08-t",
+      "engineMs": {
+        "before": 812.8,
+        "after": 831.2,
+        "changePct": 2.3
+      },
+      "maxStitchLengthMm": {
+        "before": 3.087,
+        "after": 3.176,
+        "changePct": 2.9
+      },
+      "p95StitchLengthMm": {
+        "before": 3.041,
+        "after": 3.081,
+        "changePct": 1.3
+      },
+      "sharpDirectionChanges": {
+        "before": 6.0,
+        "after": 6.0,
+        "changePct": 0.0
+      },
+      "crossingStitches": {
+        "before": 20.0,
+        "after": 12.0,
+        "changePct": -40.0
+      },
+      "overlappingSegments": {
+        "before": 53.0,
+        "after": 44.0,
+        "changePct": -17.0
+      },
+      "maxLocalDensity": {
+        "before": 13.0,
+        "after": 12.0,
+        "changePct": -7.7
+      },
+      "jumps": {
+        "before": 2.0,
+        "after": 2.0,
+        "changePct": 0.0
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 273.0,
+        "after": 270.0,
+        "changePct": -1.1
+      },
+      "objectCount": {
+        "before": 2.0,
+        "after": 2.0,
+        "changePct": 0.0
+      },
+      "nodeCount": {
+        "before": 5.0,
+        "after": 42.0,
+        "changePct": 740.0
+      },
+      "svgBytes": {
+        "before": 1102.0,
+        "after": 1442.0,
+        "changePct": 30.9
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "09-d",
+      "engineMs": {
+        "before": 853.1,
+        "after": 853.7,
+        "changePct": 0.1
+      },
+      "maxStitchLengthMm": {
+        "before": 3.105,
+        "after": 3.132,
+        "changePct": 0.9
+      },
+      "p95StitchLengthMm": {
+        "before": 3.059,
+        "after": 3.041,
+        "changePct": -0.6
+      },
+      "sharpDirectionChanges": {
+        "before": 5.0,
+        "after": 9.0,
+        "changePct": 80.0
+      },
+      "crossingStitches": {
+        "before": 85.0,
+        "after": 28.0,
+        "changePct": -67.1
+      },
+      "overlappingSegments": {
+        "before": 34.0,
+        "after": 68.0,
+        "changePct": 100.0
+      },
+      "maxLocalDensity": {
+        "before": 9.0,
+        "after": 13.0,
+        "changePct": 44.4
+      },
+      "jumps": {
+        "before": 2.0,
+        "after": 2.0,
+        "changePct": 0.0
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 382.0,
+        "after": 387.0,
+        "changePct": 1.3
+      },
+      "objectCount": {
+        "before": 2.0,
+        "after": 4.0,
+        "changePct": 100.0
+      },
+      "nodeCount": {
+        "before": 5.0,
+        "after": 76.0,
+        "changePct": 1420.0
+      },
+      "svgBytes": {
+        "before": 1114.0,
+        "after": 2448.0,
+        "changePct": 119.7
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "10-curva-gruesa",
+      "engineMs": {
+        "before": 878.6,
+        "after": 936.8,
+        "changePct": 6.6
+      },
+      "maxStitchLengthMm": {
+        "before": 7.628,
+        "after": 4.031,
+        "changePct": -47.2
+      },
+      "p95StitchLengthMm": {
+        "before": 7.58,
+        "after": 3.97,
+        "changePct": -47.6
+      },
+      "sharpDirectionChanges": {
+        "before": 1.0,
+        "after": 6.0,
+        "changePct": 500.0
+      },
+      "crossingStitches": {
+        "before": 4.0,
+        "after": 122.0,
+        "changePct": 2950.0
+      },
+      "overlappingSegments": {
+        "before": 35.0,
+        "after": 202.0,
+        "changePct": 477.1
+      },
+      "maxLocalDensity": {
+        "before": 10.0,
+        "after": 10.0,
+        "changePct": 0.0
+      },
+      "jumps": {
+        "before": 3.0,
+        "after": 4.0,
+        "changePct": 33.3
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 566.0,
+        "after": 1139.0,
+        "changePct": 101.2
+      },
+      "objectCount": {
+        "before": 1.0,
+        "after": 4.0,
+        "changePct": 300.0
+      },
+      "nodeCount": {
+        "before": 2.0,
+        "after": 136.0,
+        "changePct": 6700.0
+      },
+      "svgBytes": {
+        "before": 793.0,
+        "after": 3319.0,
+        "changePct": 318.5
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "11-curva-delgada",
+      "engineMs": {
+        "before": 795.6,
+        "after": 849.9,
+        "changePct": 6.8
+      },
+      "maxStitchLengthMm": {
+        "before": 2.263,
+        "after": 2.263,
+        "changePct": 0.0
+      },
+      "p95StitchLengthMm": {
+        "before": 2.256,
+        "after": 2.256,
+        "changePct": 0.0
+      },
+      "sharpDirectionChanges": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "crossingStitches": {
+        "before": 5.0,
+        "after": 5.0,
+        "changePct": 0.0
+      },
+      "overlappingSegments": {
+        "before": 15.0,
+        "after": 15.0,
+        "changePct": 0.0
+      },
+      "maxLocalDensity": {
+        "before": 5.0,
+        "after": 5.0,
+        "changePct": 0.0
+      },
+      "jumps": {
+        "before": 3.0,
+        "after": 3.0,
+        "changePct": 0.0
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 138.0,
+        "after": 138.0,
+        "changePct": 0.0
+      },
+      "objectCount": {
+        "before": 1.0,
+        "after": 1.0,
+        "changePct": 0.0
+      },
+      "nodeCount": {
+        "before": 2.0,
+        "after": 2.0,
+        "changePct": 0.0
+      },
+      "svgBytes": {
+        "before": 687.0,
+        "after": 687.0,
+        "changePct": 0.0
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "12-swoosh",
+      "engineMs": {
+        "before": 867.5,
+        "after": 865.0,
+        "changePct": -0.3
+      },
+      "maxStitchLengthMm": {
+        "before": 5.209,
+        "after": 5.209,
+        "changePct": 0.0
+      },
+      "p95StitchLengthMm": {
+        "before": 5.165,
+        "after": 5.162,
+        "changePct": -0.1
+      },
+      "sharpDirectionChanges": {
+        "before": 1.0,
+        "after": 3.0,
+        "changePct": 200.0
+      },
+      "crossingStitches": {
+        "before": 2.0,
+        "after": 6.0,
+        "changePct": 200.0
+      },
+      "overlappingSegments": {
+        "before": 29.0,
+        "after": 44.0,
+        "changePct": 51.7
+      },
+      "maxLocalDensity": {
+        "before": 11.0,
+        "after": 9.0,
+        "changePct": -18.2
+      },
+      "jumps": {
+        "before": 3.0,
+        "after": 3.0,
+        "changePct": 0.0
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 468.0,
+        "after": 477.0,
+        "changePct": 1.9
+      },
+      "objectCount": {
+        "before": 1.0,
+        "after": 2.0,
+        "changePct": 100.0
+      },
+      "nodeCount": {
+        "before": 2.0,
+        "after": 54.0,
+        "changePct": 2600.0
+      },
+      "svgBytes": {
+        "before": 789.0,
+        "after": 1696.0,
+        "changePct": 115.0
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "13-interseccion-t",
+      "engineMs": {
+        "before": 834.2,
+        "after": 872.2,
+        "changePct": 4.6
+      },
+      "maxStitchLengthMm": {
+        "before": 5.324,
+        "after": 5.423,
+        "changePct": 1.9
+      },
+      "p95StitchLengthMm": {
+        "before": 5.324,
+        "after": 5.415,
+        "changePct": 1.7
+      },
+      "sharpDirectionChanges": {
+        "before": 6.0,
+        "after": 6.0,
+        "changePct": 0.0
+      },
+      "crossingStitches": {
+        "before": 0.0,
+        "after": 4.0,
+        "changePct": null
+      },
+      "overlappingSegments": {
+        "before": 65.0,
+        "after": 71.0,
+        "changePct": 9.2
+      },
+      "maxLocalDensity": {
+        "before": 9.0,
+        "after": 9.0,
+        "changePct": 0.0
+      },
+      "jumps": {
+        "before": 2.0,
+        "after": 2.0,
+        "changePct": 0.0
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 413.0,
+        "after": 417.0,
+        "changePct": 1.0
+      },
+      "objectCount": {
+        "before": 2.0,
+        "after": 2.0,
+        "changePct": 0.0
+      },
+      "nodeCount": {
+        "before": 4.0,
+        "after": 44.0,
+        "changePct": 1000.0
+      },
+      "svgBytes": {
+        "before": 1096.0,
+        "after": 1338.0,
+        "changePct": 22.1
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "14-junction-y",
+      "engineMs": {
+        "before": 846.7,
+        "after": 858.5,
+        "changePct": 1.4
+      },
+      "maxStitchLengthMm": {
+        "before": 4.386,
+        "after": 4.428,
+        "changePct": 1.0
+      },
+      "p95StitchLengthMm": {
+        "before": 4.36,
+        "after": 4.4,
+        "changePct": 0.9
+      },
+      "sharpDirectionChanges": {
+        "before": 10.0,
+        "after": 11.0,
+        "changePct": 10.0
+      },
+      "crossingStitches": {
+        "before": 43.0,
+        "after": 43.0,
+        "changePct": 0.0
+      },
+      "overlappingSegments": {
+        "before": 58.0,
+        "after": 47.0,
+        "changePct": -19.0
+      },
+      "maxLocalDensity": {
+        "before": 11.0,
+        "after": 15.0,
+        "changePct": 36.4
+      },
+      "jumps": {
+        "before": 2.0,
+        "after": 2.0,
+        "changePct": 0.0
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 473.0,
+        "after": 468.0,
+        "changePct": -1.1
+      },
+      "objectCount": {
+        "before": 3.0,
+        "after": 3.0,
+        "changePct": 0.0
+      },
+      "nodeCount": {
+        "before": 6.0,
+        "after": 50.0,
+        "changePct": 733.3
+      },
+      "svgBytes": {
+        "before": 1396.0,
+        "after": 1829.0,
+        "changePct": 31.0
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "15-circulo-grueso",
+      "engineMs": {
+        "before": 968.1,
+        "after": 1000.5,
+        "changePct": 3.3
+      },
+      "maxStitchLengthMm": {
+        "before": 7.8,
+        "after": 4.327,
+        "changePct": -44.5
+      },
+      "p95StitchLengthMm": {
+        "before": 7.762,
+        "after": 4.082,
+        "changePct": -47.4
+      },
+      "sharpDirectionChanges": {
+        "before": 1.0,
+        "after": 18.0,
+        "changePct": 1700.0
+      },
+      "crossingStitches": {
+        "before": 4.0,
+        "after": 179.0,
+        "changePct": 4375.0
+      },
+      "overlappingSegments": {
+        "before": 50.0,
+        "after": 183.0,
+        "changePct": 266.0
+      },
+      "maxLocalDensity": {
+        "before": 9.0,
+        "after": 13.0,
+        "changePct": 44.4
+      },
+      "jumps": {
+        "before": 2.0,
+        "after": 2.0,
+        "changePct": 0.0
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 730.0,
+        "after": 1386.0,
+        "changePct": 89.9
+      },
+      "objectCount": {
+        "before": 1.0,
+        "after": 9.0,
+        "changePct": 800.0
+      },
+      "nodeCount": {
+        "before": 3.0,
+        "after": 268.0,
+        "changePct": 8833.3
+      },
+      "svgBytes": {
+        "before": 809.0,
+        "after": 6315.0,
+        "changePct": 680.6
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "16-donut",
+      "engineMs": {
+        "before": 4369.1,
+        "after": 4316.7,
+        "changePct": -1.2
+      },
+      "maxStitchLengthMm": {
+        "before": 4.3,
+        "after": 4.3,
+        "changePct": 0.0
+      },
+      "p95StitchLengthMm": {
+        "before": 4.0,
+        "after": 4.0,
+        "changePct": 0.0
+      },
+      "sharpDirectionChanges": {
+        "before": 201.0,
+        "after": 201.0,
+        "changePct": 0.0
+      },
+      "crossingStitches": {
+        "before": 314.0,
+        "after": 314.0,
+        "changePct": 0.0
+      },
+      "overlappingSegments": {
+        "before": 4.0,
+        "after": 4.0,
+        "changePct": 0.0
+      },
+      "maxLocalDensity": {
+        "before": 6.0,
+        "after": 6.0,
+        "changePct": 0.0
+      },
+      "jumps": {
+        "before": 2.0,
+        "after": 2.0,
+        "changePct": 0.0
+      },
+      "trims": {
+        "before": 0.0,
+        "after": 0.0,
+        "changePct": null
+      },
+      "stitchCount": {
+        "before": 1414.0,
+        "after": 1414.0,
+        "changePct": 0.0
+      },
+      "objectCount": {
+        "before": 1.0,
+        "after": 1.0,
+        "changePct": 0.0
+      },
+      "nodeCount": {
+        "before": 4.0,
+        "after": 4.0,
+        "changePct": 0.0
+      },
+      "svgBytes": {
+        "before": 819.0,
+        "after": 819.0,
+        "changePct": 0.0
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "17-serif",
+      "engineMs": {
+        "before": 850.5,
+        "after": 874.0,
+        "changePct": 2.8
+      },
+      "maxStitchLengthMm": {
+        "before": 4.329,
+        "after": 4.329,
+        "changePct": 0.0
+      },
+      "p95StitchLengthMm": {
+        "before": 4.319,
+        "after": 4.319,
+        "changePct": 0.0
+      },
+      "sharpDirectionChanges": {
+        "before": 9.0,
+        "after": 9.0,
+        "changePct": 0.0
+      },
+      "crossingStitches": {
+        "before": 5.0,
+        "after": 6.0,
+        "changePct": 20.0
+      },
+      "overlappingSegments": {
+        "before": 183.0,
+        "after": 164.0,
+        "changePct": -10.4
+      },
+      "maxLocalDensity": {
+        "before": 11.0,
+        "after": 12.0,
+        "changePct": 9.1
+      },
+      "jumps": {
+        "before": 5.0,
+        "after": 5.0,
+        "changePct": 0.0
+      },
+      "trims": {
+        "before": 1.0,
+        "after": 1.0,
+        "changePct": 0.0
+      },
+      "stitchCount": {
+        "before": 507.0,
+        "after": 510.0,
+        "changePct": 0.6
+      },
+      "objectCount": {
+        "before": 3.0,
+        "after": 3.0,
+        "changePct": 0.0
+      },
+      "nodeCount": {
+        "before": 6.0,
+        "after": 58.0,
+        "changePct": 866.7
+      },
+      "svgBytes": {
+        "before": 1408.0,
+        "after": 1755.0,
+        "changePct": 24.6
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "18-logo-multicolor",
+      "engineMs": {
+        "before": 2676.4,
+        "after": 2840.6,
+        "changePct": 6.1
+      },
+      "maxStitchLengthMm": {
+        "before": 4.427,
+        "after": 4.418,
+        "changePct": -0.2
+      },
+      "p95StitchLengthMm": {
+        "before": 4.338,
+        "after": 4.338,
+        "changePct": 0.0
+      },
+      "sharpDirectionChanges": {
+        "before": 119.0,
+        "after": 118.0,
+        "changePct": -0.8
+      },
+      "crossingStitches": {
+        "before": 295.0,
+        "after": 263.0,
+        "changePct": -10.8
+      },
+      "overlappingSegments": {
+        "before": 70.0,
+        "after": 78.0,
+        "changePct": 11.4
+      },
+      "maxLocalDensity": {
+        "before": 10.0,
+        "after": 10.0,
+        "changePct": 0.0
+      },
+      "jumps": {
+        "before": 5.0,
+        "after": 5.0,
+        "changePct": 0.0
+      },
+      "trims": {
+        "before": 1.0,
+        "after": 1.0,
+        "changePct": 0.0
+      },
+      "stitchCount": {
+        "before": 1434.0,
+        "after": 1431.0,
+        "changePct": -0.2
+      },
+      "objectCount": {
+        "before": 3.0,
+        "after": 3.0,
+        "changePct": 0.0
+      },
+      "nodeCount": {
+        "before": 6.0,
+        "after": 48.0,
+        "changePct": 700.0
+      },
+      "svgBytes": {
+        "before": 1341.0,
+        "after": 1871.0,
+        "changePct": 39.5
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "19-discovery",
+      "engineMs": {
+        "before": 2919.1,
+        "after": 2948.3,
+        "changePct": 1.0
+      },
+      "maxStitchLengthMm": {
+        "before": 4.314,
+        "after": 4.314,
+        "changePct": 0.0
+      },
+      "p95StitchLengthMm": {
+        "before": 3.79,
+        "after": 3.548,
+        "changePct": -6.4
+      },
+      "sharpDirectionChanges": {
+        "before": 390.0,
+        "after": 420.0,
+        "changePct": 7.7
+      },
+      "crossingStitches": {
+        "before": 730.0,
+        "after": 785.0,
+        "changePct": 7.5
+      },
+      "overlappingSegments": {
+        "before": 958.0,
+        "after": 1005.0,
+        "changePct": 4.9
+      },
+      "maxLocalDensity": {
+        "before": 26.0,
+        "after": 26.0,
+        "changePct": 0.0
+      },
+      "jumps": {
+        "before": 96.0,
+        "after": 93.0,
+        "changePct": -3.1
+      },
+      "trims": {
+        "before": 11.0,
+        "after": 10.0,
+        "changePct": -9.1
+      },
+      "stitchCount": {
+        "before": 3225.0,
+        "after": 3457.0,
+        "changePct": 7.2
+      },
+      "objectCount": {
+        "before": 145.0,
+        "after": 149.0,
+        "changePct": 2.8
+      },
+      "nodeCount": {
+        "before": 290.0,
+        "after": 618.0,
+        "changePct": 113.1
+      },
+      "svgBytes": {
+        "before": 37875.0,
+        "after": 41362.0,
+        "changePct": 9.2
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    },
+    {
+      "fixture": "20-combinacion",
+      "engineMs": {
+        "before": 2947.9,
+        "after": 3012.7,
+        "changePct": 2.2
+      },
+      "maxStitchLengthMm": {
+        "before": 4.243,
+        "after": 4.243,
+        "changePct": 0.0
+      },
+      "p95StitchLengthMm": {
+        "before": 4.031,
+        "after": 4.031,
+        "changePct": 0.0
+      },
+      "sharpDirectionChanges": {
+        "before": 36.0,
+        "after": 40.0,
+        "changePct": 11.1
+      },
+      "crossingStitches": {
+        "before": 172.0,
+        "after": 153.0,
+        "changePct": -11.0
+      },
+      "overlappingSegments": {
+        "before": 76.0,
+        "after": 70.0,
+        "changePct": -7.9
+      },
+      "maxLocalDensity": {
+        "before": 12.0,
+        "after": 9.0,
+        "changePct": -25.0
+      },
+      "jumps": {
+        "before": 8.0,
+        "after": 9.0,
+        "changePct": 12.5
+      },
+      "trims": {
+        "before": 1.0,
+        "after": 1.0,
+        "changePct": 0.0
+      },
+      "stitchCount": {
+        "before": 1140.0,
+        "after": 1137.0,
+        "changePct": -0.3
+      },
+      "objectCount": {
+        "before": 3.0,
+        "after": 4.0,
+        "changePct": 33.3
+      },
+      "nodeCount": {
+        "before": 9.0,
+        "after": 67.0,
+        "changePct": 644.4
+      },
+      "svgBytes": {
+        "before": 1333.0,
+        "after": 2317.0,
+        "changePct": 73.8
+      },
+      "tajimaPassed": true,
+      "colorsPreserved": true
+    }
+  ],
+  "aggregate": {
+    "engineMs": {
+      "beforeTotal": 27478.5,
+      "afterTotal": 28341.7,
+      "totalChangePct": 3.1,
+      "beforeMedian": 873.05,
+      "afterMedian": 882.05,
+      "beforeP95": 2947.9,
+      "afterP95": 3012.7
+    },
+    "maxStitchLengthMm": {
+      "beforeTotal": 103.933,
+      "afterTotal": 75.79,
+      "totalChangePct": -27.1,
+      "beforeMedian": 4.406,
+      "afterMedian": 3.808,
+      "beforeP95": 8.006,
+      "afterP95": 5.209
+    },
+    "p95StitchLengthMm": {
+      "beforeTotal": 92.363,
+      "afterTotal": 71.923,
+      "totalChangePct": -22.1,
+      "beforeMedian": 4.329,
+      "afterMedian": 3.327,
+      "beforeP95": 7.58,
+      "afterP95": 5.162
+    },
+    "sharpDirectionChanges": {
+      "beforeTotal": 899.0,
+      "afterTotal": 1022.0,
+      "totalChangePct": 13.7,
+      "beforeMedian": 7.0,
+      "afterMedian": 9.0,
+      "beforeP95": 201.0,
+      "afterP95": 201.0
+    },
+    "crossingStitches": {
+      "beforeTotal": 2603.0,
+      "afterTotal": 2320.0,
+      "totalChangePct": -10.9,
+      "beforeMedian": 31.5,
+      "afterMedian": 43.5,
+      "beforeP95": 396.0,
+      "afterP95": 314.0
+    },
+    "overlappingSegments": {
+      "beforeTotal": 2411.0,
+      "afterTotal": 2990.0,
+      "totalChangePct": 24.0,
+      "beforeMedian": 55.5,
+      "afterMedian": 70.5,
+      "beforeP95": 241.0,
+      "afterP95": 282.0
+    },
+    "maxLocalDensity": {
+      "beforeTotal": 256.0,
+      "afterTotal": 240.0,
+      "totalChangePct": -6.2,
+      "beforeMedian": 11.0,
+      "afterMedian": 11.5,
+      "beforeP95": 24.0,
+      "afterP95": 17.0
+    },
+    "jumps": {
+      "beforeTotal": 153.0,
+      "afterTotal": 156.0,
+      "totalChangePct": 2.0,
+      "beforeMedian": 2.0,
+      "afterMedian": 2.5,
+      "beforeP95": 8.0,
+      "afterP95": 9.0
+    },
+    "trims": {
+      "beforeTotal": 14.0,
+      "afterTotal": 13.0,
+      "totalChangePct": -7.1,
+      "beforeMedian": 0.0,
+      "afterMedian": 0.0,
+      "beforeP95": 1.0,
+      "afterP95": 1.0
+    },
+    "stitchCount": {
+      "beforeTotal": 16426.0,
+      "afterTotal": 18535.0,
+      "totalChangePct": 12.8,
+      "beforeMedian": 490.0,
+      "afterMedian": 493.5,
+      "beforeP95": 1489.0,
+      "afterP95": 1734.0
+    },
+    "objectCount": {
+      "beforeTotal": 196.0,
+      "afterTotal": 260.0,
+      "totalChangePct": 32.7,
+      "beforeMedian": 2.0,
+      "afterMedian": 4.0,
+      "beforeP95": 8.0,
+      "afterP95": 24.0
+    },
+    "nodeCount": {
+      "beforeTotal": 441.0,
+      "afterTotal": 2775.0,
+      "totalChangePct": 529.3,
+      "beforeMedian": 5.0,
+      "afterMedian": 70.5,
+      "beforeP95": 31.0,
+      "afterP95": 404.0
+    },
+    "svgBytes": {
+      "beforeTotal": 64943.0,
+      "afterTotal": 105389.0,
+      "totalChangePct": 62.3,
+      "beforeMedian": 1108.0,
+      "afterMedian": 2347.5,
+      "beforeP95": 4252.0,
+      "afterP95": 11837.0
+    }
+  },
+  "gates": {
+    "allFixturesMeasured": true,
+    "tajimaValid": true,
+    "colorsPreserved": true,
+    "maxStitchLengthImproved": true,
+    "p95StitchLengthImproved": true,
+    "crossingsImproved": true,
+    "localDensityImproved": true,
+    "overlapNotWorse": false,
+    "jumpsNotWorse": false,
+    "engineP95Improved30Pct": false,
+    "nodeCountNotWorse": false
+  },
+  "promotable": false
+}

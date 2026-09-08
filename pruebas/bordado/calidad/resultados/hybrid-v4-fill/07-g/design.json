@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "494b43c902a860da5ba0e13214e5bdefcc83fbbceb3b392e4e68d8080c8f8cc4",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "g-g-0-hybrid-rails-0-0",
+      "sourceObjectId": "g-g-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M50.275 23.504L48.253 21.712L45.524 21.306L41.946 22.021L39.57 23.466L38.268 24.837L37.024 27.37L36.704 29.199L36.901 31.983L38.128 34.601L40.322 36.505L42.106 37.192L44.904 37.441L47.624 36.754L49.263 35.791L49.457 34.268L48.24 38.286M49.725 24.496L47.502 24.24L45.555 24.006L42.971 24.519L41.316 25.525L40.444 26.436L39.613 28.136L39.396 29.412L39.521 31.328L40.276 32.965L41.63 34.143L42.788 34.579L44.686 34.75L46.537 34.282L47.616 33.651L50.542 31.796L50.893 38.789M50.333 23.399L49.667 24.601M39.492 23.375L41.394 25.617M36.785 32.012L39.637 31.299M44.914 37.561L44.676 34.631M48.122 38.264L51.011 38.811"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 44,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.604,
+        "widthVariance": 0.13531,
+        "angleVariance": 310.66164,
+        "maxAngleDeltaDeg": 77.013,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 2,
+        "representationDecision": "rails-v3",
+        "representationReasons": [
+          "HIGH_CURVATURE",
+          "CURVATURE_PEAK",
+          "ACCUMULATED_TURN",
+          "DIRECTION_CHANGE",
+          "FAN_RISK",
+          "SHARP_TURN"
+        ],
+        "lengthMm": 38.464,
+        "curvatureDegPerMm": 8.4162,
+        "maxCurvatureDegPerMm": 27.6231,
+        "accumulatedTurningAngleDeg": 478.701,
+        "branchCount": 1,
+        "endpointTaper": 0,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 1,
+        "railDivergenceMmPerMm": 0,
+        "railConvergenceMmPerMm": 0,
+        "numberOfSharpTurns": 1,
+        "rawCenterlineNodes": 65,
+        "rawRailNodes": 146,
+        "finalRailNodes": 34,
+        "rungsBefore": 73,
+        "rungsAfter": 5,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 18
+      }
+    },
+    {
+      "id": "g-g-0-hybrid-rails-0-1",
+      "sourceObjectId": "g-g-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M48.24 38.286L47.703 40.381L46.833 42.215L45.557 43.616L44.486 44.222L43.245 44.543L41.354 44.602L40.366 44.27L39.994 43.969L39.681 43.596L38.561 41.916M50.893 38.789L50.249 41.279L49.082 43.709L47.175 45.778L45.502 46.723L43.695 47.205L40.868 47.258L38.901 46.538L38.052 45.846L37.423 44.958L37.439 42.084M48.122 38.264L51.011 38.811M45.485 43.52L47.247 45.874M43.225 44.424L43.715 47.323M40.08 43.886L37.966 45.929M38.679 41.898L37.321 42.102"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": false
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 32,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.552,
+        "widthVariance": 0.20138,
+        "angleVariance": 20.1681,
+        "maxAngleDeltaDeg": 22.557,
+        "junctionCount": 0,
+        "segmentIndex": 1,
+        "segmentCount": 2,
+        "representationDecision": "rails-v3",
+        "representationReasons": [
+          "HIGH_CURVATURE",
+          "CURVATURE_PEAK",
+          "ACCUMULATED_TURN",
+          "DIRECTION_CHANGE",
+          "FAN_RISK",
+          "SHARP_TURN"
+        ],
+        "lengthMm": 18.081,
+        "curvatureDegPerMm": 8.4162,
+        "maxCurvatureDegPerMm": 27.6231,
+        "accumulatedTurningAngleDeg": 478.701,
+        "branchCount": 1,
+        "endpointTaper": 0,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 1,
+        "railDivergenceMmPerMm": 0,
+        "railConvergenceMmPerMm": 0,
+        "numberOfSharpTurns": 1,
+        "rawCenterlineNodes": 65,
+        "rawRailNodes": 146,
+        "finalRailNodes": 22,
+        "rungsBefore": 73,
+        "rungsAfter": 5,
+        "underlayLayers": 0,
+        "estimatedUnderlayStitches": 0
+      },
+      "dependencies": [
+        "g-g-0-hybrid-rails-0-0"
+      ]
+    }
+  ],
+  "metrics": {
+    "componentCount": 2,
+    "nodeCount": 76,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-hybrid-v4-2026-09-06",
+    "texto": {
+      "satinColumns": 1,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-hybrid-v4-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0",
+  "debug": {
+    "hybridJoins": []
+  }
+}

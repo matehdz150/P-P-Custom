@@ -1,0 +1,3502 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "e1275d70c28b0999c4f3f0bec9eca3ef6073e1f4db51d6c429087c7e4cf7821e",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 50
+  },
+  "bounds": {
+    "xMm": 0,
+    "yMm": 4.2,
+    "widthMm": 89.9,
+    "heightMm": 41.5
+  },
+  "colors": [
+    {
+      "id": "color-575757",
+      "sourceHex": "#575757",
+      "displayHex": "#575757",
+      "order": 0
+    },
+    {
+      "id": "color-dca346",
+      "sourceHex": "#dca346",
+      "displayHex": "#dca346",
+      "order": 1
+    },
+    {
+      "id": "color-f8fbf7",
+      "sourceHex": "#f8fbf7",
+      "displayHex": "#f8fbf7",
+      "order": 2
+    },
+    {
+      "id": "color-7db473",
+      "sourceHex": "#7db473",
+      "displayHex": "#7db473",
+      "order": 3
+    },
+    {
+      "id": "color-4a9bae",
+      "sourceHex": "#4a9bae",
+      "displayHex": "#4a9bae",
+      "order": 4
+    },
+    {
+      "id": "color-898a89",
+      "sourceHex": "#898a89",
+      "displayHex": "#898a89",
+      "order": 5
+    }
+  ],
+  "objects": [
+    {
+      "id": "o0-t0-0",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M3.1 17.4L3.1 18.15"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 3.1,
+        "yMm": 17.4,
+        "widthMm": 0.05,
+        "heightMm": 0.75
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-1",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M2.9 17.8L3.3 18.1 3.95 19.75"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 2.9,
+        "yMm": 17.8,
+        "widthMm": 1.0499999999999998,
+        "heightMm": 1.9499999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-2",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M3.3 17.75L2.9 18.1 2.25 19.7"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 2.25,
+        "yMm": 17.75,
+        "widthMm": 1.0500000000000003,
+        "heightMm": 1.9499999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-3",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M2.45 18.95L3.75 18.95"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 2.45,
+        "yMm": 18.95,
+        "widthMm": 1.2999999999999998,
+        "heightMm": 0.05
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-4",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M0 18.75L1 18.65 1.25 18.1 0.9 17.6 0.15 17.65 0.1 19.7"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 0,
+        "yMm": 17.599999999999998,
+        "widthMm": 1.25,
+        "heightMm": 2.1000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-5",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M9.6 19.75L9.95 18.65 9.8 18.05 9.35 17.65 8.5 17.65 7.9 18.4 8.1 19.25 8.6 19.6 10.15 19.6"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 7.9,
+        "yMm": 17.65,
+        "widthMm": 2.25,
+        "heightMm": 2.1000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-6",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M5.95 18.95L6.4 18.45 6.4 17.9 6 17.6 5.35 17.7 5.35 19.75"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 5.3500000000000005,
+        "yMm": 17.599999999999998,
+        "widthMm": 1.0499999999999998,
+        "heightMm": 2.150000000000002
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-7",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M5.2 18.75L6.35 18.75"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 5.200000000000001,
+        "yMm": 18.75,
+        "widthMm": 1.1499999999999995,
+        "heightMm": 0.05
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-8",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M6.1 18.55L6.2 19.1 6.65 19.75"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 6.1000000000000005,
+        "yMm": 18.55,
+        "widthMm": 0.5499999999999998,
+        "heightMm": 1.1999999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-9",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M11.45 17.5L11.45 19.05 11.9 19.6 12.5 19.6 12.85 19.3 12.9 17.5"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 11.450000000000001,
+        "yMm": 17.5,
+        "widthMm": 1.4499999999999993,
+        "heightMm": 2.1000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-10",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M15.85 17.6L14.5 17.7 14.5 19.55 15.9 19.6"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 14.500000000000002,
+        "yMm": 17.599999999999998,
+        "widthMm": 1.3999999999999986,
+        "heightMm": 2.0000000000000036
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-11",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M14.35 18.6L15.7 18.6"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 14.350000000000001,
+        "yMm": 18.599999999999998,
+        "widthMm": 1.3499999999999996,
+        "heightMm": 0.05
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-12",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M18.85 17.5L18.85 19.8"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 18.849999999999998,
+        "yMm": 17.5,
+        "widthMm": 0.05,
+        "heightMm": 2.3000000000000007
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-13",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M20.35 17.55L20.5 17.9 20.45 19.8"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 20.35,
+        "yMm": 17.55,
+        "widthMm": 0.14999999999999858,
+        "heightMm": 2.25
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-14",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M22.15 17.55L22.1 19.3 22.3 19.75"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 22.1,
+        "yMm": 17.55,
+        "widthMm": 0.1999999999999993,
+        "heightMm": 2.1999999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-15",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M20.35 18L20.85 18.15 21.85 19.2 22.3 19.3"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 20.35,
+        "yMm": 18,
+        "widthMm": 1.9499999999999993,
+        "heightMm": 1.3000000000000007
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-16",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M23.9 17.65L24.55 17.65 25.2 18.05 25.35 18.9 25.15 19.35 24.6 19.65 23.8 19.6 23.85 17.7Z"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 23.8,
+        "yMm": 17.65,
+        "widthMm": 1.5500000000000007,
+        "heightMm": 2
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-17",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M26.8 17.55L26.8 19.2 27.2 19.65 27.85 19.65 28.15 19.4 28.25 17.55"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 26.8,
+        "yMm": 17.55,
+        "widthMm": 1.4499999999999993,
+        "heightMm": 2.099999999999998
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-18",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M30.9 17.75L30.2 17.65 29.75 18.05 29.95 18.5 30.75 18.9 30.8 19.45 30.45 19.7 29.6 19.5"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 29.6,
+        "yMm": 17.65,
+        "widthMm": 1.2999999999999972,
+        "heightMm": 2.0500000000000007
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-19",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M32 17.65L33.5 17.65"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 32,
+        "yMm": 17.65,
+        "widthMm": 1.5,
+        "heightMm": 0.05
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-20",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M32.75 17.55L32.7 19.8"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 32.7,
+        "yMm": 17.55,
+        "widthMm": 0.05,
+        "heightMm": 2.25
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-21",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M35.45 19.1L35.85 18.55 35.85 18 35.4 17.7 34.8 17.75 34.8 19.8"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 34.8,
+        "yMm": 17.7,
+        "widthMm": 1.0500000000000043,
+        "heightMm": 2.1000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-22",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M34.65 18.85L35.8 18.85"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 34.65,
+        "yMm": 18.849999999999998,
+        "widthMm": 1.1499999999999986,
+        "heightMm": 0.05
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-23",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M35.55 18.65L36.05 19.85"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 35.55,
+        "yMm": 18.65,
+        "widthMm": 0.5,
+        "heightMm": 1.2000000000000028
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-24",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M39.8 17.55L39.8 18.25"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 39.800000000000004,
+        "yMm": 17.55,
+        "widthMm": 0.05,
+        "heightMm": 0.6999999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-25",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M39.6 17.9L39.95 18.2 40.6 19.85"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 39.6,
+        "yMm": 17.9,
+        "widthMm": 1,
+        "heightMm": 1.9500000000000028
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-26",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M40 18L39.6 18.2 39.25 19.45"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 39.25,
+        "yMm": 18,
+        "widthMm": 0.75,
+        "heightMm": 1.4499999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-27",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M39.1 19.1L40.45 19.1"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 39.1,
+        "yMm": 19.1,
+        "widthMm": 1.3500000000000014,
+        "heightMm": 0.05
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-28",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M39.5 18.8L38.9 19.85"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 38.9,
+        "yMm": 18.8,
+        "widthMm": 0.6000000000000014,
+        "heightMm": 1.0500000000000007
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-29",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M37.55 17.6L37.55 19.85"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 37.55,
+        "yMm": 17.599999999999998,
+        "widthMm": 0.05,
+        "heightMm": 2.2500000000000036
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-30",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M42.05 17.6L42 19.6 43.35 19.7"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 42,
+        "yMm": 17.599999999999998,
+        "widthMm": 1.3500000000000014,
+        "heightMm": 2.1000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-31",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M8.15 20.85L8.95 21.2 9.1 21.55 8.95 22.25 8.6 22.55 8 22.6 7.4 22.15 7.45 21.25 8.1 20.9Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 135,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 7.4,
+        "yMm": 20.85,
+        "widthMm": 1.700000000000001,
+        "heightMm": 1.75
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-32",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M1.95 21.6L3.1 21.65 4.25 21.95 5 22.5 5.4 23.05 5.85 25.2 5.6 26.9 5 28 4.3 28.6 3.25 28.95 1.1 29 0.9 28.8 0.9 21.95 1.1 21.7 1.9 21.65Z"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.67,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 0.9,
+        "yMm": 21.6,
+        "widthMm": 4.95,
+        "heightMm": 7.399999999999999
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-33",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M13.45 24.1L12.3 23.9 11.25 24.05 10.85 24.35 10.6 25.1 10.95 26.05 12.75 27.1 12.95 27.9 12.6 28.85 11.6 29.15 9.7 28.9"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.4,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 9.700000000000001,
+        "yMm": 23.9,
+        "widthMm": 3.75,
+        "heightMm": 5.25
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-34",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M18.55 24L17 24 16 24.35 15.2 25.3 14.95 26.45 15.15 27.85 15.8 28.7 16.85 29.1 18.5 29.05"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.53,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 14.950000000000001,
+        "yMm": 24,
+        "widthMm": 3.6000000000000014,
+        "heightMm": 5.100000000000001
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-35",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M21.75 23.95L22.8 24.25 23.3 24.8 23.55 25.45 23.65 27.1 23.45 28 23.1 28.6 22.3 29.1 21 29.1 20.2 28.55 19.8 27.75 19.65 26.3 20.1 24.8 20.85 24.1 21.7 24Z"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.53,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 19.65,
+        "yMm": 23.95,
+        "widthMm": 4,
+        "heightMm": 5.150000000000002
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-36",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M30.45 26.55L34.85 26.5 34.95 25.9 34.75 24.9 34.4 24.35 34 24.1 32.45 24.1 31.75 24.7 31.45 25.3 31.25 26.45 31.4 27.9 32.1 28.85 33.1 29.2 34.85 29.05 35.2 28.4"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.3,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 30.45,
+        "yMm": 24.1,
+        "widthMm": 4.7500000000000036,
+        "heightMm": 5.099999999999998
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-37",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M8.2 23.45L8.2 29.65"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.7,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 8.200000000000001,
+        "yMm": 23.45,
+        "widthMm": 0.05,
+        "heightMm": 6.199999999999999
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-38",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M45.25 23.65L44.2 24.45 43.1 28.35 41.65 29.2"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.47,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 41.65,
+        "yMm": 23.65,
+        "widthMm": 3.6000000000000014,
+        "heightMm": 5.550000000000001
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-39",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M37.1 23.55L37.2 28.8 37.45 29.75"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.7,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 37.1,
+        "yMm": 23.55,
+        "widthMm": 0.3500000000000014,
+        "heightMm": 6.199999999999999
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-40",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M36.45 25.7L39.15 24.4 39.35 24.1 40.5 24.1 40.75 24.3 42 28.35 43.35 29.15"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.5,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 36.45,
+        "yMm": 24.1,
+        "widthMm": 6.899999999999999,
+        "heightMm": 5.049999999999997
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-41",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M42.7 27.65L42 30.6 41.45 31.2 40.25 31.95"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.43,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 40.25,
+        "yMm": 27.65,
+        "widthMm": 2.450000000000003,
+        "heightMm": 4.300000000000004
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-42",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M30.3 23.7L29.35 24.2 28.15 28.3 27.45 28.75 26.95 28.45 25.85 24.45 25.35 23.5"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.5,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 25.35,
+        "yMm": 23.5,
+        "widthMm": 4.949999999999999,
+        "heightMm": 5.25
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-43",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-575757",
+      "geometry": {
+        "kind": "path",
+        "d": "M77.5 24.6L78.5 25.3 79.55 25.4 79.7 25.7 80.5 25.85 80.65 26.15 82 26.4 82.45 26.85 83.2 27.05 83.6 27.45 84.45 27.6 85.2 28.2 85.65 28.05 86.45 28.65 87.15 28.8 87.65 29.3 88.65 29.45 87.45 31.15 79.9 40.35 78.45 39.3 76.8 41.15 76.55 41.1 74.8 39.6 76.4 37.55 74.45 35.95 75.95 34 73.95 32.3 72.2 34.2 70.55 32.95 77.45 24.65Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 135,
+        "maxStitchLengthMm": 4,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 70.55000000000001,
+        "yMm": 24.6,
+        "widthMm": 18.099999999999994,
+        "heightMm": 16.549999999999997
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-0",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M58.05 31L58.5 32.5"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 58.050000000000004,
+        "yMm": 31,
+        "widthMm": 0.44999999999999574,
+        "heightMm": 1.5
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-1",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M60.35 31.05L60.3 33.15 60.65 34"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 60.300000000000004,
+        "yMm": 31.05,
+        "widthMm": 0.3499999999999943,
+        "heightMm": 2.9499999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-2",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M58.05 31.95L58.9 32.1 59.8 32.95 60.65 33.1"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 58.050000000000004,
+        "yMm": 31.950000000000003,
+        "widthMm": 2.5999999999999943,
+        "heightMm": 1.1499999999999986
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-3",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M58.6 31.55L58.3 32.1 58.3 33.95"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 58.300000000000004,
+        "yMm": 31.55,
+        "widthMm": 0.29999999999999716,
+        "heightMm": 2.400000000000002
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-4",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M64.45 31L64.4 32.3"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 64.4,
+        "yMm": 31,
+        "widthMm": 0.05,
+        "heightMm": 1.2999999999999972
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-5",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M64 31.85L64.65 32.1 64.9 32.8 64.9 33.5"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 64.00000000000001,
+        "yMm": 31.85,
+        "widthMm": 0.8999999999999915,
+        "heightMm": 1.6499999999999986
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-6",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M64.8 31.85L64.15 32.1 63.9 33.45"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 63.9,
+        "yMm": 31.85,
+        "widthMm": 0.9000000000000057,
+        "heightMm": 1.6000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-7",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M63.55 33.05L64.85 33.15 65.3 33"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 63.550000000000004,
+        "yMm": 33,
+        "widthMm": 1.75,
+        "heightMm": 0.14999999999999858
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-8",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M64.2 32.85L63.2 33.95"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 63.2,
+        "yMm": 32.85,
+        "widthMm": 0.9999999999999929,
+        "heightMm": 1.1000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-9",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M64.6 32.85L65.05 33.15 65.4 33.95"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 64.60000000000001,
+        "yMm": 32.85,
+        "widthMm": 0.7999999999999972,
+        "heightMm": 1.1000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-10",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M49.55 31L49.55 32.3"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 49.550000000000004,
+        "yMm": 31,
+        "widthMm": 0.05,
+        "heightMm": 1.2999999999999972
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-11",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M49.2 31.9L49.85 32.15 50.05 33.5"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 49.2,
+        "yMm": 31.9,
+        "widthMm": 0.8500000000000014,
+        "heightMm": 1.6000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-12",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M49.9 31.85L49.25 32.2 49.05 33.45"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 49.050000000000004,
+        "yMm": 31.85,
+        "widthMm": 0.8499999999999943,
+        "heightMm": 1.6000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-13",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M48.7 33.05L50 33.15 50.45 33"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 48.7,
+        "yMm": 33,
+        "widthMm": 1.75,
+        "heightMm": 0.14999999999999858
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-14",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M49.35 32.85L48.35 33.95"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 48.35,
+        "yMm": 32.85,
+        "widthMm": 1,
+        "heightMm": 1.1000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-15",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M49.75 32.85L50.2 33.15 50.55 33.95"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 49.75,
+        "yMm": 32.85,
+        "widthMm": 0.8000000000000043,
+        "heightMm": 1.1000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-16",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M46.35 31.05L46.35 33.6 48 33.7"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 46.35,
+        "yMm": 31.05,
+        "widthMm": 1.6499999999999986,
+        "heightMm": 2.650000000000002
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-17",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M54.7 31.05L53.95 32.7 53.2 32.95"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 53.2,
+        "yMm": 31.05,
+        "widthMm": 1.5,
+        "heightMm": 1.9000000000000021
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-18",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M52.75 31.05L53.35 32.7 54.05 33"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 52.75,
+        "yMm": 31.05,
+        "widthMm": 1.3000000000000043,
+        "heightMm": 1.9499999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-19",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M53.65 32.55L53.65 34"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 53.65,
+        "yMm": 32.55,
+        "widthMm": 0.05,
+        "heightMm": 1.4500000000000028
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-20",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M57.4 31.3L55.7 31.4 55.7 33.6 57.45 33.7"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 55.7,
+        "yMm": 31.3,
+        "widthMm": 1.75,
+        "heightMm": 2.400000000000002
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-21",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M55.45 32.45L57.25 32.55"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 55.45,
+        "yMm": 32.45,
+        "widthMm": 1.7999999999999972,
+        "heightMm": 0.09999999999999432
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-22",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M61.2 31.3L63.1 31.3"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 61.2,
+        "yMm": 31.3,
+        "widthMm": 1.8999999999999986,
+        "heightMm": 0.05
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-23",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-dca346",
+      "geometry": {
+        "kind": "path",
+        "d": "M62.2 31.05L62.1 33.95"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 62.1,
+        "yMm": 31.05,
+        "widthMm": 0.10000000000000142,
+        "heightMm": 2.900000000000002
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t2-0",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-f8fbf7",
+      "geometry": {
+        "kind": "path",
+        "d": "M77.35 14.3L77.4 12.6 76.1 12.45 75.4 12.5 73.55 14"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 73.55000000000001,
+        "yMm": 12.450000000000001,
+        "widthMm": 3.8499999999999943,
+        "heightMm": 1.8499999999999996
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-0",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M67.95 4.2L67.6 4.95 67.8 5.95"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 67.60000000000001,
+        "yMm": 4.2,
+        "widthMm": 0.3499999999999943,
+        "heightMm": 1.7500000000000009
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-1",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M71.65 4.35L71.1 5.3 71.35 6.5"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 71.10000000000001,
+        "yMm": 4.3500000000000005,
+        "widthMm": 0.5499999999999972,
+        "heightMm": 2.1500000000000004
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-2",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M75.3 4.5L74.9 5.3 75.1 6.3"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 74.9,
+        "yMm": 4.500000000000001,
+        "widthMm": 0.4000000000000057,
+        "heightMm": 1.7999999999999998
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-3",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M73.8 6.3L73.1 7.55 73.45 9"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 73.10000000000001,
+        "yMm": 6.300000000000001,
+        "widthMm": 0.7000000000000028,
+        "heightMm": 2.6999999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-4",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M66.55 6.35L66.2 7.1 66.4 8.15"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 66.2,
+        "yMm": 6.3500000000000005,
+        "widthMm": 0.3500000000000085,
+        "heightMm": 1.7999999999999998
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-5",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M69.4 6.6L68.8 7.6 69.1 8.8"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 68.80000000000001,
+        "yMm": 6.6000000000000005,
+        "widthMm": 0.5999999999999943,
+        "heightMm": 2.2
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-6",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M76.8 7L76.4 7.8 76.6 8.85"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 76.4,
+        "yMm": 7.000000000000001,
+        "widthMm": 0.4000000000000057,
+        "heightMm": 1.8500000000000005
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-7",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M67.55 8.8L67.15 9.4 67.35 10.2"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 67.15,
+        "yMm": 8.8,
+        "widthMm": 0.4000000000000057,
+        "heightMm": 1.4000000000000004
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-8",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M74.7 21.5L74.75 22.1 76 22.25"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 74.7,
+        "yMm": 21.5,
+        "widthMm": 1.3000000000000114,
+        "heightMm": 0.75
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-9",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M75.55 21.65L75.35 22.85 75.9 23.25"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 75.35000000000001,
+        "yMm": 21.65,
+        "widthMm": 0.5499999999999972,
+        "heightMm": 1.6000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-10",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M77.25 22.45L77.8 23.1 77.7 23.65"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 77.25000000000001,
+        "yMm": 22.45,
+        "widthMm": 0.5499999999999972,
+        "heightMm": 1.1999999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-11",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M78.1 22.55L77.55 22.9 77.2 23.45"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 77.20000000000002,
+        "yMm": 22.55,
+        "widthMm": 0.8999999999999915,
+        "heightMm": 0.8999999999999986
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-12",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M75.7 23L75.9 23.55"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 75.7,
+        "yMm": 23,
+        "widthMm": 0.20000000000000284,
+        "heightMm": 0.5500000000000007
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-13",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M79.45 9.2L79.9 9.6 80.75 11.4 81.1 12.6 81.25 15.3 81.1 16.65 80.3 19.2 78.95 22 78.4 22.55 78.15 23.25 77.65 23.65 77.6 23.35 77.25 23.5 76.8 23.1 76.5 23.2 76.35 22.9 76 22.9 75.9 23.55 75.25 22.9 70.25 16.75 70.2 16.55 71.3 15.6 69.55 13.25 71.55 11.75 73.55 14.05 75.55 12.6 77.25 14.6 79.3 12.9 77.7 10.6 79.4 9.25Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 45,
+        "maxStitchLengthMm": 4,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 69.55000000000001,
+        "yMm": 9.200000000000001,
+        "widthMm": 11.700000000000003,
+        "heightMm": 14.45
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-14",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M69.8 9.55L69 11.2"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 69.00000000000001,
+        "yMm": 9.55,
+        "widthMm": 0.7999999999999972,
+        "heightMm": 1.6500000000000004
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-15",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M68.55 10.5L69.7 10.65"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 68.55000000000001,
+        "yMm": 10.500000000000002,
+        "widthMm": 1.1499999999999915,
+        "heightMm": 0.14999999999999858
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-16",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M69.15 10.05L69.55 11.9"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 69.15,
+        "yMm": 10.05,
+        "widthMm": 0.4000000000000057,
+        "heightMm": 1.8499999999999996
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-17",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M72.75 9.75L72.15 10.85 72.45 12.2"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 72.15,
+        "yMm": 9.750000000000002,
+        "widthMm": 0.6000000000000085,
+        "heightMm": 2.4499999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-18",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M67.7 11.5L67.3 12.25 67.5 13.05"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 67.30000000000001,
+        "yMm": 11.500000000000002,
+        "widthMm": 0.3999999999999915,
+        "heightMm": 1.549999999999999
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-19",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M68.75 13.4L68.25 14.3 68.5 15.45"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 68.25000000000001,
+        "yMm": 13.4,
+        "widthMm": 0.5,
+        "heightMm": 2.0500000000000007
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-20",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M62.25 20.9L62.05 21.95 62.05 29.8"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.7,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 62.050000000000004,
+        "yMm": 20.9,
+        "widthMm": 0.19999999999999574,
+        "heightMm": 8.900000000000002
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-21",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M64.65 26.45L61.25 27.1"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.4,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 61.25,
+        "yMm": 26.45,
+        "widthMm": 3.3999999999999986,
+        "heightMm": 0.6500000000000021
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-22",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M64.6 23.65L66.5 23.7 64.5 26.25 66.7 29.8 64.8 29.85 63.3 27.25 62.85 27.8 62.85 29.8 61.2 29.75 61.3 20.95 62.9 20.95 62.95 26.2 64.55 23.7Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 90,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 61.2,
+        "yMm": 20.95,
+        "widthMm": 5.499999999999993,
+        "heightMm": 8.900000000000002
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-23",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M45.75 25.95L48.75 25.9 49.6 25.55 50.2 24.8 50.35 24.05 50.25 23 50.05 22.55 49.15 21.9 47.5 21.75 46.8 21.85 46.6 22.05 46.55 29.8"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.63,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 45.75,
+        "yMm": 21.75,
+        "widthMm": 4.600000000000001,
+        "heightMm": 8.05
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-24",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M68 22.45L68.55 22.5 69.05 22.9 69.05 23.95 68.45 24.4 67.95 24.4 67.4 24.05 67.2 23.2 67.5 22.7 67.95 22.5Z"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 67.2,
+        "yMm": 22.45,
+        "widthMm": 1.8500000000000085,
+        "heightMm": 1.9499999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-25",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M67.9 23.95L67.95 23 68.45 23.05 68.4 23.5 68.6 23.95"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 67.9,
+        "yMm": 23,
+        "widthMm": 0.7000000000000028,
+        "heightMm": 0.9499999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-26",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M67.75 23.45L68.55 23.45"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 67.75000000000001,
+        "yMm": 23.45,
+        "widthMm": 0.7999999999999972,
+        "heightMm": 0.05
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-27",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M52.2 25L52.45 24.35 53 24.15 54.5 24.1 55.25 24.55 55.5 25.1 55.7 26.6 55.75 29.8"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.5,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 52.2,
+        "yMm": 24.1,
+        "widthMm": 3.549999999999997,
+        "heightMm": 5.699999999999999
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-28",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M56.5 26.25L53.4 26.45 52.7 26.85 52.3 27.9 52.45 28.75 53.2 29.3 54.35 29.1 56.45 28.1"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.3,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 52.300000000000004,
+        "yMm": 26.25,
+        "widthMm": 4.199999999999996,
+        "heightMm": 3.0500000000000007
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-29",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M60.6 23.5L60.15 24.45 57.45 25.7"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.3,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 57.45,
+        "yMm": 23.5,
+        "widthMm": 3.1499999999999986,
+        "heightMm": 2.1999999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-30",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M58.5 24.3L58.25 25.45 58.25 29.8"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.7,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 58.25,
+        "yMm": 24.3,
+        "widthMm": 0.25,
+        "heightMm": 5.5
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-31",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M57.5 23.6L58.75 23.6 59 24.5 59.8 23.65 60.85 23.55 60.8 25 59.85 25.15 59.15 26 59.1 29.7 57.45 29.75 57.45 23.65Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 135,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 57.45,
+        "yMm": 23.55,
+        "widthMm": 3.3999999999999986,
+        "heightMm": 6.199999999999999
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-32",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M69.4 34.45L69.95 35.4 69.75 36.55"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 69.4,
+        "yMm": 34.45,
+        "widthMm": 0.5499999999999972,
+        "heightMm": 2.0999999999999943
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-33",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M73.4 37.7L74.05 38.85 73.7 40.2"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 73.4,
+        "yMm": 37.7,
+        "widthMm": 0.6500000000000057,
+        "heightMm": 2.5
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-34",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M70.45 38.2L70.95 39.1 70.7 40.1"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 70.45,
+        "yMm": 38.2,
+        "widthMm": 0.5,
+        "heightMm": 1.8999999999999986
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-35",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M68.15 39.55L68.65 40.4 68.45 41.45"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 68.15,
+        "yMm": 39.550000000000004,
+        "widthMm": 0.5,
+        "heightMm": 1.8999999999999986
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-36",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M74.25 40.8L75 42.1 74.65 43.55"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 74.25000000000001,
+        "yMm": 40.800000000000004,
+        "widthMm": 0.75,
+        "heightMm": 2.75
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-37",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M70 41.1L70.6 42.1 70.3 43.2"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 70.00000000000001,
+        "yMm": 41.1,
+        "widthMm": 0.5999999999999943,
+        "heightMm": 2.1000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-38",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M77.4 41.15L77.9 41.95 77.7 42.95"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 77.4,
+        "yMm": 41.15,
+        "widthMm": 0.5,
+        "heightMm": 1.8000000000000043
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-39",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M67.25 41.8L67.7 42.6 67.45 43.6"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 67.25000000000001,
+        "yMm": 41.800000000000004,
+        "widthMm": 0.44999999999998863,
+        "heightMm": 1.7999999999999972
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-40",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M72.3 43.7L72.8 44.5 72.5 45.55"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 72.30000000000001,
+        "yMm": 43.7,
+        "widthMm": 0.5,
+        "heightMm": 1.8500000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-41",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M75.95 43.7L76.4 44.55 76.15 45.55"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 75.95,
+        "yMm": 43.7,
+        "widthMm": 0.45000000000000284,
+        "heightMm": 1.8500000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-42",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-7db473",
+      "geometry": {
+        "kind": "path",
+        "d": "M68.5 43.9L69 44.75 68.8 45.7"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 68.50000000000001,
+        "yMm": 43.9,
+        "widthMm": 0.5,
+        "heightMm": 1.8000000000000043
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-0",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M68.1 4.3L68.35 5.1 67.9 5.85"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 67.9,
+        "yMm": 4.300000000000001,
+        "widthMm": 0.45000000000000284,
+        "heightMm": 1.5499999999999998
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-1",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M71.75 4.35L71.95 5.5 71.5 6.45"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 71.50000000000001,
+        "yMm": 4.3500000000000005,
+        "widthMm": 0.44999999999998863,
+        "heightMm": 2.1000000000000005
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-2",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M75.45 4.5L75.65 5.45 75.2 6.2"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 75.2,
+        "yMm": 4.500000000000001,
+        "widthMm": 0.45000000000000284,
+        "heightMm": 1.7000000000000002
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-3",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M73.85 6.25L74.15 7.85 73.5 9"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 73.50000000000001,
+        "yMm": 6.250000000000001,
+        "widthMm": 0.6499999999999915,
+        "heightMm": 2.749999999999999
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-4",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M66.65 6.45L66.9 7.35 66.5 8.15"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 66.50000000000001,
+        "yMm": 6.450000000000001,
+        "widthMm": 0.3999999999999915,
+        "heightMm": 1.6999999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-5",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M69.5 6.55L69.75 7.8 69.2 8.85"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 69.2,
+        "yMm": 6.550000000000001,
+        "widthMm": 0.5500000000000114,
+        "heightMm": 2.3000000000000007
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-6",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M76.95 7.05L77.15 8 76.8 8.8"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 76.80000000000001,
+        "yMm": 7.050000000000001,
+        "widthMm": 0.3499999999999943,
+        "heightMm": 1.75
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-7",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M75.85 8.6L77.55 10.75 75.45 12.35 75.2 12.15 73.75 10.2 75.8 8.65Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 135,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 73.75000000000001,
+        "yMm": 8.600000000000001,
+        "widthMm": 3.799999999999997,
+        "heightMm": 3.75
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-8",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M69.9 9.6L70.15 10.85 69.6 11.85"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 69.60000000000001,
+        "yMm": 9.600000000000001,
+        "widthMm": 0.5499999999999972,
+        "heightMm": 2.25
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-9",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M72.8 9.65L73.15 11.05 72.55 12.15"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 72.55000000000001,
+        "yMm": 9.65,
+        "widthMm": 0.5999999999999943,
+        "heightMm": 2.5
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-10",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M67.75 11.6L67.95 12.4 67.6 12.9"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 67.60000000000001,
+        "yMm": 11.600000000000001,
+        "widthMm": 0.3499999999999943,
+        "heightMm": 1.299999999999999
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-11",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M68.8 13.4L69.05 14.5 68.55 15.5"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 68.55000000000001,
+        "yMm": 13.4,
+        "widthMm": 0.5,
+        "heightMm": 2.1000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-12",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M76.2 22.95L76.2 23.5 76.55 23.5 77 24.25"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 76.2,
+        "yMm": 22.95,
+        "widthMm": 0.8000000000000114,
+        "heightMm": 1.3000000000000007
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-13",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M78.05 23.35L77.8 23.75 77 23.9"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 77.00000000000001,
+        "yMm": 23.35,
+        "widthMm": 1.0499999999999972,
+        "heightMm": 0.5499999999999972
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-14",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M77.6 23.4L77.2 24.15"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 77.20000000000002,
+        "yMm": 23.4,
+        "widthMm": 0.3999999999999915,
+        "heightMm": 0.75
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-15",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M77.8 23.7L76.3 23.85"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 76.30000000000001,
+        "yMm": 23.7,
+        "widthMm": 1.5,
+        "heightMm": 0.15000000000000213
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-16",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M77.05 23.45L77.45 24 77.2 24.55"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 77.05000000000001,
+        "yMm": 23.45,
+        "widthMm": 0.4000000000000057,
+        "heightMm": 1.1000000000000014
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-17",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M76.3 23.9L77.4 23.9"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 76.30000000000001,
+        "yMm": 23.9,
+        "widthMm": 1.0999999999999943,
+        "heightMm": 0.05
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-18",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M77.15 23.4L76.7 23.95 76.75 24.7"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 76.70000000000002,
+        "yMm": 23.4,
+        "widthMm": 0.44999999999998863,
+        "heightMm": 1.3000000000000007
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-19",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M76.45 23.5L77.3 24.5"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 76.45,
+        "yMm": 23.5,
+        "widthMm": 0.8500000000000085,
+        "heightMm": 1
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-20",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M69.3 34.5L69.15 35.6 69.65 36.5"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 69.15,
+        "yMm": 34.5,
+        "widthMm": 0.5,
+        "heightMm": 2
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-21",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M71.95 34.5L74.15 36.1 72.65 38.1 72.45 38.25 70.35 36.6 71.9 34.55Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 45,
+        "maxStitchLengthMm": 4,
+        "underlay": false,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 70.35000000000001,
+        "yMm": 34.5,
+        "widthMm": 3.799999999999997,
+        "heightMm": 3.75
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-22",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M73.35 37.75L73.05 39.05 73.65 40.2"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 73.05000000000001,
+        "yMm": 37.75,
+        "widthMm": 0.5999999999999943,
+        "heightMm": 2.450000000000003
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-23",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M70.4 38.15L70.1 39.25 70.6 40.1"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 70.10000000000001,
+        "yMm": 38.15,
+        "widthMm": 0.5,
+        "heightMm": 1.9500000000000028
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-24",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M68.1 39.6L67.95 40.65 68.35 41.3"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 67.95,
+        "yMm": 39.6,
+        "widthMm": 0.4000000000000057,
+        "heightMm": 1.7000000000000028
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-25",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M74.2 40.9L73.9 42.35 74.55 43.65"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 73.9,
+        "yMm": 40.9,
+        "widthMm": 0.6500000000000057,
+        "heightMm": 2.75
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-26",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M69.95 41.2L69.75 42.3 70.25 43.15"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 69.75000000000001,
+        "yMm": 41.2,
+        "widthMm": 0.5,
+        "heightMm": 1.9499999999999957
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-27",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M77.35 41.2L77.2 42.2 77.6 43"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 77.20000000000002,
+        "yMm": 41.2,
+        "widthMm": 0.3999999999999915,
+        "heightMm": 1.7999999999999972
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-28",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M67.2 41.8L66.95 42.8 67.3 43.55"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 66.95,
+        "yMm": 41.800000000000004,
+        "widthMm": 0.3500000000000085,
+        "heightMm": 1.75
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-29",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M72.25 43.55L71.95 44.7 72.45 45.55"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 71.95,
+        "yMm": 43.550000000000004,
+        "widthMm": 0.5,
+        "heightMm": 2
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-30",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M75.85 43.7L75.6 44.7 76.05 45.5"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 75.60000000000001,
+        "yMm": 43.7,
+        "widthMm": 0.45000000000000284,
+        "heightMm": 1.7999999999999972
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-31",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-4a9bae",
+      "geometry": {
+        "kind": "path",
+        "d": "M68.5 44.05L68.3 44.95 68.75 45.7"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 68.30000000000001,
+        "yMm": 44.050000000000004,
+        "widthMm": 0.45000000000000284,
+        "heightMm": 1.6499999999999986
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t5-0",
+      "sourceObjectId": "real-01-logo-color-alpha.png",
+      "sourceType": "raster",
+      "classification": "illustration",
+      "colorId": "color-898a89",
+      "geometry": {
+        "kind": "path",
+        "d": "M80 9.75L88.65 20.65 89.65 22.9 89.9 24.6 89.65 27.2 89.2 28.45 88.6 29.4 87.65 29.25 87.15 28.75 86.45 28.6 85.65 28 85.2 28.15 84.45 27.55 84 27.55 83.4 27.3 83.2 27 82.45 26.8 82 26.35 80.65 26.1 80.5 25.8 79.7 25.65 79.55 25.35 78.5 25.25 77.55 24.55 77.05 25.1 79.6 20.85 80.8 18 81.15 16.65 81.3 15.3 81.15 12.6 80.7 11.1 80 9.8Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 0,
+        "maxStitchLengthMm": 4,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 77.05000000000001,
+        "yMm": 9.750000000000002,
+        "widthMm": 12.849999999999994,
+        "heightMm": 19.65
+      },
+      "nodeCount": 2
+    }
+  ],
+  "metrics": {
+    "componentCount": 145,
+    "nodeCount": 290,
+    "colorCount": 6,
+    "widthMm": 90,
+    "heightMm": 50,
+    "gradientRatio": 0.1908,
+    "texture": 0.0069,
+    "colorEntropy": 5.213,
+    "alphaCoverage": 0.2055
+  },
+  "preparation": {
+    "profileVersion": "experimental-v2-2026-09-06",
+    "raster": {
+      "sourceColorCount": 811,
+      "hadAlpha": true,
+      "mmPorPx": 0.05,
+      "reducedColorCount": 6,
+      "quantizationDeltaE": 6.16,
+      "classification": "illustration",
+      "removedRegions": 259,
+      "removedAreaMm2": 22.928
+    },
+    "issues": [
+      {
+        "code": "ILLUSTRATION_REVIEW",
+        "message": "Este diseño tiene 90 piezas; alguien del taller lo revisará antes de bordarlo.",
+        "severity": "review"
+      },
+      {
+        "code": "DETALLE_PERDIDO",
+        "message": "Quitamos 259 detalle(s) demasiado pequeño(s) para bordarse a este tamaño.",
+        "severity": "review"
+      },
+      {
+        "code": "PALETA_FORZADA",
+        "message": "Tuvimos que simplificar bastante los colores; el bordado no se parecerá del todo al original.",
+        "severity": "review"
+      }
+    ]
+  },
+  "profileVersion": "experimental-v2-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

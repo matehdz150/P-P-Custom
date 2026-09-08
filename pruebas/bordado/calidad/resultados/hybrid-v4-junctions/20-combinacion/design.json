@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "7ea0241ea7f6ea652bae63b9f36c2950a06a2fc19e8f6f1eea9ce54a8cbcb975",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    },
+    {
+      "id": "c1",
+      "sourceHex": "#f59e0b",
+      "displayHex": "#f59e0b",
+      "order": 1
+    }
+  ],
+  "objects": [
+    {
+      "id": "outline",
+      "sourceObjectId": "outline",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M8 49L82 49"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "column-hybrid-rails-0-0",
+      "sourceObjectId": "column",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M18.661 38.27L20.433 36.432L23.368 30.158L25.735 26.272L27.544 23.878L29.572 21.754L31.813 20.001L33.64 19.093L35.528 18.603L37.426 18.616L39.247 19.194L40.934 20.238L42.432 21.67L44.171 23.961L45.589 26.558L47.738 32.195L49.315 34.202M17.339 37.73L17.358 35.177L20.376 28.542L22.941 24.334L24.945 21.685L27.283 19.24L30.023 17.11L32.442 15.911L35.138 15.225L37.971 15.261L40.665 16.104L43.013 17.548L44.95 19.385L47.031 22.123L48.647 25.07L50.924 31.257L50.685 33.798M18.772 38.315L17.228 37.685M29.653 21.843L27.203 19.151M37.406 18.735L37.991 15.142M42.343 21.751L45.038 19.305M49.2 34.236L50.8 33.764"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 44,
+      "quality": {
+        "minWidthMm": 1.428,
+        "maxWidthMm": 3.4,
+        "averageWidthMm": 3.159,
+        "widthVariance": 0.40002,
+        "angleVariance": 20.91628,
+        "maxAngleDeltaDeg": 15.836,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 1,
+        "representationDecision": "rails-v3",
+        "representationReasons": [
+          "HIGH_CURVATURE",
+          "CURVATURE_PEAK",
+          "ACCUMULATED_TURN",
+          "DIRECTION_CHANGE",
+          "FAN_RISK"
+        ],
+        "lengthMm": 52.907,
+        "curvatureDegPerMm": 2.6705,
+        "maxCurvatureDegPerMm": 6.884,
+        "accumulatedTurningAngleDeg": 141.401,
+        "branchCount": 1,
+        "endpointTaper": 0,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 0.7566,
+        "railDivergenceMmPerMm": 0,
+        "railConvergenceMmPerMm": 0,
+        "numberOfSharpTurns": 0,
+        "rawCenterlineNodes": 17,
+        "rawRailNodes": 136,
+        "finalRailNodes": 34,
+        "rungsBefore": 68,
+        "rungsAfter": 5,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 25
+      }
+    },
+    {
+      "id": "area",
+      "sourceObjectId": "area",
+      "sourceType": "vector",
+      "classification": "logo",
+      "colorId": "c1",
+      "geometry": {
+        "kind": "path",
+        "d": "M56 14L80 14L80 39L61 39C55 32 54 23 56 14Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "maxStitchLengthMm": 4,
+        "angleDeg": 45,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 5
+    }
+  ],
+  "metrics": {
+    "componentCount": 3,
+    "nodeCount": 51,
+    "colorCount": 2
+  },
+  "preparation": {
+    "profileVersion": "experimental-hybrid-v4-2026-09-06",
+    "texto": {
+      "satinColumns": 1,
+      "runningPaths": 1,
+      "fillAreas": 1
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-hybrid-v4-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0",
+  "debug": {
+    "hybridJoins": []
+  }
+}

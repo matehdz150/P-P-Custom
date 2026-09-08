@@ -1,6 +1,7 @@
 "use client";
 
 import type { DesignerProductTemplate } from "@/lib/api/products";
+import { extraPorLados } from "@kustto/precios";
 import type { Tarifa } from "@/lib/api/envios";
 import type { ArchivoDeLado } from "@/lib/pedido/borrador";
 
@@ -42,9 +43,14 @@ export function Resumen({
 	cotizando: boolean;
 }) {
 	const base = producto.pricing?.basePrice ?? 0;
-	const porLado = producto.pricing?.perSidePrice ?? 0;
 	const ladosExtra = Math.max(0, lados.length - 1);
-	const extra = ladosExtra * porLado;
+	/* La misma función que cobra en `aLinea`. Con recargos distintos por lado
+	   ya no basta con multiplicar: dos mangas no valen dos espaldas. */
+	const extra = extraPorLados(
+		lados,
+		producto.printSides ?? [],
+		producto.pricing ?? {},
+	);
 
 	const tallasElegidas = Object.entries(cantidades).filter(([, n]) => n > 0);
 

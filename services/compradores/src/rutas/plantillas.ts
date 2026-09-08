@@ -434,7 +434,7 @@ async function compararParaPlantilla(linea: Cuerpo, item: Cuerpo) {
 		   Antes leía `producto.basePrice` —que no existe, está en `pricing`— y
 		   se caía al `unitario` del pedido de entonces: el comentario prometía
 		   el precio de hoy y entregaba el de hace meses. */
-		unitario: precioDeHoy(producto, ((linea.lados ?? []) as string[]).length),
+		unitario: precioDeHoy(producto, (linea.lados ?? []) as string[]),
 		miniatura: (linea.arte ?? [])[0]?.colocacion ?? linea.imagen ?? null,
 	};
 }
@@ -462,12 +462,26 @@ const TIPOS: Record<string, string> = {
 	colocacion: "image/png",
 	/** La prenda real con el diseño encima, si el taller subió la foto. */
 	prenda: "image/png",
+	/**
+	 * El MISMO arte en trazos, para las técnicas que no imprimen.
+	 *
+	 * Es un tipo APARTE y no un `arte` con otra extensión: cambiarle el nombre
+	 * al archivo de siempre movería la ruta de todos los pedidos que ya existen
+	 * y de las dos copias que se hacen más abajo. Así entra sin tocar nada.
+	 */
+	vector: "image/svg+xml",
 	diseno: "application/json",
 };
+
+/** Con qué extensión se guarda cada uno. Todo era `.png` hasta que entró el láser. */
+const EXTENSION: Record<string, string> = { vector: "svg", diseno: "json" };
 
 /** Un arte de producción son varios MB; el resto, mucho menos. */
 const MAXIMO: Record<string, number> = {
 	arte: 25 * 1024 * 1024,
+	/* Un SVG es texto y pesa poco… salvo si alguien vectorizó una foto y trae
+	   cuarenta mil trazos. Ahí el tope es la defensa. */
+	vector: 12 * 1024 * 1024,
 	colocacion: 8 * 1024 * 1024,
 	prenda: 8 * 1024 * 1024,
 	diseno: 4 * 1024 * 1024,
@@ -519,7 +533,10 @@ export async function firmarSubidas(quien: Identidad, cuerpo: unknown) {
 				throw malaPeticion("Falta de qué lado es el archivo");
 			}
 
-			const nombre = tipo === "diseno" ? "diseno.json" : `${lado}-${tipo}.png`;
+			const nombre =
+				tipo === "diseno"
+					? "diseno.json"
+					: `${lado}-${tipo}.${EXTENSION[tipo] ?? "png"}`;
 			const key = `${base}/${nombre}`;
 
 			const uploadUrl = await getSignedUrl(
@@ -585,6 +602,12 @@ async function deArtePropio(quien: Identidad, item: Cuerpo) {
 			`carritos/${carritoId}/${lado}-prenda.png`,
 		);
 
+		// Sólo existe en productos de láser; `copiar` devuelve falso y sigue.
+		await copiar(
+			`${base}/${lado}-vector.svg`,
+			`carritos/${carritoId}/${lado}-vector.svg`,
+		);
+
 		lados.push({
 			lado,
 			anchoPx: Math.trunc(Number(l.anchoPx ?? 0)),
@@ -606,8 +629,13 @@ async function deArtePropio(quien: Identidad, item: Cuerpo) {
 		lados,
 		tallas: item.tallas,
 		/* El precio de HOY, como en todos los caminos al carrito, y con los
-		   lados que de verdad se copiaron: son los que se van a imprimir. */
-		precioUnitario: precioDeHoy(producto, lados.length),
+		   lados que de verdad se copiaron: son los que se van a imprimir.
+		   `lados` aquí son objetos con medidas, no claves: se mapean porque
+		   ahora el precio depende de CUÁL es cada lado, no de cuántos hay. */
+		precioUnitario: precioDeHoy(
+			producto,
+			lados.map((l) => l.lado),
+		),
 		miniatura: item.miniatura ?? null,
 	};
 }

@@ -1,0 +1,45 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "title": "A · Hoja inferior", "x": 0, "y": 0, "w": 390, "h": 844 },
+    { "file": "Flotante.dc.html", "title": "B · Controles flotantes", "x": 490, "y": 0, "w": 390, "h": 844 },
+    { "file": "Carrusel.dc.html", "title": "C · Carrusel", "x": 980, "y": 0, "w": 390, "h": 844 }
+  ],
+  "annotations": [
+    {
+      "id": "problema",
+      "x": 0,
+      "y": -230,
+      "w": 560,
+      "text": "El problema, medido\n\nVistaDeLaPrenda.tsx:291 tiene un panel lateral de w-[300px] shrink-0, sin ningún breakpoint (el archivo entero tiene UNO, y es un md:p-10).\n\nEn un teléfono de 390 px: 390 − 300 = 90 px para la prenda.\n\nEs una pantalla de escritorio puesta tal cual en el móvil. Las tres propuestas atacan la misma pregunta: dónde viven las vistas y los colores cuando no cabe una columna al lado."
+    },
+    {
+      "id": "nota-a",
+      "x": 0,
+      "y": 890,
+      "w": 390,
+      "text": "A · Hoja inferior\n\nLa prenda se queda con la pantalla; vistas y colores bajan a una hoja que se arrastra. Colapsada deja una tira con la vista y el color actuales.\n\nA favor: es el patrón que el teléfono ya enseñó a todo el mundo, y las miniaturas siguen visibles — se compara delante y detrás sin perder de vista lo que se mira.\n\nEn contra: la hoja se come ~230 px aun recogida, y arrastrarla compite con el gesto de mover la prenda, que es el mismo dedo."
+    },
+    {
+      "id": "nota-b",
+      "x": 490,
+      "y": 890,
+      "w": 390,
+      "text": "B · Controles flotantes\n\nSin panel: la foto ocupa el teléfono entero y los controles flotan encima sobre un degradado. Los lados son pastillas, no miniaturas.\n\nA favor: la prenda se ve más grande que en ninguna otra, y es la que mejor aguanta una foto vertical con modelo.\n\nEn contra: los controles tapan la parte baja de la prenda — justo donde cae un estampado de pecho en una foto de cuerpo entero. Y sin miniatura hay que cambiar de lado para comparar."
+    },
+    {
+      "id": "nota-c",
+      "x": 980,
+      "y": 890,
+      "w": 390,
+      "text": "C · Carrusel\n\nUn lado por tarjeta, se pasa deslizando, con puntos debajo. Es como se miran las fotos de un producto en cualquier tienda del teléfono.\n\nA favor: el gesto no hay que explicarlo, y asomar la tarjeta de al lado dice que hay más sin gastar sitio en miniaturas.\n\nEn contra: es la peor para comparar —nunca ves dos lados a la vez— y el deslizar lateral choca de frente con el zoom y el arrastre de la prenda. Habría que decidir cuál gana."
+    },
+    {
+      "id": "comun",
+      "x": 1470,
+      "y": 0,
+      "w": 330,
+      "text": "Lo que comparten las tres\n\n· Botones de 44 px o más, que es el mínimo táctil.\n· El punto en un color dice \"este lado no tiene foto real\", igual que en escritorio.\n· Sin barra de estado falsa: en el teléfono la pinta el sistema encima.\n· Tokens reales del proyecto: tinta #2b2812, lima #aeff6e, hueso #fffdf8, gris #f3f3f1, Figtree + Poppins.\n\nLo que NO resuelvo aquí\n\nDescargar la imagen no existe hoy en móvil: MobileDesignerShell pasa onVista={() => {}}, así que la vista nunca se entera de qué se está mirando. Lo dejé en las tres como botón secundario junto al carrito, pero es trabajo aparte."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}

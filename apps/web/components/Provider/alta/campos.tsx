@@ -1,5 +1,19 @@
 "use client";
 
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import {
+	esTecnica,
+	TECNICAS,
+	TECNICAS_EN_ORDEN,
+	type Tecnica,
+} from "@/lib/impresion/tecnicas";
+
 /** Los ladrillos del formulario. Todos con la misma altura y el mismo foco. */
 
 export const CAMPO =
@@ -130,5 +144,53 @@ export function Palomita() {
 				strokeLinejoin="round"
 			/>
 		</svg>
+	);
+}
+
+/**
+ * Con qué se estampa un lado.
+ *
+ * NO ES UN CAMPO MÁS: es el único del formulario que cambia el ARCHIVO que el
+ * taller va a recibir. Por eso lleva debajo lo que implica —PNG a los DPI de
+ * al lado, o trazos— en vez de dejarlo a que cada quien lo deduzca del nombre
+ * de la técnica.
+ *
+ * Es un `Select` de shadcn y no un `<select>` a mano: el proyecto ya lo trae
+ * sobre Radix, y dibujarlo aparte terminaría con dos desplegables que se ven
+ * distinto en la misma pantalla.
+ */
+export function SelectorDeTecnica({
+	valor,
+	onCambio,
+}: {
+	valor: Tecnica | "";
+	onCambio: (v: Tecnica) => void;
+}) {
+	const salida = esTecnica(valor) ? TECNICAS[valor].salida : null;
+
+	return (
+		<span className="flex items-center gap-2">
+			<Select value={valor || undefined} onValueChange={onCambio}>
+				<SelectTrigger
+					aria-label="Con qué se estampa"
+					className="h-[38px] w-[176px] rounded-lg border-[1.5px] border-tinta/18 bg-white text-[14px] text-tinta"
+				>
+					<SelectValue placeholder="Cómo se estampa" />
+				</SelectTrigger>
+				<SelectContent>
+					{TECNICAS_EN_ORDEN.map(([clave, t]) => (
+						<SelectItem key={clave} value={clave}>
+							{t.nombre}
+						</SelectItem>
+					))}
+				</SelectContent>
+			</Select>
+
+			{/* Lo que de verdad cambia, dicho en una palabra. Sin esto, "Grabado
+			    láser" y "Sublimación" se leen como dos etiquetas equivalentes. */}
+			{salida && (
+				<Ayuda>{salida === "vector" ? "manda trazos" : "manda PNG"}</Ayuda>
+			)}
+		</span>
 	);
 }

@@ -1,3 +1,4 @@
+import { recargoDeLado } from "@kustto/precios";
 import Eyebrow from "@/components/Kustto/Eyebrow";
 import type { Product } from "@/lib/api/products";
 import { pesos, reglasDe } from "./datos";
@@ -59,14 +60,29 @@ function reunir(product: Product): Dato[] {
 		const nombres = lados
 			.map((s) => etiquetas[s.sideKey] ?? s.sideKey)
 			.join(" y ");
-		const porLado = product.pricing?.perSidePrice;
+		/* Un solo precio ya no describe la prenda: si el taller le puso a la
+		   manga un recargo distinto del de la espalda, decir "cada lado suma
+		   $60" es falso para uno de los dos. Se enseña el rango cuando los hay
+		   distintos, y la frase de siempre cuando todos valen igual. */
+		const recargos = [
+			...new Set(
+				lados.map((s) =>
+					recargoDeLado(s.sideKey, lados, product.pricing ?? {}),
+				),
+			),
+		].filter((n) => n > 0);
+		const menor = Math.min(...recargos);
+		const mayor = Math.max(...recargos);
 
 		datos.push({
 			cifra: `${lados.length} ${lados.length === 1 ? "lado" : "lados"}`,
 			titulo: nombres,
-			nota: porLado
-				? `Cada lado que uses suma ${pesos(porLado)} por pieza.`
-				: `${nombres}, listos para imprimir.`,
+			nota:
+				recargos.length === 0
+					? `${nombres}, listos para imprimir.`
+					: menor === mayor
+						? `Cada lado extra suma ${pesos(mayor)} por pieza.`
+						: `Cada lado extra suma entre ${pesos(menor)} y ${pesos(mayor)} por pieza, según cuál.`,
 		});
 	}
 

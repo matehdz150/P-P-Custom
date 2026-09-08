@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "f6cda6318727e9e762d5fd178dfe88bd30eed8eea0b5f0767fdd2970c8519b1c",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "curva-gruesa-v3-fill-0",
+      "sourceObjectId": "curva-gruesa",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M15.392 44.206L18.434 35.599L22.407 28.975L27.171 23.934L32.519 20.395L38.269 18.296L44.251 17.6L50.292 18.296L56.206 20.387L61.8 23.887L66.87 28.82L71.204 35.213L74.689 43.414L81.311 40.586L77.539 31.792L72.407 24.217L66.263 18.238L59.35 13.91L51.924 11.283L44.249 10.4L36.599 11.292L29.259 13.975L22.516 18.441L16.648 24.654L11.906 32.563L8.608 41.794Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "maxStitchLengthMm": 4.5,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 26
+    }
+  ],
+  "metrics": {
+    "componentCount": 1,
+    "nodeCount": 26,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-v3-2026-09-06",
+    "texto": {
+      "satinColumns": 1,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": [
+      {
+        "code": "SATIN_TOO_WIDE",
+        "message": "Columna de 7.2 mm convertida a fill.",
+        "severity": "review"
+      }
+    ]
+  },
+  "profileVersion": "experimental-v3-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

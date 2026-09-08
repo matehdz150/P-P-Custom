@@ -84,7 +84,14 @@ function Entrar() {
 	const [enviando, setEnviando] = useState(false);
 	const [reenviado, setReenviado] = useState(false);
 
-	const volver = params.get("volver") ?? "/";
+	/* Sin `?volver=` se cae a `/cuenta`, no a la portada.
+	
+	   Quien entra por su cuenta viene a ver sus pedidos, no a mirar el escaparate
+	   otra vez; devolverlo a la portada lo obliga a buscar el enlace de su
+	   cuenta justo después de identificarse. Cuando SÍ hay `volver` —el
+	   candado del carrito, un enlace a un pedido— manda ése, que es de donde lo
+	   sacamos. */
+	const volver = params.get("volver") ?? "/cuenta";
 
 	const listo =
 		modo === "entrar"

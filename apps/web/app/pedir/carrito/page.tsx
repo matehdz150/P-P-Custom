@@ -267,6 +267,8 @@ export default function PedirCarritoPage() {
 						altoPx: l.altoPx,
 						dpi: l.dpi,
 					})),
+					// La marca de revisión del bordado tiene que llegar al taller.
+					bordados: a.bordados,
 				})),
 			});
 

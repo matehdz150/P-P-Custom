@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+     xmlns:inkstitch="http://inkstitch.org/namespace"
+     version="1.1" width="90.0mm" height="60.0mm"
+     viewBox="0 0 90.0 60.0">
+  <metadata>
+    <inkstitch:min_stitch_len_mm>0.3</inkstitch:min_stitch_len_mm>
+    <inkstitch:collapse_len_mm>3</inkstitch:collapse_len_mm>
+    <inkstitch:min_satin_stroke_width_mm>1.5</inkstitch:min_satin_stroke_width_mm>
+    <inkstitch:inkstitch_svg_version>4</inkstitch:inkstitch_svg_version>
+  </metadata>
+  <path id="region-1" d="M 10.50,14.30 L 10.00,16.20 L 10.00,43.80 L 10.50,45.70 L 11.60,47.50 L 12.90,48.70 L 14.30,49.50 L 16.20,50.00 L 73.80,50.00 L 75.70,49.50 L 77.50,48.40 L 78.70,47.10 L 79.50,45.70 L 80.00,43.80 L 80.00,16.20 L 79.50,14.30 L 78.40,12.50 L 77.10,11.30 L 75.70,10.50 L 73.80,10.00 L 16.20,10.00 L 14.30,10.50 L 12.50,11.60 L 11.30,12.90 Z M 28.90,15.90 L 32.00,16.00 L 34.20,16.50 L 36.40,17.40 L 39.20,19.30 L 41.10,21.30 L 42.60,23.60 L 43.70,26.50 L 44.10,28.90 L 44.00,32.00 L 43.50,34.20 L 42.60,36.40 L 40.70,39.20 L 38.70,41.10 L 36.40,42.60 L 33.50,43.70 L 31.10,44.10 L 28.00,44.00 L 25.80,43.50 L 23.60,42.60 L 20.80,40.70 L 18.90,38.70 L 17.40,36.40 L 16.30,33.50 L 15.90,31.10 L 16.00,28.00 L 16.50,25.80 L 17.40,23.60 L 19.30,20.80 L 21.30,18.90 L 23.60,17.40 L 26.50,16.30 Z M 60.90,15.00 L 61.20,15.10 L 75.00,38.80 L 74.90,39.10 L 48.00,39.00 L 48.40,38.00 Z" fill="#2457d6" fill-rule="evenodd" stroke="none"
+        inkstitch:fill_method="tatami_fill" inkstitch:angle="0"
+        inkstitch:row_spacing_mm="0.45" inkstitch:max_stitch_length_mm="4"
+        inkstitch:fill_underlay="true"
+        inkstitch:pull_compensation_mm="0.15" inkstitch:trim_after="true" />
+  <path id="region-2" d="M 28.90,16.00 L 26.50,16.40 L 23.60,17.50 L 21.30,19.00 L 19.40,20.80 L 17.50,23.60 L 16.60,25.80 L 16.10,28.00 L 16.00,31.10 L 16.40,33.50 L 17.50,36.40 L 19.00,38.70 L 20.80,40.60 L 23.60,42.50 L 25.80,43.40 L 28.00,43.90 L 31.10,44.00 L 33.50,43.60 L 36.40,42.50 L 38.70,41.00 L 40.60,39.20 L 42.50,36.40 L 43.40,34.20 L 43.90,32.00 L 44.00,28.90 L 43.60,26.50 L 42.50,23.60 L 41.00,21.30 L 39.20,19.40 L 36.40,17.50 L 34.20,16.60 L 32.00,16.10 Z M 29.40,25.90 L 30.60,25.90 L 31.60,26.20 L 32.30,26.60 L 33.10,27.30 L 33.60,28.00 L 34.10,29.40 L 34.10,30.60 L 33.80,31.60 L 33.40,32.30 L 32.70,33.10 L 32.00,33.60 L 30.60,34.10 L 29.40,34.10 L 28.40,33.80 L 27.70,33.40 L 26.90,32.70 L 26.40,32.00 L 25.90,30.60 L 25.90,29.40 L 26.20,28.40 L 26.60,27.70 L 27.30,26.90 L 28.00,26.40 Z" fill="#f05a3f" fill-rule="evenodd" stroke="none"
+        inkstitch:fill_method="tatami_fill" inkstitch:angle="45"
+        inkstitch:row_spacing_mm="0.45" inkstitch:max_stitch_length_mm="4"
+        inkstitch:fill_underlay="true"
+        inkstitch:pull_compensation_mm="0.15" inkstitch:trim_after="true" />
+  <path id="region-3" d="M 60.90,15.10 L 48.10,39.00 L 74.90,39.00 L 61.10,15.10 Z" fill="#acd633" fill-rule="evenodd" stroke="none"
+        inkstitch:fill_method="tatami_fill" inkstitch:angle="-45"
+        inkstitch:row_spacing_mm="0.45" inkstitch:max_stitch_length_mm="4"
+        inkstitch:fill_underlay="true"
+        inkstitch:pull_compensation_mm="0.15" inkstitch:trim_after="true" />
+  <path id="region-4" d="M 29.40,26.00 L 28.00,26.50 L 26.70,27.70 L 26.00,29.40 L 26.00,30.60 L 26.50,32.00 L 27.70,33.30 L 29.40,34.00 L 30.60,34.00 L 32.00,33.50 L 33.30,32.30 L 34.00,30.60 L 34.00,29.40 L 33.50,28.00 L 32.30,26.70 L 30.60,26.00 Z" fill="#171717" fill-rule="evenodd" stroke="none"
+        inkstitch:fill_method="tatami_fill" inkstitch:angle="90"
+        inkstitch:row_spacing_mm="0.45" inkstitch:max_stitch_length_mm="4"
+        inkstitch:fill_underlay="true"
+        inkstitch:pull_compensation_mm="0.15" inkstitch:trim_after="false" />
+</svg>

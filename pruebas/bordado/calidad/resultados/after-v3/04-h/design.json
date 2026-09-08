@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "23dc6dbae19825730d78a918e9cc6630301c67225c3873209ea6d68fdcd57dbc",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "h-H-0-v3-0-0",
+      "sourceObjectId": "h-H-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M36.433 17L36.057 18.2L35.681 19.4L35.65 20.6L35.65 21.8L35.65 23L35.65 24.2L35.65 25.4L35.65 26.6L35.65 27.8L35.65 29L35.65 30.2L35.65 31.4L35.65 32.6L35.65 33.8L35.65 35M37.567 17L37.943 18.2L38.319 19.4L38.35 20.6L38.35 21.8L38.35 23L38.35 24.2L38.35 25.4L38.35 26.6L38.35 27.8L38.35 29L38.35 30.2L38.35 31.4L38.35 32.6L38.35 33.8L38.35 35M36.313 17L37.687 17M35.53 25.4L38.47 25.4M35.53 35L38.47 35"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 38,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.547,
+        "widthVariance": 0.17165,
+        "angleVariance": 0,
+        "maxAngleDeltaDeg": 0,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 2
+      }
+    },
+    {
+      "id": "h-H-0-v3-0-1",
+      "sourceObjectId": "h-H-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M35.65 35L35.65 36.2L35.65 37.4L35.681 38.6L36.057 39.8L36.433 41M38.35 35L38.35 36.2L38.35 37.4L38.319 38.6L37.943 39.8L37.567 41M35.53 35L38.47 35M35.53 37.4L38.47 37.4M36.313 41L37.687 41"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 18,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.293,
+        "widthVariance": 0.35412,
+        "angleVariance": 0,
+        "maxAngleDeltaDeg": 0,
+        "junctionCount": 0,
+        "segmentIndex": 1,
+        "segmentCount": 2
+      },
+      "dependencies": [
+        "h-H-0-v3-0-0"
+      ]
+    },
+    {
+      "id": "h-H-1-v3-1-0",
+      "sourceObjectId": "h-H-1",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M49.433 17L49.057 18.2L48.681 19.4L48.65 20.6L48.65 21.8L48.65 23L48.65 24.2L48.65 25.4L48.65 26.6L48.65 27.8L48.65 29L48.65 30.2L48.65 31.4L48.65 32.6L48.65 33.8L48.65 35M50.567 17L50.943 18.2L51.319 19.4L51.35 20.6L51.35 21.8L51.35 23L51.35 24.2L51.35 25.4L51.35 26.6L51.35 27.8L51.35 29L51.35 30.2L51.35 31.4L51.35 32.6L51.35 33.8L51.35 35M49.313 17L50.687 17M48.53 25.4L51.47 25.4M48.53 35L51.47 35"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 38,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.547,
+        "widthVariance": 0.17165,
+        "angleVariance": 0,
+        "maxAngleDeltaDeg": 0,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 2
+      }
+    },
+    {
+      "id": "h-H-1-v3-1-1",
+      "sourceObjectId": "h-H-1",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M48.65 35L48.65 36.2L48.65 37.4L48.681 38.6L49.057 39.8L49.433 41M51.35 35L51.35 36.2L51.35 37.4L51.319 38.6L50.943 39.8L50.567 41M48.53 35L51.47 35M48.53 37.4L51.47 37.4M49.313 41L50.687 41"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 18,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.293,
+        "widthVariance": 0.35412,
+        "angleVariance": 0,
+        "maxAngleDeltaDeg": 0,
+        "junctionCount": 0,
+        "segmentIndex": 1,
+        "segmentCount": 2
+      },
+      "dependencies": [
+        "h-H-1-v3-1-0"
+      ]
+    },
+    {
+      "id": "h-H-2-v3-2-0",
+      "sourceObjectId": "h-H-2",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M37 29.567L38.182 29.943L39.364 30.319L40.545 30.35L41.727 30.35L42.909 30.35L44.091 30.35L45.273 30.35L46.455 30.35L47.636 30.319L48.818 29.943L50 29.567M37 28.433L38.182 28.057L39.364 27.681L40.545 27.65L41.727 27.65L42.909 27.65L44.091 27.65L45.273 27.65L46.455 27.65L47.636 27.681L48.818 28.057L50 28.433M37 29.687L37 28.313M42.909 30.47L42.909 27.53M50 29.687L50 28.313"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 30,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.293,
+        "widthVariance": 0.35412,
+        "angleVariance": 0,
+        "maxAngleDeltaDeg": 0,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 1
+      }
+    }
+  ],
+  "metrics": {
+    "componentCount": 5,
+    "nodeCount": 142,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-v3-2026-09-06",
+    "texto": {
+      "satinColumns": 3,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-v3-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

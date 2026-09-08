@@ -1,15 +1,14 @@
 "use client";
 
 import type { FabricObject } from "fabric";
-import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
+import { claveDeCapa } from "./helpers";
 import LayerItem from "./LayerItem";
 import VariantsPanel from "./VariantsPanel";
 
 export default function RightLayersPanel({
 	open,
-	onClose,
 }: {
 	open: boolean;
 	onClose: () => void;
@@ -53,17 +52,6 @@ export default function RightLayersPanel({
 	if (!open) return null;
 
 	const hasLayers = layers.length > 0;
-	const layerIds = new WeakMap<object, string>();
-	let layerIdCounter = 0;
-
-	function getLayerKey(obj: object) {
-		let id = layerIds.get(obj);
-		if (!id) {
-			id = `layer-${++layerIdCounter}`;
-			layerIds.set(obj, id);
-		}
-		return id;
-	}
 
 	return (
 		<div
@@ -83,7 +71,7 @@ export default function RightLayersPanel({
 					<span className="font-semibold text-base shrink-0">Capas</span>
 
 					{layers.map((obj) => (
-						<LayerItem key={getLayerKey(obj)} obj={obj} />
+						<LayerItem key={claveDeCapa(obj)} obj={obj} />
 					))}
 				</div>
 			)}

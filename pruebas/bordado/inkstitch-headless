@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+
+display="${DISPLAY:-:99}"
+Xvfb "$display" -screen 0 1280x1024x24 -nolisten tcp >/tmp/xvfb.log 2>&1 &
+xvfb_pid=$!
+trap 'kill "$xvfb_pid" 2>/dev/null || true' EXIT INT TERM
+
+export DISPLAY="$display"
+sleep 0.5
+
+/opt/inkstitch/bin/inkstitch "$@"

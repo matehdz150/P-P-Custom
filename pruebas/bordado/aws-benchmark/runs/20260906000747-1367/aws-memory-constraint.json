@@ -1,0 +1,11 @@
+{
+  "attemptedMemoryMb": [
+    3072,
+    4096
+  ],
+  "effectiveMaxMemoryMb": 3008,
+  "errors": {
+    "memory3072": "Member must have value less than or equal to 3008",
+    "memory4096": " An error occurred (ValidationException) when calling the UpdateFunctionConfiguration operation: 'MemorySize' value failed to satisfy constraint: Member must have value less than or equal to 3008 "
+  }
+}

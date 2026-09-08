@@ -1,0 +1,85 @@
+{
+  "profileVersion": "experimental-v2-2026-09-06",
+  "fixtures": [
+    {
+      "slug": "01-resend",
+      "objects": 8
+    },
+    {
+      "slug": "02-intel",
+      "objects": 8
+    },
+    {
+      "slug": "03-google",
+      "objects": 6
+    },
+    {
+      "slug": "04-h",
+      "objects": 3
+    },
+    {
+      "slug": "05-o",
+      "objects": 1
+    },
+    {
+      "slug": "06-e",
+      "objects": 1
+    },
+    {
+      "slug": "07-g",
+      "objects": 1
+    },
+    {
+      "slug": "08-t",
+      "objects": 2
+    },
+    {
+      "slug": "09-d",
+      "objects": 2
+    },
+    {
+      "slug": "10-curva-gruesa",
+      "objects": 1
+    },
+    {
+      "slug": "11-curva-delgada",
+      "objects": 1
+    },
+    {
+      "slug": "12-swoosh",
+      "objects": 1
+    },
+    {
+      "slug": "13-interseccion-t",
+      "objects": 2
+    },
+    {
+      "slug": "14-junction-y",
+      "objects": 3
+    },
+    {
+      "slug": "15-circulo-grueso",
+      "objects": 1
+    },
+    {
+      "slug": "16-donut",
+      "objects": 1
+    },
+    {
+      "slug": "17-serif",
+      "objects": 3
+    },
+    {
+      "slug": "18-logo-multicolor",
+      "objects": 3
+    },
+    {
+      "slug": "19-discovery",
+      "objects": 145
+    },
+    {
+      "slug": "20-combinacion",
+      "objects": 3
+    }
+  ]
+}

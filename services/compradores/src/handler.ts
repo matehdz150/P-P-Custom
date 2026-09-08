@@ -8,6 +8,7 @@ import * as carrito from "./rutas/carrito.js";
 import * as disenos from "./rutas/disenos.js";
 import * as imagenes from "./rutas/imagenes.js";
 import * as favoritos from "./rutas/favoritos.js";
+import * as eventos from "./rutas/eventos.js";
 import type { Identidad } from "./rutas/pedidos.js";
 import * as pedidos from "./rutas/pedidos.js";
 import * as perfil from "./rutas/perfil.js";
@@ -56,6 +57,31 @@ const router = crearRouter();
 router.get("/cuenta/pedidos", (p) => pedidos.listar(quien(p)));
 router.get("/cuenta/pedidos/:id", (p) =>
 	pedidos.obtener(quien(p), p.params.id),
+);
+
+/* ─── Eventos ───────────────────────────────────────────────────────────── */
+router.get("/cuenta/eventos", (p) => eventos.listar(quien(p)));
+router.get("/cuenta/eventos/:id", (p) =>
+	eventos.obtener(quien(p), p.params.id),
+);
+router.post("/cuenta/eventos", (p) => eventos.crear(quien(p), p.cuerpo));
+router.post("/cuenta/eventos/subidas", (p) =>
+	eventos.firmarFoto(quien(p), p.cuerpo),
+);
+router.patch("/cuenta/eventos/:id", (p) =>
+	eventos.actualizar(quien(p), p.params.id, p.cuerpo),
+);
+router.post("/cuenta/eventos/:id/publicar", (p) =>
+	eventos.publicar(quien(p), p.params.id),
+);
+router.post("/cuenta/eventos/:id/cerrar", (p) =>
+	eventos.cerrar(quien(p), p.params.id),
+);
+router.patch("/cuenta/eventos/:id/productos/:itemId", (p) =>
+	eventos.configurarProducto(quien(p), p.params.id, p.params.itemId, p.cuerpo),
+);
+router.delete("/cuenta/eventos/:id", (p) =>
+	eventos.borrar(quien(p), p.params.id),
 );
 
 /* ─── Perfil y direcciones ──────────────────────────────────────────────── */

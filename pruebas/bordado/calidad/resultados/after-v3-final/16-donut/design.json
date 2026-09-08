@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "3b84bde9f3c7630996820784f39c0d6f563a52962de2dbed36d0d39c84fd7aa6",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "donut",
+      "sourceObjectId": "donut",
+      "sourceType": "vector",
+      "classification": "logo",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M45 8A22 22 0 1 1 44.99 8ZM45 22A8 8 0 1 0 45.01 22Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "maxStitchLengthMm": 4,
+        "angleDeg": 0,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 4
+    }
+  ],
+  "metrics": {
+    "componentCount": 1,
+    "nodeCount": 4,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-v3-2026-09-06",
+    "texto": {
+      "satinColumns": 0,
+      "runningPaths": 0,
+      "fillAreas": 1
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-v3-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

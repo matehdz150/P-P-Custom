@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "7440fc1b9faa3a8e0408d250e3ebfb23f7d0ab231c1d4efea942b5f613e7e486",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#2563eb",
+      "displayHex": "#2563eb",
+      "order": 0
+    },
+    {
+      "id": "c1",
+      "sourceHex": "#ef4444",
+      "displayHex": "#ef4444",
+      "order": 1
+    },
+    {
+      "id": "c2",
+      "sourceHex": "#16a34a",
+      "displayHex": "#16a34a",
+      "order": 2
+    }
+  ],
+  "objects": [
+    {
+      "id": "blue-disc",
+      "sourceObjectId": "blue-disc",
+      "sourceType": "vector",
+      "classification": "logo",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M28 13A17 17 0 1 1 27.99 13Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "maxStitchLengthMm": 4,
+        "angleDeg": 0,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "red-swoosh",
+      "sourceObjectId": "red-swoosh",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c1",
+      "geometry": {
+        "kind": "path",
+        "d": "M18 38C34 50 57 47 73 25"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 4,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "green-line",
+      "sourceObjectId": "green-line",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c2",
+      "geometry": {
+        "kind": "path",
+        "d": "M18 49C35 54 60 53 76 42"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    }
+  ],
+  "metrics": {
+    "componentCount": 3,
+    "nodeCount": 6,
+    "colorCount": 3
+  },
+  "preparation": {
+    "profileVersion": "experimental-v2-2026-09-06",
+    "texto": {
+      "satinColumns": 1,
+      "runningPaths": 1,
+      "fillAreas": 1
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-v2-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

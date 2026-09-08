@@ -1,0 +1,37 @@
+{
+  "repetir": {
+    "mismoJobId": true,
+    "mismoDesignHash": true,
+    "attemptsAntes": 1,
+    "attemptsDespues": 1,
+    "motorReejecutado": false,
+    "estado": "READY",
+    "completedAtIgual": true,
+    "jobId": "emb_7c0cdbf38dda437776ff58d82ad3856e7f56718c"
+  },
+  "cambioRelevante": {
+    "hashDistinto": true,
+    "jobIdDistinto": true,
+    "hashA": "338f2e9e6ca40fef",
+    "hashB": "dc6b982527ff2872"
+  },
+  "traslacion": {
+    "hashDistinto": true,
+    "statusCode": 400
+  },
+  "fallo": {
+    "jobId": "emb_0801c43296f1200eee5da2dd36fe133949958f5d",
+    "estado": "READY",
+    "attempts": 1,
+    "sinArtefactos": false
+  },
+  "colas": {
+    "principal": {
+      "ApproximateNumberOfMessages": "0",
+      "ApproximateNumberOfMessagesNotVisible": "1"
+    },
+    "dlq": {
+      "ApproximateNumberOfMessages": "0"
+    }
+  }
+}

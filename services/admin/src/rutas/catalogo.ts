@@ -64,7 +64,15 @@ type Ficha = {
 	productionDays?: number;
 	colors: { name: string; hex?: string | null }[];
 	sizes: { size: string; widthIn: number; lengthIn: number }[];
-	printSides: { sideKey: string; widthCm: number; heightCm: number }[];
+	/* `recargo` se declara aunque el objeto se pase entero: sin él en el tipo,
+	   quien lea la ficha no sabe que puede venir, y es lo que decide cuánto
+	   suma cada lado. */
+	printSides: {
+		sideKey: string;
+		widthCm: number;
+		heightCm: number;
+		recargo?: number | null;
+	}[];
 	templateId: string;
 };
 

@@ -1,9 +1,12 @@
 "use client";
 
 import { Textbox } from "fabric";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
 import type { FotoRealDePrenda } from "@/lib/api/catalogo";
+import { esGorra3D } from "@/lib/prenda/mapeoGorra";
+import { esPlayera3D } from "@/lib/prenda/mapeoPlayera";
+import { esTermo3D } from "@/lib/prenda/mapeoTermo";
 import type { ProductTemplate } from "@/lib/products/types";
 import DesignerCanvasSide from "./DesignerCanvasSide";
 import DesignerNoticeModal from "./DesignerNoticeModal";
@@ -21,6 +24,7 @@ import TextToolbar from "./design/toolbar/TextToolbar";
 import UndoRedoButtons from "./design/UndoRedoButtons";
 import { useCanvasPan } from "./hooks/useCanvasPan";
 import { useCanvasZoom } from "./hooks/useCanvasZoom";
+import { useDescargarVista } from "./hooks/useDescargarVista";
 import { useZoomDeVista } from "./hooks/useZoomDeVista";
 import VistaDeLaPrenda, { type VistaActual } from "./VistaDeLaPrenda";
 
@@ -55,40 +59,15 @@ export default function DesktopDesignerShell({
 	/* Zoom propio para "Probar": compartir el del lienzo movería la cámara del
 	   editor al acercarse a mirar, y al volver el diseño estaría desplazado. */
 	const mirar = useZoomDeVista();
+	const esTaza =
+		product.sides.includes("wrap") &&
+		product.forma !== "cono" &&
+		/\b(tazas?|mugs?)\b/i.test(product.name ?? "");
+	const medidaWrap = product.printSides?.find(
+		(side) => side.sideKey === "wrap",
+	);
 
-	const descargar = useCallback(async () => {
-		if (!vista) return;
-
-		/* La banda manda si está: una foto de cilindro no se puede componer con
-		   una homografía. Misma regla que en `exportarParaPedido` y en la vista;
-		   se decide por la geometría de la FOTO y no por la forma de la
-		   plantilla, que es el dato de más lejos.
-
-		   Se importan al pulsar y no arriba: son los dos rasterizadores, y el
-		   editor no tiene por qué cargarlos para quien nunca descarga. */
-		const { banda } = vista;
-
-		const png = banda
-			? await import("@/lib/prenda/cilindro").then((m) =>
-					m.componerCilindro({ ...vista, banda }),
-				)
-			: await import("@/lib/prenda/componer").then((m) =>
-					m.componerPrenda(vista),
-				);
-
-		if (!png) return;
-
-		/* Un enlace de usar y tirar. `showSaveFilePicker` no está en todos los
-		   navegadores y aquí no hace falta elegir carpeta: se baja y ya. */
-		const url = URL.createObjectURL(png);
-		const enlace = document.createElement("a");
-		enlace.href = url;
-		enlace.download = `kustto-${vista.nombre}.png`
-			.replace(/\s+/g, "-")
-			.toLowerCase();
-		enlace.click();
-		URL.revokeObjectURL(url);
-	}, [vista]);
+	const descargar = useDescargarVista(vista);
 
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
@@ -150,6 +129,19 @@ export default function DesktopDesignerShell({
 				    desmontarlos perdería el diseño, que sólo vive ahí. */}
 				{probando && (
 					<VistaDeLaPrenda
+						playera3D={esPlayera3D(product)}
+						gorra3D={esGorra3D(product)}
+						termo3D={
+							esTermo3D(product)
+								? { anchoCm: medidaWrap?.widthCm, altoCm: medidaWrap?.heightCm }
+								: undefined
+						}
+						medidasPlayera={product.printSides}
+						taza3D={
+							esTaza
+								? { anchoCm: medidaWrap?.widthCm, altoCm: medidaWrap?.heightCm }
+								: undefined
+						}
 						fotosReales={fotosReales}
 						sideLabels={product.sideLabels ?? {}}
 						zoom={mirar.zoom}

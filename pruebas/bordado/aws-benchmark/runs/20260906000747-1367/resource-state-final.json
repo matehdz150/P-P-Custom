@@ -1,0 +1,27 @@
+{
+  "status": "CLEANED",
+  "runId": "20260906000747-1367",
+  "account": "218897024535",
+  "profile": "kustto-admin",
+  "region": "us-east-1",
+  "repository": "kustto-embroidery-benchmark-20260906000747-1367",
+  "role": "kustto-embroidery-benchmark-20260906000747-1367",
+  "function": "kustto-embroidery-benchmark-20260906000747-1367",
+  "logGroup": "/aws/lambda/kustto-embroidery-benchmark-20260906000747-1367",
+  "localImage": "kustto-embroidery-benchmark-20260906000747-1367:local",
+  "imageUri": "218897024535.dkr.ecr.us-east-1.amazonaws.com/kustto-embroidery-benchmark-20260906000747-1367:benchmark",
+  "runDir": "/Users/matehdz/Documents/Software Projects/P-P-Custom/pruebas/bordado/aws-benchmark/runs/20260906000747-1367",
+  "createdResources": {
+    "ecr": true,
+    "role": true,
+    "logGroup": true,
+    "lambda": true
+  },
+  "buildSeconds": 89,
+  "localImageContentBytes": 400146613,
+  "extractedFilesystemBytes": 965444807,
+  "imageDigest": "sha256:2dd24dff8fd4a80d00aca9d933dc24a0df63247352cc715f76d80e49c3700866",
+  "compressedImageBytes": 400144147,
+  "buildSecondsNote": "clean wall time approximated from orchestrator, network-bound",
+  "cleanedAt": "2026-09-06T00:59:27Z"
+}

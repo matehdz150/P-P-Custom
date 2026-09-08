@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
-import Aparece from "./Aparece";
 import type { ProductFromCategory } from "@/lib/api/search";
+import Aparece from "./Aparece";
 
 /** Cuántas piezas asoman aquí antes de mandar al listado completo. */
 const TANDA = 12;
@@ -12,9 +12,14 @@ const TANDA = 12;
 export default function ProductosGrid({
 	productos,
 	cargando,
+	busqueda,
+	onLimpiarBusqueda,
 }: {
 	productos: ProductFromCategory[];
 	cargando: boolean;
+	/** Lo que se buscó, si se buscó. Cambia lo que dice el vacío. */
+	busqueda?: string;
+	onLimpiarBusqueda?: () => void;
 }) {
 	if (cargando) {
 		return (
@@ -33,11 +38,30 @@ export default function ProductosGrid({
 	}
 
 	if (productos.length === 0) {
+		/* Vacío por buscar y vacío por categoría no son lo mismo. Decir "todavía
+		   no hay productos en esta categoría" cuando alguien buscó "termo rojo"
+		   es contestar otra pregunta, y encima suena a que el catálogo está
+		   vacío. Y la salida tampoco es la misma: de una búsqueda se sale
+		   borrándola. */
+		const buscando = !!busqueda?.trim();
+
 		return (
-			<section className="px-5 pt-10 md:px-14 md:pt-12">
+			<section className="flex flex-col items-start gap-3 px-5 pt-10 md:px-14 md:pt-12">
 				<p className="text-[15px] text-tinta/60">
-					Todavía no hay productos en esta categoría.
+					{buscando
+						? `Nada coincide con “${busqueda?.trim()}”.`
+						: "Todavía no hay productos en esta categoría."}
 				</p>
+
+				{buscando && onLimpiarBusqueda && (
+					<button
+						type="button"
+						onClick={onLimpiarBusqueda}
+						className="text-[14px] font-semibold text-tinta underline underline-offset-4 hover:text-tinta/70"
+					>
+						Ver todo el catálogo
+					</button>
+				)}
 			</section>
 		);
 	}

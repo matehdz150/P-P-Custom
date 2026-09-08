@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { extraPorLados } from "@kustto/precios";
 import { GetCommand } from "@aws-sdk/lib-dynamodb";
 
 import {
@@ -175,21 +176,26 @@ export async function repetir(quien: Identidad, id: string) {
  * cero pesos que nadie relaciona con una propiedad mal escrita. Ya pasó, con
  * las plantillas.
  */
+/**
+ * RECIBE LAS CLAVES DE LOS LADOS, no cuántos son.
+ *
+ * Contar bastaba mientras todos costaran lo mismo. Desde que un lado puede
+ * llevar su propio recargo —una manga no vale una espalda— el número ya no
+ * dice nada: dos lados pueden sumar 40 o 120 según cuáles. Y esto es una ruta
+ * que COBRA, así que tiene que dar exactamente lo mismo que `aLinea`; por eso
+ * usa la función compartida en vez de repetir la cuenta.
+ */
 export function precioDeHoy(
 	producto: Record<string, any>,
-	cuantosLados: number,
+	lados: readonly string[],
 ) {
 	const precios = (producto.pricing ?? {}) as Record<
 		string,
 		number | undefined
 	>;
 	const base = Number(precios.basePrice ?? 0);
-	const porLados =
-		cuantosLados > 1
-			? (cuantosLados - 1) * Number(precios.perSidePrice ?? 0)
-			: 0;
 
-	return base + porLados;
+	return base + extraPorLados(lados, producto.printSides ?? [], precios);
 }
 
 /**
@@ -235,7 +241,7 @@ async function compararLinea(l: Record<string, any>) {
 		};
 	}
 
-	const unitario = precioDeHoy(Item, comun.lados.length);
+	const unitario = precioDeHoy(Item, comun.lados);
 	const importe = unitario * piezas;
 	const dias = diasDeHoy(Item, comun.colorPrenda, tallas);
 

@@ -2,10 +2,10 @@
 
 import {
 	createContext,
+	type ReactNode,
 	useContext,
 	useEffect,
 	useState,
-	ReactNode,
 } from "react";
 import { fetchMe } from "@/lib/api/api";
 

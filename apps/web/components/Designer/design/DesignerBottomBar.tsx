@@ -36,7 +36,7 @@ export default function DesignerBottomBar({
 	onReiniciarZoom,
 	onDescargar,
 }: Props) {
-	const { setPidiendo, setAgregando, plantilla } = useDesigner();
+	const { setPidiendo, setAgregando, plantilla, evento } = useDesigner();
 	const [bajando, setBajando] = useState(false);
 
 	async function descargar() {
@@ -129,13 +129,17 @@ export default function DesignerBottomBar({
 			    aquí llevaría a un pedido de un producto suelto y dejaría la
 			    plantilla a medias sin decirlo. */}
 			<div className="flex items-center gap-2">
-				{plantilla ? (
+				{plantilla || evento ? (
 					<button
 						type="button"
 						onClick={() => setAgregando(true)}
 						className="bg-lima hover:bg-lima-oscuro text-tinta font-medium px-6 py-2 rounded font-sora"
 					>
-						Agregar a la plantilla
+						{evento?.organizador
+							? "Guardar diseño base"
+							: evento
+								? "Guardar para el evento"
+								: "Agregar a la plantilla"}
 					</button>
 				) : (
 					<>

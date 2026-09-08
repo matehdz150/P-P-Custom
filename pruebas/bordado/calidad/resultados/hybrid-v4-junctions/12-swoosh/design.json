@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "254f2120a37268ac112c302b5a1cb7377f92845d2675f10841e51264a6e9ff0d",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "swoosh-hybrid-rails-0-0",
+      "sourceObjectId": "swoosh",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M9.401 34.811L10.527 37.305L11.175 37.853L15.495 40.515L20.112 42.619L24.115 43.943L28.23 44.836L33.263 45.397L37.459 45.395L42.476 44.901L47.395 43.867L52.963 42.039L57.516 40.02L62.578 37.173L67.322 33.877L72.392 29.668L77.053 25.061L80.214 21.34L80.763 18.659M10.599 33.189L13.314 33.535L13.946 33.933L17.752 36.279L21.823 38.134L25.378 39.312L29.043 40.105L33.501 40.603L37.266 40.598L41.752 40.156L46.18 39.224L51.196 37.577L55.376 35.724L60.027 33.107L64.436 30.042L69.165 26.116L73.562 21.767L76.665 18.276L79.237 17.341M9.329 34.907L10.671 33.093M20.07 42.731L21.865 38.022M42.495 45.019L41.734 40.037M67.394 33.973L64.364 29.946M80.854 18.737L79.146 17.263"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 48,
+      "quality": {
+        "minWidthMm": 2.016,
+        "maxWidthMm": 4.8,
+        "averageWidthMm": 4.495,
+        "widthVariance": 0.72428,
+        "angleVariance": 5.04149,
+        "maxAngleDeltaDeg": 7.201,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 1,
+        "representationDecision": "rails-v3",
+        "representationReasons": [
+          "HIGH_CURVATURE",
+          "ACCUMULATED_TURN",
+          "FAN_RISK"
+        ],
+        "lengthMm": 80.39,
+        "curvatureDegPerMm": 1.0655,
+        "maxCurvatureDegPerMm": 1.4512,
+        "accumulatedTurningAngleDeg": 85.676,
+        "branchCount": 1,
+        "endpointTaper": 0,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 0.4262,
+        "railDivergenceMmPerMm": 0,
+        "railConvergenceMmPerMm": 0,
+        "numberOfSharpTurns": 0,
+        "rawCenterlineNodes": 17,
+        "rawRailNodes": 204,
+        "finalRailNodes": 38,
+        "rungsBefore": 102,
+        "rungsAfter": 5,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 37
+      }
+    }
+  ],
+  "metrics": {
+    "componentCount": 1,
+    "nodeCount": 48,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-hybrid-v4-2026-09-06",
+    "texto": {
+      "satinColumns": 1,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-hybrid-v4-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0",
+  "debug": {
+    "hybridJoins": []
+  }
+}

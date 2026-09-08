@@ -6,8 +6,22 @@ export default function Desglose({ product }: { product: Product }) {
 	const p = product.pricing;
 	if (!p) return null;
 
+	/* Los lados con recargo propio se listan aparte, con su nombre.
+	   "Cada lado que imprimas: $60" era cierto cuando todos costaban igual;
+	   con una manga a $20 y una espalda a $60, ese renglón se convierte en el
+	   precio equivocado para uno de los dos. */
+	const etiquetas = product.productTemplateData?.sideLabels ?? {};
+	const propios = (product.printSides ?? []).filter(
+		(s) => typeof s.recargo === "number" && s.recargo > 0,
+	);
+
 	const extras = [
-		{ label: "Cada lado que imprimas", monto: p.perSidePrice },
+		...(propios.length
+			? propios.map((s) => ({
+					label: `Si estampas ${(etiquetas[s.sideKey] ?? s.sideKey).toLowerCase()}`,
+					monto: s.recargo as number,
+				}))
+			: [{ label: "Cada lado que imprimas", monto: p.perSidePrice }]),
 		{ label: "Cada diseño", monto: p.perDesignPrice },
 		{ label: "Cada color del diseño", monto: p.perColorPrice },
 		{ label: "Si lo quieres bordado", monto: p.embroideryExtra },

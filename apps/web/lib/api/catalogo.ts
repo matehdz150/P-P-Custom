@@ -9,6 +9,7 @@
  * absoluta, así que un componente de servidor puede llamarlo igual.
  */
 
+import { esTecnica } from "@/lib/impresion/tecnicas";
 import { sinAcentos } from "@/lib/texto";
 import type { Category } from "./categories";
 import type { CatalogProduct, Product, ProductTemplateData } from "./products";
@@ -36,7 +37,33 @@ export type ProductoDeCatalogo = {
 	productionDays?: number | null;
 	colors?: { name: string; hex?: string | null }[];
 	sizes?: { size: string; widthIn: number; lengthIn: number }[];
-	printSides?: { sideKey: string; widthCm: number; heightCm: number }[];
+	/**
+	 * El área imprimible de cada lado, COMPLETA.
+	 *
+	 * Aquí faltaban `dpi` y `sangradoCm` —la Lambda siempre los ha mandado— y
+	 * eso los mataba en silencio: `aProductoViejo` no podía copiar campos que el
+	 * tipo no declaraba, así que al editor llegaba el lado sin ellos. El
+	 * sangrado se leía como 0 en `conSangrado` y `exportarArteDeLado` caía
+	 * siempre en los 300 DPI por defecto. O sea que las dos cosas que el taller
+	 * declara sobre CÓMO sale el archivo no llegaban a salir en el archivo.
+	 */
+	printSides?: {
+		sideKey: string;
+		widthCm: number;
+		heightCm: number;
+		dpi?: number;
+		sangradoCm?: number;
+		/** Con qué se estampa. Decide si el arte sale en PNG o en trazos. */
+		tecnica?: string | null;
+		/**
+		 * Lo que suma ESTE lado sobre el precio base, si el taller se lo puso.
+		 *
+		 * Sin él se usa el `perSidePrice` del producto. Existe porque una manga
+		 * no cuesta lo que una espalda, y con un único precio por lado no había
+		 * forma de decirlo.
+		 */
+		recargo?: number | null;
+	}[];
 	templateId: string;
 };
 
@@ -275,10 +302,17 @@ export function aProductoViejo(f: FichaDeProducto): Product {
 			url: i.url,
 			order: i.order ?? orden,
 		})),
+		/* SE COPIAN LOS CINCO CAMPOS, no sólo las medidas. Los tres de abajo se
+		   quedaban aquí —el tipo no los declaraba y esto no podía copiarlos— y
+		   son justo los que deciden cómo sale el archivo de producción: a qué
+		   resolución, con cuánto desbordamiento y en qué formato. */
 		printSides: (f.printSides ?? []).map((s) => ({
 			sideKey: s.sideKey as "front" | "back" | "left" | "right" | "wrap",
 			widthCm: s.widthCm,
 			heightCm: s.heightCm,
+			dpi: s.dpi,
+			sangradoCm: s.sangradoCm,
+			tecnica: esTecnica(s.tecnica) ? s.tecnica : undefined,
 		})),
 		sizes: f.sizes ?? [],
 		colors: (f.colors ?? []).map((c) => ({ name: c.name, hex: c.hex ?? "" })),

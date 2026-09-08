@@ -37,6 +37,24 @@ export type LineaDePedido = {
 	/** El tono exacto de la prenda. Decide la subbase blanca. */
 	colorPrendaHex?: string | null;
 	/**
+	 * Cómo quedó el bordado de cada lado que se borda.
+	 *
+	 * `REVIEW` significa que el motor preparó el diseño pero alguien tiene que
+	 * mirarlo antes de coserlo. Mientras el perfil de bordado no esté validado
+	 * físicamente, esto es lo único que distingue un bordado revisado de uno que
+	 * nadie miró: si no se enseña en la ficha, el taller lo cose como cualquier
+	 * otro.
+	 */
+	bordados?: {
+		lado: string;
+		jobId: string;
+		designHash: string;
+		status: "READY" | "REVIEW";
+		incidencias: string[];
+	}[];
+	/** Atajo: alguno de los lados quedó en revisión. */
+	requiereRevisionBordado?: boolean;
+	/**
 	 * Lo que hace falta para producir cada lado.
 	 *
 	 * Las medidas van CONGELADAS aquí, no leídas del producto: el taller puede
@@ -56,6 +74,22 @@ export type LineaDePedido = {
 		 * resuelve quien la pinta: si la imagen no carga, no se enseña la casilla.
 		 */
 		prenda?: string | null;
+		/** El mismo arte en trazos. Sólo lo hay en lo que se graba. */
+		vector?: string | null;
+		/**
+		 * El DST que preparó el motor, para los lados que se bordan.
+		 *
+		 * Sólo viene si ESTE lado lleva bordado, así que su presencia ya es la
+		 * respuesta a «¿aplica?»: no hay que preguntarle a S3 como con `prenda` y
+		 * `vector`. Lo que sí puede pasar es que la copia fallara al crear el
+		 * pedido, y por eso quien lo pinte comprueba antes de ofrecerlo.
+		 *
+		 * NO es un archivo validado. El taller decide si lo usa.
+		 */
+		bordado?: string | null;
+		bordadoEstado?: "READY" | "REVIEW";
+		/** Códigos de incidencia del motor. Son para el taller. */
+		bordadoIncidencias?: string[];
 		/** Lo que el taller declaró como área imprimible. */
 		anchoCm?: number;
 		altoCm?: number;

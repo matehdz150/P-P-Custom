@@ -1,0 +1,309 @@
+{
+  "schemaVersion": 1,
+  "case": {
+    "id": "01-texto-simple",
+    "label": "Texto simple",
+    "expectedDisposition": "accept"
+  },
+  "source": {
+    "kind": "fabric-text-known-geometry",
+    "file": "original.png",
+    "sha256": "52b8835445bb5ad51929b965de167ced61b63a0b63d32bfde3b7132a843c0bd1",
+    "metrics": {
+      "alphaCoverage": 0.0357,
+      "hasMeaningfulTransparency": true,
+      "colorEntropyBits32": -0.0,
+      "edgeDensity": 0.0045,
+      "borderUniformity": 1.0,
+      "textureLaplacianVariance": 743.77
+    }
+  },
+  "physical": {
+    "units": "mm",
+    "embroideryArea": {
+      "width": 90.0,
+      "height": 60.0
+    },
+    "output": {
+      "width": 82.6,
+      "height": 16.6
+    },
+    "mustRedigitizeAfterScale": true
+  },
+  "colors": [
+    {
+      "order": 1,
+      "hex": "#171717",
+      "threadCatalog": null
+    }
+  ],
+  "objects": [
+    {
+      "id": "letra-1",
+      "source": {
+        "kind": "text",
+        "glyph": "K-asta",
+        "fontStrategy": "stroke-safe-prototype"
+      },
+      "stitchType": "satin",
+      "threadColor": "#171717",
+      "density": {
+        "zigzagSpacingMm": 0.42
+      },
+      "underlay": [
+        "center-walk"
+      ],
+      "pullCompensationMm": 0.2,
+      "order": 0
+    },
+    {
+      "id": "letra-2",
+      "source": {
+        "kind": "text",
+        "glyph": "K-superior",
+        "fontStrategy": "stroke-safe-prototype"
+      },
+      "stitchType": "satin",
+      "threadColor": "#171717",
+      "density": {
+        "zigzagSpacingMm": 0.42
+      },
+      "underlay": [
+        "center-walk"
+      ],
+      "pullCompensationMm": 0.2,
+      "order": 1
+    },
+    {
+      "id": "letra-3",
+      "source": {
+        "kind": "text",
+        "glyph": "K-inferior",
+        "fontStrategy": "stroke-safe-prototype"
+      },
+      "stitchType": "satin",
+      "threadColor": "#171717",
+      "density": {
+        "zigzagSpacingMm": 0.42
+      },
+      "underlay": [
+        "center-walk"
+      ],
+      "pullCompensationMm": 0.2,
+      "order": 2
+    },
+    {
+      "id": "letra-4",
+      "source": {
+        "kind": "text",
+        "glyph": "U",
+        "fontStrategy": "stroke-safe-prototype"
+      },
+      "stitchType": "satin",
+      "threadColor": "#171717",
+      "density": {
+        "zigzagSpacingMm": 0.42
+      },
+      "underlay": [
+        "center-walk"
+      ],
+      "pullCompensationMm": 0.2,
+      "order": 3
+    },
+    {
+      "id": "letra-5",
+      "source": {
+        "kind": "text",
+        "glyph": "S",
+        "fontStrategy": "stroke-safe-prototype"
+      },
+      "stitchType": "satin",
+      "threadColor": "#171717",
+      "density": {
+        "zigzagSpacingMm": 0.42
+      },
+      "underlay": [
+        "center-walk"
+      ],
+      "pullCompensationMm": 0.2,
+      "order": 4
+    },
+    {
+      "id": "letra-6",
+      "source": {
+        "kind": "text",
+        "glyph": "T1-barra",
+        "fontStrategy": "stroke-safe-prototype"
+      },
+      "stitchType": "satin",
+      "threadColor": "#171717",
+      "density": {
+        "zigzagSpacingMm": 0.42
+      },
+      "underlay": [
+        "center-walk"
+      ],
+      "pullCompensationMm": 0.2,
+      "order": 5
+    },
+    {
+      "id": "letra-7",
+      "source": {
+        "kind": "text",
+        "glyph": "T1-asta",
+        "fontStrategy": "stroke-safe-prototype"
+      },
+      "stitchType": "satin",
+      "threadColor": "#171717",
+      "density": {
+        "zigzagSpacingMm": 0.42
+      },
+      "underlay": [
+        "center-walk"
+      ],
+      "pullCompensationMm": 0.2,
+      "order": 6
+    },
+    {
+      "id": "letra-8",
+      "source": {
+        "kind": "text",
+        "glyph": "T2-barra",
+        "fontStrategy": "stroke-safe-prototype"
+      },
+      "stitchType": "satin",
+      "threadColor": "#171717",
+      "density": {
+        "zigzagSpacingMm": 0.42
+      },
+      "underlay": [
+        "center-walk"
+      ],
+      "pullCompensationMm": 0.2,
+      "order": 7
+    },
+    {
+      "id": "letra-9",
+      "source": {
+        "kind": "text",
+        "glyph": "T2-asta",
+        "fontStrategy": "stroke-safe-prototype"
+      },
+      "stitchType": "satin",
+      "threadColor": "#171717",
+      "density": {
+        "zigzagSpacingMm": 0.42
+      },
+      "underlay": [
+        "center-walk"
+      ],
+      "pullCompensationMm": 0.2,
+      "order": 8
+    },
+    {
+      "id": "letra-10",
+      "source": {
+        "kind": "text",
+        "glyph": "O",
+        "fontStrategy": "stroke-safe-prototype"
+      },
+      "stitchType": "satin",
+      "threadColor": "#171717",
+      "density": {
+        "zigzagSpacingMm": 0.42
+      },
+      "underlay": [
+        "center-walk"
+      ],
+      "pullCompensationMm": 0.2,
+      "order": 9
+    }
+  ],
+  "preparation": {
+    "strategy": "known-text-to-centerlines",
+    "textHeightMm": 14,
+    "nominalStrokeWidthMm": 2.2,
+    "smallestCounterMm": 2.6,
+    "componentsRaw": 10,
+    "componentsKept": 10,
+    "componentsRemoved": 0
+  },
+  "digitization": {
+    "engine": "Ink/Stitch",
+    "version": "3.3.0",
+    "format": "Tajima DST",
+    "stderr": null
+  },
+  "dstStructuralValidation": {
+    "passed": true,
+    "checks": {
+      "headerIs512Bytes": true,
+      "payloadAlignedTo3Bytes": true,
+      "hasEndRecord": true,
+      "headerRecordCountMatches": true,
+      "headerColorChangesMatch": true,
+      "boundsMatchPyembroidery": true
+    },
+    "headerStitchRecords": 1330,
+    "decodedRecordsBeforeEnd": 1329,
+    "encodedTrimSequences": 0,
+    "logicalRecordsIncludingEnd": 1330,
+    "headerColorChanges": 0,
+    "decodedColorChanges": 0,
+    "decodedBoundsMm": [
+      -41.3,
+      -8.3,
+      41.3,
+      8.3
+    ]
+  },
+  "artifacts": {
+    "preparedGeometry": {
+      "file": "geometria.svg",
+      "sha256": "74b61a12850fff45acfa423d138de9c06c84d71abbaaccf855f874200e1f353d"
+    },
+    "stitchPreview": {
+      "file": "preview.png",
+      "sha256": "7825faaf6d2ea0fb65faab863995afbc3ab23dcb7be7556950d68a95d233989c"
+    },
+    "machineFile": {
+      "file": "diseno.dst",
+      "sha256": "f5efa1719e2318470ccd05db61e3d85e2ba3ff5769f4b332d6bac327d031b716"
+    }
+  },
+  "metrics": {
+    "widthMm": 82.6,
+    "heightMm": 16.6,
+    "boundsMm": [
+      -41.3,
+      -8.3,
+      41.3,
+      8.3
+    ],
+    "stitches": 1321,
+    "commands": 1330,
+    "colorChanges": 0,
+    "jumps": 8,
+    "trims": 0,
+    "stops": 0,
+    "estimatedThreadLengthM": 3.23,
+    "minStitchLengthMm": 0.42,
+    "maxStitchLengthMm": 3.0,
+    "zeroLengthStitches": 5,
+    "shortStitchesUnder0_3mm": 5,
+    "longStitchesOver10mm": 0,
+    "dstSizeBytes": 4502,
+    "estimatedMachineMinutesAt700Spm": 1.9,
+    "preparationMs": 16.8,
+    "digitizationMs": 3766.6,
+    "validationAndPreviewMs": 21.3,
+    "processingMs": 3804.8
+  },
+  "validation": {
+    "passed": true,
+    "decision": "accept",
+    "confidence": 0.96,
+    "issues": [],
+    "limitsAre": "spike guardrails; calibrate by fabric/machine/test-sew before production"
+  }
+}

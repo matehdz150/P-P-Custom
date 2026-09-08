@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "7440fc1b9faa3a8e0408d250e3ebfb23f7d0ab231c1d4efea942b5f613e7e486",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#2563eb",
+      "displayHex": "#2563eb",
+      "order": 0
+    },
+    {
+      "id": "c1",
+      "sourceHex": "#ef4444",
+      "displayHex": "#ef4444",
+      "order": 1
+    },
+    {
+      "id": "c2",
+      "sourceHex": "#16a34a",
+      "displayHex": "#16a34a",
+      "order": 2
+    }
+  ],
+  "objects": [
+    {
+      "id": "blue-disc",
+      "sourceObjectId": "blue-disc",
+      "sourceType": "vector",
+      "classification": "logo",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M28 13A17 17 0 1 1 27.99 13Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "maxStitchLengthMm": 4,
+        "angleDeg": 0,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "red-swoosh-hybrid-rails-0-0",
+      "sourceObjectId": "red-swoosh",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c1",
+      "geometry": {
+        "kind": "path",
+        "d": "M17.531 38.697L18.894 40.957L24.011 43.828L27.124 45.07L30.351 45.991L34.487 46.726L37.836 46.939L42.029 46.793L46.168 46.141L49.398 45.301L53.318 43.879L57.06 42.072L61.296 39.455L64.587 36.97L68.242 33.643L73.062 28.077L73.66 25.52M18.469 37.303L21.05 37.699L25.635 40.172L28.408 41.282L31.279 42.1L34.942 42.752L37.92 42.94L41.644 42.812L45.331 42.229L48.237 41.473L51.765 40.193L55.156 38.554L59.007 36.175L62.041 33.885L65.418 30.811L69.994 25.657L72.34 24.48M17.464 38.796L18.536 37.204M30.323 46.108L31.307 41.983M42.041 46.912L41.632 42.692M64.663 37.063L61.965 33.792M73.754 25.595L72.246 24.405"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 44,
+      "quality": {
+        "minWidthMm": 1.68,
+        "maxWidthMm": 4,
+        "averageWidthMm": 3.716,
+        "widthVariance": 0.55366,
+        "angleVariance": 5.02395,
+        "maxAngleDeltaDeg": 9.535,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 1,
+        "representationDecision": "rails-v3",
+        "representationReasons": [
+          "HIGH_CURVATURE",
+          "ACCUMULATED_TURN",
+          "FAN_RISK"
+        ],
+        "lengthMm": 63.376,
+        "curvatureDegPerMm": 1.3516,
+        "maxCurvatureDegPerMm": 1.7142,
+        "accumulatedTurningAngleDeg": 85.694,
+        "branchCount": 1,
+        "endpointTaper": 0,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 0.4505,
+        "railDivergenceMmPerMm": 0,
+        "railConvergenceMmPerMm": 0,
+        "numberOfSharpTurns": 0,
+        "rawCenterlineNodes": 17,
+        "rawRailNodes": 162,
+        "finalRailNodes": 34,
+        "rungsBefore": 81,
+        "rungsAfter": 5,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 29
+      }
+    },
+    {
+      "id": "green-line",
+      "sourceObjectId": "green-line",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c2",
+      "geometry": {
+        "kind": "path",
+        "d": "M18 49C35 54 60 53 76 42"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    }
+  ],
+  "metrics": {
+    "componentCount": 3,
+    "nodeCount": 48,
+    "colorCount": 3
+  },
+  "preparation": {
+    "profileVersion": "experimental-hybrid-v4-2026-09-06",
+    "texto": {
+      "satinColumns": 1,
+      "runningPaths": 1,
+      "fillAreas": 1
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-hybrid-v4-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0",
+  "debug": {
+    "hybridJoins": []
+  }
+}

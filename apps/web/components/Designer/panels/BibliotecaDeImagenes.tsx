@@ -30,7 +30,14 @@ import {
  */
 export default function BibliotecaDeImagenes() {
 	const { comprador } = useComprador();
-	const { addImage, ponerEnElLienzo } = useAddImage();
+	const {
+		addImage,
+		ponerEnElLienzo,
+		esGrabado,
+		estado,
+		reintentar,
+		descartar,
+	} = useAddImage();
 
 	const [imagenes, setImagenes] = useState<ImagenGuardada[] | null>(null);
 	const [subiendo, setSubiendo] = useState(false);
@@ -101,6 +108,10 @@ export default function BibliotecaDeImagenes() {
 				</span>
 				<span className="text-[13px] leading-[20px] text-tinta/55">
 					PNG, JPG o WebP, hasta 15 MB.
+					{/* En grabado la imagen no entra tal cual: se convierte a trazos
+					    antes de tocar el lienzo, y conviene decirlo ANTES de que
+					    alguien suba una foto y no reconozca lo que sale. */}
+					{esGrabado ? " La convertiremos a trazos para grabarla." : ""}
 				</span>
 				<input
 					type="file"
@@ -114,6 +125,73 @@ export default function BibliotecaDeImagenes() {
 				<p className="rounded-lg bg-[rgba(192,57,43,0.08)] px-3 py-2 text-[13px] leading-[19px] text-[#c0392b]">
 					{aviso}
 				</p>
+			)}
+
+			{/* EL ESTADO DEL TRAZADO. En un lado de grabado, agregar una imagen deja
+			    de ser instantáneo, y un lienzo que no reacciona durante medio
+			    segundo se lee como que el clic no funcionó. */}
+			{estado?.fase === "vectorizando" && (
+				<p className="flex items-center gap-2.5 rounded-lg bg-gris px-3.5 py-3 text-[13px] leading-[20px] text-tinta/70">
+					<span
+						aria-hidden
+						className="size-4 shrink-0 animate-spin rounded-full border-2 border-tinta/20 border-t-tinta"
+					/>
+					Preparando imagen para grabado…
+				</p>
+			)}
+
+			{/* SALIÓ, PERO FLOJO. No bloquea: el diseño ya está en el lienzo y se
+			    puede pedir. Sólo dice cómo saldría mejor, porque una imagen chica
+			    estirada da un contorno sucio que en el grabado sí se ve.
+
+			    NO SE PIDE UN SVG aunque sea la respuesta obvia: la biblioteca no
+			    acepta SVG a propósito —puede traer `<script>` y se sirve desde
+			    nuestro origen, ver `services/compradores/rutas/imagenes.ts`—, así
+			    que mandar a subir uno sería mandar a chocar con un rechazo. */}
+			{estado?.fase === "flojo" && (
+				<div className="flex flex-col items-start gap-2 rounded-lg bg-[rgba(184,134,11,0.1)] px-3.5 py-3">
+					<p className="text-[13px] leading-[19px] text-[#8a6508]">
+						La imagen es pequeña para grabarla y el contorno queda algo sucio.
+						Si tienes el original en más resolución —2000 px o más de lado—,
+						súbelo y saldrá más limpio.
+					</p>
+					<button
+						type="button"
+						onClick={descartar}
+						className="rounded-md border border-tinta/20 px-2.5 py-1.5 text-[12px] font-semibold text-tinta"
+					>
+						Entendido
+					</button>
+				</div>
+			)}
+
+			{/* SIN CAÍDA SILENCIOSA AL PNG: si no se pudo trazar, no se mete nada.
+			    Colar el ráster daría un diseño que se ve bien en pantalla y llega al
+			    taller como un archivo que no se puede grabar. */}
+			{estado?.fase === "fallo" && (
+				<div className="flex flex-col items-start gap-2 rounded-lg bg-[rgba(192,57,43,0.08)] px-3.5 py-3">
+					<p className="text-[13px] leading-[19px] text-[#c0392b]">
+						{estado.mensaje}
+					</p>
+					<div className="flex items-center gap-2">
+						{estado.puedeReintentar && (
+							<button
+								type="button"
+								onClick={reintentar}
+								className="rounded-md bg-tinta px-2.5 py-1.5 text-[12px] font-semibold text-lima"
+							>
+								Reintentar
+							</button>
+						)}
+						<button
+							type="button"
+							onClick={descartar}
+							className="rounded-md border border-tinta/20 px-2.5 py-1.5 text-[12px] font-semibold text-tinta"
+						>
+							Quitar
+						</button>
+					</div>
+				</div>
 			)}
 
 			{!comprador ? (

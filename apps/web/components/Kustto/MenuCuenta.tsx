@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -103,18 +104,38 @@ export default function MenuCuenta({
 	}
 
 	return (
-		<div ref={caja} className="relative">
-			<button
-				type="button"
-				onClick={() => setAbierto((v) => !v)}
-				aria-expanded={abierto}
-				aria-haspopup="menu"
+		<div ref={caja} className="relative flex items-center">
+			{/* EL NOMBRE ES UN ENLACE, no el disparador del menú.
+			
+			    Pulsar tu propio nombre y que se abra una lista para tener que
+			    elegir "Mis pedidos y diseños" es un clic de peaje: lo que quiere
+			    quien pulsa ahí es entrar a su cuenta. Ahora entra.
+			
+			    El menú no desaparece —cerrar sesión tiene que seguir estando, y
+			    esta cabecera es la única que la ofrece, también DENTRO del panel—
+			    pero pasa a su propio botón, la flecha de al lado. */}
+			<Link
+				href="/cuenta"
 				className="flex items-center gap-2 rounded-full py-1 pl-1 pr-2 hover:bg-tinta/5"
 			>
 				<Inicial letra={inicial} />
 				<span className="hidden max-w-[120px] truncate text-[15px] font-semibold text-tinta lg:inline">
 					{nombreCorto}
 				</span>
+			</Link>
+
+			<button
+				type="button"
+				onClick={() => setAbierto((v) => !v)}
+				aria-expanded={abierto}
+				aria-haspopup="menu"
+				aria-label="Opciones de tu cuenta"
+				className="inline-flex size-8 shrink-0 items-center justify-center rounded-full text-tinta/50 transition-colors hover:bg-tinta/5 hover:text-tinta"
+			>
+				<ChevronDown
+					className={`size-4 transition-transform ${abierto ? "rotate-180" : ""}`}
+					aria-hidden
+				/>
 			</button>
 
 			{abierto && (
@@ -130,15 +151,6 @@ export default function MenuCuenta({
 							{comprador.email}
 						</p>
 					</div>
-
-					<Link
-						href="/cuenta"
-						role="menuitem"
-						onClick={() => setAbierto(false)}
-						className="block px-4 py-3 text-[15px] font-medium text-tinta hover:bg-gris"
-					>
-						Mis pedidos y diseños
-					</Link>
 
 					<button
 						type="button"

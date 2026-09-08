@@ -1,0 +1,2253 @@
+{
+  "label": "v3-compacted",
+  "profileVersion": "experimental-v3-2026-09-06",
+  "physicallyValidated": false,
+  "fixtures": [
+    {
+      "fixture": "01-resend",
+      "profileVersion": "experimental-v3-2026-09-06",
+      "status": "measured",
+      "physicallyValidated": false,
+      "geometry": {
+        "objectCount": 24,
+        "pathCount": 120,
+        "nodeCount": 404,
+        "segmentCount": 284,
+        "satinColumnCount": 24,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 3,
+        "satin": {
+          "minWidthMm": 1.598,
+          "maxWidthMm": 2.214,
+          "averageWidthMm": 1.975,
+          "widthVariance": 0.03459
+        },
+        "svgBytes": 11837
+      },
+      "stitchPlan": {
+        "stitchCount": 1734,
+        "runningStitches": null,
+        "satinStitches": null,
+        "fillStitches": null,
+        "jumps": 8,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 2.9,
+        "p95StitchLengthMm": 2.617,
+        "averageStitchLengthMm": 2.223,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 11.1,
+        "estimatedThreadLengthMm": 3912.9,
+        "directionChangeDegrees": {
+          "average": 11.597,
+          "p95": 26.619
+        },
+        "maxDirectionChange": 90.0,
+        "numberOfSharpDirectionChanges": 59,
+        "maxAngleDeltaBetweenAdjacentStitches": 90.0,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 125,
+        "overlappingSegments": 255,
+        "overlapDensity": 0.10834,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 321,
+          "averagePerOccupiedCell": 5.386
+        },
+        "maxLocalDensity": 14,
+        "analysis": {
+          "crossingComparisons": 25429,
+          "crossingPairs": 145,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "dst": {
+        "widthMm": 75.4,
+        "heightMm": 23.4,
+        "stitchCount": 1734,
+        "colorCount": 1,
+        "colorChanges": 0,
+        "jumps": 8,
+        "trims": 0
+      },
+      "tajima": {
+        "passed": true,
+        "checks": {
+          "headerIs512Bytes": true,
+          "payloadAlignedTo3Bytes": true,
+          "hasEndRecord": true,
+          "headerRecordCountMatches": true,
+          "headerColorChangesMatch": true,
+          "boundsMatchPyembroidery": true,
+          "maxAxisMovementRepresentable": true
+        },
+        "maxAxisDeltaTenthsMm": 111
+      },
+      "objects": [
+        {
+          "objectId": "resend-0-R-0-v3-0-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 22,
+            "segmentCount": 17,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.021,
+              "maxWidthMm": 2.021,
+              "averageWidthMm": 2.021,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-0-R-0-v3-0-1",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 18,
+            "segmentCount": 13,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.214,
+              "maxWidthMm": 2.214,
+              "averageWidthMm": 2.214,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-0-R-0-v3-0-2",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.214,
+              "maxWidthMm": 2.214,
+              "averageWidthMm": 2.214,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-0-R-0-v3-0-3",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 14,
+            "segmentCount": 9,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.829,
+              "maxWidthMm": 1.829,
+              "averageWidthMm": 1.829,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-0-R-1-v3-1-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 14,
+            "segmentCount": 9,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 1,
+            "satin": {
+              "minWidthMm": 1.829,
+              "maxWidthMm": 1.829,
+              "averageWidthMm": 1.829,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-1-e-0-v3-2-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 20,
+            "segmentCount": 15,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.994,
+              "maxWidthMm": 1.994,
+              "averageWidthMm": 1.994,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-1-e-0-v3-2-1",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.214,
+              "maxWidthMm": 2.214,
+              "averageWidthMm": 2.214,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-1-e-0-v3-2-2",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 18,
+            "segmentCount": 13,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.957,
+              "maxWidthMm": 1.957,
+              "averageWidthMm": 1.957,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-1-e-0-v3-3-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 12,
+            "segmentCount": 7,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 1,
+            "satin": {
+              "minWidthMm": 1.7,
+              "maxWidthMm": 1.7,
+              "averageWidthMm": 1.7,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-2-s-0-v3-4-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 18,
+            "segmentCount": 13,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.957,
+              "maxWidthMm": 1.957,
+              "averageWidthMm": 1.957,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-2-s-0-v3-4-1",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.214,
+              "maxWidthMm": 2.214,
+              "averageWidthMm": 2.214,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-2-s-0-v3-4-2",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.214,
+              "maxWidthMm": 2.214,
+              "averageWidthMm": 2.214,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-2-s-0-v3-4-3",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.906,
+              "maxWidthMm": 1.906,
+              "averageWidthMm": 1.906,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-3-e-0-v3-5-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 20,
+            "segmentCount": 15,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.994,
+              "maxWidthMm": 1.994,
+              "averageWidthMm": 1.994,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-3-e-0-v3-5-1",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.214,
+              "maxWidthMm": 2.214,
+              "averageWidthMm": 2.214,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-3-e-0-v3-5-2",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 18,
+            "segmentCount": 13,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.957,
+              "maxWidthMm": 1.957,
+              "averageWidthMm": 1.957,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-3-e-0-v3-6-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 12,
+            "segmentCount": 7,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 1,
+            "satin": {
+              "minWidthMm": 1.7,
+              "maxWidthMm": 1.7,
+              "averageWidthMm": 1.7,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-4-n-0-v3-7-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.598,
+              "maxWidthMm": 1.598,
+              "averageWidthMm": 1.598,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-4-n-0-v3-8-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 20,
+            "segmentCount": 15,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.994,
+              "maxWidthMm": 1.994,
+              "averageWidthMm": 1.994,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-4-n-0-v3-8-1",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.906,
+              "maxWidthMm": 1.906,
+              "averageWidthMm": 1.906,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-5-d-0-v3-9-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 18,
+            "segmentCount": 13,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.7,
+              "maxWidthMm": 1.7,
+              "averageWidthMm": 1.7,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-5-d-1-v3-10-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 18,
+            "segmentCount": 13,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.957,
+              "maxWidthMm": 1.957,
+              "averageWidthMm": 1.957,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-5-d-1-v3-10-1",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 18,
+            "segmentCount": 13,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.214,
+              "maxWidthMm": 2.214,
+              "averageWidthMm": 2.214,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "resend-5-d-1-v3-10-2",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.906,
+              "maxWidthMm": 1.906,
+              "averageWidthMm": 1.906,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        }
+      ],
+      "timings": {
+        "cacheState": "cold",
+        "segmentationMs": null,
+        "vectorGeometryMs": null,
+        "skeletonMs": null,
+        "railsMs": null,
+        "junctionHandlingMs": null,
+        "stitchTypeAssignmentMs": null,
+        "uploadMs": null,
+        "svgGenerationMs": 8.6,
+        "inkstitchDisplayStartupMs": 51.7,
+        "inkstitchProcessAndDigitizationMs": 1515.0,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null,
+        "dstParsingMs": 4.7,
+        "tajimaValidationMs": 3.7,
+        "previewMs": 174.0,
+        "totalMs": 1801.0
+      },
+      "artifacts": {
+        "input": "input.svg",
+        "preparedSvg": "prepared.svg",
+        "stitchPlot": "stitchPlot.png",
+        "embroideredPreview": "embroideredPreview.png",
+        "dst": "design.dst"
+      }
+    },
+    {
+      "fixture": "02-intel",
+      "profileVersion": "experimental-v3-2026-09-06",
+      "status": "measured",
+      "physicallyValidated": false,
+      "geometry": {
+        "objectCount": 13,
+        "pathCount": 65,
+        "nodeCount": 230,
+        "segmentCount": 165,
+        "satinColumnCount": 13,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 1,
+        "satin": {
+          "minWidthMm": 1.753,
+          "maxWidthMm": 2.43,
+          "averageWidthMm": 1.985,
+          "widthVariance": 0.04698
+        },
+        "svgBytes": 6525
+      },
+      "stitchPlan": {
+        "stitchCount": 1218,
+        "runningStitches": null,
+        "satinStitches": null,
+        "fillStitches": null,
+        "jumps": 6,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 2.973,
+        "p95StitchLengthMm": 2.803,
+        "averageStitchLengthMm": 2.333,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 10.418,
+        "estimatedThreadLengthMm": 2879.6,
+        "directionChangeDegrees": {
+          "average": 10.517,
+          "p95": 23.034
+        },
+        "maxDirectionChange": 90.0,
+        "numberOfSharpDirectionChanges": 38,
+        "maxAngleDeltaBetweenAdjacentStitches": 90.0,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 99,
+        "overlappingSegments": 282,
+        "overlapDensity": 0.13895,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 221,
+          "averagePerOccupiedCell": 5.493
+        },
+        "maxLocalDensity": 17,
+        "analysis": {
+          "crossingComparisons": 15409,
+          "crossingPairs": 119,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "dst": {
+        "widthMm": 58.0,
+        "heightMm": 25.4,
+        "stitchCount": 1218,
+        "colorCount": 1,
+        "colorChanges": 0,
+        "jumps": 6,
+        "trims": 0
+      },
+      "tajima": {
+        "passed": true,
+        "checks": {
+          "headerIs512Bytes": true,
+          "payloadAlignedTo3Bytes": true,
+          "hasEndRecord": true,
+          "headerRecordCountMatches": true,
+          "headerColorChangesMatch": true,
+          "boundsMatchPyembroidery": true,
+          "maxAxisMovementRepresentable": true
+        },
+        "maxAxisDeltaTenthsMm": 97
+      },
+      "objects": [
+        {
+          "objectId": "intel-0-I-0-v3-0-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.753,
+              "maxWidthMm": 1.753,
+              "averageWidthMm": 1.753,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "intel-0-I-1-v3-1-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 18,
+            "segmentCount": 13,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.866,
+              "maxWidthMm": 1.866,
+              "averageWidthMm": 1.866,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "intel-0-I-2-v3-2-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.753,
+              "maxWidthMm": 1.753,
+              "averageWidthMm": 1.753,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "intel-1-n-0-v3-3-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.753,
+              "maxWidthMm": 1.753,
+              "averageWidthMm": 1.753,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "intel-1-n-0-v3-4-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 20,
+            "segmentCount": 15,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.188,
+              "maxWidthMm": 2.188,
+              "averageWidthMm": 2.188,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "intel-1-n-0-v3-4-1",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 18,
+            "segmentCount": 13,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.148,
+              "maxWidthMm": 2.148,
+              "averageWidthMm": 2.148,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "intel-2-t-0-v3-5-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 24,
+            "segmentCount": 19,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.054,
+              "maxWidthMm": 2.054,
+              "averageWidthMm": 2.054,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "intel-2-t-1-v3-6-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.753,
+              "maxWidthMm": 1.753,
+              "averageWidthMm": 1.753,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "intel-3-e-0-v3-7-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 20,
+            "segmentCount": 15,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.188,
+              "maxWidthMm": 2.188,
+              "averageWidthMm": 2.188,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "intel-3-e-0-v3-7-1",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.43,
+              "maxWidthMm": 2.43,
+              "averageWidthMm": 2.43,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "intel-3-e-0-v3-7-2",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 20,
+            "segmentCount": 15,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.188,
+              "maxWidthMm": 2.188,
+              "averageWidthMm": 2.188,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "intel-3-e-0-v3-8-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 12,
+            "segmentCount": 7,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 1,
+            "satin": {
+              "minWidthMm": 1.866,
+              "maxWidthMm": 1.866,
+              "averageWidthMm": 1.866,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "intel-4-l-0-v3-9-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 18,
+            "segmentCount": 13,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.866,
+              "maxWidthMm": 1.866,
+              "averageWidthMm": 1.866,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        }
+      ],
+      "timings": {
+        "cacheState": "warm",
+        "segmentationMs": null,
+        "vectorGeometryMs": null,
+        "skeletonMs": null,
+        "railsMs": null,
+        "junctionHandlingMs": null,
+        "stitchTypeAssignmentMs": null,
+        "uploadMs": null,
+        "svgGenerationMs": 0.7,
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 1275.4,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null,
+        "dstParsingMs": 5.6,
+        "tajimaValidationMs": 1.9,
+        "previewMs": 180.7,
+        "totalMs": 1490.6
+      },
+      "artifacts": {
+        "input": "input.svg",
+        "preparedSvg": "prepared.svg",
+        "stitchPlot": "stitchPlot.png",
+        "embroideredPreview": "embroideredPreview.png",
+        "dst": "design.dst"
+      }
+    },
+    {
+      "fixture": "04-h",
+      "profileVersion": "experimental-v3-2026-09-06",
+      "status": "measured",
+      "physicallyValidated": false,
+      "geometry": {
+        "objectCount": 3,
+        "pathCount": 15,
+        "nodeCount": 56,
+        "segmentCount": 41,
+        "satinColumnCount": 3,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 1.948,
+          "maxWidthMm": 2.163,
+          "averageWidthMm": 2.091,
+          "widthVariance": 0.01027
+        },
+        "svgBytes": 1757
+      },
+      "stitchPlan": {
+        "stitchCount": 393,
+        "runningStitches": null,
+        "satinStitches": null,
+        "fillStitches": null,
+        "jumps": 2,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 3.041,
+        "p95StitchLengthMm": 3.027,
+        "averageStitchLengthMm": 2.574,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 11.5,
+        "estimatedThreadLengthMm": 1022.9,
+        "directionChangeDegrees": {
+          "average": 8.656,
+          "p95": 13.392
+        },
+        "maxDirectionChange": 90.0,
+        "numberOfSharpDirectionChanges": 9,
+        "maxAngleDeltaBetweenAdjacentStitches": 90.0,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 5,
+        "overlappingSegments": 127,
+        "overlapDensity": 0.1662,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 67,
+          "averagePerOccupiedCell": 5.836
+        },
+        "maxLocalDensity": 11,
+        "analysis": {
+          "crossingComparisons": 3765,
+          "crossingPairs": 3,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "dst": {
+        "widthMm": 16.0,
+        "heightMm": 24.0,
+        "stitchCount": 393,
+        "colorCount": 1,
+        "colorChanges": 0,
+        "jumps": 2,
+        "trims": 0
+      },
+      "tajima": {
+        "passed": true,
+        "checks": {
+          "headerIs512Bytes": true,
+          "payloadAlignedTo3Bytes": true,
+          "hasEndRecord": true,
+          "headerRecordCountMatches": true,
+          "headerColorChangesMatch": true,
+          "boundsMatchPyembroidery": true,
+          "maxAxisMovementRepresentable": true
+        },
+        "maxAxisDeltaTenthsMm": 120
+      },
+      "objects": [
+        {
+          "objectId": "h-H-0-v3-0-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 20,
+            "segmentCount": 15,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.163,
+              "maxWidthMm": 2.163,
+              "averageWidthMm": 2.163,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "h-H-1-v3-1-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 20,
+            "segmentCount": 15,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.163,
+              "maxWidthMm": 2.163,
+              "averageWidthMm": 2.163,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "h-H-2-v3-2-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 1.948,
+              "maxWidthMm": 1.948,
+              "averageWidthMm": 1.948,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        }
+      ],
+      "timings": {
+        "cacheState": "warm",
+        "segmentationMs": null,
+        "vectorGeometryMs": null,
+        "skeletonMs": null,
+        "railsMs": null,
+        "junctionHandlingMs": null,
+        "stitchTypeAssignmentMs": null,
+        "uploadMs": null,
+        "svgGenerationMs": 0.3,
+        "inkstitchDisplayStartupMs": 0.1,
+        "inkstitchProcessAndDigitizationMs": 1135.0,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null,
+        "dstParsingMs": 1.3,
+        "tajimaValidationMs": 0.6,
+        "previewMs": 79.1,
+        "totalMs": 1226.0
+      },
+      "artifacts": {
+        "input": "input.svg",
+        "preparedSvg": "prepared.svg",
+        "stitchPlot": "stitchPlot.png",
+        "embroideredPreview": "embroideredPreview.png",
+        "dst": "design.dst"
+      }
+    },
+    {
+      "fixture": "06-e",
+      "profileVersion": "experimental-v3-2026-09-06",
+      "status": "measured",
+      "physicallyValidated": false,
+      "geometry": {
+        "objectCount": 4,
+        "pathCount": 20,
+        "nodeCount": 74,
+        "segmentCount": 54,
+        "satinColumnCount": 4,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 1,
+        "satin": {
+          "minWidthMm": 2.23,
+          "maxWidthMm": 2.7,
+          "averageWidthMm": 2.457,
+          "widthVariance": 0.02782
+        },
+        "svgBytes": 2378
+      },
+      "stitchPlan": {
+        "stitchCount": 318,
+        "runningStitches": null,
+        "satinStitches": null,
+        "fillStitches": null,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 3.106,
+        "p95StitchLengthMm": 3.049,
+        "averageStitchLengthMm": 2.683,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 853.1,
+        "directionChangeDegrees": {
+          "average": 9.391,
+          "p95": 22.849
+        },
+        "maxDirectionChange": 90.0,
+        "numberOfSharpDirectionChanges": 7,
+        "maxAngleDeltaBetweenAdjacentStitches": 90.0,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 16,
+        "overlappingSegments": 40,
+        "overlapDensity": 0.08053,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 63,
+          "averagePerOccupiedCell": 5.032
+        },
+        "maxLocalDensity": 11,
+        "analysis": {
+          "crossingComparisons": 5243,
+          "crossingPairs": 16,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "dst": {
+        "widthMm": 15.0,
+        "heightMm": 15.0,
+        "stitchCount": 318,
+        "colorCount": 1,
+        "colorChanges": 0,
+        "jumps": 1,
+        "trims": 0
+      },
+      "tajima": {
+        "passed": true,
+        "checks": {
+          "headerIs512Bytes": true,
+          "payloadAlignedTo3Bytes": true,
+          "hasEndRecord": true,
+          "headerRecordCountMatches": true,
+          "headerColorChangesMatch": true,
+          "boundsMatchPyembroidery": true,
+          "maxAxisMovementRepresentable": true
+        },
+        "maxAxisDeltaTenthsMm": 59
+      },
+      "objects": [
+        {
+          "objectId": "e-e-0-v3-0-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 20,
+            "segmentCount": 15,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.432,
+              "maxWidthMm": 2.432,
+              "averageWidthMm": 2.432,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "e-e-0-v3-0-1",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 18,
+            "segmentCount": 13,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.7,
+              "maxWidthMm": 2.7,
+              "averageWidthMm": 2.7,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "e-e-0-v3-0-2",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 22,
+            "segmentCount": 17,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 2.465,
+              "maxWidthMm": 2.465,
+              "averageWidthMm": 2.465,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "e-e-0-v3-1-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 14,
+            "segmentCount": 9,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 1,
+            "satin": {
+              "minWidthMm": 2.23,
+              "maxWidthMm": 2.23,
+              "averageWidthMm": 2.23,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        }
+      ],
+      "timings": {
+        "cacheState": "warm",
+        "segmentationMs": null,
+        "vectorGeometryMs": null,
+        "skeletonMs": null,
+        "railsMs": null,
+        "junctionHandlingMs": null,
+        "stitchTypeAssignmentMs": null,
+        "uploadMs": null,
+        "svgGenerationMs": 0.3,
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 977.7,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null,
+        "dstParsingMs": 1.2,
+        "tajimaValidationMs": 0.5,
+        "previewMs": 179.9,
+        "totalMs": 1177.8
+      },
+      "artifacts": {
+        "input": "input.svg",
+        "preparedSvg": "prepared.svg",
+        "stitchPlot": "stitchPlot.png",
+        "embroideredPreview": "embroideredPreview.png",
+        "dst": "design.dst"
+      }
+    },
+    {
+      "fixture": "10-curva-gruesa",
+      "profileVersion": "experimental-v3-2026-09-06",
+      "status": "measured",
+      "physicallyValidated": false,
+      "geometry": {
+        "objectCount": 4,
+        "pathCount": 20,
+        "nodeCount": 136,
+        "segmentCount": 116,
+        "satinColumnCount": 4,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.372,
+          "maxWidthMm": 3.443,
+          "averageWidthMm": 3.416,
+          "widthVariance": 0.00087
+        },
+        "svgBytes": 3319
+      },
+      "stitchPlan": {
+        "stitchCount": 1139,
+        "runningStitches": null,
+        "satinStitches": null,
+        "fillStitches": null,
+        "jumps": 4,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.031,
+        "p95StitchLengthMm": 3.97,
+        "averageStitchLengthMm": 3.592,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 12.54,
+        "estimatedThreadLengthMm": 4119.2,
+        "directionChangeDegrees": {
+          "average": 6.064,
+          "p95": 7.717
+        },
+        "maxDirectionChange": 89.675,
+        "numberOfSharpDirectionChanges": 6,
+        "maxAngleDeltaBetweenAdjacentStitches": 89.675,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 122,
+        "overlappingSegments": 202,
+        "overlapDensity": 0.07565,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 241,
+          "averagePerOccupiedCell": 4.718
+        },
+        "maxLocalDensity": 10,
+        "analysis": {
+          "crossingComparisons": 29574,
+          "crossingPairs": 80,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "dst": {
+        "widthMm": 71.0,
+        "heightMm": 33.6,
+        "stitchCount": 1139,
+        "colorCount": 1,
+        "colorChanges": 0,
+        "jumps": 4,
+        "trims": 0
+      },
+      "tajima": {
+        "passed": true,
+        "checks": {
+          "headerIs512Bytes": true,
+          "payloadAlignedTo3Bytes": true,
+          "hasEndRecord": true,
+          "headerRecordCountMatches": true,
+          "headerColorChangesMatch": true,
+          "boundsMatchPyembroidery": true,
+          "maxAxisMovementRepresentable": true
+        },
+        "maxAxisDeltaTenthsMm": 115
+      },
+      "objects": [
+        {
+          "objectId": "curva-gruesa-v3-0-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 38,
+            "segmentCount": 33,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 3.443,
+              "maxWidthMm": 3.443,
+              "averageWidthMm": 3.443,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "curva-gruesa-v3-0-1",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 28,
+            "segmentCount": 23,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 3.372,
+              "maxWidthMm": 3.372,
+              "averageWidthMm": 3.372,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "curva-gruesa-v3-0-2",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 38,
+            "segmentCount": 33,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 3.443,
+              "maxWidthMm": 3.443,
+              "averageWidthMm": 3.443,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "curva-gruesa-v3-0-3",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 32,
+            "segmentCount": 27,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 3.407,
+              "maxWidthMm": 3.407,
+              "averageWidthMm": 3.407,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        }
+      ],
+      "timings": {
+        "cacheState": "warm",
+        "segmentationMs": null,
+        "vectorGeometryMs": null,
+        "skeletonMs": null,
+        "railsMs": null,
+        "junctionHandlingMs": null,
+        "stitchTypeAssignmentMs": null,
+        "uploadMs": null,
+        "svgGenerationMs": 0.2,
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 996.9,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null,
+        "dstParsingMs": 2.5,
+        "tajimaValidationMs": 1.4,
+        "previewMs": 181.1,
+        "totalMs": 1229.3
+      },
+      "artifacts": {
+        "input": "input.svg",
+        "preparedSvg": "prepared.svg",
+        "stitchPlot": "stitchPlot.png",
+        "embroideredPreview": "embroideredPreview.png",
+        "dst": "design.dst"
+      }
+    },
+    {
+      "fixture": "12-swoosh",
+      "profileVersion": "experimental-v3-2026-09-06",
+      "status": "measured",
+      "physicallyValidated": false,
+      "geometry": {
+        "objectCount": 2,
+        "pathCount": 10,
+        "nodeCount": 54,
+        "segmentCount": 44,
+        "satinColumnCount": 2,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 4.132,
+          "maxWidthMm": 4.591,
+          "averageWidthMm": 4.361,
+          "widthVariance": 0.05267
+        },
+        "svgBytes": 1696
+      },
+      "stitchPlan": {
+        "stitchCount": 477,
+        "runningStitches": null,
+        "satinStitches": null,
+        "fillStitches": null,
+        "jumps": 3,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 5.209,
+        "p95StitchLengthMm": 5.162,
+        "averageStitchLengthMm": 4.587,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 11.735,
+        "estimatedThreadLengthMm": 2211.6,
+        "directionChangeDegrees": {
+          "average": 4.867,
+          "p95": 6.137
+        },
+        "maxDirectionChange": 88.523,
+        "numberOfSharpDirectionChanges": 3,
+        "maxAngleDeltaBetweenAdjacentStitches": 88.523,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 6,
+        "overlappingSegments": 44,
+        "overlapDensity": 0.04604,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 98,
+          "averagePerOccupiedCell": 4.857
+        },
+        "maxLocalDensity": 9,
+        "analysis": {
+          "crossingComparisons": 8482,
+          "crossingPairs": 4,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "dst": {
+        "widthMm": 71.6,
+        "heightMm": 28.4,
+        "stitchCount": 477,
+        "colorCount": 1,
+        "colorChanges": 0,
+        "jumps": 3,
+        "trims": 0
+      },
+      "tajima": {
+        "passed": true,
+        "checks": {
+          "headerIs512Bytes": true,
+          "payloadAlignedTo3Bytes": true,
+          "hasEndRecord": true,
+          "headerRecordCountMatches": true,
+          "headerColorChangesMatch": true,
+          "boundsMatchPyembroidery": true,
+          "maxAxisMovementRepresentable": true
+        },
+        "maxAxisDeltaTenthsMm": 117
+      },
+      "objects": [
+        {
+          "objectId": "swoosh-v3-0-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 38,
+            "segmentCount": 33,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 4.591,
+              "maxWidthMm": 4.591,
+              "averageWidthMm": 4.591,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "swoosh-v3-0-1",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 16,
+            "segmentCount": 11,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 4.132,
+              "maxWidthMm": 4.132,
+              "averageWidthMm": 4.132,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        }
+      ],
+      "timings": {
+        "cacheState": "warm",
+        "segmentationMs": null,
+        "vectorGeometryMs": null,
+        "skeletonMs": null,
+        "railsMs": null,
+        "junctionHandlingMs": null,
+        "stitchTypeAssignmentMs": null,
+        "uploadMs": null,
+        "svgGenerationMs": 0.2,
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 1005.9,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null,
+        "dstParsingMs": 1.4,
+        "tajimaValidationMs": 0.7,
+        "previewMs": 100.3,
+        "totalMs": 1124.7
+      },
+      "artifacts": {
+        "input": "input.svg",
+        "preparedSvg": "prepared.svg",
+        "stitchPlot": "stitchPlot.png",
+        "embroideredPreview": "embroideredPreview.png",
+        "dst": "design.dst"
+      }
+    },
+    {
+      "fixture": "14-junction-y",
+      "profileVersion": "experimental-v3-2026-09-06",
+      "status": "measured",
+      "physicallyValidated": false,
+      "geometry": {
+        "objectCount": 3,
+        "pathCount": 15,
+        "nodeCount": 50,
+        "segmentCount": 35,
+        "satinColumnCount": 3,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 3,
+        "satin": {
+          "minWidthMm": 3.304,
+          "maxWidthMm": 3.536,
+          "averageWidthMm": 3.459,
+          "widthVariance": 0.01196
+        },
+        "svgBytes": 1829
+      },
+      "stitchPlan": {
+        "stitchCount": 468,
+        "runningStitches": null,
+        "satinStitches": null,
+        "fillStitches": null,
+        "jumps": 2,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.428,
+        "p95StitchLengthMm": 4.4,
+        "averageStitchLengthMm": 3.778,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 14.363,
+        "estimatedThreadLengthMm": 1782.5,
+        "directionChangeDegrees": {
+          "average": 6.739,
+          "p95": 8.54
+        },
+        "maxDirectionChange": 90.0,
+        "numberOfSharpDirectionChanges": 11,
+        "maxAngleDeltaBetweenAdjacentStitches": 90.0,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 43,
+        "overlappingSegments": 47,
+        "overlapDensity": 0.05692,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 101,
+          "averagePerOccupiedCell": 4.624
+        },
+        "maxLocalDensity": 15,
+        "analysis": {
+          "crossingComparisons": 9970,
+          "crossingPairs": 93,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "dst": {
+        "widthMm": 43.4,
+        "heightMm": 40.8,
+        "stitchCount": 468,
+        "colorCount": 1,
+        "colorChanges": 0,
+        "jumps": 2,
+        "trims": 0
+      },
+      "tajima": {
+        "passed": true,
+        "checks": {
+          "headerIs512Bytes": true,
+          "payloadAlignedTo3Bytes": true,
+          "hasEndRecord": true,
+          "headerRecordCountMatches": true,
+          "headerColorChangesMatch": true,
+          "boundsMatchPyembroidery": true,
+          "maxAxisMovementRepresentable": true
+        },
+        "maxAxisDeltaTenthsMm": 105
+      },
+      "objects": [
+        {
+          "objectId": "y-left-v3-0-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 18,
+            "segmentCount": 13,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 1,
+            "satin": {
+              "minWidthMm": 3.536,
+              "maxWidthMm": 3.536,
+              "averageWidthMm": 3.536,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "y-right-v3-1-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 18,
+            "segmentCount": 13,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 1,
+            "satin": {
+              "minWidthMm": 3.536,
+              "maxWidthMm": 3.536,
+              "averageWidthMm": 3.536,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "y-down-v3-2-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 14,
+            "segmentCount": 9,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 1,
+            "satin": {
+              "minWidthMm": 3.304,
+              "maxWidthMm": 3.304,
+              "averageWidthMm": 3.304,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        }
+      ],
+      "timings": {
+        "cacheState": "warm",
+        "segmentationMs": null,
+        "vectorGeometryMs": null,
+        "skeletonMs": null,
+        "railsMs": null,
+        "junctionHandlingMs": null,
+        "stitchTypeAssignmentMs": null,
+        "uploadMs": null,
+        "svgGenerationMs": 0.3,
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 893.4,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null,
+        "dstParsingMs": 1.2,
+        "tajimaValidationMs": 0.6,
+        "previewMs": 107.7,
+        "totalMs": 1020.3
+      },
+      "artifacts": {
+        "input": "input.svg",
+        "preparedSvg": "prepared.svg",
+        "stitchPlot": "stitchPlot.png",
+        "embroideredPreview": "embroideredPreview.png",
+        "dst": "design.dst"
+      }
+    },
+    {
+      "fixture": "15-circulo-grueso",
+      "profileVersion": "experimental-v3-2026-09-06",
+      "status": "measured",
+      "physicallyValidated": false,
+      "geometry": {
+        "objectCount": 9,
+        "pathCount": 45,
+        "nodeCount": 268,
+        "segmentCount": 223,
+        "satinColumnCount": 9,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 3.7,
+          "maxWidthMm": 3.7,
+          "averageWidthMm": 3.7,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 6315
+      },
+      "stitchPlan": {
+        "stitchCount": 1386,
+        "runningStitches": null,
+        "satinStitches": null,
+        "fillStitches": null,
+        "jumps": 2,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 4.327,
+        "p95StitchLengthMm": 4.082,
+        "averageStitchLengthMm": 3.769,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 9.105,
+        "estimatedThreadLengthMm": 5233.0,
+        "directionChangeDegrees": {
+          "average": 6.619,
+          "p95": 10.112
+        },
+        "maxDirectionChange": 89.794,
+        "numberOfSharpDirectionChanges": 18,
+        "maxAngleDeltaBetweenAdjacentStitches": 89.794,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 179,
+        "overlappingSegments": 183,
+        "overlapDensity": 0.05871,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 298,
+          "averagePerOccupiedCell": 4.648
+        },
+        "maxLocalDensity": 13,
+        "analysis": {
+          "crossingComparisons": 34908,
+          "crossingPairs": 208,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "dst": {
+        "widthMm": 37.4,
+        "heightMm": 47.4,
+        "stitchCount": 1386,
+        "colorCount": 1,
+        "colorChanges": 0,
+        "jumps": 2,
+        "trims": 0
+      },
+      "tajima": {
+        "passed": true,
+        "checks": {
+          "headerIs512Bytes": true,
+          "payloadAlignedTo3Bytes": true,
+          "hasEndRecord": true,
+          "headerRecordCountMatches": true,
+          "headerColorChangesMatch": true,
+          "boundsMatchPyembroidery": true,
+          "maxAxisMovementRepresentable": true
+        },
+        "maxAxisDeltaTenthsMm": 92
+      },
+      "objects": [
+        {
+          "objectId": "circulo-v3-0-0",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 30,
+            "segmentCount": 25,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 3.7,
+              "maxWidthMm": 3.7,
+              "averageWidthMm": 3.7,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "circulo-v3-0-1",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 28,
+            "segmentCount": 23,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 3.7,
+              "maxWidthMm": 3.7,
+              "averageWidthMm": 3.7,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "circulo-v3-0-2",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 28,
+            "segmentCount": 23,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 3.7,
+              "maxWidthMm": 3.7,
+              "averageWidthMm": 3.7,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "circulo-v3-0-3",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 36,
+            "segmentCount": 31,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 3.7,
+              "maxWidthMm": 3.7,
+              "averageWidthMm": 3.7,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "circulo-v3-0-4",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 34,
+            "segmentCount": 29,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 3.7,
+              "maxWidthMm": 3.7,
+              "averageWidthMm": 3.7,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "circulo-v3-0-5",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 32,
+            "segmentCount": 27,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 3.7,
+              "maxWidthMm": 3.7,
+              "averageWidthMm": 3.7,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "circulo-v3-0-6",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 34,
+            "segmentCount": 29,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 3.7,
+              "maxWidthMm": 3.7,
+              "averageWidthMm": 3.7,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "circulo-v3-0-7",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 32,
+            "segmentCount": 27,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 3.7,
+              "maxWidthMm": 3.7,
+              "averageWidthMm": 3.7,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        },
+        {
+          "objectId": "circulo-v3-0-8",
+          "stitchType": "satin",
+          "geometry": {
+            "objectCount": 1,
+            "pathCount": 5,
+            "nodeCount": 14,
+            "segmentCount": 9,
+            "satinColumnCount": 1,
+            "fillRegionCount": 0,
+            "runningPathCount": 0,
+            "junctionCount": 0,
+            "satin": {
+              "minWidthMm": 3.7,
+              "maxWidthMm": 3.7,
+              "averageWidthMm": 3.7,
+              "widthVariance": 0.0
+            }
+          },
+          "stitchPlan": null,
+          "measurement": "geometry-only: el DST no conserva identidad de objeto y aislar este diseño excede el límite diagnóstico"
+        }
+      ],
+      "timings": {
+        "cacheState": "warm",
+        "segmentationMs": null,
+        "vectorGeometryMs": null,
+        "skeletonMs": null,
+        "railsMs": null,
+        "junctionHandlingMs": null,
+        "stitchTypeAssignmentMs": null,
+        "uploadMs": null,
+        "svgGenerationMs": 0.3,
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 1008.8,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null,
+        "dstParsingMs": 3.1,
+        "tajimaValidationMs": 1.7,
+        "previewMs": 214.1,
+        "totalMs": 1285.8
+      },
+      "artifacts": {
+        "input": "input.svg",
+        "preparedSvg": "prepared.svg",
+        "stitchPlot": "stitchPlot.png",
+        "embroideredPreview": "embroideredPreview.png",
+        "dst": "design.dst"
+      }
+    }
+  ],
+  "passed": 8,
+  "failed": 0
+}

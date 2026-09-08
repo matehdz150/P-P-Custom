@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "14f21a4d34555fae2f7e3a3243c2b17d9b7c0a396cf793f36dc27b4ef143171e",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "intel-0-I-0",
+      "sourceObjectId": "intel-0-I-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M13 17L23.8 17"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 2.43,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "intel-0-I-1",
+      "sourceObjectId": "intel-0-I-1",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M18.4 17L18.4 38.6"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 2.43,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "intel-0-I-2",
+      "sourceObjectId": "intel-0-I-2",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M13 38.6L23.8 38.6"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 2.43,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "intel-1-n-0",
+      "sourceObjectId": "intel-1-n-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M26.5 26.9L26.5 39.5M26.5 30.5C30.1 25.1 37.3 26.0 37.3 31.4L37.3 39.5"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 2.43,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 5
+    },
+    {
+      "id": "intel-2-t-0",
+      "sourceObjectId": "intel-2-t-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M45.4 18.8L45.4 37.7C45.4 40.400000000000006 49.0 40.400000000000006 50.8 38.6"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 2.43,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 3
+    },
+    {
+      "id": "intel-2-t-1",
+      "sourceObjectId": "intel-2-t-1",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M40.0 26.0L50.8 26.0"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 2.43,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "intel-3-e-0",
+      "sourceObjectId": "intel-3-e-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M64.3 30.5C61.6 26.0 53.5 26.9 53.5 32.3C53.5 39.5 63.4 40.400000000000006 65.2 35.0M53.5 32.3L64.3 32.3"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 2.43,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 5
+    },
+    {
+      "id": "intel-4-l-0",
+      "sourceObjectId": "intel-4-l-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M69.7 17L69.7 39.5"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 2.43,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    }
+  ],
+  "metrics": {
+    "componentCount": 8,
+    "nodeCount": 23,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-v2-2026-09-06",
+    "texto": {
+      "satinColumns": 8,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-v2-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

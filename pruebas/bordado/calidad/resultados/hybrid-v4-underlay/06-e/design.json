@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "16495359eff48ff367adf8b13fa2fe873ab8fde18051fdaeb038437460ed938a",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    }
+  ],
+  "objects": [
+    {
+      "id": "e-e-0-hybrid-stroke",
+      "sourceObjectId": "e-e-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M38 33L50 33"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 2.7,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true,
+        "satinMode": "stroke"
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2,
+      "quality": {
+        "lengthMm": 12,
+        "averageWidthMm": 2.7,
+        "minWidthMm": 2.7,
+        "maxWidthMm": 2.7,
+        "widthVariance": 0,
+        "widthVariationRatio": 0,
+        "curvatureDegPerMm": 0,
+        "maxCurvatureDegPerMm": 0,
+        "accumulatedTurningAngleDeg": 0,
+        "maxDirectionDeltaDeg": 0,
+        "junctionCount": 1,
+        "branchCount": 2,
+        "endpointTaper": 0,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 0,
+        "railDivergenceMmPerMm": 0,
+        "railConvergenceMmPerMm": 0,
+        "numberOfSharpTurns": 0,
+        "representationDecision": "stroke-v2",
+        "representationReasons": [],
+        "rawCenterlineNodes": 2,
+        "rawRailNodes": 0,
+        "finalRailNodes": 0,
+        "rungsBefore": 0,
+        "rungsAfter": 0,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 6,
+        "join": {
+          "sourceObjectId": "e-e-0",
+          "gapMm": 0,
+          "overlapMm": 0,
+          "directionDeltaDeg": 0,
+          "jumpIntroduced": true,
+          "measurement": "logical-boundary; DST jump is verified after digitization"
+        }
+      }
+    },
+    {
+      "id": "e-e-0-hybrid-rails-0-0",
+      "sourceObjectId": "e-e-0",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M50.44 30.643L49.23 28.221L46.762 26.906L44.04 26.458L41.292 26.87L38.765 28.277L37.506 29.801L36.779 31.668L36.781 34.511L37.297 36.324L38.857 38.695L41.154 40.326L43.81 41.11L46.571 41.059L49.222 40.108L50.734 38.909L51.501 36.265M49.56 31.357L47.62 30.31L45.926 29.474L44.02 29.157L42.128 29.437L40.562 30.292L39.833 31.17L39.423 32.215L39.444 34.066L39.782 35.267L40.793 36.813L42.322 37.892L44.167 38.434L46.095 38.402L47.853 37.78L48.83 37.084L50.499 35.735M50.533 30.567L49.467 31.433M41.255 26.756L42.166 29.551M36.663 34.531L39.563 34.047M43.794 41.229L44.183 38.315M51.608 36.321L50.392 35.679"
+      },
+      "stitch": {
+        "type": "satin",
+        "satinMode": "rails",
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": false
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 44,
+      "quality": {
+        "minWidthMm": 1.134,
+        "maxWidthMm": 2.7,
+        "averageWidthMm": 2.508,
+        "widthVariance": 0.25226,
+        "angleVariance": 7.1959,
+        "maxAngleDeltaDeg": 23.696,
+        "junctionCount": 0,
+        "segmentIndex": 0,
+        "segmentCount": 1,
+        "representationDecision": "rails-v3",
+        "representationReasons": [
+          "HIGH_CURVATURE",
+          "CURVATURE_PEAK",
+          "ACCUMULATED_TURN",
+          "DIRECTION_CHANGE",
+          "FAN_RISK"
+        ],
+        "lengthMm": 34.372,
+        "curvatureDegPerMm": 8.6652,
+        "maxCurvatureDegPerMm": 12.322,
+        "accumulatedTurningAngleDeg": 299.534,
+        "branchCount": 1,
+        "endpointTaper": 0,
+        "selfIntersectionRisk": 0,
+        "fanRisk": 1,
+        "railDivergenceMmPerMm": 0,
+        "railConvergenceMmPerMm": 0,
+        "numberOfSharpTurns": 0,
+        "rawCenterlineNodes": 33,
+        "rawRailNodes": 90,
+        "finalRailNodes": 34,
+        "rungsBefore": 45,
+        "rungsAfter": 5,
+        "underlayLayers": 1,
+        "estimatedUnderlayStitches": 16
+      }
+    }
+  ],
+  "metrics": {
+    "componentCount": 2,
+    "nodeCount": 46,
+    "colorCount": 1
+  },
+  "preparation": {
+    "profileVersion": "experimental-hybrid-v4-2026-09-06",
+    "texto": {
+      "satinColumns": 1,
+      "runningPaths": 0,
+      "fillAreas": 0
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-hybrid-v4-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0",
+  "debug": {
+    "hybridJoins": [
+      {
+        "sourceObjectId": "e-e-0",
+        "gapMm": 0,
+        "overlapMm": 0,
+        "directionDeltaDeg": 0,
+        "jumpIntroduced": true,
+        "measurement": "logical-boundary; DST jump is verified after digitization"
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "carpeta": "caso-01",
+    "caso": "01-texto-simple",
+    "jobId": "emb_7c0cdbf38dda437776ff58d82ad3856e7f56718c"
+  },
+  {
+    "carpeta": "caso-02",
+    "caso": "08-texto-variante",
+    "jobId": "emb_0e74b2e17e4e0f48d9ba86a14b0998da9675bb25"
+  },
+  {
+    "carpeta": "caso-03",
+    "caso": "03-logo-multicolor",
+    "jobId": "emb_65b009f5769f8bb64fe086daeee6f517543f207a"
+  },
+  {
+    "carpeta": "caso-04",
+    "caso": "05-ilustracion",
+    "jobId": "emb_fced8ffafef4b84d679148033749d683652b04d6"
+  }
+]

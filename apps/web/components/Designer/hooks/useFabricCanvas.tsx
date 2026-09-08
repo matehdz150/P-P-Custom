@@ -124,6 +124,13 @@ export function useFabricCanvas(
 			   jerarquía del editor. Aquí lo leen todos del mismo dato. */
 			(area as FabricObject & { sangradoPx?: number }).sangradoPx =
 				shape.sangradoPx;
+			/* MARCA DE ANDAMIO. El área es un objeto del lienzo como cualquier
+			   diseño, y algo que recorra los objetos no tiene cómo distinguirla:
+			   el plateado del grabado la tiñó entera por no saberlo. Se marca al
+			   crearla —y no consultando la lista registrada— porque esa lista se
+			   publica DESPUÉS de añadirla al lienzo, y quien escuche
+			   `object:added` la ve antes de que exista. */
+			(area as FabricObject & { esAndamio?: boolean }).esAndamio = true;
 			c.add(area);
 			areas.push(area);
 		}
@@ -165,7 +172,30 @@ export function useFabricCanvas(
 				// del diseño: añadirlos ahí reventaría sobre un canvas ya dispuesto.
 				if (cancelado) return;
 
-				for (const objeto of vivos) c.add(objeto);
+				const bloquearBase =
+					typeof window !== "undefined" &&
+					new URLSearchParams(window.location.search).get("bloquear") === "1";
+				const primeraCargaDeBase =
+					typeof window !== "undefined" &&
+					new URLSearchParams(window.location.search).get("baseEvento") === "1";
+				for (const objeto of vivos) {
+					const objetoDeEvento = objeto as FabricObject & {
+						esBaseDeEvento?: boolean;
+					};
+					if (primeraCargaDeBase) objetoDeEvento.esBaseDeEvento = true;
+					if (bloquearBase && objetoDeEvento.esBaseDeEvento) {
+						objeto.set({
+							selectable: false,
+							evented: false,
+							lockMovementX: true,
+							lockMovementY: true,
+							lockScalingX: true,
+							lockScalingY: true,
+							lockRotation: true,
+						});
+					}
+					c.add(objeto);
+				}
 				c.requestRenderAll();
 			})
 			.catch(() => {

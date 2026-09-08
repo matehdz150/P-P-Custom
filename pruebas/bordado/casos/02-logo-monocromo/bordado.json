@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "case": {
+    "id": "02-logo-monocromo",
+    "label": "Logo monocromo con contraformas",
+    "expectedDisposition": "accept"
+  },
+  "source": {
+    "kind": "transparent-raster",
+    "file": "original.png",
+    "sha256": "cbbe490b1d326bea051c74e92809c31ead5ba1c1ba80cd71f58e538c8ed94b02",
+    "metrics": {
+      "alphaCoverage": 0.2498,
+      "hasMeaningfulTransparency": true,
+      "colorEntropyBits32": -0.0,
+      "edgeDensity": 0.0066,
+      "borderUniformity": 1.0,
+      "textureLaplacianVariance": 1451.35
+    }
+  },
+  "physical": {
+    "units": "mm",
+    "embroideryArea": {
+      "width": 90.0,
+      "height": 60.0
+    },
+    "output": {
+      "width": 50.6,
+      "height": 50.0
+    },
+    "mustRedigitizeAfterScale": true
+  },
+  "colors": [
+    {
+      "order": 1,
+      "hex": "#111111",
+      "threadCatalog": null
+    }
+  ],
+  "objects": [
+    {
+      "id": "region-1",
+      "source": {
+        "kind": "raster-region",
+        "paletteIndex": 0
+      },
+      "geometry": {
+        "svgPath": "M 33.70,26.20 L 33.70,26.40 L 39.90,31.50 L 39.90,32.10 L 38.00,39.50 L 38.40,39.40 L 44.90,35.20 L 51.50,39.40 L 51.90,39.50 L 50.00,32.10 L 50.00,31.50 L 56.20,26.40 L 56.20,26.20 L 48.10,25.80 L 45.10,18.20 L 44.80,18.40 L 41.80,25.80 Z",
+        "areaMm2": 183.54,
+        "boundsMm": [
+          33.7,
+          18.2,
+          22.6,
+          21.4
+        ]
+      },
+      "stitchType": "fill",
+      "threadColor": "#111111",
+      "density": {
+        "rowSpacingMm": 0.45
+      },
+      "angleDeg": 0,
+      "underlay": [
+        "tatami-sparse"
+      ],
+      "pullCompensationMm": 0.15,
+      "maxStitchLengthMm": 4,
+      "trimAfter": false,
+      "order": 0
+    },
+    {
+      "id": "region-2",
+      "source": {
+        "kind": "raster-region",
+        "paletteIndex": 0
+      },
+      "geometry": {
+        "svgPath": "M 43.50,5.00 L 40.30,5.40 L 38.20,5.90 L 33.80,7.60 L 32.00,8.60 L 29.30,10.50 L 26.00,13.70 L 23.30,17.50 L 21.30,21.90 L 20.20,26.50 L 20.00,31.50 L 20.40,34.70 L 20.90,36.80 L 22.60,41.20 L 23.60,43.00 L 25.50,45.70 L 28.70,49.00 L 32.50,51.70 L 36.90,53.70 L 41.50,54.80 L 46.50,55.00 L 49.70,54.60 L 51.80,54.10 L 56.20,52.40 L 58.00,51.40 L 60.70,49.50 L 64.00,46.30 L 66.70,42.50 L 68.70,38.10 L 69.80,33.50 L 70.00,28.50 L 69.60,25.30 L 69.10,23.20 L 67.40,18.80 L 66.40,17.00 L 64.50,14.30 L 61.30,11.00 L 57.50,8.30 L 53.10,6.30 L 48.50,5.20 Z M 43.80,13.90 L 46.20,13.90 L 49.50,14.50 L 50.70,14.90 L 53.00,16.00 L 55.40,17.70 L 57.30,19.60 L 59.00,22.00 L 59.80,23.60 L 60.50,25.50 L 61.10,28.80 L 61.10,31.20 L 60.50,34.50 L 60.10,35.70 L 59.00,38.00 L 57.30,40.40 L 55.40,42.30 L 53.00,44.00 L 51.40,44.80 L 49.50,45.50 L 46.20,46.10 L 43.80,46.10 L 40.50,45.50 L 39.30,45.10 L 37.00,44.00 L 34.60,42.30 L 32.70,40.40 L 31.00,38.00 L 30.20,36.40 L 29.50,34.50 L 28.90,31.20 L 28.90,28.80 L 29.50,25.50 L 29.90,24.30 L 31.00,22.00 L 32.70,19.60 L 34.60,17.70 L 37.00,16.00 L 38.60,15.20 L 40.50,14.50 Z",
+        "areaMm2": 1150.06,
+        "boundsMm": [
+          20.0,
+          5.0,
+          50.1,
+          50.1
+        ]
+      },
+      "stitchType": "fill",
+      "threadColor": "#111111",
+      "density": {
+        "rowSpacingMm": 0.45
+      },
+      "angleDeg": 0,
+      "underlay": [
+        "tatami-sparse"
+      ],
+      "pullCompensationMm": 0.15,
+      "maxStitchLengthMm": 4,
+      "trimAfter": false,
+      "order": 1
+    },
+    {
+      "id": "contorno-running",
+      "source": {
+        "kind": "derived-outline"
+      },
+      "geometry": {
+        "svgPath": "M 43.50,5.00 L 40.30,5.40 L 38.20,5.90 L 33.80,7.60 L 32.00,8.60 L 29.30,10.50 L 26.00,13.70 L 23.30,17.50 L 21.30,21.90 L 20.20,26.50 L 20.00,31.50 L 20.40,34.70 L 20.90,36.80 L 22.60,41.20 L 23.60,43.00 L 25.50,45.70 L 28.70,49.00 L 32.50,51.70 L 36.90,53.70 L 41.50,54.80 L 46.50,55.00 L 49.70,54.60 L 51.80,54.10 L 56.20,52.40 L 58.00,51.40 L 60.70,49.50 L 64.00,46.30 L 66.70,42.50 L 68.70,38.10 L 69.80,33.50 L 70.00,28.50 L 69.60,25.30 L 69.10,23.20 L 67.40,18.80 L 66.40,17.00 L 64.50,14.30 L 61.30,11.00 L 57.50,8.30 L 53.10,6.30 L 48.50,5.20 Z"
+      },
+      "stitchType": "running-bean",
+      "threadColor": "#111111",
+      "stitchLengthMm": 2.2,
+      "order": 2
+    }
+  ],
+  "preparation": {
+    "strategy": "alpha-segmentation",
+    "backgroundColor": null,
+    "borderBackgroundAgreement": null,
+    "paletteBeforeThreadMapping": [
+      "#111111"
+    ],
+    "componentsRaw": 2,
+    "componentsKept": 2,
+    "componentsRemoved": 0,
+    "highDetailInput": false,
+    "minimumKeptAreaMm2": 0.75,
+    "simplificationToleranceMm": 0.12
+  },
+  "digitization": {
+    "engine": "Ink/Stitch",
+    "version": "3.3.0",
+    "format": "Tajima DST",
+    "stderr": null
+  },
+  "dstStructuralValidation": {
+    "passed": true,
+    "checks": {
+      "headerIs512Bytes": true,
+      "payloadAlignedTo3Bytes": true,
+      "hasEndRecord": true,
+      "headerRecordCountMatches": true,
+      "headerColorChangesMatch": true,
+      "boundsMatchPyembroidery": true
+    },
+    "headerStitchRecords": 1976,
+    "decodedRecordsBeforeEnd": 1975,
+    "encodedTrimSequences": 0,
+    "logicalRecordsIncludingEnd": 1976,
+    "headerColorChanges": 0,
+    "decodedColorChanges": 0,
+    "decodedBoundsMm": [
+      -25.3,
+      -25.0,
+      25.3,
+      25.0
+    ]
+  },
+  "artifacts": {
+    "preparedGeometry": {
+      "file": "geometria.svg",
+      "sha256": "91f655dcead29d127e2262584728a4acf4b2888a616b4b7b7ec6d3cc1aaa4b52"
+    },
+    "stitchPreview": {
+      "file": "preview.png",
+      "sha256": "e4676fb997b4905e5cf9e0f1e64fcc88a045c51270ded6048bb24d621c735037"
+    },
+    "machineFile": {
+      "file": "diseno.dst",
+      "sha256": "1d95e98d6673c3749a5df59a387b8bc0652a67a023cb4fec5d8303401dccfc83"
+    }
+  },
+  "metrics": {
+    "widthMm": 50.6,
+    "heightMm": 50.0,
+    "boundsMm": [
+      -25.3,
+      -25.0,
+      25.3,
+      25.0
+    ],
+    "stitches": 1973,
+    "commands": 1976,
+    "colorChanges": 0,
+    "jumps": 2,
+    "trims": 0,
+    "stops": 0,
+    "estimatedThreadLengthM": 5.14,
+    "minStitchLengthMm": 0.28,
+    "maxStitchLengthMm": 4.3,
+    "zeroLengthStitches": 2,
+    "shortStitchesUnder0_3mm": 3,
+    "longStitchesOver10mm": 0,
+    "dstSizeBytes": 6440,
+    "estimatedMachineMinutesAt700Spm": 2.8,
+    "preparationMs": 50.8,
+    "digitizationMs": 13769.2,
+    "validationAndPreviewMs": 25.1,
+    "processingMs": 13845.0
+  },
+  "validation": {
+    "passed": true,
+    "decision": "accept",
+    "confidence": 0.96,
+    "issues": [],
+    "limitsAre": "spike guardrails; calibrate by fabric/machine/test-sew before production"
+  }
+}

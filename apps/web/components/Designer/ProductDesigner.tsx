@@ -3,7 +3,9 @@
 import { notFound, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
+import { configurarProductoDeEvento } from "@/lib/api/eventos";
 import type { DesignerProductTemplate } from "@/lib/api/products";
+import { rutaDeEvento } from "@/lib/eventos/borrador";
 import { rutaDelBorrador } from "@/lib/plantillas/borrador";
 import { loadProductTemplate } from "@/lib/products/loadProductsTemplate";
 import type { ProductTemplate } from "@/lib/products/types";
@@ -11,6 +13,7 @@ import AgregarAlCarrito from "./AgregarAlCarrito";
 import AgregarAPlantilla from "./AgregarAPlantilla";
 import AvisoDeSalida from "./AvisoDeSalida";
 import DesktopDesignerShell from "./DesktopDesignerShell";
+import EmbroideryPreparation from "./EmbroideryPreparation";
 import { useAvisoDeSalida } from "./hooks/useAvisoDeSalida";
 import { useHayDiseno } from "./hooks/useHayDiseno";
 import { useIsMobile } from "./hooks/useIsMobile";
@@ -33,6 +36,9 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 		setAgregando,
 		plantilla,
 		setPlantilla,
+		evento,
+		setEvento,
+		setTecnicas,
 		sides,
 	} = useDesigner();
 
@@ -45,21 +51,48 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 	   y viven en las shells: la barra de abajo en escritorio y la cabecera en
 	   móvil. */
 	useEffect(() => {
-		const clave = new URLSearchParams(window.location.search).get("plantilla");
-		if (clave === null) return;
+		const parametros = new URLSearchParams(window.location.search);
+		const codigoEvento = parametros.get("evento");
+		const itemId = parametros.get("item");
+		if (codigoEvento && itemId) {
+			const organizador = parametros.get("organizador") === "1";
+			const regla = parametros.get("personalizacion");
+			const personalizacion =
+				regla === "libre" ||
+				regla === "bloqueada" ||
+				regla === "sin_personalizacion"
+					? regla
+					: undefined;
+			setEvento({
+				codigo: codigoEvento,
+				itemId,
+				eventoId: parametros.get("eventoId") ?? undefined,
+				organizador,
+				personalizacion,
+			});
+			setPlantilla(null);
+			return;
+		}
+		setEvento(null);
+		const clave = parametros.get("plantilla");
+		if (clave === null) {
+			setPlantilla(null);
+			return;
+		}
 
 		// `?plantilla=1` es "una fila nueva"; cualquier otro valor es la clave
 		// de la fila del borrador a la que hay que devolverle el arte.
 		setPlantilla({ clave: clave === "1" || clave === "" ? null : clave });
-	}, [setPlantilla]);
+	}, [setEvento, setPlantilla]);
 
 	const paraPlantilla = plantilla !== null;
+	const paraEvento = evento !== null;
 
 	/* Mientras haya algo dibujado y no se haya pedido, salir de aquí pierde el
 	   diseño: sólo vive dentro del lienzo. */
 	const hayDiseno = useHayDiseno(sides);
 	const { preguntando, salir, quedarse, solicitarSalida } = useAvisoDeSalida(
-		hayDiseno && !pidiendo,
+		hayDiseno && !pidiendo && !agregando,
 	);
 	const [product, setProduct] = useState<ProductTemplate | null>(null);
 	/* El producto puede haber desaparecido DESPUÉS de que esta página se
@@ -75,6 +108,14 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 				setProduct(tpl as unknown as ProductTemplate);
 				setFicha(tpl);
 				setColores(tpl.colors ?? []);
+				/* Con qué se estampa cada lado. Lo consume el hook que agrega
+				   imágenes: en un lado de grabado, la imagen se vectoriza antes de
+				   entrar al lienzo en vez de quedarse como PNG. */
+				setTecnicas(
+					Object.fromEntries(
+						(tpl.printSides ?? []).map((s) => [s.sideKey, s.tecnica]),
+					),
+				);
 				setConfig({
 					name: tpl.name,
 					rules: {
@@ -90,10 +131,14 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 						perColorPrice: tpl.pricing?.perColorPrice,
 						embroideryExtra: tpl.pricing?.embroideryExtra,
 					},
+					lados: (tpl.printSides ?? []).map((s) => ({
+						sideKey: s.sideKey,
+						recargo: s.recargo,
+					})),
 				});
 			})
 			.catch(() => setSeFue(true));
-	}, [productId, setConfig, setColores]);
+	}, [productId, setConfig, setColores, setTecnicas]);
 
 	/* EL LADO ACTIVO TIENE QUE EXISTIR EN ESTE PRODUCTO.
 	
@@ -125,14 +170,33 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 
 	return (
 		<>
+			{ficha && <EmbroideryPreparation productId={productId} product={ficha} />}
 			{isMobile ? (
-				<MobileDesignerShell product={product} />
+				<MobileDesignerShell
+					product={product}
+					fotosReales={ficha?.fotosReales ?? []}
+					onVolverAlCatalogo={() =>
+						solicitarSalida(
+							paraPlantilla
+								? rutaDelBorrador()
+								: evento
+									? rutaDeSalidaDelEvento(evento)
+									: "/catalogo",
+						)
+					}
+				/>
 			) : (
 				<DesktopDesignerShell
 					product={product}
 					fotosReales={ficha?.fotosReales ?? []}
 					onVolverAlCatalogo={() =>
-						solicitarSalida(paraPlantilla ? rutaDelBorrador() : "/catalogo")
+						solicitarSalida(
+							paraPlantilla
+								? rutaDelBorrador()
+								: evento
+									? rutaDeSalidaDelEvento(evento)
+									: "/catalogo",
+						)
 					}
 				/>
 			)}
@@ -143,7 +207,7 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 			    escritorio, la cabecera en móvil — a través del contexto. No es
 			    un formulario: exporta el arte y se va a `/pedir`, porque el
 			    lienzo deja de existir en cuanto se navega. */}
-			{pidiendo && ficha && !paraPlantilla && (
+			{pidiendo && ficha && !paraPlantilla && !paraEvento && (
 				<SalidaAPedir producto={ficha} onCancelar={() => setPidiendo(false)} />
 			)}
 
@@ -165,9 +229,35 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 				/>
 			)}
 
+			{agregando && ficha && evento && (
+				<AgregarAlCarrito
+					producto={ficha}
+					evento={evento}
+					onListo={async (articulo) => {
+						if (evento.organizador && evento.eventoId) {
+							await configurarProductoDeEvento(evento.eventoId, evento.itemId, {
+								personalizacion: evento.personalizacion ?? "libre",
+								arteId: articulo.carritoId,
+							});
+							setAgregando(false);
+							/* El retorno completo vuelve a consultar el evento y evita conservar en
+							   memoria una versión anterior sin `disenoBase`. La marca sólo se añade
+							   después de que la API confirmó la asociación del arte. */
+							window.location.assign(
+								rutaDeEdicionDelEvento(evento.eventoId, evento.itemId),
+							);
+						} else {
+							setAgregando(false);
+							router.push(rutaDeEvento(evento.codigo));
+						}
+					}}
+					onCancelar={() => setAgregando(false)}
+				/>
+			)}
+
 			{/* El carrito se abre sólo después de que el arte terminó de subir y la
 			    referencia quedó guardada localmente. */}
-			{agregando && ficha && !paraPlantilla && (
+			{agregando && ficha && !paraPlantilla && !paraEvento && (
 				<AgregarAlCarrito
 					producto={ficha}
 					onListo={() => {
@@ -179,4 +269,27 @@ export default function ProductDesigner({ productId }: { productId: string }) {
 			)}
 		</>
 	);
+}
+
+function rutaDeSalidaDelEvento(evento: {
+	codigo: string;
+	eventoId?: string;
+	organizador?: boolean;
+	personalizacion?: "libre" | "bloqueada" | "sin_personalizacion";
+}) {
+	return evento.organizador && evento.eventoId
+		? rutaDeEdicionDelEvento(evento.eventoId)
+		: rutaDeEvento(evento.codigo);
+}
+
+function rutaDeEdicionDelEvento(eventoId: string, productoGuardado?: string) {
+	const parametros = new URLSearchParams({
+		s: "eventos",
+		editar: eventoId,
+	});
+	if (productoGuardado) {
+		parametros.set("disenoBase", "guardado");
+		parametros.set("producto", productoGuardado);
+	}
+	return `/cuenta?${parametros.toString()}`;
 }

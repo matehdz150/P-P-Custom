@@ -136,9 +136,7 @@ export function useCarrito() {
 		(id: string, tallas: { size: string; piezas: number }[]) => {
 			escribir(
 				leerLocal().map((a) =>
-					a.id === id
-						? { ...a, tallas, agregadoEn: Date.now() }
-						: a,
+					a.id === id ? { ...a, tallas, agregadoEn: Date.now() } : a,
 				),
 			);
 		},

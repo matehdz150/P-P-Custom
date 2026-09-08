@@ -1,37 +1,55 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearch } from "@/Contexts/SearchContext";
 import CatalogoHero from "@/components/Catalogo/CatalogoHero";
 import CierreProveedores from "@/components/Catalogo/CierreProveedores";
+import { type Orden, ordenar } from "@/components/Catalogo/ordenar";
 import PackagesSection from "@/components/Catalogo/PackageSection";
 import ProductosGrid from "@/components/Catalogo/ProductosGrid";
-import SearchResults from "@/components/Catalogo/SearchResults";
 import { useProductos } from "@/components/Catalogo/useProductos";
-import { ordenar, type Orden } from "@/components/Catalogo/ordenar";
+import { sinAcentos } from "@/lib/texto";
 
 export default function Page() {
-	const { query } = useSearch();
+	const { query, setQuery } = useSearch();
 
 	const [categoriaActiva, setCategoriaActiva] = useState("todo");
+
+	/* `?categoria=<id>` de la portada. Se lee de `window` en un efecto y no con
+	   `useSearchParams`: ese hook obliga a un `<Suspense>` y hace que Next
+	   abandone el prerenderizado de todo lo que hay dentro, que en un export
+	   estático deja la página en blanco hasta que hidrata. Misma regla que el
+	   `?q=` de `SearchContext`. */
+	useEffect(() => {
+		const id = new URLSearchParams(window.location.search).get("categoria");
+		if (id) setCategoriaActiva(id);
+	}, []);
 	const [orden, setOrden] = useState<Orden>("relevancia");
 
 	const { categorias, productos, cargando } = useProductos(categoriaActiva);
 
-	const ordenados = useMemo(
-		() => ordenar(productos, orden),
-		[productos, orden],
-	);
+	/* BUSCAR ES FILTRAR ESTE CATÁLOGO, no irse a otra pantalla.
+	
+	   Antes, con `?q=` la página se sustituía entera por `SearchResults`: se
+	   perdían las categorías, el orden y la rejilla, y lo que aparecía era una
+	   lista distinta con otra pinta. Quien busca "playera" desde la portada
+	   espera el catálogo con playeras, no un buscador aparte.
+	
+	   Se filtra por NOMBRE Y POR TALLER, y sin acentos: "gorra de algodon"
+	   encuentra "Gorra de algodón", y quien recuerda el taller y no el producto
+	   también llega. */
+	const ordenados = useMemo(() => {
+		const termino = sinAcentos(query);
+		const filtrados = termino
+			? productos.filter(
+					(p) =>
+						sinAcentos(p.name).includes(termino) ||
+						sinAcentos(p.provider ?? "").includes(termino),
+				)
+			: productos;
 
-	const isSearching = query.trim().length > 0;
-
-	if (isSearching) {
-		return (
-			<div className="px-5 pt-8 pb-16 md:px-14 md:pt-12">
-				<SearchResults query={query} />
-			</div>
-		);
-	}
+		return ordenar(filtrados, orden);
+	}, [productos, orden, query]);
 
 	return (
 		<>
@@ -44,7 +62,12 @@ export default function Page() {
 				total={cargando ? null : ordenados.length}
 			/>
 
-			<ProductosGrid productos={ordenados} cargando={cargando} />
+			<ProductosGrid
+				productos={ordenados}
+				cargando={cargando}
+				busqueda={query}
+				onLimpiarBusqueda={() => setQuery("")}
+			/>
 
 			<PackagesSection
 				title="Paquetes para eventos"

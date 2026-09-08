@@ -74,7 +74,16 @@ export default function Inicio() {
 		<div className="flex max-w-[1100px] flex-col gap-9">
 			{destacado && <EnCurso pedido={destacado} enCurso={!!enCurso} />}
 
-			{repetibles.length > 0 && (
+			{/* SIN DISEÑOS GUARDADOS, EL CATÁLOGO. No es un relleno: aquí abajo se
+			    contesta "qué vuelvo a pedir", y con la sección escondida la pantalla
+			    se quedaba en la tarjeta oscura y medio metro de blanco.
+
+			    Y NO ES UN CASO RARO, ES EL NORMAL. Un diseño guardado sólo nace
+			    ascendiendo una línea de pedido desde "Mis diseños" —el editor no
+			    guarda nada, y `services/compradores/rutas/disenos.ts` explica por
+			    qué—, así que cualquiera que haya pedido sin bautizar nada cae aquí.
+			    O sea, todo el mundo después de su primer pedido. */}
+			{repetibles.length > 0 ? (
 				<section>
 					<Encabezado
 						titulo="Vuelve a pedir"
@@ -90,8 +99,69 @@ export default function Inicio() {
 						))}
 					</div>
 				</section>
+			) : (
+				<DelCatalogo />
 			)}
 		</div>
+	);
+}
+
+/**
+ * Cuatro piezas del catálogo, para abrirlas en el editor.
+ *
+ * LA REJILLA NO ES DECORACIÓN, ES EL ATAJO. Cada ficha abre el editor de ese
+ * producto directamente, así que la acción rápida de verdad son los productos
+ * y no un botón: mandar sólo a `?s=catalogo` es pedirle a quien acaba de entrar
+ * que empiece por buscar.
+ *
+ * LA USAN DOS PANTALLAS y por eso está aquí fuera: la de estreno —quien no ha
+ * pedido nunca— y la portada de quien pidió pero no tiene ningún diseño
+ * guardado. Son la misma respuesta a dos vacíos distintos, y tenerla duplicada
+ * garantizaba que una de las dos se quedara atrás.
+ *
+ * TRAE EL CATÁLOGO ELLA MISMA, y no lo recibe por props, porque `Inicio` sale
+ * antes por `Cargando` cuando faltan los datos del panel: un `useEffect` allí
+ * arriba quedaría por encima de ese `return` y React no admite un hook que a
+ * veces se ejecuta y a veces no.
+ */
+function DelCatalogo() {
+	/* Se pinta con lo recordado si otra sección del panel ya lo trajo, y se
+	   vuelve a pedir por detrás. */
+	const [productos, setProductos] = useState(catalogoRecordado);
+
+	useEffect(() => {
+		/* Si el catálogo falla no se dice nada: esto es el añadido de una
+		   pantalla que ya funciona sin él, y un aviso de error aquí sería lo
+		   primero que ve alguien al entrar a su cuenta sin poder hacer nada al
+		   respecto. */
+		getCatalogo()
+			.then(setProductos)
+			.catch(() => {});
+	}, []);
+
+	/* Sólo los que tienen foto: una tarjeta sin imagen es un cuadro gris, y de
+	   arranque eso no invita a nada. */
+	const primeros = (productos ?? [])
+		.filter((producto) => producto.images[0]?.url)
+		.slice(0, 4);
+
+	if (primeros.length === 0) return null;
+
+	return (
+		<section>
+			<Encabezado
+				titulo="Empieza por aquí"
+				texto="Abre cualquiera en el editor. No pides nada todavía."
+				href="/cuenta?s=catalogo"
+				enlace="Ver todo"
+			/>
+
+			<div className="grid grid-cols-2 gap-4 pt-4 md:grid-cols-4 md:gap-5">
+				{primeros.map((producto) => (
+					<TarjetaProducto key={producto.id} producto={producto} prioritaria />
+				))}
+			</div>
+		</section>
 	);
 }
 
@@ -131,34 +201,11 @@ const PASOS = [
  * mismo hueco debajo— para que la pantalla no se reorganice con el primer
  * pedido: cambia lo que dice la tarjeta y el resto se queda donde estaba.
  *
- * LA REJILLA NO ES DECORACIÓN, ES EL ATAJO. Cada ficha abre el editor de ese
- * producto directamente, así que la acción rápida de verdad son los productos
- * y no el botón: mandar sólo a `?s=catalogo` es pedirle a quien acaba de
- * entrar que empiece por buscar. El resto del panel —pedidos, diseños,
- * plantillas, favoritos— no se repite aquí en tarjetas: está entero en la
- * columna de la izquierda, y de todas formas vacío.
+ * DEBAJO VA `DelCatalogo`, que es el atajo de verdad. El resto del panel
+ * —pedidos, diseños, plantillas, favoritos— no se repite aquí en tarjetas:
+ * está entero en la columna de la izquierda, y de todas formas vacío.
  */
 function Bienvenida() {
-	/* Se pinta con lo recordado si otra sección del panel ya lo trajo, y se
-	   vuelve a pedir por detrás. Ésta es la única pantalla del panel sin nada
-	   más que cargar, así que la petición no compite con nada. */
-	const [productos, setProductos] = useState(catalogoRecordado);
-
-	useEffect(() => {
-		/* Si el catálogo falla, la tarjeta y sus pasos siguen en pie: la rejilla
-		   es el añadido. Un aviso de error aquí sería lo primero que ve alguien
-		   recién registrado, y no hay nada que pueda hacer al respecto. */
-		getCatalogo()
-			.then(setProductos)
-			.catch(() => {});
-	}, []);
-
-	/* Sólo los que tienen foto: una tarjeta sin imagen es un cuadro gris, y de
-	   arranque eso no invita a nada. */
-	const primeros = (productos ?? [])
-		.filter((producto) => producto.images[0]?.url)
-		.slice(0, 4);
-
 	return (
 		<div className="flex max-w-[1100px] flex-col gap-9">
 			<section className="overflow-hidden rounded-[20px] bg-tinta text-hueso">
@@ -206,26 +253,7 @@ function Bienvenida() {
 				</ol>
 			</section>
 
-			{primeros.length > 0 && (
-				<section>
-					<Encabezado
-						titulo="Empieza por aquí"
-						texto="Abre cualquiera en el editor. No pides nada todavía."
-						href="/cuenta?s=catalogo"
-						enlace="Ver todo"
-					/>
-
-					<div className="grid grid-cols-2 gap-4 pt-4 md:grid-cols-4 md:gap-5">
-						{primeros.map((producto) => (
-							<TarjetaProducto
-								key={producto.id}
-								producto={producto}
-								prioritaria
-							/>
-						))}
-					</div>
-				</section>
-			)}
+			<DelCatalogo />
 		</div>
 	);
 }

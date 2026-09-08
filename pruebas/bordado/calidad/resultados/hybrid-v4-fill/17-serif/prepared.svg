@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkstitch="http://inkstitch.org/namespace" width="90mm" height="60mm" viewBox="0 0 90 60">
+<metadata><inkstitch:min_stitch_len_mm>0.3</inkstitch:min_stitch_len_mm><inkstitch:collapse_len_mm>3</inkstitch:collapse_len_mm><inkstitch:min_satin_stroke_width_mm>1.5</inkstitch:min_satin_stroke_width_mm><inkstitch:inkstitch_svg_version>4</inkstitch:inkstitch_svg_version></metadata>
+<path id="serif-stem-hybrid-rails-0-0" d="M43 14L43 21.857L43 25.786L43 30.5L43 38.357L43 42.286L43 47M47 14L47 21.857L47 25.786L47 30.5L47 38.357L47 42.286L47 47M42.88 14L47.12 14M42.88 25.786L47.12 25.786M42.88 38.357L47.12 38.357M42.88 47L47.12 47" fill="none" stroke="#171717" inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42" inkstitch:pull_compensation_mm="0.15" inkstitch:center_walk_underlay="true" inkstitch:max_stitch_length_mm="6.5" />
+<path id="serif-top" d="M34 14L56 14" fill="none" stroke="#171717" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round" inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42" inkstitch:pull_compensation_mm="0.15" inkstitch:center_walk_underlay="true" inkstitch:max_stitch_length_mm="6.5" />
+<path id="serif-bottom" d="M32 47L58 47" fill="none" stroke="#171717" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round" inkstitch:satin_column="true" inkstitch:zigzag_spacing_mm="0.42" inkstitch:pull_compensation_mm="0.15" inkstitch:center_walk_underlay="true" inkstitch:max_stitch_length_mm="6.5" />
+</svg>

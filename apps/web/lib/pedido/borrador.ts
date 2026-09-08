@@ -50,6 +50,16 @@ export type ArchivoDeLado = {
 	 * es opcional. Ver `sobreLaPrendaReal` en `lib/designer/exportarParaPedido`.
 	 */
 	prenda: Blob | null;
+	/**
+	 * El MISMO arte en vectores, para las técnicas que los piden.
+	 *
+	 * VA ADEMÁS DEL PNG, no en su lugar. Un láser necesita trazos, pero el PNG
+	 * le sigue sirviendo al taller para ver de un vistazo qué le pidieron, y
+	 * dejarlo fuera obligaría a cambiar el nombre del archivo en S3 —hoy fijo a
+	 * `.png` en dos Lambdas— y con él las rutas de todos los pedidos que ya
+	 * existen. Nulo en cualquier técnica de impresión, que son casi todas.
+	 */
+	vector: Blob | null;
 	/** El arte solo, en pequeño. */
 	miniaturaArte: string | null;
 	/** La prenda con el diseño, en pequeño. Es el mismo píxel que `colocacion`. */

@@ -1,0 +1,3001 @@
+{
+  "schema_version": "1.0.0",
+  "workload": "Kustto",
+  "date": "2026-09-05",
+  "review_mode": "full",
+  "skill_version": "2.3.0",
+  "run_id": "2026-09-05T01:30-kustto",
+  "lens": [
+    "serverless-applications"
+  ],
+  "business_criticality": "standard",
+  "pillar_scores": {
+    "operational_excellence": 2,
+    "security": 2,
+    "reliability": 1,
+    "performance_efficiency": 2,
+    "cost_optimization": 3,
+    "sustainability": 3
+  },
+  "findings": [
+    {
+      "bp_id": "OPS01-BP01",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Documentar necesidades de compradores y talleres, y priorizarlas",
+      "evidence": {
+        "note": "El repo no es fuente autoritativa de investigación de clientes"
+      }
+    },
+    {
+      "bp_id": "OPS01-BP02",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Entrevistar al equipo interno (admin, soporte)",
+      "evidence": {
+        "note": "Sin evidencia de clientes internos definidos"
+      }
+    },
+    {
+      "bp_id": "OPS01-BP03",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Definir quién aprueba cambios en producción",
+      "evidence": {
+        "note": "No hay documento de gobierno en el repo"
+      }
+    },
+    {
+      "bp_id": "OPS01-BP04",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Evaluar obligaciones de la ley mexicana de datos personales",
+      "evidence": {
+        "note": "Sin evidencia de análisis de cumplimiento; se procesan datos personales de compradores en MX (LFPDPPP)"
+      }
+    },
+    {
+      "bp_id": "OPS01-BP05",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Activar CloudTrail y GuardDuty; son la base para conocer el panorama",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin GuardDuty, sin Config, sin CloudTrail (consultas vivas devuelven vacío)"
+      }
+    },
+    {
+      "bp_id": "OPS01-BP06",
+      "pillar": "operational_excellence",
+      "status": "implemented",
+      "recommendation": "Mantener el hábito",
+      "evidence": {
+        "note": "`ESTADO.md` y `CLAUDE.md` documentan decisiones con su contrapartida (ej. no materializar el catálogo en S3, `catalogo.ts:17-38`)"
+      }
+    },
+    {
+      "bp_id": "OPS02-BP01",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Añadir dueño por recurso",
+      "severity": "low",
+      "evidence": {
+        "note": "`infra/README.md` mapea recursos a scripts; sin dueños nombrados"
+      }
+    },
+    {
+      "bp_id": "OPS02-BP02",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Nombrar responsable por procedimiento",
+      "severity": "low",
+      "evidence": {
+        "note": "Procedimientos en `infra/*.sh` con cabecera explicativa; sin dueño"
+      }
+    },
+    {
+      "bp_id": "OPS02-BP03",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Definir quién responde a un incidente",
+      "evidence": {
+        "note": "Sin evidencia de asignación de actividades operativas"
+      }
+    },
+    {
+      "bp_id": "OPS02-BP04",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Definir cómo se gestionan responsabilidades",
+      "evidence": {
+        "note": "Sin mecanismo documentado"
+      }
+    },
+    {
+      "bp_id": "OPS02-BP05",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Definir cómo se piden cambios y excepciones",
+      "evidence": {
+        "note": "Sin proceso de solicitudes documentado"
+      }
+    },
+    {
+      "bp_id": "OPS02-BP06",
+      "pillar": "operational_excellence",
+      "status": "not_applicable",
+      "recommendation": "Revisar cuando crezca el equipo",
+      "evidence": {
+        "note": "Equipo de una persona según el historial de commits; no hay fronteras entre equipos"
+      }
+    },
+    {
+      "bp_id": "OPS03-BP01",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Entrevista",
+      "evidence": {
+        "note": "Fuera del alcance del repo"
+      }
+    },
+    {
+      "bp_id": "OPS03-BP02",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Entrevista",
+      "evidence": {
+        "note": "Fuera del alcance del repo"
+      }
+    },
+    {
+      "bp_id": "OPS03-BP03",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Entrevista",
+      "evidence": {
+        "note": "Fuera del alcance del repo"
+      }
+    },
+    {
+      "bp_id": "OPS03-BP04",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Extenderlo a comunicación con el taller",
+      "severity": "low",
+      "evidence": {
+        "note": "`ESTADO.md` es un traspaso entre sesiones explícito y actualizado"
+      }
+    },
+    {
+      "bp_id": "OPS03-BP05",
+      "pillar": "operational_excellence",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "`ESTADO.md` documenta experimentos descartados con su razón (`distDir`, materializar catálogo)"
+      }
+    },
+    {
+      "bp_id": "OPS03-BP06",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Entrevista",
+      "evidence": {
+        "note": "Fuera del alcance del repo"
+      }
+    },
+    {
+      "bp_id": "OPS03-BP07",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Entrevista",
+      "evidence": {
+        "note": "Fuera del alcance del repo"
+      }
+    },
+    {
+      "bp_id": "OPS04-BP01",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Definir KPI: pedidos/min, latencia p99 del checkout, tasa de error 5xx",
+      "severity": "high",
+      "evidence": {
+        "note": "Cero alarmas de CloudWatch (`describe-alarms` vacío); no hay KPI definido ni medido"
+      }
+    },
+    {
+      "bp_id": "OPS04-BP02",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Emitir JSON con `requestId` de API Gateway en cada línea",
+      "severity": "medium",
+      "evidence": {
+        "note": "31 llamadas a `console.*` en los servicios; sin formato estructurado ni correlación"
+      }
+    },
+    {
+      "bp_id": "OPS04-BP03",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Añadir CloudWatch RUM o equivalente al checkout",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin RUM, sin telemetría de cliente; el front es export estático sin instrumentar"
+      }
+    },
+    {
+      "bp_id": "OPS04-BP04",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Medir latencia y tasa de fallo del tercero",
+      "severity": "high",
+      "evidence": {
+        "note": "Skydropx se llama con `fetch` sin métrica ni traza (`services/admin/src/lib/skydropx.ts:133`)"
+      }
+    },
+    {
+      "bp_id": "OPS04-BP05",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Activar `TracingConfig=Active`; es una línea por función",
+      "severity": "high",
+      "evidence": {
+        "note": "X-Ray en `PassThrough` en las 5 funciones (consulta viva)"
+      }
+    },
+    {
+      "bp_id": "OPS05-BP01",
+      "pillar": "operational_excellence",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Git con 110 commits e historia conservada; repo en GitHub"
+      }
+    },
+    {
+      "bp_id": "OPS05-BP02",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Añadir pruebas al menos del checkout y de `validarFotosReales`",
+      "severity": "medium",
+      "evidence": {
+        "note": "`tsc --noEmit` y biome se corren a mano; **cero archivos de prueba** en el repo"
+      }
+    },
+    {
+      "bp_id": "OPS05-BP03",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Mover a SSM Parameter Store",
+      "severity": "medium",
+      "evidence": {
+        "note": "Configuración por variables de entorno de Lambda; sin gestión centralizada"
+      }
+    },
+    {
+      "bp_id": "OPS05-BP04",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Automatizar en CI",
+      "severity": "medium",
+      "evidence": {
+        "note": "`infra/*.sh` idempotentes y documentados; ejecución manual desde un portátil"
+      }
+    },
+    {
+      "bp_id": "OPS05-BP05",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Definir cadencia de actualización de runtime y dependencias",
+      "severity": "low",
+      "evidence": {
+        "note": "`nodejs20.x` es una versión soportada; sin proceso de actualización"
+      }
+    },
+    {
+      "bp_id": "OPS05-BP06",
+      "pillar": "operational_excellence",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "`CLAUDE.md` fija convenciones (idioma, comentarios, prohibiciones) y `ESTADO.md` las decisiones"
+      }
+    },
+    {
+      "bp_id": "OPS05-BP07",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Poner biome y tsc como gate en CI",
+      "severity": "medium",
+      "evidence": {
+        "note": "biome + tsc estrictos y comentarios de por qué; sin revisión por pares ni CI que los imponga"
+      }
+    },
+    {
+      "bp_id": "OPS05-BP08",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Crear entorno de staging con su tabla y sus Lambdas",
+      "severity": "high",
+      "evidence": {
+        "note": "Un solo entorno: `kustto-prod`. Los scripts despliegan directo a producción"
+      }
+    },
+    {
+      "bp_id": "OPS05-BP09",
+      "pillar": "operational_excellence",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Commits pequeños y frecuentes; despliegue por función independiente"
+      }
+    },
+    {
+      "bp_id": "OPS05-BP10",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Montar CI que construya, pruebe y despliegue",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin `.github/workflows`; despliegue manual con `bash infra/sitio.sh` desde el portátil del desarrollador"
+      }
+    },
+    {
+      "bp_id": "OPS06-BP01",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Activar versionado en `kustto-sitio-prod`",
+      "severity": "medium",
+      "evidence": {
+        "note": "S3 del sitio sin versionado (consulta viva) — no hay vuelta atrás del front; Lambda sí conserva versiones"
+      }
+    },
+    {
+      "bp_id": "OPS06-BP02",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Probar en staging antes de producción",
+      "severity": "high",
+      "evidence": {
+        "note": "No hay entorno donde probar el despliegue antes de producción"
+      }
+    },
+    {
+      "bp_id": "OPS06-BP03",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Usar alias con desplazamiento de peso y alarma de reversión",
+      "severity": "high",
+      "evidence": {
+        "note": "Despliegue *all-at-once*: `update-function-code` sobre `$LATEST`, sin alias, sin canary"
+      }
+    },
+    {
+      "bp_id": "OPS06-BP04",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "CodeDeploy para Lambda con alarma de reversión",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin pruebas automáticas y sin reversión automática"
+      }
+    },
+    {
+      "bp_id": "OPS07-BP01",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Entrevista",
+      "evidence": {
+        "note": "Fuera del alcance del repo"
+      }
+    },
+    {
+      "bp_id": "OPS07-BP02",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Crear checklist antes de abrir a tráfico real",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin lista de comprobación de preparación operativa"
+      }
+    },
+    {
+      "bp_id": "OPS07-BP03",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Añadir runbook de incidente (qué hacer si el checkout falla)",
+      "severity": "low",
+      "evidence": {
+        "note": "`infra/README.md` y las cabeceras de los scripts hacen de runbook de despliegue"
+      }
+    },
+    {
+      "bp_id": "OPS07-BP04",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Escribir playbook para \"pedido cobrado sin guía\"",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin playbooks de investigación"
+      }
+    },
+    {
+      "bp_id": "OPS07-BP05",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Formalizar el criterio de \"listo para desplegar\"",
+      "severity": "low",
+      "evidence": {
+        "note": "`ESTADO.md` registra qué está probado y qué no, explícitamente"
+      }
+    },
+    {
+      "bp_id": "OPS07-BP06",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Verificar plan de soporte en la consola",
+      "evidence": {
+        "note": "Nivel de soporte de AWS no consultable con los permisos actuales"
+      }
+    },
+    {
+      "bp_id": "OPS08-BP01",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Activar métricas detalladas por ruta",
+      "severity": "high",
+      "evidence": {
+        "note": "Métricas detalladas de API Gateway **desactivadas** (`DetailedMetricsEnabled: false`)"
+      }
+    },
+    {
+      "bp_id": "OPS08-BP02",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Fijar retención (30 días) y consultarlos con Insights",
+      "severity": "medium",
+      "evidence": {
+        "note": "Logs de Lambda existen; **retención `None` = para siempre** en los 5 grupos"
+      }
+    },
+    {
+      "bp_id": "OPS08-BP03",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Activar X-Ray",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin trazas: X-Ray apagado"
+      }
+    },
+    {
+      "bp_id": "OPS08-BP04",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Alarmas de errores, throttles y latencia con destino SNS",
+      "severity": "critical",
+      "evidence": {
+        "note": "**Cero alarmas** y **cero temas SNS**: ningún fallo avisa a nadie"
+      }
+    },
+    {
+      "bp_id": "OPS08-BP05",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Un dashboard con pedidos, errores y throttles",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin dashboards"
+      }
+    },
+    {
+      "bp_id": "OPS09-BP01",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Definir y medir",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin KPI operativos medidos"
+      }
+    },
+    {
+      "bp_id": "OPS09-BP02",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Entrevista",
+      "evidence": {
+        "note": "Fuera del alcance del repo"
+      }
+    },
+    {
+      "bp_id": "OPS09-BP03",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Entrevista",
+      "evidence": {
+        "note": "Fuera del alcance del repo"
+      }
+    },
+    {
+      "bp_id": "OPS10-BP01",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Definir proceso mínimo de incidente",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin proceso de incidentes; sin alertas que lo disparen"
+      }
+    },
+    {
+      "bp_id": "OPS10-BP02",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Un proceso por cada alarma que se cree",
+      "severity": "high",
+      "evidence": {
+        "note": "No hay alertas, luego no hay proceso por alerta"
+      }
+    },
+    {
+      "bp_id": "OPS10-BP03",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Definir severidades",
+      "evidence": {
+        "note": "Sin evidencia de priorización"
+      }
+    },
+    {
+      "bp_id": "OPS10-BP04",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Definir a quién se llama",
+      "evidence": {
+        "note": "Sin evidencia de escalado"
+      }
+    },
+    {
+      "bp_id": "OPS10-BP05",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Definir aviso en el sitio y por correo",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin plan de comunicación al comprador ante caída"
+      }
+    },
+    {
+      "bp_id": "OPS10-BP06",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Página de estado",
+      "severity": "low",
+      "evidence": {
+        "note": "Sin dashboards públicos ni internos"
+      }
+    },
+    {
+      "bp_id": "OPS10-BP07",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Automatizar lo repetitivo tras las primeras alarmas",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin respuesta automática a eventos"
+      }
+    },
+    {
+      "bp_id": "OPS11-BP01",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Formalizar cadencia",
+      "severity": "low",
+      "evidence": {
+        "note": "`ESTADO.md` sección \"Lo que sigue\" ordena mejoras"
+      }
+    },
+    {
+      "bp_id": "OPS11-BP02",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Extenderlo a incidentes de producción",
+      "severity": "medium",
+      "evidence": {
+        "note": "`ESTADO.md` \"Trampas que ya mordieron\" es análisis post-incidente real y detallado"
+      }
+    },
+    {
+      "bp_id": "OPS11-BP03",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Canal de realimentación para talleres",
+      "severity": "low",
+      "evidence": {
+        "note": "Bucle de realimentación con el propio uso; sin canal del taller"
+      }
+    },
+    {
+      "bp_id": "OPS11-BP04",
+      "pillar": "operational_excellence",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "`ESTADO.md`, `README.md`, `infra/README.md` y comentarios de por qué en el código"
+      }
+    },
+    {
+      "bp_id": "OPS11-BP05",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Explicitar el porqué de cada mejora",
+      "severity": "low",
+      "evidence": {
+        "note": "Impulsores implícitos en \"Lo que sigue\""
+      }
+    },
+    {
+      "bp_id": "OPS11-BP06",
+      "pillar": "operational_excellence",
+      "status": "partially_implemented",
+      "recommendation": "Validar con métricas, no sólo con lectura",
+      "severity": "medium",
+      "evidence": {
+        "note": "`CLAUDE.md` exige verificar antes de afirmar y cita dos diagnósticos equivocados"
+      }
+    },
+    {
+      "bp_id": "OPS11-BP07",
+      "pillar": "operational_excellence",
+      "status": "not_implemented",
+      "recommendation": "Revisar tras instrumentar",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin métricas que revisar"
+      }
+    },
+    {
+      "bp_id": "OPS11-BP08",
+      "pillar": "operational_excellence",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Lecciones documentadas con su causa raíz en `ESTADO.md`"
+      }
+    },
+    {
+      "bp_id": "OPS11-BP09",
+      "pillar": "operational_excellence",
+      "status": "cannot_determine",
+      "recommendation": "Entrevista",
+      "evidence": {
+        "note": "Fuera del alcance del repo"
+      }
+    },
+    {
+      "bp_id": "SEC01-BP01",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Separar producción en su propia cuenta antes de crecer",
+      "severity": "medium",
+      "evidence": {
+        "note": "Una sola cuenta (467685081574) para producción y desarrollo; sin AWS Organizations"
+      }
+    },
+    {
+      "bp_id": "SEC01-BP02",
+      "pillar": "security",
+      "status": "cannot_determine",
+      "recommendation": "Verificar en la consola que el raíz tiene MFA y no tiene llaves",
+      "evidence": {
+        "note": "No se puede consultar el estado del usuario raíz con los permisos actuales"
+      }
+    },
+    {
+      "bp_id": "SEC01-BP03",
+      "pillar": "security",
+      "status": "cannot_determine",
+      "recommendation": "Definirlos (p. ej. contra LFPDPPP para datos de compradores)",
+      "evidence": {
+        "note": "Sin objetivos de control documentados"
+      }
+    },
+    {
+      "bp_id": "SEC01-BP04",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Activar GuardDuty; es la fuente de avisos de amenaza",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin GuardDuty ni Security Hub (consultas vivas vacías)"
+      }
+    },
+    {
+      "bp_id": "SEC01-BP05",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "Todo serverless y gestionado: sin EC2, sin VPC, sin parcheo de SO"
+      }
+    },
+    {
+      "bp_id": "SEC01-BP06",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Añadir AWS Config con reglas",
+      "severity": "medium",
+      "evidence": {
+        "note": "`infra/*.sh` despliega IAM y buckets de forma repetible; sin Config ni SCP que lo impongan"
+      }
+    },
+    {
+      "bp_id": "SEC01-BP07",
+      "pillar": "security",
+      "status": "cannot_determine",
+      "recommendation": "Hacer un STRIDE del checkout y del webhook",
+      "evidence": {
+        "note": "Sin modelo de amenazas documentado"
+      }
+    },
+    {
+      "bp_id": "SEC01-BP08",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Revisar GuardDuty/WAF",
+      "severity": "low",
+      "evidence": {
+        "note": "`ESTADO.md` registra evaluación de servicios; ninguno de seguridad adoptado"
+      }
+    },
+    {
+      "bp_id": "SEC02-BP01",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Activar MFA obligatorio en el pool de admins",
+      "severity": "high",
+      "evidence": {
+        "note": "Cognito con contraseña mínima 10 (compradores) y 12 (admins); **MFA OFF en los tres pools**, incluido `kustto-admins`"
+      }
+    },
+    {
+      "bp_id": "SEC02-BP02",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Sustituir el usuario por IAM Identity Center o roles asumibles",
+      "severity": "high",
+      "evidence": {
+        "note": "Las Lambdas usan rol (credencial temporal) ✓ y SES vía `sts:AssumeRole` ✓; pero el usuario IAM `claude-admin` tiene **dos llaves estáticas activas**"
+      }
+    },
+    {
+      "bp_id": "SEC02-BP03",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Mover a Secrets Manager o SSM `SecureString`",
+      "severity": "high",
+      "evidence": {
+        "note": "`SKYDROPX_CLIENT_SECRET` y `SKYDROPX_WEBHOOK_SECRETO` en variables de entorno de Lambda en claro (consulta viva)"
+      }
+    },
+    {
+      "bp_id": "SEC02-BP04",
+      "pillar": "security",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Cognito como IdP central, tres pools por audiencia; Google federado para compradores"
+      }
+    },
+    {
+      "bp_id": "SEC02-BP05",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Borrar la llave sobrante y rotar la otra",
+      "severity": "high",
+      "evidence": {
+        "note": "Dos llaves de acceso activas del 1 y 2 de septiembre, ninguna rotada; sin política de rotación"
+      }
+    },
+    {
+      "bp_id": "SEC02-BP06",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Usar grupos si aparecen roles de admin distintos",
+      "severity": "low",
+      "evidence": {
+        "note": "Separación por pool (admin/comprador/proveedor) hace de grupo; sin grupos dentro del pool"
+      }
+    },
+    {
+      "bp_id": "SEC03-BP01",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Documentar la matriz de acceso completa",
+      "severity": "medium",
+      "evidence": {
+        "note": "Frontera documentada en `services/admin/src/handler.ts:100-135` con rutas abiertas enumeradas una a una"
+      }
+    },
+    {
+      "bp_id": "SEC03-BP02",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Quitar AdministratorAccess del usuario humano",
+      "severity": "medium",
+      "evidence": {
+        "note": "Roles Lambda con políticas acotadas por recurso (`correo`, `datos`, `eventos`; sin `Resource: \"*\"`) ✓; pero `claude-admin` tiene **AdministratorAccess**"
+      }
+    },
+    {
+      "bp_id": "SEC03-BP03",
+      "pillar": "security",
+      "status": "cannot_determine",
+      "recommendation": "Definir el break-glass",
+      "evidence": {
+        "note": "Sin proceso de acceso de emergencia documentado"
+      }
+    },
+    {
+      "bp_id": "SEC03-BP04",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Activar Access Analyzer (gratis)",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin IAM Access Analyzer ni revisión de permisos no usados"
+      }
+    },
+    {
+      "bp_id": "SEC03-BP05",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Añadir límites al crear la cuenta de producción",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin SCP ni límites de permisos (cuenta única, sin Organizations)"
+      }
+    },
+    {
+      "bp_id": "SEC03-BP06",
+      "pillar": "security",
+      "status": "cannot_determine",
+      "recommendation": "Definir el ciclo de vida de accesos",
+      "evidence": {
+        "note": "Sin evidencia de gestión de altas y bajas"
+      }
+    },
+    {
+      "bp_id": "SEC03-BP07",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Activar Access Analyzer para accesos externos",
+      "severity": "medium",
+      "evidence": {
+        "note": "Block Public Access activo en los tres buckets revisados ✓; rol `kustto-correo` asumido entre cuentas sin Access Analyzer que lo vigile"
+      }
+    },
+    {
+      "bp_id": "SEC03-BP08",
+      "pillar": "security",
+      "status": "not_applicable",
+      "recommendation": "Revisar al crear la organización",
+      "evidence": {
+        "note": "Sin Organizations, no hay compartición interna"
+      }
+    },
+    {
+      "bp_id": "SEC03-BP09",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Documentar qué datos salen a Skydropx",
+      "severity": "medium",
+      "evidence": {
+        "note": "Skydropx recibe direcciones y teléfonos de compradores; sin acuerdo de tratamiento documentado en el repo"
+      }
+    },
+    {
+      "bp_id": "SEC04-BP01",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Activar CloudTrail en la cuenta; es el registro forense básico",
+      "severity": "critical",
+      "evidence": {
+        "note": "**Sin CloudTrail** (`describe-trails` vacío): no hay registro de quién hizo qué en la cuenta. Sin logs de acceso en CloudFront ni en S3; sin log de acceso en API Gateway"
+      }
+    },
+    {
+      "bp_id": "SEC04-BP02",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Un bucket de logs con retención",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin ubicación estandarizada de logs de seguridad"
+      }
+    },
+    {
+      "bp_id": "SEC04-BP03",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Activar GuardDuty",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin correlación ni enriquecimiento; sin GuardDuty ni Security Hub"
+      }
+    },
+    {
+      "bp_id": "SEC04-BP04",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Config + remediación tras lo anterior",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin remediación automática"
+      }
+    },
+    {
+      "bp_id": "SEC05-BP01",
+      "pillar": "security",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Arquitectura sin VPC: Lambdas fuera de VPC, DynamoDB y S3 por endpoint público con IAM"
+      }
+    },
+    {
+      "bp_id": "SEC05-BP02",
+      "pillar": "security",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin capas de red que controlar"
+      }
+    },
+    {
+      "bp_id": "SEC05-BP03",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Asociar WAF con reglas gestionadas y limitación de tasa",
+      "severity": "high",
+      "evidence": {
+        "note": "**Sin WAF en ninguna de las dos distribuciones de CloudFront** (`WebACLId: \"\"`), y `POST /publico/pedidos` está abierto al mundo"
+      }
+    },
+    {
+      "bp_id": "SEC05-BP04",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Tras poner WAF, automatizar sus reglas",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin automatización de protección de red"
+      }
+    },
+    {
+      "bp_id": "SEC06-BP01",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Añadir escaneo de dependencias",
+      "severity": "medium",
+      "evidence": {
+        "note": "Dependencias con pnpm y lockfile; sin escaneo (`npm audit`/Dependabot) en CI porque no hay CI"
+      }
+    },
+    {
+      "bp_id": "SEC06-BP02",
+      "pillar": "security",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin imágenes: Lambda con runtime gestionado por AWS"
+      }
+    },
+    {
+      "bp_id": "SEC06-BP03",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Automatizar el despliegue",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin acceso interactivo a cómputo ✓; pero el despliegue es manual desde un portátil"
+      }
+    },
+    {
+      "bp_id": "SEC06-BP04",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Activar Code Signing for Lambda",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin firma de código (`Code signing` de Lambda no configurado); artefactos construidos en local"
+      }
+    },
+    {
+      "bp_id": "SEC06-BP05",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Fijar cadencia de actualización de `nodejs20.x`",
+      "severity": "low",
+      "evidence": {
+        "note": "AWS gestiona y parchea el runtime"
+      }
+    },
+    {
+      "bp_id": "SEC07-BP01",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Clasificar y documentar qué es personal",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin esquema de clasificación; conviven datos personales (dirección, teléfono, correo) con catálogo público en la misma tabla"
+      }
+    },
+    {
+      "bp_id": "SEC07-BP02",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Considerar cifrado de campo para teléfono y dirección",
+      "severity": "medium",
+      "evidence": {
+        "note": "Separación por bucket (público/privado) y por prefijo ✓; sin controles diferenciados por sensibilidad dentro de DynamoDB"
+      }
+    },
+    {
+      "bp_id": "SEC07-BP03",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Prematuro hoy",
+      "severity": "low",
+      "evidence": {
+        "note": "Sin Macie ni identificación automática"
+      }
+    },
+    {
+      "bp_id": "SEC07-BP04",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Definir retención de datos personales de pedidos",
+      "severity": "medium",
+      "evidence": {
+        "note": "Lifecycle `carritos-caducan` en el bucket público y TTL `expiraEn` en DynamoDB ✓; los pedidos no caducan nunca"
+      }
+    },
+    {
+      "bp_id": "SEC08-BP01",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Considerar CMK para la tabla si aparece requisito de cumplimiento",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sólo llaves gestionadas por AWS (sin alias `alias/kustto*`)"
+      }
+    },
+    {
+      "bp_id": "SEC08-BP02",
+      "pillar": "security",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "DynamoDB cifrada por defecto con llave de AWS; S3 con cifrado por defecto"
+      }
+    },
+    {
+      "bp_id": "SEC08-BP03",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Regla de Config",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin Config que verifique el cifrado de forma continua"
+      }
+    },
+    {
+      "bp_id": "SEC08-BP04",
+      "pillar": "security",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Block Public Access en los tres buckets revisados; OAC entre CloudFront y S3; particiones de DynamoDB acotadas por `sub` de Cognito"
+      }
+    },
+    {
+      "bp_id": "SEC09-BP01",
+      "pillar": "security",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Certificado ACM en CloudFront con TLS 1.2_2021 mínimo (`infra/frontend-config.py`)"
+      }
+    },
+    {
+      "bp_id": "SEC09-BP02",
+      "pillar": "security",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "HTTPS en CloudFront y API Gateway; llamadas a AWS y a Skydropx por TLS"
+      }
+    },
+    {
+      "bp_id": "SEC09-BP03",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Quitar los orígenes locales del CORS de producción",
+      "severity": "high",
+      "evidence": {
+        "note": "Autorizador JWT de Cognito en `/proveedores/*` ✓ y HMAC en el webhook con `timingSafeEqual` ✓ (`rastreo.ts:174`); pero **CORS admite `http://localhost:3000/3001/3002` en producción**"
+      }
+    },
+    {
+      "bp_id": "SEC10-BP01",
+      "pillar": "security",
+      "status": "cannot_determine",
+      "recommendation": "Nombrar responsable",
+      "evidence": {
+        "note": "Sin personal de incidentes identificado"
+      }
+    },
+    {
+      "bp_id": "SEC10-BP02",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Escribir uno mínimo",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin plan de respuesta a incidentes"
+      }
+    },
+    {
+      "bp_id": "SEC10-BP03",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Activar CloudTrail con retención",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin CloudTrail no hay capacidad forense: no se puede reconstruir qué pasó"
+      }
+    },
+    {
+      "bp_id": "SEC10-BP04",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Escribir el de \"credencial filtrada\"",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin playbooks de seguridad"
+      }
+    },
+    {
+      "bp_id": "SEC10-BP05",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Rol de respuesta a incidentes separado",
+      "severity": "low",
+      "evidence": {
+        "note": "`claude-admin` con AdministratorAccess da acceso, pero es lo contrario de pre-aprovisionar con menor privilegio"
+      }
+    },
+    {
+      "bp_id": "SEC10-BP06",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Tras CloudTrail y GuardDuty",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin herramientas desplegadas"
+      }
+    },
+    {
+      "bp_id": "SEC10-BP07",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Prematuro pre-lanzamiento",
+      "severity": "low",
+      "evidence": {
+        "note": "Sin simulacros"
+      }
+    },
+    {
+      "bp_id": "SEC10-BP08",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Extender a incidentes de seguridad",
+      "severity": "low",
+      "evidence": {
+        "note": "`ESTADO.md` \"Trampas que ya mordieron\" aprende de fallos, ninguno de seguridad"
+      }
+    },
+    {
+      "bp_id": "SEC11-BP01",
+      "pillar": "security",
+      "status": "cannot_determine",
+      "recommendation": "Entrevista",
+      "evidence": {
+        "note": "Fuera del alcance del repo"
+      }
+    },
+    {
+      "bp_id": "SEC11-BP02",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "SAST y escaneo de dependencias en CI",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin CI, luego sin pruebas de seguridad automatizadas; cero archivos de prueba"
+      }
+    },
+    {
+      "bp_id": "SEC11-BP03",
+      "pillar": "security",
+      "status": "not_implemented",
+      "recommendation": "Hacer una antes de abrir a tráfico real",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin pruebas de penetración"
+      }
+    },
+    {
+      "bp_id": "SEC11-BP04",
+      "pillar": "security",
+      "status": "cannot_determine",
+      "recommendation": "Definir revisión antes de producción",
+      "evidence": {
+        "note": "Historial de un solo autor; no consta revisión por pares"
+      }
+    },
+    {
+      "bp_id": "SEC11-BP05",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Suficiente a esta escala",
+      "severity": "low",
+      "evidence": {
+        "note": "pnpm con lockfile y workspace; registro público sin espejo interno"
+      }
+    },
+    {
+      "bp_id": "SEC11-BP06",
+      "pillar": "security",
+      "status": "partially_implemented",
+      "recommendation": "Automatizar",
+      "severity": "medium",
+      "evidence": {
+        "note": "Despliegue por script repetible pero **manual**"
+      }
+    },
+    {
+      "bp_id": "SEC11-BP07",
+      "pillar": "security",
+      "status": "not_applicable",
+      "recommendation": "Revisar cuando exista CI",
+      "evidence": {
+        "note": "No hay pipeline que evaluar"
+      }
+    },
+    {
+      "bp_id": "SEC11-BP08",
+      "pillar": "security",
+      "status": "cannot_determine",
+      "recommendation": "Entrevista",
+      "evidence": {
+        "note": "Equipo de una persona; propiedad de seguridad implícita"
+      }
+    },
+    {
+      "bp_id": "REL01-BP01",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Pedir subida de cuota de Lambda y salida de sandbox de SES **hoy**: AWS tarda de horas a días",
+      "severity": "critical",
+      "evidence": {
+        "note": "**Cuota viva de Lambda: 10 ejecuciones concurrentes en toda la cuenta** (`get-account-settings`). SES en sandbox: 200/día, 1/s. Ninguna de las dos consta en el repo"
+      }
+    },
+    {
+      "bp_id": "REL01-BP02",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Documentar las cuotas que atan: Lambda, SES, Skydropx (2 rps), transacción DynamoDB (100 ítems)",
+      "severity": "high",
+      "evidence": {
+        "note": "Una cuenta, una región; sin inventario de cuotas"
+      }
+    },
+    {
+      "bp_id": "REL01-BP03",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Aplicar el mismo criterio a Lambda y SES",
+      "severity": "medium",
+      "evidence": {
+        "note": "`escribirCompra` comprueba el límite de 100 ítems por transacción y lo dice en castellano (`pedidos.ts:1058`) ✓; nada más se acomoda a una cuota"
+      }
+    },
+    {
+      "bp_id": "REL01-BP04",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Alarma sobre `Throttles > 0` y sobre uso de cuota al 80 %",
+      "severity": "critical",
+      "evidence": {
+        "note": "Cero alarmas: nada vigila `ConcurrentExecutions` ni `Throttles`"
+      }
+    },
+    {
+      "bp_id": "REL01-BP05",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Service Quotas con alarma tras lo anterior",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin automatización de cuotas"
+      }
+    },
+    {
+      "bp_id": "REL01-BP06",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Subir a 1000 y reservar concurrencia por función",
+      "severity": "critical",
+      "evidence": {
+        "note": "Con 10 de concurrencia no hay margen ninguno: el uso normal ya roza el techo"
+      }
+    },
+    {
+      "bp_id": "REL02-BP01",
+      "pillar": "reliability",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "CloudFront (`PriceClass_All`) + API Gateway regional, los dos gestionados y multi-AZ por AWS"
+      }
+    },
+    {
+      "bp_id": "REL02-BP02",
+      "pillar": "reliability",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin red privada ni on-premises"
+      }
+    },
+    {
+      "bp_id": "REL02-BP03",
+      "pillar": "reliability",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin VPC: las Lambdas corren fuera"
+      }
+    },
+    {
+      "bp_id": "REL02-BP04",
+      "pillar": "reliability",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin topología de red propia"
+      }
+    },
+    {
+      "bp_id": "REL02-BP05",
+      "pillar": "reliability",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin rangos privados"
+      }
+    },
+    {
+      "bp_id": "REL03-BP01",
+      "pillar": "reliability",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Segmentado por audiencia en cinco funciones: admin, compradores, proveedores, correo, eventos"
+      }
+    },
+    {
+      "bp_id": "REL03-BP02",
+      "pillar": "reliability",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Cada Lambda cubre un dominio con sus rutas (`handler.ts` de cada servicio)"
+      }
+    },
+    {
+      "bp_id": "REL03-BP03",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Documentar el contrato de `/publico/*`, que es el que consume el sitio estático",
+      "severity": "medium",
+      "evidence": {
+        "note": "Contrato implícito en los tipos de TS compartidos por copia; sin OpenAPI ni versionado de API"
+      }
+    },
+    {
+      "bp_id": "REL04-BP01",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Inventariar las tres dependencias con su cuota",
+      "severity": "medium",
+      "evidence": {
+        "note": "`ESTADO.md` identifica Skydropx como dependencia y su límite de 2 rps; SES y Cognito no están inventariados"
+      }
+    },
+    {
+      "bp_id": "REL04-BP02",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Sacar el correo del camino de la petición: stream → cola → Lambda de correo",
+      "severity": "high",
+      "evidence": {
+        "note": "**SES y Skydropx se llaman de forma síncrona dentro de la petición** (`envios.ts:59,136`; `correo.ts:90`). El stream de DynamoDB está encendido y **sin ningún consumidor** (0 event source mappings)"
+      }
+    },
+    {
+      "bp_id": "REL04-BP03",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "El catálogo se pide entero y se filtra en cliente: trabajo constante ✓"
+      }
+    },
+    {
+      "bp_id": "REL04-BP04",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Aceptar una clave de idempotencia del cliente y guardarla como candado condicional",
+      "severity": "critical",
+      "evidence": {
+        "note": "**`POST /publico/pedidos` no es idempotente**: sin `ClientRequestToken` ni clave de deduplicación. Un reintento del navegador crea una segunda compra con otro folio y vuelve a descontar existencias"
+      }
+    },
+    {
+      "bp_id": "REL05-BP01",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Degradar: registrar el correo fallido y seguir",
+      "severity": "medium",
+      "evidence": {
+        "note": "El catálogo cae al mockup si falta la foto ✓ y las recomendaciones fallan sin tumbar la ficha ✓; pero si SES falla, el pedido falla"
+      }
+    },
+    {
+      "bp_id": "REL05-BP02",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Fijar límite por ruta, sobre todo en `/publico/pedidos` y `/publico/envios/cotizar`",
+      "severity": "high",
+      "evidence": {
+        "note": "**Sin throttling en API Gateway** (`ThrottlingRateLimit: null` en los dos stages) y sin WAF"
+      }
+    },
+    {
+      "bp_id": "REL05-BP03",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Reintento con retroceso exponencial y tope explícito",
+      "severity": "medium",
+      "evidence": {
+        "note": "El SDK de AWS reintenta 3 veces por defecto ✓; **`fetch` a Skydropx no reintenta y no tiene tope**"
+      }
+    },
+    {
+      "bp_id": "REL05-BP04",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "`AbortSignal.timeout(3000)` en las llamadas a Skydropx",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin colas y sin fallo rápido: la Lambda espera al tercero hasta agotar su timeout (15 s admin, 29 s proveedores)"
+      }
+    },
+    {
+      "bp_id": "REL05-BP05",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Poner timeout de cliente en todas las llamadas salientes",
+      "severity": "critical",
+      "evidence": {
+        "note": "**`fetch` a Skydropx sin `AbortSignal`** (`skydropx.ts:75,133`): una respuesta lenta ocupa una de las 10 ejecuciones concurrentes hasta el timeout"
+      }
+    },
+    {
+      "bp_id": "REL05-BP06",
+      "pillar": "reliability",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Lambdas sin estado; el estado vive en DynamoDB y S3"
+      }
+    },
+    {
+      "bp_id": "REL05-BP07",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Bandera para desactivar cotización si Skydropx cae",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin interruptor para apagar el checkout o el envío"
+      }
+    },
+    {
+      "bp_id": "REL06-BP01",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Instrumentar antes de abrir a tráfico",
+      "severity": "critical",
+      "evidence": {
+        "note": "Cero alarmas, métricas detalladas de API Gateway apagadas, X-Ray en `PassThrough`"
+      }
+    },
+    {
+      "bp_id": "REL06-BP02",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Métricas embebidas (EMF) desde la Lambda",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin métricas de negocio (pedidos/min, cotizaciones fallidas)"
+      }
+    },
+    {
+      "bp_id": "REL06-BP03",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Tema SNS con tu correo y alarmas conectadas",
+      "severity": "critical",
+      "evidence": {
+        "note": "**Cero temas SNS**: ningún fallo notifica a nadie"
+      }
+    },
+    {
+      "bp_id": "REL06-BP04",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Tras las alarmas",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin respuesta automática"
+      }
+    },
+    {
+      "bp_id": "REL06-BP05",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Retención 30 días y consultas de Insights guardadas",
+      "severity": "medium",
+      "evidence": {
+        "note": "Logs existen pero con **retención infinita** en los 5 grupos y sin consultas guardadas"
+      }
+    },
+    {
+      "bp_id": "REL06-BP06",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Tras instrumentar",
+      "severity": "low",
+      "evidence": {
+        "note": "Sin monitorización que revisar"
+      }
+    },
+    {
+      "bp_id": "REL06-BP07",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "X-Ray activo en las cinco funciones",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin traza distribuida; una compra toca 2 Lambdas, DynamoDB, SES y Skydropx sin correlación"
+      }
+    },
+    {
+      "bp_id": "REL07-BP01",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Subir la cuota; sin eso el resto es teórico",
+      "severity": "high",
+      "evidence": {
+        "note": "Lambda y DynamoDB `PAY_PER_REQUEST` escalan solos ✓, **pero la cuota de 10 anula ese escalado**"
+      }
+    },
+    {
+      "bp_id": "REL07-BP02",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Alarmas",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin detección de deterioro"
+      }
+    },
+    {
+      "bp_id": "REL07-BP03",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Reservar concurrencia para `kustto-admin` (checkout)",
+      "severity": "medium",
+      "evidence": {
+        "note": "Escalado automático de los servicios gestionados; sin concurrencia reservada que garantice cuota a las rutas críticas"
+      }
+    },
+    {
+      "bp_id": "REL07-BP04",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Prueba de carga del checkout tras subir la cuota",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin prueba de carga; nunca se ha medido dónde rompe"
+      }
+    },
+    {
+      "bp_id": "REL08-BP01",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Añadir runbook de reversión",
+      "severity": "low",
+      "evidence": {
+        "note": "`infra/README.md` y cabeceras de los scripts hacen de runbook"
+      }
+    },
+    {
+      "bp_id": "REL08-BP02",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Prueba de humo del checkout tras desplegar",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin pruebas funcionales en el despliegue; cero archivos de prueba"
+      }
+    },
+    {
+      "bp_id": "REL08-BP03",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Tras lo anterior",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin pruebas de resiliencia"
+      }
+    },
+    {
+      "bp_id": "REL08-BP04",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Publicar versión y mover un alias",
+      "severity": "medium",
+      "evidence": {
+        "note": "Lambda es inmutable por naturaleza ✓; se despliega sobre `$LATEST` sin alias ni versión fijada"
+      }
+    },
+    {
+      "bp_id": "REL08-BP05",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "CI",
+      "severity": "medium",
+      "evidence": {
+        "note": "Scripts idempotentes ✓ pero ejecutados a mano"
+      }
+    },
+    {
+      "bp_id": "REL09-BP01",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Activar versionado en el bucket del sitio",
+      "severity": "high",
+      "evidence": {
+        "note": "S3 con versionado en `publico` y `privado` ✓; **`kustto-sitio-prod` sin versionado**; DynamoDB con backup continuo activado"
+      }
+    },
+    {
+      "bp_id": "REL09-BP02",
+      "pillar": "reliability",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Cifrado en reposo por defecto en S3 y DynamoDB"
+      }
+    },
+    {
+      "bp_id": "REL09-BP03",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Activar PITR: una casilla, ~10 % del coste de almacenamiento",
+      "severity": "critical",
+      "evidence": {
+        "note": "**PITR DESACTIVADO** en `kustto-prod` (`PointInTimeRecoveryStatus: DISABLED`): un borrado accidental o un fallo de código no se puede deshacer"
+      }
+    },
+    {
+      "bp_id": "REL09-BP04",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Probar restaurando a una tabla nueva",
+      "severity": "high",
+      "evidence": {
+        "note": "Nunca se ha probado una restauración"
+      }
+    },
+    {
+      "bp_id": "REL10-BP01",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Aceptable pre-lanzamiento; documentar la decisión",
+      "severity": "medium",
+      "evidence": {
+        "note": "Una sola región (us-east-1); los servicios usados son multi-AZ por dentro"
+      }
+    },
+    {
+      "bp_id": "REL10-BP02",
+      "pillar": "reliability",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin componentes atados a una sola AZ"
+      }
+    },
+    {
+      "bp_id": "REL10-BP03",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Concurrencia reservada por función: es el mamparo que falta",
+      "severity": "high",
+      "evidence": {
+        "note": "Separación por función ✓, **pero las cinco comparten las 10 ejecuciones de la cuenta**: una tormenta en el catálogo deja sin cómputo al checkout"
+      }
+    },
+    {
+      "bp_id": "REL11-BP01",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Alarmas por función",
+      "severity": "critical",
+      "evidence": {
+        "note": "Sin monitorización de fallos en ningún componente"
+      }
+    },
+    {
+      "bp_id": "REL11-BP02",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "Failover interno de los servicios gestionados"
+      }
+    },
+    {
+      "bp_id": "REL11-BP03",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Tras las alarmas",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin auto-recuperación propia"
+      }
+    },
+    {
+      "bp_id": "REL11-BP04",
+      "pillar": "reliability",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "La recuperación no depende del plano de control: todo es dato en DynamoDB y S3"
+      }
+    },
+    {
+      "bp_id": "REL11-BP05",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "medium",
+      "evidence": {
+        "note": "Serverless da estabilidad estática; el catálogo horneado en el build introduce bimodalidad (producto nuevo → 404, ya mitigado con la red de `not-found.tsx`)"
+      }
+    },
+    {
+      "bp_id": "REL11-BP06",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "SNS + alarmas",
+      "severity": "critical",
+      "evidence": {
+        "note": "Nada notifica cuando la disponibilidad se ve afectada"
+      }
+    },
+    {
+      "bp_id": "REL11-BP07",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Definir el objetivo antes de prometer nada",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin objetivo de disponibilidad declarado"
+      }
+    },
+    {
+      "bp_id": "REL12-BP01",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Escribir el de \"checkout con error 5xx\"",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin playbooks de fallo"
+      }
+    },
+    {
+      "bp_id": "REL12-BP02",
+      "pillar": "reliability",
+      "status": "partially_implemented",
+      "recommendation": "Extender a incidentes de producción",
+      "severity": "low",
+      "evidence": {
+        "note": "`ESTADO.md` documenta análisis post-fallo con causa raíz"
+      }
+    },
+    {
+      "bp_id": "REL12-BP03",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Prueba de carga",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin prueba de escalabilidad ni de rendimiento"
+      }
+    },
+    {
+      "bp_id": "REL12-BP04",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Prematuro pre-lanzamiento",
+      "severity": "low",
+      "evidence": {
+        "note": "Sin ingeniería del caos"
+      }
+    },
+    {
+      "bp_id": "REL12-BP05",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Prematuro pre-lanzamiento",
+      "severity": "low",
+      "evidence": {
+        "note": "Sin game days"
+      }
+    },
+    {
+      "bp_id": "REL13-BP01",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Definir RTO/RPO y activar PITR",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin RTO ni RPO definidos; con PITR apagado el RPO real es \"lo que haya en el último backup\", que no existe"
+      }
+    },
+    {
+      "bp_id": "REL13-BP02",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Backup y restauración en la misma región basta pre-lanzamiento",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin estrategia de recuperación"
+      }
+    },
+    {
+      "bp_id": "REL13-BP03",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Probar una restauración",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin prueba de recuperación"
+      }
+    },
+    {
+      "bp_id": "REL13-BP04",
+      "pillar": "reliability",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin sitio de DR"
+      }
+    },
+    {
+      "bp_id": "REL13-BP05",
+      "pillar": "reliability",
+      "status": "not_implemented",
+      "recommendation": "Tras definir la estrategia",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin recuperación automatizada"
+      }
+    },
+    {
+      "bp_id": "PERF01-BP01",
+      "pillar": "performance_efficiency",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Elección deliberada y documentada de servicios (`ESTADO.md`, `infra/README.md`); serverless en todo"
+      }
+    },
+    {
+      "bp_id": "PERF01-BP02",
+      "pillar": "performance_efficiency",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "Patrones de tabla única bien aplicados; sin referencia explícita a guías de AWS"
+      }
+    },
+    {
+      "bp_id": "PERF01-BP03",
+      "pillar": "performance_efficiency",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "`catalogo.ts:17-38` compara Query directo contra vista materializada en S3 con coste y decide, con criterio de cuándo cambiar"
+      }
+    },
+    {
+      "bp_id": "PERF01-BP04",
+      "pillar": "performance_efficiency",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Compensaciones documentadas: URLs indexables frente a páginas horneadas (`lib/build/parametros.ts`)"
+      }
+    },
+    {
+      "bp_id": "PERF01-BP05",
+      "pillar": "performance_efficiency",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "Convenciones en `CLAUDE.md`; sin arquitectura de referencia formal"
+      }
+    },
+    {
+      "bp_id": "PERF01-BP06",
+      "pillar": "performance_efficiency",
+      "status": "not_implemented",
+      "recommendation": "Medir antes de optimizar",
+      "severity": "high",
+      "evidence": {
+        "note": "**Sin ningún banco de pruebas**: nunca se ha medido la latencia del checkout ni del catálogo"
+      }
+    },
+    {
+      "bp_id": "PERF01-BP07",
+      "pillar": "performance_efficiency",
+      "status": "not_implemented",
+      "recommendation": "Instrumentar",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin datos: no hay métricas detalladas ni trazas"
+      }
+    },
+    {
+      "bp_id": "PERF02-BP01",
+      "pillar": "performance_efficiency",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Lambda encaja con carga a ráfagas e intermitente"
+      }
+    },
+    {
+      "bp_id": "PERF02-BP02",
+      "pillar": "performance_efficiency",
+      "status": "partially_implemented",
+      "recommendation": "Probar `arm64`: ~20 % más barato y suele ser más rápido",
+      "severity": "medium",
+      "evidence": {
+        "note": "512 MB y `x86_64` en cuatro funciones, 256 MB en eventos; **arm64 (Graviton) no evaluado**"
+      }
+    },
+    {
+      "bp_id": "PERF02-BP03",
+      "pillar": "performance_efficiency",
+      "status": "not_implemented",
+      "recommendation": "Activar Lambda Insights o al menos vigilar duración y throttles",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin métricas de cómputo revisadas; Lambda Insights apagado"
+      }
+    },
+    {
+      "bp_id": "PERF02-BP04",
+      "pillar": "performance_efficiency",
+      "status": "cannot_determine",
+      "recommendation": "Usar Lambda Power Tuning tras instrumentar",
+      "evidence": {
+        "note": "Sin datos de duración ni de memoria usada no se puede dimensionar"
+      }
+    },
+    {
+      "bp_id": "PERF02-BP05",
+      "pillar": "performance_efficiency",
+      "status": "partially_implemented",
+      "recommendation": "Subir la cuota",
+      "severity": "critical",
+      "evidence": {
+        "note": "Lambda escala sola por diseño, **pero la cuota de 10 lo impide en la práctica**"
+      }
+    },
+    {
+      "bp_id": "PERF02-BP06",
+      "pillar": "performance_efficiency",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin cargas que se beneficien de aceleradores"
+      }
+    },
+    {
+      "bp_id": "PERF03-BP01",
+      "pillar": "performance_efficiency",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "DynamoDB para acceso por llave y S3 para binarios: cada uno en lo suyo"
+      }
+    },
+    {
+      "bp_id": "PERF03-BP02",
+      "pillar": "performance_efficiency",
+      "status": "partially_implemented",
+      "recommendation": "Proyectar sólo los atributos que cada índice consulta",
+      "severity": "high",
+      "evidence": {
+        "note": "`PAY_PER_REQUEST` correcto ✓; **tres GSI con proyección `ALL`** multiplican por cuatro el coste y el peso de cada escritura"
+      }
+    },
+    {
+      "bp_id": "PERF03-BP03",
+      "pillar": "performance_efficiency",
+      "status": "not_implemented",
+      "recommendation": "Alarma sobre `ThrottledRequests`",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin métricas de DynamoDB vigiladas (throttles, latencia, capacidad consumida)"
+      }
+    },
+    {
+      "bp_id": "PERF03-BP04",
+      "pillar": "performance_efficiency",
+      "status": "partially_implemented",
+      "recommendation": "Repartir la partición o materializar el catálogo, como ya contempla `catalogo.ts`",
+      "severity": "high",
+      "evidence": {
+        "note": "Query por llave sin Scan ✓ y paginación con `consultarTodo` ✓; **pero el catálogo público entero vive en UNA partición de gsi2 (`PRODUCT_ESTADO#activo`)** y se consulta en cada visita"
+      }
+    },
+    {
+      "bp_id": "PERF03-BP05",
+      "pillar": "performance_efficiency",
+      "status": "not_implemented",
+      "recommendation": "Poner el catálogo detrás de CloudFront con TTL, o cabeceras `Cache-Control` en la respuesta",
+      "severity": "critical",
+      "evidence": {
+        "note": "**Sin caché en el camino del catálogo**: el navegador llama a API Gateway directo (`NEXT_PUBLIC_KUSTTO_API`), no pasa por CloudFront. Cada visita = 1 Lambda + 1 Query. El `next: { revalidate: 1800 }` no existe en el navegador (`catalogo.ts`)"
+      }
+    },
+    {
+      "bp_id": "PERF04-BP01",
+      "pillar": "performance_efficiency",
+      "status": "partially_implemented",
+      "recommendation": "Meter `/publico/*` bajo CloudFront",
+      "severity": "medium",
+      "evidence": {
+        "note": "CloudFront para lo estático ✓; la API queda fuera del CDN"
+      }
+    },
+    {
+      "bp_id": "PERF04-BP02",
+      "pillar": "performance_efficiency",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "OAC y HTTP/2 de CloudFront; sin evaluar HTTP/3 ni compresión de la API"
+      }
+    },
+    {
+      "bp_id": "PERF04-BP03",
+      "pillar": "performance_efficiency",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin conectividad dedicada"
+      }
+    },
+    {
+      "bp_id": "PERF04-BP04",
+      "pillar": "performance_efficiency",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin balanceadores: API Gateway y CloudFront lo hacen por dentro"
+      }
+    },
+    {
+      "bp_id": "PERF04-BP05",
+      "pillar": "performance_efficiency",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "HTTPS/TLS 1.2+; WebSocket para el panel del taller en vez de sondeo ✓"
+      }
+    },
+    {
+      "bp_id": "PERF04-BP06",
+      "pillar": "performance_efficiency",
+      "status": "partially_implemented",
+      "recommendation": "Considerar `mx-central-1` o `us-west-2`; medir antes",
+      "severity": "medium",
+      "evidence": {
+        "note": "`us-east-1` con clientes en México: ~40-70 ms de ida y vuelta añadidos"
+      }
+    },
+    {
+      "bp_id": "PERF04-BP07",
+      "pillar": "performance_efficiency",
+      "status": "not_implemented",
+      "recommendation": "Tras instrumentar",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin métricas de red"
+      }
+    },
+    {
+      "bp_id": "PERF05-BP01",
+      "pillar": "performance_efficiency",
+      "status": "not_implemented",
+      "recommendation": "Definir p99 del checkout y del catálogo",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin KPI de rendimiento definidos"
+      }
+    },
+    {
+      "bp_id": "PERF05-BP02",
+      "pillar": "performance_efficiency",
+      "status": "not_implemented",
+      "recommendation": "Instrumentar",
+      "severity": "critical",
+      "evidence": {
+        "note": "Sin monitorización: cero alarmas, métricas detalladas apagadas, sin X-Ray"
+      }
+    },
+    {
+      "bp_id": "PERF05-BP03",
+      "pillar": "performance_efficiency",
+      "status": "not_implemented",
+      "recommendation": "Tras tener datos",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin proceso de mejora de rendimiento"
+      }
+    },
+    {
+      "bp_id": "PERF05-BP04",
+      "pillar": "performance_efficiency",
+      "status": "not_implemented",
+      "recommendation": "Prueba de carga del checkout",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin prueba de carga"
+      }
+    },
+    {
+      "bp_id": "PERF05-BP05",
+      "pillar": "performance_efficiency",
+      "status": "not_implemented",
+      "recommendation": "Prematuro",
+      "severity": "low",
+      "evidence": {
+        "note": "Sin remediación automática"
+      }
+    },
+    {
+      "bp_id": "PERF05-BP06",
+      "pillar": "performance_efficiency",
+      "status": "partially_implemented",
+      "recommendation": "Fijar cadencia",
+      "severity": "low",
+      "evidence": {
+        "note": "`nodejs20.x` y dependencias recientes; sin cadencia"
+      }
+    },
+    {
+      "bp_id": "PERF05-BP07",
+      "pillar": "performance_efficiency",
+      "status": "not_implemented",
+      "recommendation": "Tras instrumentar",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin métricas que revisar"
+      }
+    },
+    {
+      "bp_id": "COST01-BP01",
+      "pillar": "cost_optimization",
+      "status": "cannot_determine",
+      "recommendation": "Nombrar responsable del coste",
+      "evidence": {
+        "note": "Fuera del alcance del repo"
+      }
+    },
+    {
+      "bp_id": "COST01-BP02",
+      "pillar": "cost_optimization",
+      "status": "not_applicable",
+      "recommendation": "Revisar cuando crezca",
+      "evidence": {
+        "note": "Equipo de una persona; no hay función financiera separada"
+      }
+    },
+    {
+      "bp_id": "COST01-BP03",
+      "pillar": "cost_optimization",
+      "status": "not_implemented",
+      "recommendation": "Crear un presupuesto con alerta al 50/80/100 %",
+      "severity": "high",
+      "evidence": {
+        "note": "**Sin presupuestos** (`describe-budgets` vacío): nada avisa si el gasto se dispara"
+      }
+    },
+    {
+      "bp_id": "COST01-BP04",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "Formalizarlo",
+      "severity": "low",
+      "evidence": {
+        "note": "`catalogo.ts:17-38` razona el coste al elegir arquitectura"
+      }
+    },
+    {
+      "bp_id": "COST01-BP05",
+      "pillar": "cost_optimization",
+      "status": "not_implemented",
+      "recommendation": "Alerta de presupuesto",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin informes ni notificaciones de coste"
+      }
+    },
+    {
+      "bp_id": "COST01-BP06",
+      "pillar": "cost_optimization",
+      "status": "not_implemented",
+      "recommendation": "Activar detección de anomalías (gratis)",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin vigilancia proactiva; **sin Cost Anomaly Detection**"
+      }
+    },
+    {
+      "bp_id": "COST01-BP07",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "`ESTADO.md` registra evaluaciones de servicios"
+      }
+    },
+    {
+      "bp_id": "COST01-BP08",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "Cultura de coste visible en los comentarios del código"
+      }
+    },
+    {
+      "bp_id": "COST01-BP09",
+      "pillar": "cost_optimization",
+      "status": "cannot_determine",
+      "recommendation": "Entrevista",
+      "evidence": {
+        "note": "Sin cuantificación de valor"
+      }
+    },
+    {
+      "bp_id": "COST02-BP01",
+      "pillar": "cost_optimization",
+      "status": "cannot_determine",
+      "recommendation": "Definirlas",
+      "evidence": {
+        "note": "Sin políticas documentadas"
+      }
+    },
+    {
+      "bp_id": "COST02-BP02",
+      "pillar": "cost_optimization",
+      "status": "not_implemented",
+      "recommendation": "Fijar un techo mensual",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin objetivos de coste"
+      }
+    },
+    {
+      "bp_id": "COST02-BP03",
+      "pillar": "cost_optimization",
+      "status": "not_implemented",
+      "recommendation": "Separar producción",
+      "severity": "medium",
+      "evidence": {
+        "note": "Una sola cuenta para todo"
+      }
+    },
+    {
+      "bp_id": "COST02-BP04",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "Reducir privilegios",
+      "severity": "medium",
+      "evidence": {
+        "note": "Roles por servicio ✓; un solo usuario humano con AdministratorAccess"
+      }
+    },
+    {
+      "bp_id": "COST02-BP05",
+      "pillar": "cost_optimization",
+      "status": "not_implemented",
+      "recommendation": "Presupuesto + throttling + WAF",
+      "severity": "high",
+      "evidence": {
+        "note": "**Sin control de gasto**: sin presupuesto, sin throttling en API Gateway, sin WAF. Un abuso de `/publico/envios/cotizar` gasta cuota de Skydropx y Lambda sin tope"
+      }
+    },
+    {
+      "bp_id": "COST02-BP06",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "`ESTADO.md` sigue el ciclo de vida del proyecto"
+      }
+    },
+    {
+      "bp_id": "COST03-BP01",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "Activar informes de coste y uso si el gasto crece",
+      "severity": "medium",
+      "evidence": {
+        "note": "Cost Explorer disponible; **CUR no configurado**"
+      }
+    },
+    {
+      "bp_id": "COST03-BP02",
+      "pillar": "cost_optimization",
+      "status": "cannot_determine",
+      "recommendation": "Verificar etiquetado en la consola",
+      "evidence": {
+        "note": "No se pudieron leer las etiquetas (`lambda:ListTags` denegado con el rol actual)"
+      }
+    },
+    {
+      "bp_id": "COST03-BP03",
+      "pillar": "cost_optimization",
+      "status": "not_implemented",
+      "recommendation": "Etiquetar por componente",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin categorías de atribución"
+      }
+    },
+    {
+      "bp_id": "COST03-BP04",
+      "pillar": "cost_optimization",
+      "status": "not_implemented",
+      "recommendation": "Calcular coste unitario por pedido",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin métrica de coste por pedido"
+      }
+    },
+    {
+      "bp_id": "COST03-BP05",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "Activar presupuestos y anomalías",
+      "severity": "low",
+      "evidence": {
+        "note": "Cost Explorer accesible; sin configuración adicional"
+      }
+    },
+    {
+      "bp_id": "COST03-BP06",
+      "pillar": "cost_optimization",
+      "status": "not_implemented",
+      "recommendation": "Tras definir el coste por pedido",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin reparto por métrica de negocio"
+      }
+    },
+    {
+      "bp_id": "COST04-BP01",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "Recursos inventariados en `infra/README.md`"
+      }
+    },
+    {
+      "bp_id": "COST04-BP02",
+      "pillar": "cost_optimization",
+      "status": "not_implemented",
+      "recommendation": "Definirlo",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin proceso de baja"
+      }
+    },
+    {
+      "bp_id": "COST04-BP03",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "Revisar cuando el volumen lo justifique",
+      "severity": "medium",
+      "evidence": {
+        "note": "`borrar()` de productos limpia la fila y el candado ✓; **las fotos huérfanas en S3 no se borran nunca** (decisión documentada)"
+      }
+    },
+    {
+      "bp_id": "COST04-BP04",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "Extender a versiones antiguas de S3",
+      "severity": "medium",
+      "evidence": {
+        "note": "TTL en DynamoDB ✓ y lifecycle `carritos-caducan` en S3 ✓"
+      }
+    },
+    {
+      "bp_id": "COST04-BP05",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "Retención 30 días en logs; lifecycle para versiones no actuales",
+      "severity": "high",
+      "evidence": {
+        "note": "Retención definida para carritos ✓; **logs de las 5 Lambdas con retención infinita** y buckets versionados sin caducidad de versiones"
+      }
+    },
+    {
+      "bp_id": "COST05-BP01",
+      "pillar": "cost_optimization",
+      "status": "cannot_determine",
+      "recommendation": "Definirlos",
+      "evidence": {
+        "note": "Sin requisitos de coste documentados"
+      }
+    },
+    {
+      "bp_id": "COST05-BP02",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "Componentes conocidos y documentados"
+      }
+    },
+    {
+      "bp_id": "COST05-BP03",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "Extender el análisis",
+      "severity": "medium",
+      "evidence": {
+        "note": "Análisis hecho para el catálogo (`catalogo.ts`); no para el resto"
+      }
+    },
+    {
+      "bp_id": "COST05-BP04",
+      "pillar": "cost_optimization",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Todo software libre o gestionado; sin licencias"
+      }
+    },
+    {
+      "bp_id": "COST05-BP05",
+      "pillar": "cost_optimization",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Serverless con pago por uso: a volumen bajo es lo más barato posible"
+      }
+    },
+    {
+      "bp_id": "COST05-BP06",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "Modelar el coste a 1000 pedidos/día",
+      "severity": "medium",
+      "evidence": {
+        "note": "`catalogo.ts` prevé cuándo cambiar de patrón por volumen ✓; sin modelo de coste a futuro"
+      }
+    },
+    {
+      "bp_id": "COST06-BP01",
+      "pillar": "cost_optimization",
+      "status": "not_implemented",
+      "recommendation": "Modelar",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin modelo de coste"
+      }
+    },
+    {
+      "bp_id": "COST06-BP02",
+      "pillar": "cost_optimization",
+      "status": "cannot_determine",
+      "recommendation": "Instrumentar y medir",
+      "evidence": {
+        "note": "Sin datos de uso no se puede dimensionar"
+      }
+    },
+    {
+      "bp_id": "COST06-BP03",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "Escalado automático por naturaleza de Lambda y DynamoDB"
+      }
+    },
+    {
+      "bp_id": "COST06-BP04",
+      "pillar": "cost_optimization",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Tabla única compartida y una sola distribución por dominio"
+      }
+    },
+    {
+      "bp_id": "COST07-BP01",
+      "pillar": "cost_optimization",
+      "status": "not_applicable",
+      "recommendation": "Revisar Compute Savings Plans si Lambda pasa de ~$100/mes",
+      "evidence": {
+        "note": "Sin cómputo reservable: Lambda y DynamoDB bajo demanda"
+      }
+    },
+    {
+      "bp_id": "COST07-BP02",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "Comparar coste y latencia con `mx-central-1`",
+      "severity": "medium",
+      "evidence": {
+        "note": "`us-east-1` es de las regiones más baratas ✓; no se evaluó la latencia a México"
+      }
+    },
+    {
+      "bp_id": "COST07-BP03",
+      "pillar": "cost_optimization",
+      "status": "cannot_determine",
+      "recommendation": "Revisar el contrato",
+      "evidence": {
+        "note": "Términos de Skydropx no constan en el repo"
+      }
+    },
+    {
+      "bp_id": "COST07-BP04",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "Todo bajo demanda, coherente con volumen incierto"
+      }
+    },
+    {
+      "bp_id": "COST07-BP05",
+      "pillar": "cost_optimization",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin cuenta de gestión ni Organizations"
+      }
+    },
+    {
+      "bp_id": "COST08-BP01",
+      "pillar": "cost_optimization",
+      "status": "not_implemented",
+      "recommendation": "El catálogo se manda entero al navegador en cada visita: modelarlo",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin modelado de transferencia"
+      }
+    },
+    {
+      "bp_id": "COST08-BP02",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "Meter `/publico/*` bajo CloudFront",
+      "severity": "medium",
+      "evidence": {
+        "note": "CloudFront delante de lo estático ✓; **la API no está detrás del CDN**, así que cada respuesta sale por transferencia de API Gateway"
+      }
+    },
+    {
+      "bp_id": "COST08-BP03",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "Bajar a `PriceClass_100`; ahorro directo sin afectar a México",
+      "severity": "high",
+      "evidence": {
+        "note": "CloudFront con `PriceClass_All`: se sirve desde todos los bordes del mundo para un negocio mexicano"
+      }
+    },
+    {
+      "bp_id": "COST09-BP01",
+      "pillar": "cost_optimization",
+      "status": "not_implemented",
+      "recommendation": "Medir",
+      "severity": "high",
+      "evidence": {
+        "note": "Sin análisis de demanda; nunca se ha medido el tráfico"
+      }
+    },
+    {
+      "bp_id": "COST09-BP02",
+      "pillar": "cost_optimization",
+      "status": "not_implemented",
+      "recommendation": "Throttling en API Gateway y cola para el correo",
+      "severity": "high",
+      "evidence": {
+        "note": "**Sin amortiguador ni límite**: sin colas y sin throttling"
+      }
+    },
+    {
+      "bp_id": "COST09-BP03",
+      "pillar": "cost_optimization",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Suministro dinámico por definición en Lambda y DynamoDB bajo demanda"
+      }
+    },
+    {
+      "bp_id": "COST10-BP01",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "Formalizar cadencia",
+      "severity": "low",
+      "evidence": {
+        "note": "`ESTADO.md` sección \"Lo que sigue\" hace de revisión"
+      }
+    },
+    {
+      "bp_id": "COST10-BP02",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "Revisión continua evidente en el historial"
+      }
+    },
+    {
+      "bp_id": "COST11-BP01",
+      "pillar": "cost_optimization",
+      "status": "partially_implemented",
+      "recommendation": "Automatizar en CI",
+      "severity": "medium",
+      "evidence": {
+        "note": "Infraestructura automatizada en scripts idempotentes ✓; **despliegue y pruebas manuales**"
+      }
+    },
+    {
+      "bp_id": "SUS01-BP01",
+      "pillar": "sustainability",
+      "status": "partially_implemented",
+      "recommendation": "Comparar con `mx-central-1`: menos latencia y menos transporte de datos",
+      "severity": "low",
+      "evidence": {
+        "note": "`us-east-1` elegida por coste y por ser la región por defecto; sin criterio de sostenibilidad ni de cercanía al cliente mexicano"
+      }
+    },
+    {
+      "bp_id": "SUS02-BP01",
+      "pillar": "sustainability",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Lambda y DynamoDB bajo demanda: cero recursos ociosos"
+      }
+    },
+    {
+      "bp_id": "SUS02-BP02",
+      "pillar": "sustainability",
+      "status": "cannot_determine",
+      "recommendation": "Definir el objetivo de disponibilidad",
+      "evidence": {
+        "note": "Sin SLA definido"
+      }
+    },
+    {
+      "bp_id": "SUS02-BP03",
+      "pillar": "sustainability",
+      "status": "partially_implemented",
+      "recommendation": "Apagar el stream o conectarle el consumidor de correo que justifica su existencia",
+      "severity": "medium",
+      "evidence": {
+        "note": "**Stream de DynamoDB encendido sin ningún consumidor**: se mantiene un recurso que nadie lee. Cinco buckets para un proyecto pre-lanzamiento"
+      }
+    },
+    {
+      "bp_id": "SUS02-BP04",
+      "pillar": "sustainability",
+      "status": "partially_implemented",
+      "recommendation": "`PriceClass_100`",
+      "severity": "medium",
+      "evidence": {
+        "note": "CloudFront `PriceClass_All` replica en bordes de todo el mundo para clientes de un solo país"
+      }
+    },
+    {
+      "bp_id": "SUS02-BP05",
+      "pillar": "sustainability",
+      "status": "cannot_determine",
+      "recommendation": "Entrevista",
+      "evidence": {
+        "note": "Fuera del alcance del repo"
+      }
+    },
+    {
+      "bp_id": "SUS02-BP06",
+      "pillar": "sustainability",
+      "status": "not_implemented",
+      "recommendation": "Throttling y colas",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin amortiguación ni límite de tasa"
+      }
+    },
+    {
+      "bp_id": "SUS03-BP01",
+      "pillar": "sustainability",
+      "status": "not_implemented",
+      "recommendation": "Mover el correo a asíncrono por cola",
+      "severity": "high",
+      "evidence": {
+        "note": "**Todo es síncrono**: correo y cotización dentro de la petición; el stream existe pero no alimenta nada asíncrono"
+      }
+    },
+    {
+      "bp_id": "SUS03-BP02",
+      "pillar": "sustainability",
+      "status": "partially_implemented",
+      "recommendation": "Borrar el componente muerto; marcar `.design/` como generado",
+      "severity": "medium",
+      "evidence": {
+        "note": "`SearchResults.tsx` quedó sin uso tras el cambio del catálogo; `.design/` guarda 18,5 MB de lienzos con el editor repetido siete veces"
+      }
+    },
+    {
+      "bp_id": "SUS03-BP03",
+      "pillar": "sustainability",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "`componer.ts` recorre sólo el rectángulo del estampado y no la imagen entera, con su razón escrita"
+      }
+    },
+    {
+      "bp_id": "SUS03-BP04",
+      "pillar": "sustainability",
+      "status": "partially_implemented",
+      "recommendation": "Paginar o cachear",
+      "severity": "medium",
+      "evidence": {
+        "note": "Miniaturas con `loading=\"lazy\"` y export estático ✓; **el catálogo entero se descarga al navegador en cada visita**"
+      }
+    },
+    {
+      "bp_id": "SUS03-BP05",
+      "pillar": "sustainability",
+      "status": "partially_implemented",
+      "recommendation": "Proyectar sólo lo necesario: menos almacenamiento y menos escritura",
+      "severity": "high",
+      "evidence": {
+        "note": "Tabla única con acceso por llave ✓; **tres GSI con proyección `ALL`** guardan tres copias completas de cada ítem"
+      }
+    },
+    {
+      "bp_id": "SUS04-BP01",
+      "pillar": "sustainability",
+      "status": "not_implemented",
+      "recommendation": "Clasificar",
+      "severity": "medium",
+      "evidence": {
+        "note": "Sin clasificación de datos"
+      }
+    },
+    {
+      "bp_id": "SUS04-BP02",
+      "pillar": "sustainability",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "DynamoDB para llave-valor y S3 para binarios: cada tecnología en su patrón"
+      }
+    },
+    {
+      "bp_id": "SUS04-BP03",
+      "pillar": "sustainability",
+      "status": "partially_implemented",
+      "recommendation": "Lifecycle para versiones antiguas y retención en logs",
+      "severity": "high",
+      "evidence": {
+        "note": "Lifecycle en `carritos/` ✓ y TTL en conexiones ✓; **logs infinitos**, versiones de S3 sin caducar y fotos huérfanas que nunca se borran"
+      }
+    },
+    {
+      "bp_id": "SUS04-BP04",
+      "pillar": "sustainability",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin almacenamiento de bloque ni sistemas de archivos"
+      }
+    },
+    {
+      "bp_id": "SUS04-BP05",
+      "pillar": "sustainability",
+      "status": "partially_implemented",
+      "recommendation": "Revisar cuando el volumen lo justifique",
+      "severity": "medium",
+      "evidence": {
+        "note": "Fotos de producto huérfanas en S3 tras borrar un producto (decisión documentada y razonada); `.design/` duplica el editor siete veces"
+      }
+    },
+    {
+      "bp_id": "SUS04-BP06",
+      "pillar": "sustainability",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Buckets compartidos por función; tabla única"
+      }
+    },
+    {
+      "bp_id": "SUS04-BP07",
+      "pillar": "sustainability",
+      "status": "partially_implemented",
+      "recommendation": "Cachear en CloudFront",
+      "severity": "high",
+      "evidence": {
+        "note": "El catálogo completo viaja al navegador en cada visita y **sin caché**; la API no está detrás del CDN"
+      }
+    },
+    {
+      "bp_id": "SUS04-BP08",
+      "pillar": "sustainability",
+      "status": "partially_implemented",
+      "recommendation": "Activar PITR; los pedidos no se pueden recrear",
+      "severity": "medium",
+      "evidence": {
+        "note": "Versionado en dos buckets ✓; el arte de producción es irreproducible y sí merece copia, pero **PITR de DynamoDB está apagado**"
+      }
+    },
+    {
+      "bp_id": "SUS05-BP01",
+      "pillar": "sustainability",
+      "status": "partially_implemented",
+      "recommendation": "Power Tuning tras instrumentar",
+      "severity": "medium",
+      "evidence": {
+        "note": "512 MB sin haber medido si sobran o faltan"
+      }
+    },
+    {
+      "bp_id": "SUS05-BP02",
+      "pillar": "sustainability",
+      "status": "not_implemented",
+      "recommendation": "Migrar a `arm64`",
+      "severity": "medium",
+      "evidence": {
+        "note": "`x86_64` en las cinco funciones; **arm64 (Graviton) consume menos energía y cuesta menos**"
+      }
+    },
+    {
+      "bp_id": "SUS05-BP03",
+      "pillar": "sustainability",
+      "status": "implemented",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Todo gestionado: Lambda, DynamoDB, S3, CloudFront, Cognito, SES"
+      }
+    },
+    {
+      "bp_id": "SUS05-BP04",
+      "pillar": "sustainability",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin aceleradores"
+      }
+    },
+    {
+      "bp_id": "SUS06-BP01",
+      "pillar": "sustainability",
+      "status": "cannot_determine",
+      "recommendation": "Entrevista",
+      "evidence": {
+        "note": "Sin objetivos de sostenibilidad"
+      }
+    },
+    {
+      "bp_id": "SUS06-BP02",
+      "pillar": "sustainability",
+      "status": "partially_implemented",
+      "recommendation": "—",
+      "severity": "low",
+      "evidence": {
+        "note": "Despliegue rápido y reversible por función"
+      }
+    },
+    {
+      "bp_id": "SUS06-BP03",
+      "pillar": "sustainability",
+      "status": "partially_implemented",
+      "recommendation": "Fijar cadencia",
+      "severity": "low",
+      "evidence": {
+        "note": "Runtime y dependencias al día; sin cadencia definida"
+      }
+    },
+    {
+      "bp_id": "SUS06-BP04",
+      "pillar": "sustainability",
+      "status": "not_applicable",
+      "recommendation": "Revisar al montar CI",
+      "evidence": {
+        "note": "Sin entornos de construcción compartidos; se construye en local"
+      }
+    },
+    {
+      "bp_id": "SUS06-BP05",
+      "pillar": "sustainability",
+      "status": "not_applicable",
+      "recommendation": "—",
+      "evidence": {
+        "note": "Sin pruebas en dispositivos"
+      }
+    }
+  ],
+  "recall_note": "Revision completa, F1 aprox 0.96. Alta cobertura pero no exhaustiva: la ausencia de un hallazgo no prueba que el control exista. Los umbrales de capacidad del informe en markdown son estimaciones por modelo, no mediciones: este sistema nunca ha pasado una prueba de carga."
+}

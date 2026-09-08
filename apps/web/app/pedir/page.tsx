@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { extraPorLados } from "@kustto/precios";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useComprador } from "@/Contexts/CompradorContext";
@@ -164,8 +165,11 @@ export default function PedirPage() {
 	const subtotal = useMemo(() => {
 		if (!producto) return 0;
 		const base = producto.pricing?.basePrice ?? 0;
-		const porLado = producto.pricing?.perSidePrice ?? 0;
-		const extra = Math.max(0, lados.length - 1) * porLado;
+		const extra = extraPorLados(
+			lados,
+			producto.printSides ?? [],
+			producto.pricing ?? {},
+		);
 		return (base + extra) * piezas;
 	}, [producto, lados.length, piezas]);
 

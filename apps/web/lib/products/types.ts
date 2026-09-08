@@ -69,6 +69,8 @@ export interface ProductTemplate<S extends ProductSide = ProductSide> {
 	 * un preview mentiroso justo en la pantalla que existe para no mentir.
 	 */
 	forma?: "plano" | "cilindro" | "cono";
+	/** Medidas que ya entrega loadProductTemplate, también usadas por el preview. */
+	printSides?: Array<{ sideKey: string; widthCm: number; heightCm: number }>;
 
 	// aquí van tus labels: "delantera", "trasera", "manga derecha"
 	sides: S[];

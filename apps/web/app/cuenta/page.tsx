@@ -4,6 +4,7 @@ import { AnimatePresence, MotionConfig } from "framer-motion";
 import {
 	ArrowLeft,
 	ClipboardList,
+	CalendarDays,
 	Heart,
 	House,
 	Layers,
@@ -20,6 +21,7 @@ import { Transicion } from "@/components/Cuenta/animaciones";
 import CatalogoEnPanel from "@/components/Cuenta/Catalogo";
 import DetalleEnPanel from "@/components/Cuenta/DetallePedido";
 import Disenos from "@/components/Cuenta/Disenos";
+import Eventos from "@/components/Cuenta/Eventos";
 import { DatosDelPanel, useDatosDelPanel } from "@/components/Cuenta/datos";
 import Favoritos from "@/components/Cuenta/Favoritos";
 import Inicio from "@/components/Cuenta/Inicio";
@@ -52,6 +54,7 @@ import MenuCuenta from "@/components/Kustto/MenuCuenta";
 const SECCIONES = [
 	{ id: "inicio", nombre: "Inicio", Icono: House, Vista: Inicio },
 	{ id: "pedidos", nombre: "Pedidos", Icono: ShoppingBag, Vista: Pedidos },
+	{ id: "eventos", nombre: "Eventos", Icono: CalendarDays, Vista: Eventos },
 	{ id: "disenos", nombre: "Mis diseños", Icono: Layers, Vista: Disenos },
 	/* Después de Diseños y antes de Favoritos: una plantilla se arma con lo que
 	   ya se pidió y se diseñó, así que va donde termina esa cadena. */
@@ -94,6 +97,7 @@ const APARTE = [
  */
 const TITULOS: Record<string, string> = {
 	pedidos: "Pedidos",
+	eventos: "Eventos",
 	disenos: "Mis diseños",
 	plantillas: "Plantillas",
 	favoritos: "Favoritos",

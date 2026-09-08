@@ -1,5 +1,6 @@
 "use client";
 
+import { extraPorLados } from "@kustto/precios";
 import type { Canvas, FabricObject } from "fabric";
 import { useEffect, useMemo, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
@@ -99,13 +100,17 @@ export function usePriceBreakdown() {
 	return useMemo(() => {
 		const pricing = config?.pricing ?? { basePrice: 0 };
 
+		const ladosEditados: string[] = [];
 		let sidesEdited = 0;
 		let designElements = 0;
 		const colors = new Set<string>();
 
-		for (const [, side] of Object.entries(sides)) {
+		for (const [clave, side] of Object.entries(sides)) {
 			const objs = userObjects(side.canvas);
-			if (objs.length > 0) sidesEdited += 1;
+			if (objs.length > 0) {
+				sidesEdited += 1;
+				ladosEditados.push(clave);
+			}
 			designElements += objs.length;
 			for (const o of objs) {
 				const fill = (o as { fill?: unknown }).fill;
@@ -120,11 +125,21 @@ export function usePriceBreakdown() {
 			amount: pricing.basePrice,
 		});
 
-		if (pricing.perSidePrice && sidesEdited > 0) {
+		/* DOS CORRECCIONES EN LA MISMA LÍNEA.
+		
+		   Cobraba `perSidePrice × sidesEdited`, y lo que se cobra de verdad son
+		   los lados EXTRA: el primero va en el precio base. Con dos lados este
+		   panel decía 120 y el pedido cobraba 60, y quien lo notara lo notaría
+		   al pagar. Ahora usa la misma función que `aLinea`.
+		
+		   Y con ella entra el recargo por lado: una manga deja de sumar lo que
+		   suma una espalda. */
+		const extra = extraPorLados(ladosEditados, config?.lados ?? [], pricing);
+		if (extra > 0) {
 			lines.push({
 				label: "Lados personalizados",
-				detail: `${sidesEdited} × $${pricing.perSidePrice}`,
-				amount: pricing.perSidePrice * sidesEdited,
+				detail: `${sidesEdited - 1} extra de ${sidesEdited}`,
+				amount: extra,
 			});
 		}
 

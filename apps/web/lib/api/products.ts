@@ -1,3 +1,4 @@
+import type { Tecnica } from "@/lib/impresion/tecnicas";
 import { apiFetch } from "./api";
 import type { FotoRealDePrenda } from "./catalogo";
 
@@ -21,10 +22,26 @@ export type ProductPrintSide = {
 	 * un cilindro no lo puede hacer la homografía de `lib/prenda/componer`, que
 	 * proyecta planos, sino `lib/prenda/cilindro`.
 	 */
-	sideKey: "front" | "back" | "left" | "right" | "wrap";
+	/* ABIERTO A PROPÓSITO, no es que falte cerrarlo. Era la unión
+	   `"front" | "back" | "left" | "right" | "wrap"` y ya no describía la
+	   realidad: el alta del taller es un campo de texto donde se escribe la
+	   clave, `ProductSide` es `string` en el editor, y una prenda con mangas
+	   necesita claves que esa lista no tenía. Cerrarla otra vez rompería
+	   cualquier producto cuyo lado no esté en la lista, y el que decide qué
+	   lados hay es el taller. */
+	sideKey: string;
 	widthCm: number;
 	heightCm: number;
 	dpi?: number;
+	/**
+	 * Lo que suma ESTE lado sobre el precio base, si el taller se lo puso.
+	 *
+	 * Sin él se usa el `perSidePrice` del producto, que es lo correcto cuando
+	 * todos los lados valen igual. Existe porque una manga no cuesta lo que una
+	 * espalda: con un precio único, estampar las dos mangas costaba lo mismo
+	 * que estampar dos espaldas.
+	 */
+	recargo?: number | null;
 	/**
 	 * Cuánto tiene que desbordar el arte por cada lado, en centímetros.
 	 *
@@ -45,6 +62,18 @@ export type ProductPrintSide = {
 	 * llega al borde.
 	 */
 	sangradoCm?: number;
+	/**
+	 * Con qué se estampa este lado.
+	 *
+	 * DECIDE EL FORMATO DEL ARCHIVO, que es la razón de que viva aquí y no en el
+	 * producto: junto a `dpi` y `sangradoCm` están las tres cosas que describen
+	 * cómo sale el arte de este lado. Una serigrafía manda un PNG a los DPI
+	 * declarados; un láser no imprime, quema, y pide trazos.
+	 *
+	 * Las claves y su clasificación viven en `lib/impresion/tecnicas.ts`. Sin
+	 * declarar, ráster: es lo que han hecho todos los productos hasta hoy.
+	 */
+	tecnica?: Tecnica;
 	enabled?: boolean;
 };
 

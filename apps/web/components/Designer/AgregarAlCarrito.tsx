@@ -2,11 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
-import { subirAlCarrito } from "@/lib/api/carrito";
+import { subirAlCarrito, subirAlEvento } from "@/lib/api/carrito";
 import type { DesignerProductTemplate } from "@/lib/api/products";
-import { miniaturaPequena } from "@/lib/carrito/almacen";
+import { subirArteDePlantilla } from "@/lib/api/cuenta";
+import {
+	type ArticuloDeCarrito,
+	miniaturaPequena,
+} from "@/lib/carrito/almacen";
 import { useCarrito } from "@/lib/carrito/useCarrito";
 import { exportarParaPedido } from "@/lib/designer/exportarParaPedido";
+import { guardarDisenoDeEvento } from "@/lib/eventos/borrador";
 
 /**
  * Agregar el diseño al carrito.
@@ -20,14 +25,23 @@ import { exportarParaPedido } from "@/lib/designer/exportarParaPedido";
  */
 export default function AgregarAlCarrito({
 	producto,
+	evento,
 	onListo,
 	onCancelar,
 }: {
 	producto: DesignerProductTemplate;
-	onListo: () => void;
+	evento?: {
+		codigo: string;
+		itemId: string;
+		eventoId?: string;
+		organizador?: boolean;
+		personalizacion?: "libre" | "bloqueada" | "sin_personalizacion";
+	};
+	onListo: (articulo: ArticuloDeCarrito) => void | Promise<void>;
 	onCancelar: () => void;
 }) {
-	const { sides, colorPrenda } = useDesigner();
+	const esDisenoBase = Boolean(evento?.organizador);
+	const { sides, colorPrenda, tecnicas, bordados } = useDesigner();
 	const { agregar } = useCarrito();
 	const [fallo, setFallo] = useState<string | null>(null);
 
@@ -48,6 +62,42 @@ export default function AgregarAlCarrito({
 
 	async function guardar() {
 		try {
+			/* La última red antes de cobrar. El panel ya avisa, pero avisar no es
+			   impedir: sin esto, un diseño que la máquina no puede coser llegaba al
+			   carrito igual y el comprador acababa pagando por él. */
+			const pendientes = Object.keys(tecnicas).filter(
+				(lado) =>
+					tecnicas[lado] === "bordado" &&
+					sides[lado]?.canvas &&
+					bordados[lado]?.status !== "READY" &&
+					bordados[lado]?.status !== "REVIEW",
+			);
+			if (pendientes.length) {
+				const rechazado = pendientes.find(
+					(lado) => bordados[lado]?.status === "REJECTED",
+				);
+				/* «Prepáralo tú» ya no es una instrucción válida: el bordado se
+				   prepara solo y no hay botón que pulsar. Decirle eso al comprador
+				   sería mandarlo a buscar algo que no existe, así que se distingue
+				   entre las tres razones reales por las que puede estar frenado. */
+				const enCurso = pendientes.some(
+					(lado) =>
+						bordados[lado]?.status === "PROCESSING" ||
+						bordados[lado]?.status === "QUEUED",
+				);
+				const vacio = pendientes.filter((lado) => !bordados[lado]);
+				throw new Error(
+					rechazado
+						? (bordados[rechazado]?.mensaje ??
+								"Uno de tus bordados no se puede fabricar. Cámbialo para continuar.")
+						: enCurso
+							? "Estamos preparando tu bordado. Espera unos segundos y vuelve a intentarlo."
+							: vacio.length
+								? "Agrega un texto o un logo al lado que va bordado."
+								: "No pudimos preparar tu bordado. Cambia algo del diseño para intentarlo otra vez.",
+				);
+			}
+
 			const { archivos, diseno } = await exportarParaPedido(
 				sides,
 				producto,
@@ -74,6 +124,13 @@ export default function AgregarAlCarrito({
 					...(a.prenda
 						? [{ tipo: "prenda" as const, lado: a.lado, cuerpo: a.prenda }]
 						: []),
+					/* El arte en trazos, sólo en los lados que se graban. Va ADEMÁS
+					   del PNG, no en su lugar: al taller el PNG le sirve para ver de
+					   un vistazo qué le pidieron, y el SVG es lo que recorre la
+					   máquina. */
+					...(a.vector
+						? [{ tipo: "vector" as const, lado: a.lado, cuerpo: a.vector }]
+						: []),
 				]),
 				{
 					tipo: "diseno" as const,
@@ -83,9 +140,23 @@ export default function AgregarAlCarrito({
 				},
 			];
 
-			const { carritoId } = await subirAlCarrito(paraSubir);
+			let carritoId: string;
+			if (evento?.organizador) {
+				const subida = await subirArteDePlantilla(paraSubir);
+				carritoId = subida.itemId;
+			} else if (evento) {
+				const subida = await subirAlEvento(
+					evento.codigo,
+					evento.itemId,
+					paraSubir,
+				);
+				carritoId = subida.carritoId;
+			} else {
+				const subida = await subirAlCarrito(paraSubir);
+				carritoId = subida.carritoId;
+			}
 
-			agregar({
+			const articulo: ArticuloDeCarrito = {
 				id: crypto.randomUUID(),
 				carritoId,
 				productoId: producto.id,
@@ -93,6 +164,22 @@ export default function AgregarAlCarrito({
 				proveedorId: producto.proveedorId ?? "",
 				proveedorNombre: producto.proveedorNombre ?? null,
 				colorPrenda: colorPrenda?.name ?? null,
+				// Sólo los dos estados que permiten comprar. `QUEUED`, `PROCESSING` y
+				// `FAILED` no son "bordado listo con reservas": son "todavía no se
+				// sabe", y ya los frena el guardia de arriba.
+				bordados: Object.entries(bordados).flatMap(([lado, estado]) =>
+					estado && (estado.status === "READY" || estado.status === "REVIEW")
+						? [
+								{
+									lado,
+									jobId: estado.jobId,
+									designHash: estado.designHash,
+									status: estado.status,
+									incidencias: estado.incidencias,
+								},
+							]
+						: [],
+				),
 				lados: archivos.map((a) => ({
 					lado: a.lado,
 					anchoPx: a.anchoPx,
@@ -106,9 +193,15 @@ export default function AgregarAlCarrito({
 				precioUnitario: producto.pricing?.basePrice ?? 0,
 				miniatura: await miniaturaPequena(archivos[0]?.miniaturaPrenda ?? null),
 				agregadoEn: Date.now(),
-			});
+			};
 
-			onListo();
+			if (evento && !evento.organizador) {
+				guardarDisenoDeEvento(evento.codigo, evento.itemId, articulo);
+			} else if (!evento) {
+				agregar(articulo);
+			}
+
+			await onListo(articulo);
 		} catch (error) {
 			setFallo(
 				error instanceof Error
@@ -124,7 +217,9 @@ export default function AgregarAlCarrito({
 				{fallo ? (
 					<>
 						<h2 className="font-display text-[20px] font-semibold text-tinta">
-							No se pudo agregar
+							{esDisenoBase
+								? "No pudimos guardar el diseño base"
+								: "No se pudo agregar"}
 						</h2>
 						<p className="pt-2 text-sm leading-[22px] text-tinta/70">{fallo}</p>
 						<button
@@ -138,10 +233,14 @@ export default function AgregarAlCarrito({
 				) : (
 					<>
 						<h2 className="font-display text-[20px] font-semibold text-tinta">
-							Guardando tu diseño…
+							{esDisenoBase
+								? "Guardando el diseño base…"
+								: "Guardando tu diseño…"}
 						</h2>
 						<p className="pt-2 text-sm leading-[22px] text-tinta/70">
-							Estamos preparando el archivo de impresión. Tarda unos segundos.
+							{esDisenoBase
+								? "Al terminar volverás al evento para seguir configurándolo."
+								: "Estamos preparando el archivo de impresión. Tarda unos segundos."}
 						</p>
 					</>
 				)}

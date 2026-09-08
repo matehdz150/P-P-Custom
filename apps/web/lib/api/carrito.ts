@@ -13,7 +13,7 @@
 const API = process.env.NEXT_PUBLIC_KUSTTO_API ?? "";
 
 type Archivo = {
-	tipo: "arte" | "colocacion" | "prenda" | "diseno";
+	tipo: "arte" | "colocacion" | "prenda" | "vector" | "diseno";
 	lado?: string;
 	cuerpo: Blob;
 };
@@ -38,10 +38,31 @@ type Firma = {
 export async function subirAlCarrito(
 	archivos: Archivo[],
 ): Promise<{ carritoId: string }> {
-	const res = await fetch(`${API}/publico/carrito/subidas`, {
+	return subir(archivos, "/publico/carrito/subidas");
+}
+
+export async function subirAlEvento(
+	codigo: string,
+	eventoItemId: string,
+	archivos: Archivo[],
+): Promise<{ carritoId: string }> {
+	return subir(
+		archivos,
+		`/publico/eventos/${encodeURIComponent(codigo)}/subidas`,
+		{ eventoItemId },
+	);
+}
+
+async function subir(
+	archivos: Archivo[],
+	ruta: string,
+	extra?: Record<string, string>,
+): Promise<{ carritoId: string }> {
+	const res = await fetch(`${API}${ruta}`, {
 		method: "POST",
 		headers: { "content-type": "application/json" },
 		body: JSON.stringify({
+			...extra,
 			archivos: archivos.map((a) => ({
 				tipo: a.tipo,
 				lado: a.lado,
@@ -62,8 +83,7 @@ export async function subirAlCarrito(
 
 	for (const archivo of archivos) {
 		const destino = subidas.find(
-			(s) =>
-				s.tipo === archivo.tipo && (s.lado ?? undefined) === archivo.lado,
+			(s) => s.tipo === archivo.tipo && (s.lado ?? undefined) === archivo.lado,
 		);
 
 		if (!destino) continue;

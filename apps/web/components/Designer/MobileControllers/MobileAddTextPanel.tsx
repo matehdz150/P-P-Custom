@@ -4,6 +4,7 @@ import { Textbox } from "fabric";
 import { ChevronDown } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
+import TextPresets from "@/components/Designer/DesignerSidebar/panels/TextPresets";
 import { makeAreaClip } from "@/lib/fabric/areaClip";
 import { AVAILABLE_FONTS } from "@/lib/fabric/fontList";
 
@@ -81,6 +82,12 @@ export default function MobileAddTextPanel({
 		<div className="h-full flex flex-col bg-white">
 			{/* CONTENT */}
 			<div className="flex-1 overflow-y-auto p-4 space-y-6">
+				{/* LOS DISEÑOS DE TEXTO, ANTES QUE LAS FUENTES. Faltaban en el
+				    teléfono: sólo se podía elegir tipografía y escribir a pelo,
+				    mientras que en escritorio esta misma tira estaba arriba del
+				    panel. Es la pieza de escritorio, no una copia. */}
+				<TextPresets />
+
 				{/* INPUT SEARCH */}
 				<input
 					type="text"

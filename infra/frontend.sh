@@ -156,7 +156,7 @@ if [ "$DIST_ID" = "None" ] || [ -z "$DIST_ID" ]; then
     --distribution-config "file://$(ruta_cli "$CONFIG")" \
     --query "Distribution.Id" --output text)
 else
-  echo "Actualizando la distribución $DIST_ID…"
+  echo "Actualizando la distribución ${DIST_ID}…"
   ETAG=$(aws_ cloudfront get-distribution-config --id "$DIST_ID" \
     --query "ETag" --output text)
   aws_ cloudfront update-distribution --id "$DIST_ID" \

@@ -1,0 +1,35 @@
+{
+  "antes": {
+    "principal": {
+      "ApproximateNumberOfMessages": "0",
+      "ApproximateNumberOfMessagesNotVisible": "1"
+    },
+    "dlq": {
+      "ApproximateNumberOfMessages": "0"
+    }
+  },
+  "fallo": {
+    "jobId": "emb_22e716bb791aa448ea850fff920b19e231e13a64",
+    "estado": "FAILED",
+    "errorCode": "DESIGN_HASH_MISMATCH",
+    "attempts": 1,
+    "sinArtefactos": true,
+    "startedAt": "2026-09-06T17:50:42Z",
+    "completedAt": "2026-09-06T17:50:43Z"
+  },
+  "despues": {
+    "principal": {
+      "ApproximateNumberOfMessages": "0",
+      "ApproximateNumberOfMessagesNotVisible": "2"
+    },
+    "dlq": {
+      "ApproximateNumberOfMessages": "0"
+    }
+  },
+  "trasReintentos": {
+    "estado": "FAILED",
+    "attempts": 1,
+    "attemptsNoSubio": true,
+    "sinArtefactos": true
+  }
+}

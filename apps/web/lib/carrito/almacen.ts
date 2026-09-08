@@ -33,6 +33,24 @@ export type LadoDeArticulo = {
 	sangradoCm?: number;
 };
 
+/**
+ * Cómo quedó el bordado de un lado. Viaja del editor al carrito y al pedido.
+ *
+ * `REVIEW` NO IMPIDE COMPRAR, pero tiene que llegar al taller: es un diseño que
+ * el sistema pudo preparar y que alguien debe mirar antes de coserlo. Si esta
+ * marca se quedara en el editor, el taller recibiría un pedido idéntico a
+ * cualquier otro y lo bordaría sin revisarlo, que es justo lo que se quiere
+ * evitar mientras el perfil no esté validado físicamente.
+ */
+export type BordadoDeArticulo = {
+	lado: string;
+	jobId: string;
+	designHash: string;
+	status: "READY" | "REVIEW";
+	/** Códigos de incidencia. Son para el taller, no para el comprador. */
+	incidencias: string[];
+};
+
 export type ArticuloDeCarrito = {
 	/** Identifica la línea dentro del carrito. No sale de aquí. */
 	id: string;
@@ -45,6 +63,8 @@ export type ArticuloDeCarrito = {
 	proveedorNombre: string | null;
 	colorPrenda: string | null;
 	lados: LadoDeArticulo[];
+	/** Sólo en los lados que se bordan. Vacío o ausente en el resto. */
+	bordados?: BordadoDeArticulo[];
 	tallas: { size: string; piezas: number }[];
 	/** Para el resumen mientras decide. El precio que se cobra lo pone la API. */
 	precioUnitario: number;

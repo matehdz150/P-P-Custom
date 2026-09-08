@@ -1,0 +1,371 @@
+{
+  "fixture": "13-interseccion-t",
+  "profileVersion": "experimental-v3-2026-09-06",
+  "status": "measured",
+  "physicallyValidated": false,
+  "geometry": {
+    "objectCount": 4,
+    "pathCount": 20,
+    "nodeCount": 150,
+    "segmentCount": 130,
+    "satinColumnCount": 4,
+    "fillRegionCount": 0,
+    "runningPathCount": 0,
+    "junctionCount": 0,
+    "satin": {
+      "minWidthMm": 4.589,
+      "maxWidthMm": 4.762,
+      "averageWidthMm": 4.7,
+      "widthVariance": 0.0044
+    },
+    "svgBytes": 3092
+  },
+  "stitchPlan": {
+    "stitchCount": 431,
+    "runningStitches": 0,
+    "satinStitches": 451,
+    "fillStitches": 0,
+    "jumps": 2,
+    "trims": 0,
+    "colorChanges": 0,
+    "maxStitchLengthMm": 5.423,
+    "p95StitchLengthMm": 5.415,
+    "averageStitchLengthMm": 4.474,
+    "stitchesAboveThreshold": 0,
+    "maxJumpLengthMm": 12.149,
+    "estimatedThreadLengthMm": 1940.5,
+    "directionChangeDegrees": {
+      "average": 5.804,
+      "p95": 7.79
+    },
+    "maxDirectionChange": 90.0,
+    "numberOfSharpDirectionChanges": 10,
+    "maxAngleDeltaBetweenAdjacentStitches": 90.0,
+    "numberOfFanStitches": 0,
+    "numberOfCrossingStitches": 6,
+    "overlappingSegments": 97,
+    "overlapDensity": 0.08411,
+    "localStitchDensity": {
+      "cellMm": 1.0,
+      "occupiedCells": 84,
+      "averagePerOccupiedCell": 5.119
+    },
+    "maxLocalDensity": 9,
+    "analysis": {
+      "crossingComparisons": 3870,
+      "crossingPairs": 4,
+      "crossingAnalysisTruncated": false
+    },
+    "typedStitchesMeasurement": "sum-of-isolated-object-runs; puede diferir de stitchCount por conexiones entre objetos"
+  },
+  "dst": {
+    "widthMm": 40.0,
+    "heightMm": 32.6,
+    "stitchCount": 431,
+    "colorCount": 1,
+    "colorChanges": 0,
+    "jumps": 2,
+    "trims": 0
+  },
+  "tajima": {
+    "passed": true,
+    "checks": {
+      "headerIs512Bytes": true,
+      "payloadAlignedTo3Bytes": true,
+      "hasEndRecord": true,
+      "headerRecordCountMatches": true,
+      "headerColorChangesMatch": true,
+      "boundsMatchPyembroidery": true,
+      "maxAxisMovementRepresentable": true
+    },
+    "maxAxisDeltaTenthsMm": 100
+  },
+  "objects": [
+    {
+      "objectId": "t-horizontal-v3-0-0",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 40,
+        "segmentCount": 35,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 4.734,
+          "maxWidthMm": 4.734,
+          "averageWidthMm": 4.734,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 1194
+      },
+      "stitchPlan": {
+        "stitchCount": 115,
+        "runningStitches": 0,
+        "satinStitches": 115,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 5.423,
+        "p95StitchLengthMm": 5.423,
+        "averageStitchLengthMm": 4.484,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 515.7,
+        "directionChangeDegrees": {
+          "average": 4.548,
+          "p95": 6.953
+        },
+        "maxDirectionChange": 90.0,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 90.0,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 0,
+        "overlappingSegments": 16,
+        "overlapDensity": 0.04576,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 22,
+          "averagePerOccupiedCell": 5.182
+        },
+        "maxLocalDensity": 9,
+        "analysis": {
+          "crossingComparisons": 713,
+          "crossingPairs": 0,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 786.3,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "t-horizontal-v3-0-1",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 44,
+        "segmentCount": 39,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 4.762,
+          "maxWidthMm": 4.762,
+          "averageWidthMm": 4.762,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 1234
+      },
+      "stitchPlan": {
+        "stitchCount": 143,
+        "runningStitches": 0,
+        "satinStitches": 143,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 5.423,
+        "p95StitchLengthMm": 5.423,
+        "averageStitchLengthMm": 4.225,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 604.2,
+        "directionChangeDegrees": {
+          "average": 5.471,
+          "p95": 7.306
+        },
+        "maxDirectionChange": 90.0,
+        "numberOfSharpDirectionChanges": 3,
+        "maxAngleDeltaBetweenAdjacentStitches": 90.0,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 4,
+        "overlappingSegments": 42,
+        "overlapDensity": 0.09682,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 30,
+          "averagePerOccupiedCell": 4.733
+        },
+        "maxLocalDensity": 9,
+        "analysis": {
+          "crossingComparisons": 1093,
+          "crossingPairs": 3,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 790.1,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "t-vertical-v3-1-0",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 38,
+        "segmentCount": 33,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 4.717,
+          "maxWidthMm": 4.717,
+          "averageWidthMm": 4.717,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 1084
+      },
+      "stitchPlan": {
+        "stitchCount": 115,
+        "runningStitches": 0,
+        "satinStitches": 115,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 5.423,
+        "p95StitchLengthMm": 5.417,
+        "averageStitchLengthMm": 4.338,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 498.9,
+        "directionChangeDegrees": {
+          "average": 4.402,
+          "p95": 7.352
+        },
+        "maxDirectionChange": 90.0,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 90.0,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 0,
+        "overlappingSegments": 27,
+        "overlapDensity": 0.05914,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 27,
+          "averagePerOccupiedCell": 4.222
+        },
+        "maxLocalDensity": 7,
+        "analysis": {
+          "crossingComparisons": 709,
+          "crossingPairs": 0,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 807.8,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    },
+    {
+      "objectId": "t-vertical-v3-1-1",
+      "stitchType": "satin",
+      "geometry": {
+        "objectCount": 1,
+        "pathCount": 5,
+        "nodeCount": 28,
+        "segmentCount": 23,
+        "satinColumnCount": 1,
+        "fillRegionCount": 0,
+        "runningPathCount": 0,
+        "junctionCount": 0,
+        "satin": {
+          "minWidthMm": 4.589,
+          "maxWidthMm": 4.589,
+          "averageWidthMm": 4.589,
+          "widthVariance": 0.0
+        },
+        "svgBytes": 984
+      },
+      "stitchPlan": {
+        "stitchCount": 78,
+        "runningStitches": 0,
+        "satinStitches": 78,
+        "fillStitches": 0,
+        "jumps": 1,
+        "trims": 0,
+        "colorChanges": 0,
+        "maxStitchLengthMm": 5.423,
+        "p95StitchLengthMm": 5.416,
+        "averageStitchLengthMm": 4.212,
+        "stitchesAboveThreshold": 0,
+        "maxJumpLengthMm": 0.0,
+        "estimatedThreadLengthMm": 328.5,
+        "directionChangeDegrees": {
+          "average": 4.867,
+          "p95": 6.71
+        },
+        "maxDirectionChange": 90.0,
+        "numberOfSharpDirectionChanges": 1,
+        "maxAngleDeltaBetweenAdjacentStitches": 90.0,
+        "numberOfFanStitches": 0,
+        "numberOfCrossingStitches": 0,
+        "overlappingSegments": 13,
+        "overlapDensity": 0.05053,
+        "localStitchDensity": {
+          "cellMm": 1.0,
+          "occupiedCells": 15,
+          "averagePerOccupiedCell": 5.133
+        },
+        "maxLocalDensity": 9,
+        "analysis": {
+          "crossingComparisons": 463,
+          "crossingPairs": 0,
+          "crossingAnalysisTruncated": false
+        }
+      },
+      "timings": {
+        "inkstitchDisplayStartupMs": 0.0,
+        "inkstitchProcessAndDigitizationMs": 774.2,
+        "inkstitchInitializationMs": null,
+        "inkstitchDigitizationMs": null
+      },
+      "measurement": "isolated-object-run"
+    }
+  ],
+  "timings": {
+    "cacheState": "warm",
+    "segmentationMs": null,
+    "vectorGeometryMs": null,
+    "skeletonMs": null,
+    "railsMs": null,
+    "junctionHandlingMs": null,
+    "stitchTypeAssignmentMs": null,
+    "uploadMs": null,
+    "svgGenerationMs": 0.3,
+    "inkstitchDisplayStartupMs": 0.0,
+    "inkstitchProcessAndDigitizationMs": 862.4,
+    "inkstitchInitializationMs": null,
+    "inkstitchDigitizationMs": null,
+    "dstParsingMs": 1.1,
+    "tajimaValidationMs": 0.5,
+    "previewMs": 82.7,
+    "totalMs": 4122.1
+  },
+  "artifacts": {
+    "input": "input.svg",
+    "preparedSvg": "prepared.svg",
+    "stitchPlot": "stitchPlot.png",
+    "embroideredPreview": "embroideredPreview.png",
+    "dst": "design.dst"
+  }
+}

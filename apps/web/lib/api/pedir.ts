@@ -35,6 +35,25 @@ export type LineaAPedir = {
 		sangradoCm?: number;
 	}[];
 	/**
+	 * Cómo quedó el bordado de cada lado que se borda.
+	 *
+	 * ES DESCRIPTIVO Y NO DECIDE NI PRECIO NI DESTINATARIO, así que puede venir
+	 * del navegador. Lo que decide —si un diseño rechazado se puede comprar— ya
+	 * se resolvió antes: un `REJECTED` no llega nunca a agregarse al carrito.
+	 *
+	 * `status: "REVIEW"` es la marca que necesita el taller: el sistema pudo
+	 * preparar el bordado pero alguien tiene que mirarlo antes de coserlo.
+	 * Mientras `physicallyValidated` siga en falso, es lo único que separa un
+	 * bordado revisado de uno que nadie miró.
+	 */
+	bordados?: {
+		lado: string;
+		jobId: string;
+		designHash: string;
+		status: "READY" | "REVIEW";
+		incidencias: string[];
+	}[];
+	/**
 	 * El diseño editable NO va aquí.
 	 *
 	 * Lleva dentro las imágenes que subió el cliente como data URL, y un ítem
@@ -82,7 +101,7 @@ export type PedidoCreado = {
 		indice: number;
 		lineaId: string;
 		lado: string;
-		tipo: "arte" | "colocacion" | "prenda" | "diseno";
+		tipo: "arte" | "colocacion" | "prenda" | "vector" | "diseno";
 		ruta: string;
 		uploadUrl: string;
 	}[];
@@ -369,6 +388,23 @@ export async function subirArchivos(
 				await subir(destinoPrenda.uploadUrl, lado.prenda, "image/png");
 			} catch {
 				// Es una referencia, no el archivo que va a máquina.
+			}
+		}
+
+		/* El arte en trazos, sólo en los lados que se graban en vez de
+		   imprimirse. SÍ va a máquina —es lo que el láser recorre—, pero no se
+		   apunta en `faltaArte`: el PNG del mismo lado sí subió y el pedido es
+		   producible; lo que se pierde es que el taller tenga que vectorizar él.
+		   Apuntarlo como arte faltante pararía un pedido que no está parado. */
+		const destinoVector = pedido.subidas.find(
+			(s) => s.indice === indice && s.lado === lado.lado && s.tipo === "vector",
+		);
+
+		if (lado.vector && destinoVector) {
+			try {
+				await subir(destinoVector.uploadUrl, lado.vector, "image/svg+xml");
+			} catch {
+				// Ver arriba: el PNG ya está y el pedido sigue siendo producible.
 			}
 		}
 	}

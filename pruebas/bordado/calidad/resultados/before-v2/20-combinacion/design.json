@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "7ea0241ea7f6ea652bae63b9f36c2950a06a2fc19e8f6f1eea9ce54a8cbcb975",
+  "productId": "quality-fixture",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 60
+  },
+  "bounds": {
+    "xMm": 1,
+    "yMm": 1,
+    "widthMm": 88,
+    "heightMm": 58
+  },
+  "colors": [
+    {
+      "id": "c0",
+      "sourceHex": "#171717",
+      "displayHex": "#171717",
+      "order": 0
+    },
+    {
+      "id": "c1",
+      "sourceHex": "#f59e0b",
+      "displayHex": "#f59e0b",
+      "order": 1
+    }
+  ],
+  "objects": [
+    {
+      "id": "outline",
+      "sourceObjectId": "outline",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M8 49L82 49"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "column",
+      "sourceObjectId": "column",
+      "sourceType": "text",
+      "classification": "text",
+      "colorId": "c0",
+      "geometry": {
+        "kind": "path",
+        "d": "M18 38C28 11 44 10 50 34"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 3.4,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "area",
+      "sourceObjectId": "area",
+      "sourceType": "vector",
+      "classification": "logo",
+      "colorId": "c1",
+      "geometry": {
+        "kind": "path",
+        "d": "M56 14L80 14L80 39L61 39C55 32 54 23 56 14Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "maxStitchLengthMm": 4,
+        "angleDeg": 45,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 1,
+        "yMm": 1,
+        "widthMm": 88,
+        "heightMm": 58
+      },
+      "nodeCount": 5
+    }
+  ],
+  "metrics": {
+    "componentCount": 3,
+    "nodeCount": 9,
+    "colorCount": 2
+  },
+  "preparation": {
+    "profileVersion": "experimental-v2-2026-09-06",
+    "texto": {
+      "satinColumns": 1,
+      "runningPaths": 1,
+      "fillAreas": 1
+    },
+    "issues": []
+  },
+  "profileVersion": "experimental-v2-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

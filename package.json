@@ -4,6 +4,12 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
+		"dev:test": "bash infra/dev-test.sh",
+		"test:env": "AWS_PROFILE=kustto-admin AWS_REGION=us-east-1 bash infra/pruebas-api.sh",
+		"test:env:stress": "KUSTTO_TEST_RPS=200 KUSTTO_TEST_BURST=200 KUSTTO_TEST_CONCURRENCY=50 AWS_PROFILE=kustto-admin AWS_REGION=us-east-1 bash infra/pruebas-api.sh",
+		"test:users:prepare": "AWS_PROFILE=kustto-admin AWS_REGION=us-east-1 bash pruebas/carga/preparar-usuarios.sh",
+		"stress:users": "AWS_PROFILE=kustto-admin AWS_REGION=us-east-1 bash pruebas/carga/encontrar-capacidad.sh usuarios",
+		"stress:orders": "AWS_PROFILE=kustto-admin AWS_REGION=us-east-1 bash pruebas/carga/encontrar-capacidad.sh pedidos",
 		"format": "biome format . --write",
 		"lint": "biome check .",
 		"type-check": "tsc --noEmit",

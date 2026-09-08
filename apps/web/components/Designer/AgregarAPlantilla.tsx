@@ -77,6 +77,13 @@ export default function AgregarAPlantilla({
 					...(a.prenda
 						? [{ tipo: "prenda" as const, lado: a.lado, cuerpo: a.prenda }]
 						: []),
+					/* El arte en trazos, sólo en los lados que se graban. Va ADEMÁS
+					   del PNG, no en su lugar: al taller el PNG le sirve para ver de
+					   un vistazo qué le pidieron, y el SVG es lo que recorre la
+					   máquina. */
+					...(a.vector
+						? [{ tipo: "vector" as const, lado: a.lado, cuerpo: a.vector }]
+						: []),
 				]),
 				{
 					tipo: "diseno" as const,

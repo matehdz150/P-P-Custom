@@ -1,5 +1,6 @@
 "use client";
 
+import { recargoDeLado } from "@kustto/precios";
 import { Clock, Heart, Pencil } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -308,7 +309,16 @@ function Impresion({
 	if (lados.length === 0) return null;
 
 	const etiquetas = ficha?.plantilla?.data?.sideLabels ?? {};
-	const porLado = ficha?.pricing?.perSidePrice;
+	/* El rango, no un solo número: desde que un lado puede llevar recargo
+	   propio, "cada lado extra suma $60" es falso para la manga que cuesta 20.
+	   Con todos iguales, menor y mayor coinciden y la frase queda como estaba. */
+	const recargos = [
+		...new Set(
+			lados.map((l) => recargoDeLado(l.sideKey, lados, ficha?.pricing ?? {})),
+		),
+	].filter((n) => n > 0);
+	const porLado = recargos.length ? Math.max(...recargos) : undefined;
+	const porLadoMin = recargos.length ? Math.min(...recargos) : undefined;
 	const reglas = ficha?.customizationRules;
 
 	const puede = [
@@ -336,7 +346,10 @@ function Impresion({
 
 			{porLado ? (
 				<p className="pt-2 text-[13px] leading-[20px] text-tinta/60">
-					El primer lado va en el precio. Cada lado extra suma {pesos(porLado)}{" "}
+					El primer lado va en el precio. Cada lado extra suma{" "}
+					{porLadoMin !== porLado
+						? `entre ${pesos(porLadoMin ?? 0)} y ${pesos(porLado)}`
+						: pesos(porLado)}{" "}
 					por pieza.
 				</p>
 			) : null}

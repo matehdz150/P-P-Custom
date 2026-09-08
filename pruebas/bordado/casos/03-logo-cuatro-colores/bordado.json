@@ -1,0 +1,272 @@
+{
+  "schemaVersion": 1,
+  "case": {
+    "id": "03-logo-cuatro-colores",
+    "label": "Logo de cuatro colores",
+    "expectedDisposition": "accept"
+  },
+  "source": {
+    "kind": "transparent-raster",
+    "file": "original.png",
+    "sha256": "6a7d5271112bf46df3a8ab042089566fca9be4bba10da8bcefd59a9a8d23f827",
+    "metrics": {
+      "alphaCoverage": 0.5126,
+      "hasMeaningfulTransparency": true,
+      "colorEntropyBits32": 1.338,
+      "edgeDensity": 0.0076,
+      "borderUniformity": 1.0,
+      "textureLaplacianVariance": 359.52
+    }
+  },
+  "physical": {
+    "units": "mm",
+    "embroideryArea": {
+      "width": 90.0,
+      "height": 60.0
+    },
+    "output": {
+      "width": 70.6,
+      "height": 40.0
+    },
+    "mustRedigitizeAfterScale": true
+  },
+  "colors": [
+    {
+      "order": 1,
+      "hex": "#2457d6",
+      "threadCatalog": null
+    },
+    {
+      "order": 2,
+      "hex": "#f05a3f",
+      "threadCatalog": null
+    },
+    {
+      "order": 3,
+      "hex": "#acd633",
+      "threadCatalog": null
+    },
+    {
+      "order": 4,
+      "hex": "#171717",
+      "threadCatalog": null
+    }
+  ],
+  "objects": [
+    {
+      "id": "region-1",
+      "source": {
+        "kind": "raster-region",
+        "paletteIndex": 0
+      },
+      "geometry": {
+        "svgPath": "M 10.50,14.30 L 10.00,16.20 L 10.00,43.80 L 10.50,45.70 L 11.60,47.50 L 12.90,48.70 L 14.30,49.50 L 16.20,50.00 L 73.80,50.00 L 75.70,49.50 L 77.50,48.40 L 78.70,47.10 L 79.50,45.70 L 80.00,43.80 L 80.00,16.20 L 79.50,14.30 L 78.40,12.50 L 77.10,11.30 L 75.70,10.50 L 73.80,10.00 L 16.20,10.00 L 14.30,10.50 L 12.50,11.60 L 11.30,12.90 Z M 28.90,15.90 L 32.00,16.00 L 34.20,16.50 L 36.40,17.40 L 39.20,19.30 L 41.10,21.30 L 42.60,23.60 L 43.70,26.50 L 44.10,28.90 L 44.00,32.00 L 43.50,34.20 L 42.60,36.40 L 40.70,39.20 L 38.70,41.10 L 36.40,42.60 L 33.50,43.70 L 31.10,44.10 L 28.00,44.00 L 25.80,43.50 L 23.60,42.60 L 20.80,40.70 L 18.90,38.70 L 17.40,36.40 L 16.30,33.50 L 15.90,31.10 L 16.00,28.00 L 16.50,25.80 L 17.40,23.60 L 19.30,20.80 L 21.30,18.90 L 23.60,17.40 L 26.50,16.30 Z M 60.90,15.00 L 61.20,15.10 L 75.00,38.80 L 74.90,39.10 L 48.00,39.00 L 48.40,38.00 Z",
+        "areaMm2": 1802.79,
+        "boundsMm": [
+          10.0,
+          10.0,
+          70.1,
+          40.1
+        ]
+      },
+      "stitchType": "fill",
+      "threadColor": "#2457d6",
+      "density": {
+        "rowSpacingMm": 0.45
+      },
+      "angleDeg": 0,
+      "underlay": [
+        "tatami-sparse"
+      ],
+      "pullCompensationMm": 0.15,
+      "maxStitchLengthMm": 4,
+      "trimAfter": true,
+      "order": 0
+    },
+    {
+      "id": "region-2",
+      "source": {
+        "kind": "raster-region",
+        "paletteIndex": 1
+      },
+      "geometry": {
+        "svgPath": "M 28.90,16.00 L 26.50,16.40 L 23.60,17.50 L 21.30,19.00 L 19.40,20.80 L 17.50,23.60 L 16.60,25.80 L 16.10,28.00 L 16.00,31.10 L 16.40,33.50 L 17.50,36.40 L 19.00,38.70 L 20.80,40.60 L 23.60,42.50 L 25.80,43.40 L 28.00,43.90 L 31.10,44.00 L 33.50,43.60 L 36.40,42.50 L 38.70,41.00 L 40.60,39.20 L 42.50,36.40 L 43.40,34.20 L 43.90,32.00 L 44.00,28.90 L 43.60,26.50 L 42.50,23.60 L 41.00,21.30 L 39.20,19.40 L 36.40,17.50 L 34.20,16.60 L 32.00,16.10 Z M 29.40,25.90 L 30.60,25.90 L 31.60,26.20 L 32.30,26.60 L 33.10,27.30 L 33.60,28.00 L 34.10,29.40 L 34.10,30.60 L 33.80,31.60 L 33.40,32.30 L 32.70,33.10 L 32.00,33.60 L 30.60,34.10 L 29.40,34.10 L 28.40,33.80 L 27.70,33.40 L 26.90,32.70 L 26.40,32.00 L 25.90,30.60 L 25.90,29.40 L 26.20,28.40 L 26.60,27.70 L 27.30,26.90 L 28.00,26.40 Z",
+        "areaMm2": 563.32,
+        "boundsMm": [
+          16.0,
+          16.0,
+          28.1,
+          28.1
+        ]
+      },
+      "stitchType": "fill",
+      "threadColor": "#f05a3f",
+      "density": {
+        "rowSpacingMm": 0.45
+      },
+      "angleDeg": 45,
+      "underlay": [
+        "tatami-sparse"
+      ],
+      "pullCompensationMm": 0.15,
+      "maxStitchLengthMm": 4,
+      "trimAfter": true,
+      "order": 1
+    },
+    {
+      "id": "region-3",
+      "source": {
+        "kind": "raster-region",
+        "paletteIndex": 2
+      },
+      "geometry": {
+        "svgPath": "M 60.90,15.10 L 48.10,39.00 L 74.90,39.00 L 61.10,15.10 Z",
+        "areaMm2": 323.83,
+        "boundsMm": [
+          48.1,
+          15.1,
+          26.9,
+          24.0
+        ]
+      },
+      "stitchType": "fill",
+      "threadColor": "#acd633",
+      "density": {
+        "rowSpacingMm": 0.45
+      },
+      "angleDeg": -45,
+      "underlay": [
+        "tatami-sparse"
+      ],
+      "pullCompensationMm": 0.15,
+      "maxStitchLengthMm": 4,
+      "trimAfter": true,
+      "order": 2
+    },
+    {
+      "id": "region-4",
+      "source": {
+        "kind": "raster-region",
+        "paletteIndex": 3
+      },
+      "geometry": {
+        "svgPath": "M 29.40,26.00 L 28.00,26.50 L 26.70,27.70 L 26.00,29.40 L 26.00,30.60 L 26.50,32.00 L 27.70,33.30 L 29.40,34.00 L 30.60,34.00 L 32.00,33.50 L 33.30,32.30 L 34.00,30.60 L 34.00,29.40 L 33.50,28.00 L 32.30,26.70 L 30.60,26.00 Z",
+        "areaMm2": 50.3,
+        "boundsMm": [
+          26.0,
+          26.0,
+          8.1,
+          8.1
+        ]
+      },
+      "stitchType": "fill",
+      "threadColor": "#171717",
+      "density": {
+        "rowSpacingMm": 0.45
+      },
+      "angleDeg": 90,
+      "underlay": [
+        "tatami-sparse"
+      ],
+      "pullCompensationMm": 0.15,
+      "maxStitchLengthMm": 4,
+      "trimAfter": false,
+      "order": 3
+    }
+  ],
+  "preparation": {
+    "strategy": "alpha-segmentation",
+    "backgroundColor": null,
+    "borderBackgroundAgreement": null,
+    "paletteBeforeThreadMapping": [
+      "#2457d6",
+      "#f05a3f",
+      "#acd633",
+      "#171717"
+    ],
+    "componentsRaw": 4,
+    "componentsKept": 4,
+    "componentsRemoved": 0,
+    "highDetailInput": false,
+    "minimumKeptAreaMm2": 0.75,
+    "simplificationToleranceMm": 0.12
+  },
+  "digitization": {
+    "engine": "Ink/Stitch",
+    "version": "3.3.0",
+    "format": "Tajima DST",
+    "stderr": null
+  },
+  "dstStructuralValidation": {
+    "passed": true,
+    "checks": {
+      "headerIs512Bytes": true,
+      "payloadAlignedTo3Bytes": true,
+      "hasEndRecord": true,
+      "headerRecordCountMatches": true,
+      "headerColorChangesMatch": true,
+      "boundsMatchPyembroidery": true
+    },
+    "headerStitchRecords": 3396,
+    "decodedRecordsBeforeEnd": 3401,
+    "encodedTrimSequences": 3,
+    "logicalRecordsIncludingEnd": 3396,
+    "headerColorChanges": 3,
+    "decodedColorChanges": 3,
+    "decodedBoundsMm": [
+      -35.3,
+      -20.0,
+      35.3,
+      20.0
+    ]
+  },
+  "artifacts": {
+    "preparedGeometry": {
+      "file": "geometria.svg",
+      "sha256": "532dccee2c34876dc058d187fee01b5573e21557728f121b7a0a96c1c2f1560e"
+    },
+    "stitchPreview": {
+      "file": "preview.png",
+      "sha256": "1e02b42869c8aa21652a1ed50c8469c82f65de75084d4d4e47fea1806e8112ff"
+    },
+    "machineFile": {
+      "file": "diseno.dst",
+      "sha256": "ad5711a51e196636d4c7fdf9188f469275ba794f47431444bc8ea45017106554"
+    }
+  },
+  "metrics": {
+    "widthMm": 70.6,
+    "heightMm": 40.0,
+    "boundsMm": [
+      -35.3,
+      -20.0,
+      35.3,
+      20.0
+    ],
+    "stitches": 3382,
+    "commands": 3396,
+    "colorChanges": 3,
+    "jumps": 7,
+    "trims": 3,
+    "stops": 0,
+    "estimatedThreadLengthM": 9.51,
+    "minStitchLengthMm": 0.28,
+    "maxStitchLengthMm": 4.3,
+    "zeroLengthStitches": 4,
+    "shortStitchesUnder0_3mm": 7,
+    "longStitchesOver10mm": 0,
+    "dstSizeBytes": 10718,
+    "estimatedMachineMinutesAt700Spm": 6.3,
+    "preparationMs": 89.3,
+    "digitizationMs": 13818.3,
+    "validationAndPreviewMs": 44.3,
+    "processingMs": 13951.9
+  },
+  "validation": {
+    "passed": true,
+    "decision": "accept",
+    "confidence": 0.96,
+    "issues": [],
+    "limitsAre": "spike guardrails; calibrate by fabric/machine/test-sew before production"
+  }
+}

@@ -3,6 +3,7 @@
 import type { FabricObject } from "fabric";
 import { useEffect, useState } from "react";
 import { useDesigner } from "@/Contexts/DesignerContext";
+import { claveDeCapa } from "../design/RightLayersPanel/helpers";
 import LayerItem from "../design/RightLayersPanel/LayerItem"; // 👈 ajusta el path si es distinto
 
 export default function MobileLayersPanel() {
@@ -52,12 +53,7 @@ export default function MobileLayersPanel() {
 	return (
 		<div className="flex flex-col gap-3 pb-6">
 			{layers.map((obj) => (
-				<LayerItem
-					key={String(
-						(obj as { id?: string | number }).id ?? obj.type ?? obj.toString(),
-					)}
-					obj={obj}
-				/>
+				<LayerItem key={claveDeCapa(obj)} obj={obj} />
 			))}
 		</div>
 	);

@@ -1,0 +1,420 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotHash": "875a171fdbc964d6c47538b9a08f971356e260caf15dd0bfdebf6d5e325ce782",
+  "productId": "PENDIENTE",
+  "sideId": "front",
+  "physical": {
+    "widthMm": 90,
+    "heightMm": 50
+  },
+  "bounds": {
+    "xMm": 0.15,
+    "yMm": 0.55,
+    "widthMm": 80.9,
+    "heightMm": 44.2
+  },
+  "colors": [
+    {
+      "id": "color-f4641d",
+      "sourceHex": "#f4641d",
+      "displayHex": "#f4641d",
+      "order": 0
+    },
+    {
+      "id": "color-5dabd3",
+      "sourceHex": "#5dabd3",
+      "displayHex": "#5dabd3",
+      "order": 1
+    },
+    {
+      "id": "color-1d4d65",
+      "sourceHex": "#1d4d65",
+      "displayHex": "#1d4d65",
+      "order": 2
+    },
+    {
+      "id": "color-f3ab2f",
+      "sourceHex": "#f3ab2f",
+      "displayHex": "#f3ab2f",
+      "order": 3
+    },
+    {
+      "id": "color-2e9c94",
+      "sourceHex": "#2e9c94",
+      "displayHex": "#2e9c94",
+      "order": 4
+    }
+  ],
+  "objects": [
+    {
+      "id": "o0-t0-0",
+      "sourceObjectId": "ilustracion-media.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-f4641d",
+      "geometry": {
+        "kind": "path",
+        "d": "M42.75 1.8L44.05 1.9 45.25 2.6 46.5 4.1 47.25 6 47.65 8.45 47.5 10.7 46.9 12.85 45.95 14.5 45.1 15.35 44.1 15.9 42.95 16.05 42 15.8 41.9 11.2 41.75 10.85 41 10.3 38.85 10.25 38.85 7.25 39.65 4.55 40.35 3.4 41.1 2.6 41.95 2.05 42.7 1.85Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 0,
+        "maxStitchLengthMm": 4,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 38.85,
+        "yMm": 1.8,
+        "widthMm": 8.799999999999997,
+        "heightMm": 14.250000000000002
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-1",
+      "sourceObjectId": "ilustracion-media.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-f4641d",
+      "geometry": {
+        "kind": "path",
+        "d": "M21.95 13.2L33.85 13.2 34.8 13.6 34.8 22.9 35.05 23.4 35.8 23.9 35.8 30 35.35 31.05 34.9 31.5 33.75 31.9 22.15 31.9 21.35 31.7 20.6 31.15 20.1 30.15 20.1 14.95 20.4 14.2 20.9 13.65 21.9 13.25Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 45,
+        "maxStitchLengthMm": 4,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 20.1,
+        "yMm": 13.200000000000001,
+        "widthMm": 15.699999999999996,
+        "heightMm": 18.7
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-2",
+      "sourceObjectId": "ilustracion-media.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-f4641d",
+      "geometry": {
+        "kind": "path",
+        "d": "M69.95 30.95L69.25 32.2 69.05 33.85"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 69.05000000000001,
+        "yMm": 30.95,
+        "widthMm": 0.8999999999999915,
+        "heightMm": 2.900000000000002
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t0-3",
+      "sourceObjectId": "ilustracion-media.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-f4641d",
+      "geometry": {
+        "kind": "path",
+        "d": "M69.05 37.2L69.5 39 70.6 41.15 71.95 42.6 73.75 43.55 75.7 43.65 77.1 43.15 78.85 41.7 80.05 39.85 80.05 43.05 79.8 43.85 79.15 44.5 78.35 44.75 70.5 44.7 69.8 44.4 69.3 43.85 69.1 43.3 69.05 37.25Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 135,
+        "maxStitchLengthMm": 4,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 69.05000000000001,
+        "yMm": 37.2,
+        "widthMm": 11,
+        "heightMm": 7.549999999999997
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-0",
+      "sourceObjectId": "ilustracion-media.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-5dabd3",
+      "geometry": {
+        "kind": "path",
+        "d": "M63 21.8L65.15 21.95 66.9 22.35 69 23.25 70.3 24.2 71.3 25.45 71.8 26.85 71.25 26.9 71.05 27.1 71.1 29.3 72.2 28.35 73.4 27.7 74.4 27.45 75.45 27.45 77.3 28.1 79 29.65 79.8 30.9 80.45 32.6 80.8 34.5 80.8 36.55 80.4 38.5 79.8 40.1 78.45 42 76.8 43.2 75.65 43.55 74.55 43.6 73.45 43.35 72.55 42.9 70.75 41.2 69.55 38.85 69.1 36.6 69.1 34.45 69.3 33.1 70.05 30.9 70.35 30.55 70.25 30.45 68.7 31.5 66.35 32.4 64.1 32.75 62.15 32.75 59.9 32.4 58.25 31.85 56.85 31.1 55.45 29.9 54.8 28.95 54.4 27.45 54.55 26.25 55.45 24.7 56.7 23.6 58.6 22.6 61.1 21.95 62.95 21.85Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 0,
+        "maxStitchLengthMm": 4,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 54.4,
+        "yMm": 21.8,
+        "widthMm": 26.400000000000006,
+        "heightMm": 21.8
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t1-1",
+      "sourceObjectId": "ilustracion-media.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-5dabd3",
+      "geometry": {
+        "kind": "path",
+        "d": "M74.15 25.7L78.8 25.7 79.65 26.1 80.25 26.85 72.7 26.9 73.35 26.05 74.1 25.75Z"
+      },
+      "stitch": {
+        "type": "satin",
+        "strokeWidthMm": 1.3,
+        "spacingMm": 0.42,
+        "pullCompensationMm": 0.15,
+        "underlay": true
+      },
+      "bounds": {
+        "xMm": 72.7,
+        "yMm": 25.7,
+        "widthMm": 7.550000000000011,
+        "heightMm": 1.1999999999999993
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t2-0",
+      "sourceObjectId": "ilustracion-media.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-1d4d65",
+      "geometry": {
+        "kind": "path",
+        "d": "M71.1 29.25L71.75 27.6 73.6 27.2 77 27.3 79.95 28.1 80.45 29.55 80.9 32.15 81.05 33.85 80.95 36.9"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 71.10000000000001,
+        "yMm": 27.2,
+        "widthMm": 9.950000000000003,
+        "heightMm": 9.7
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t2-1",
+      "sourceObjectId": "ilustracion-media.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-1d4d65",
+      "geometry": {
+        "kind": "path",
+        "d": "M17.55 36.5L26.75 36.6 27.6 37.25 28.1 38.35 28.1 40.5 27.6 41.65 27 42.15 26.3 42.4 17.6 42.4 16.75 42.05 16.2 41.5 15.85 40.6 15.85 38.25 16.2 37.4 16.9 36.75 17.5 36.55Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 45,
+        "maxStitchLengthMm": 4,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 15.850000000000001,
+        "yMm": 36.5,
+        "widthMm": 12.250000000000002,
+        "heightMm": 5.899999999999999
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t2-2",
+      "sourceObjectId": "ilustracion-media.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-1d4d65",
+      "geometry": {
+        "kind": "path",
+        "d": "M55.25 37.65L66.2 37.75 67.1 38.35 67.7 39.65 67.7 42.05 67.15 43.3 66.55 43.8 65.65 44.1 55.4 44.1 54.6 43.85 53.8 43.15 53.4 42.2 53.4 39.5 53.9 38.45 54.55 37.9 55.2 37.7Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 90,
+        "maxStitchLengthMm": 4,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 53.4,
+        "yMm": 37.65,
+        "widthMm": 14.299999999999997,
+        "heightMm": 6.450000000000003
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t3-0",
+      "sourceObjectId": "ilustracion-media.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-f3ab2f",
+      "geometry": {
+        "kind": "path",
+        "d": "M38.75 10.3L41 10.35 41.4 10.55 41.85 11.2 41.75 23.25 41 23.8 35.8 23.85 35.25 23.55 34.85 22.9 34.85 11.3 35.1 10.75 35.8 10.35 38.7 10.35Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 0,
+        "maxStitchLengthMm": 4,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 34.85,
+        "yMm": 10.3,
+        "widthMm": 7,
+        "heightMm": 13.550000000000002
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-0",
+      "sourceObjectId": "ilustracion-media.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-2e9c94",
+      "geometry": {
+        "kind": "path",
+        "d": "M33.1 0.55L43.5 0.55 45.45 2.55 44.05 1.8 42.75 1.7 41.65 2.1 40.45 3.15 39.55 4.55 38.9 6.45 38.65 8.15 38.75 10.25 35.8 10.3 35.25 10.55 34.8 11.3 34.75 13.4 34.1 13.15 29.8 13.05 29.35 11.65 29.05 9.45 29.1 7.95 29.5 5.85 30.85 2.95 31.65 1.9 33.05 0.6Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 0,
+        "maxStitchLengthMm": 4,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 29.05,
+        "yMm": 0.55,
+        "widthMm": 16.400000000000002,
+        "heightMm": 12.85
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-1",
+      "sourceObjectId": "ilustracion-media.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-2e9c94",
+      "geometry": {
+        "kind": "path",
+        "d": "M4.75 5.75L5.75 5.75 6.5 6 8.05 7.25 9.2 9.1 10.1 12 10.35 14.1 10.35 16.1 10.1 18.15 9.2 21.05 7.8 23.2 6.8 24 5.75 24.4 4.75 24.4 3.75 24.05 2.8 23.3 1.8 22 1.05 20.45 0.4 18.1 0.15 16.1 0.15 14.05 0.4 12.05 1.05 9.7 1.85 8.1 2.8 6.85 3.7 6.15 4.7 5.8Z",
+        "fillRule": "evenodd"
+      },
+      "stitch": {
+        "type": "fill",
+        "spacingMm": 0.45,
+        "angleDeg": 45,
+        "maxStitchLengthMm": 4,
+        "underlay": true,
+        "pullCompensationMm": 0.15
+      },
+      "bounds": {
+        "xMm": 0.15,
+        "yMm": 5.750000000000001,
+        "widthMm": 10.200000000000001,
+        "heightMm": 18.65
+      },
+      "nodeCount": 2
+    },
+    {
+      "id": "o0-t4-2",
+      "sourceObjectId": "ilustracion-media.png",
+      "sourceType": "raster",
+      "classification": "logo",
+      "colorId": "color-2e9c94",
+      "geometry": {
+        "kind": "path",
+        "d": "M46.05 14.5L44.65 16.05 43.6 16.6 42.65 16.85 41.9 18.35"
+      },
+      "stitch": {
+        "type": "running",
+        "strokeWidthMm": 0.3,
+        "maxStitchLengthMm": 4
+      },
+      "bounds": {
+        "xMm": 41.9,
+        "yMm": 14.500000000000002,
+        "widthMm": 4.150000000000006,
+        "heightMm": 3.849999999999998
+      },
+      "nodeCount": 2
+    }
+  ],
+  "metrics": {
+    "componentCount": 13,
+    "nodeCount": 26,
+    "colorCount": 5,
+    "widthMm": 90,
+    "heightMm": 50,
+    "gradientRatio": 0.0205,
+    "texture": 0.0066,
+    "colorEntropy": 2.627,
+    "alphaCoverage": 0.2857
+  },
+  "preparation": {
+    "profileVersion": "experimental-hybrid-v4-2026-09-06",
+    "raster": {
+      "sourceColorCount": 491,
+      "hadAlpha": false,
+      "mmPorPx": 0.05,
+      "reducedColorCount": 5,
+      "quantizationDeltaE": 1.03,
+      "classification": "logo",
+      "removedRegions": 43,
+      "removedAreaMm2": 1.213
+    },
+    "issues": [
+      {
+        "code": "DETALLE_PERDIDO",
+        "message": "Quitamos 43 detalle(s) demasiado pequeño(s) para bordarse a este tamaño.",
+        "severity": "review"
+      }
+    ]
+  },
+  "profileVersion": "experimental-hybrid-v4-2026-09-06",
+  "engineVersion": "inkstitch-3.3.0"
+}

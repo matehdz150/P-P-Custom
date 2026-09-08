@@ -4,13 +4,21 @@ import Image from "next/image";
 import { Switch } from "@/components/ui/switch";
 import type { ProductTemplate } from "@/lib/api/templates";
 import type { EditableShape } from "@/lib/products/types";
-import { Ayuda, Chip, Etiqueta, Numero, Texto } from "./campos";
+import {
+	Ayuda,
+	Chip,
+	Etiqueta,
+	Numero,
+	SelectorDeTecnica,
+	Texto,
+} from "./campos";
 import Fotos from "./Fotos";
 import Previsualizacion from "./Previsualizacion";
 import {
 	type Alta,
 	type Cifra,
 	type Lado,
+	medidaPorDefecto,
 	tallasDe,
 	variantesDe,
 } from "./tipos";
@@ -201,12 +209,27 @@ export function PasoImpresion({
 				? alta.printSides.filter((s) => s.sideKey !== sideKey)
 				: [
 						...alta.printSides,
-						{ sideKey, widthCm: 28, heightCm: 35, dpi: 300, sangradoCm: "" },
+						{
+							sideKey,
+							...medidaPorDefecto(sideKey),
+							dpi: 300,
+							sangradoCm: "",
+							// Sin preseleccionar: adivinar la técnica por el tipo de
+							// producto acertaría a veces y se guardaría mal siempre que no.
+							tecnica: "",
+							// Vacío = cobra el recargo general del producto. Es lo que
+							// pasaba antes de que este campo existiera.
+							recargo: "",
+						},
 					],
 		);
 	}
 
-	function editarLado(sideKey: string, campo: keyof Lado, valor: number | "") {
+	function editarLado<C extends keyof Lado>(
+		sideKey: string,
+		campo: C,
+		valor: Lado[C],
+	) {
 		set(
 			"printSides",
 			alta.printSides.map((s) =>
@@ -231,50 +254,57 @@ export function PasoImpresion({
 				{sides.map((sideKey) => {
 					const lado = alta.printSides.find((s) => s.sideKey === sideKey);
 					return (
+						/* DOS LÍNEAS CUANDO EL LADO ESTÁ ACTIVO. En una sola no cabe:
+						   la medida, los DPI, el sangrado y ahora la técnica pasan de
+						   los 520 px de la columna, y al apretarse los campos numéricos
+						   quedaban de dos dígitos. Arriba va lo que identifica el lado,
+						   abajo cómo sale su archivo. */
 						<div
 							key={sideKey}
-							className={`flex items-center gap-4 rounded-[10px] p-[16px_18px] ${
+							className={`flex flex-col gap-3 rounded-[10px] p-[16px_18px] ${
 								lado
 									? "border-[1.5px] border-tinta bg-hueso"
 									: "border border-tinta/14"
 							}`}
 						>
-							<button
-								type="button"
-								onClick={() => alternarLado(sideKey)}
-								aria-pressed={!!lado}
-								aria-label={labels[sideKey] ?? sideKey}
-								className={`flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-md ${
-									lado ? "bg-lima text-tinta" : "border-[1.5px] border-tinta/30"
-								}`}
-							>
-								{lado && (
-									<svg
-										width="13"
-										height="13"
-										viewBox="0 0 24 24"
-										fill="none"
-										aria-hidden="true"
-									>
-										<path
-											d="M5 12.6l4.8 4.8L19.5 7"
-											stroke="currentColor"
-											strokeWidth="3.4"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-									</svg>
-								)}
-							</button>
+							<div className="flex items-center gap-4">
+								<button
+									type="button"
+									onClick={() => alternarLado(sideKey)}
+									aria-pressed={!!lado}
+									aria-label={labels[sideKey] ?? sideKey}
+									className={`flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-md ${
+										lado
+											? "bg-lima text-tinta"
+											: "border-[1.5px] border-tinta/30"
+									}`}
+								>
+									{lado && (
+										<svg
+											width="13"
+											height="13"
+											viewBox="0 0 24 24"
+											fill="none"
+											aria-hidden="true"
+										>
+											<path
+												d="M5 12.6l4.8 4.8L19.5 7"
+												stroke="currentColor"
+												strokeWidth="3.4"
+												strokeLinecap="round"
+												strokeLinejoin="round"
+											/>
+										</svg>
+									)}
+								</button>
 
-							<span
-								className={`w-[84px] text-[15px] font-semibold ${lado ? "text-tinta" : "text-tinta/60"}`}
-							>
-								{labels[sideKey] ?? sideKey}
-							</span>
+								<span
+									className={`w-[84px] text-[15px] font-semibold ${lado ? "text-tinta" : "text-tinta/60"}`}
+								>
+									{labels[sideKey] ?? sideKey}
+								</span>
 
-							{lado ? (
-								<>
+								{lado ? (
 									<div className="flex items-center gap-2">
 										<Numero
 											valor={lado.widthCm}
@@ -289,32 +319,58 @@ export function PasoImpresion({
 										/>
 										<Ayuda>cm</Ayuda>
 									</div>
-									<div className="ml-auto flex items-center gap-2">
-										<span className="font-mono text-[11px] tracking-[0.7px] text-tinta/50">
-											DPI
-										</span>
-										<Numero
-											valor={lado.dpi}
-											onChange={(v) => editarLado(sideKey, "dpi", v)}
-											ancho="w-[74px]"
-										/>
-										{/* El sangrado va aquí y no en un paso aparte: es una
+								) : (
+									<Ayuda>Actívalo si también imprimes de ese lado</Ayuda>
+								)}
+							</div>
+
+							{lado && (
+								<div className="flex flex-wrap items-center gap-2 pl-[38px]">
+									<span className="font-mono text-[11px] tracking-[0.7px] text-tinta/50">
+										DPI
+									</span>
+									<Numero
+										valor={lado.dpi}
+										onChange={(v) => editarLado(sideKey, "dpi", v)}
+										ancho="w-[74px]"
+									/>
+									{/* El sangrado va aquí y no en un paso aparte: es una
 										    medida del lado, como los centímetros y los DPI, y
 										    separarlo haría que se declarara la mitad de las
 										    veces. En blanco = sin sangrado, que es lo normal. */}
-										<span className="font-mono text-[11px] tracking-[0.7px] text-tinta/50">
-											SANGRADO
-										</span>
-										<Numero
-											valor={lado.sangradoCm}
-											onChange={(v) => editarLado(sideKey, "sangradoCm", v)}
-											ancho="w-[68px]"
+									<span className="font-mono text-[11px] tracking-[0.7px] text-tinta/50">
+										SANGRADO
+									</span>
+									<Numero
+										valor={lado.sangradoCm}
+										onChange={(v) => editarLado(sideKey, "sangradoCm", v)}
+										ancho="w-[68px]"
+									/>
+									<Ayuda>cm</Ayuda>
+
+									{/* El recargo de ESTE lado. Va junto a su medida y no en
+										    el paso de precios a propósito: sólo tiene sentido
+										    mirándolo al lado del área. Una manga de 8×5 no vale
+										    lo que una espalda de 30×40, y con el recargo general
+										    el cliente pagaba lo mismo por las dos.
+										    En blanco = cobra el general del producto. */}
+									<span className="font-mono text-[11px] tracking-[0.7px] text-tinta/50">
+										RECARGO
+									</span>
+									<Numero
+										valor={lado.recargo}
+										onChange={(v) => editarLado(sideKey, "recargo", v)}
+										ancho="w-[74px]"
+									/>
+									<Ayuda>$/pieza</Ayuda>
+
+									<span className="ml-auto flex items-center gap-2">
+										<SelectorDeTecnica
+											valor={lado.tecnica}
+											onCambio={(v) => editarLado(sideKey, "tecnica", v)}
 										/>
-										<Ayuda>cm</Ayuda>
-									</div>
-								</>
-							) : (
-								<Ayuda>Actívalo si también imprimes de ese lado</Ayuda>
+									</span>
+								</div>
 							)}
 						</div>
 					);
